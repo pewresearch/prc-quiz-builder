@@ -1,0 +1,18 @@
+/**
+ * The following styles get applied inside the editor only.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+.wp-block-prc-quiz-result-table.wp-block {
+	color: inherit;
+	background: inherit;
+	.wp-block-prc-quiz-result-table__instructions{
+		text-align: center;
+		font-size: 14px;
+		color: #666;
+	}
+	.wp-block-prc-quiz-result-table__row {
+		cursor: pointer;
+	}
+}

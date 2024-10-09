@@ -1,0 +1,58 @@
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+ .wp-block-prc-quiz-page {
+	&.introduction {
+		max-width: 100%!important;
+		width: 100%!important;
+	}
+    &:not(.introduction) {
+        max-width: 640px!important;
+		width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .page-title {
+        color: #cac6b3;
+        font-family: var(--wp--preset--font-family--sans-serif);
+        font-size: 1.5rem!important;
+        font-weight: bolder!important;
+    }
+
+    .wp-block-prc-quiz-question {
+        margin-bottom: 1.5em;
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+	&.introduction {
+		.wp-block-prc-quiz-page__innerblocks {
+			h1 {
+				@media screen and (max-width: 640px) {
+					font-size: 26px;
+					line-height: 30px;
+				}
+			}
+			h2 {
+				font-size: 24px!important;
+				@media screen and (max-width: 640px) {
+					font-size: 20px;
+				}
+			}
+		}
+		.introduction--note {
+			font-size: 14px;
+			line-height: 23px;
+			color: #7e7e7e;
+			margin-top: 2.5em;
+			font-family: var(--wp--preset--font-family--sans-serif);
+		}
+	}
+
+}

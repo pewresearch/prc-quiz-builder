@@ -1,0 +1,21 @@
+{
+	"name": "result-histogram",
+	"version": "0.1.0",
+	"description": "Histogram representing distribution of scores.",
+	"author": "Nick Zanetti",
+	"license": "GPL-2.0-or-later",
+	"homepage": "https://github.com/pewresearch/pewresearch-org/blob/main/plugins/prc-quiz/",
+	"main": "build/index.js",
+	"scripts": {
+		"build": "wp-scripts build",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"start": "wp-scripts start"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^25.3.0"
+	}
+}

@@ -1,0 +1,15 @@
+/**
+ * The following styles get applied inside the editor only.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+.wp-block-prc-quiz-result-histogram {
+	&.wp-block {
+		color: inherit;
+		background: inherit;
+	}
+	.cb__chart.cb__chart__bar--vertical {
+		margin: auto;
+	}
+}

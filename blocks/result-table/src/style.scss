@@ -1,0 +1,32 @@
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+.wp-block-prc-quiz-result-table {
+	color: inherit;
+	background: inherit;
+	&.offset-wide {
+		@media screen and (min-width: 782px) {
+			margin-left: var(--wp--custom--offset-margin)!important;
+		}
+	}
+	.wp-block-prc-quiz-result-table__row {
+		td {
+			padding: 0.5em 1em;
+			border-bottom: 1px dotted #ccc;
+		}
+		&.is-correct {
+			.wp-block-prc-quiz-result-table__row__icon {
+				background-color: #fcfff5;
+			}
+		}
+		&.is-incorrect {
+			.wp-block-prc-quiz-result-table__row__icon {
+				background-color: #fff6f6;
+			}
+		}
+	}
+}

@@ -1,0 +1,51 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "prc-quiz/result-table",
+	"version": "1.0.0",
+	"title": "Result Table",
+	"category": "prc-quiz",
+  "keywords": [ "table", "results", "results table", "quiz table" ],
+	"attributes": {
+		"rowBackgroundColor": {
+			"type": "string"
+		},
+		"altRowBackgroundColor": {
+			"type": "string"
+		},
+		"rowTextColor": {
+			"type": "string"
+		},
+		"altRowTextColor": {
+			"type": "string"
+		}
+	},
+	"supports": {
+		"anchor": true,
+		"html": false,
+    "align": [ "wide", "full" ],
+		"spacing": {
+			"margin": [ "top", "bottom" ],
+			"padding": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalFontFamily": true,
+			"__experimentalTextDecoration": true,
+			"__experimentalFontStyle": true,
+			"__experimentalFontWeight": true,
+			"__experimentalLetterSpacing": true,
+			"__experimentalTextTransform": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		}
+	},
+	"parent": [ "prc-quiz/results" ],
+	"usesContext": [ "prc-quiz/results/score", "prc-quiz/results/submissionData" ],
+	"textdomain": "result-table",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

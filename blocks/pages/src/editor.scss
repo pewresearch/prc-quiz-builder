@@ -1,0 +1,13 @@
+.wp-block-prc-quiz-pages.wp-block {
+	display: flex;
+	flex-direction: column;
+	gap: var(--grid-gutter, 24px);
+    margin-bottom: 2em;
+
+    & > .block-list-appender.wp-block {
+        margin-top: 2em;
+		width: 100%;
+		display: block;
+		position: relative;
+    }
+}

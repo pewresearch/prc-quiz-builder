@@ -1,0 +1,62 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "prc-quiz/results",
+  "version": "1.0.0",
+  "title": "Results",
+  "category": "prc-quiz",
+  "attributes": {
+    "allowedBlocks": {
+      "type": "array"
+    },
+    "score": {
+      "type": "string"
+    },
+    "submission": {
+      "type": "string"
+    }
+  },
+  "supports": {
+    "anchor": true,
+    "html": false,
+    "multiple": false,
+    "customClassName": true,
+    "align": [
+      "wide",
+      "full",
+      "center"
+    ],
+    "color": {
+      "background": true,
+      "text": true,
+      "link": true
+    },
+    "spacing": {
+      "blockGap": true,
+      "margin": [
+        "top",
+        "bottom"
+      ],
+      "padding": true
+    },
+    "typography": {
+      "fontSize": true,
+      "__experimentalFontFamily": true
+    }
+  },
+  "parent": [
+    "prc-quiz/controller"
+  ],
+  "usesContext": [
+    "prc-quiz/type"
+  ],
+  "providesContext": {
+    "prc-quiz/results/score": "score",
+    "prc-quiz/results/submissionData": "submission"
+  },
+  "textdomain": "results",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

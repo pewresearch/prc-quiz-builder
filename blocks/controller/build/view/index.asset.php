@@ -1,0 +1,1 @@
+<?php return array('dependencies' => array('classnames', 'prc-hooks', 'prc-icons', 'prc-user-accounts-context', 'react', 'react-dom', 'react-jsx-runtime', 'wp-api-fetch', 'wp-dom-ready', 'wp-element', 'wp-i18n', 'wp-polyfill', 'wp-url'), 'version' => '97976957382bdf77086d');

@@ -1,0 +1,16 @@
+/**
+ * The following styles get applied inside the editor only.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+.wp-block-prc-quiz-question.wp-block {
+	color: inherit;
+	background: inherit;
+
+	.wp-block-prc-question--answers > .block-list-appender.wp-block {
+		width: 100%;
+		display: block;
+		position: relative;
+	}
+}

@@ -1,0 +1,34 @@
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+.wp-block-prc-quiz-result-histogram {
+	color: inherit;
+	background: inherit;
+	#bar-chart {
+		div{
+			margin: auto;
+		}
+	   
+	}
+	
+	#score {
+		h2, h3 {
+			text-align: center;
+		}
+		
+		h2 {
+			font-weight: normal;
+			background-color: #efefef;
+			padding: .5em;
+		}
+		
+		span {
+			font-weight: bold;
+		}
+	}
+	
+}
