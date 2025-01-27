@@ -7,9 +7,9 @@
 // $block (WP_Block): The block instance.
 
 $block_wrapper_attrs = get_block_wrapper_attributes();
-$user_icon = \PRC\Platform\Icons\Render('light', 'user-plus');
-$thumbs_icon = \PRC\Platform\Icons\Render('light', 'thumbs-up');
-$envelope_icon = \PRC\Platform\Icons\Render('light', 'envelope-open');
+$user_icon = \PRC\Platform\Icons\render('light', 'user-plus');
+$thumbs_icon = \PRC\Platform\Icons\render('light', 'thumbs-up');
+$envelope_icon = \PRC\Platform\Icons\render('light', 'envelope-open');
 
 ob_start();
 ?>

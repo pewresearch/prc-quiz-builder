@@ -127,8 +127,8 @@ class Result_Table {
 			<tbody class="">
 				<?php
 				$row_index = 0;
-				$check = \PRC\Platform\Icons\Render('light', 'check');
-				$xmark = \PRC\Platform\Icons\Render('light', 'xmark');
+				$check = \PRC\Platform\Icons\render('light', 'check');
+				$xmark = \PRC\Platform\Icons\render('light', 'xmark');
 				foreach ( $rows as $row ) {
 					$correct  = $row['correct'] ? 'positive has-ui-success' : 'negative has-ui-error';
 					$icon     = $row['correct'] ?  $check : $xmark;
@@ -178,8 +178,8 @@ class Result_Table {
 			<tbody class="">
 				<?php
 				$row_index = 1;
-				$check = \PRC\Platform\Icons\Render('light', 'check');
-				$xmark = \PRC\Platform\Icons\Render('light', 'xmark');
+				$check = \PRC\Platform\Icons\render('light', 'check');
+				$xmark = \PRC\Platform\Icons\render('light', 'xmark');
 
 				foreach ( $rows as $row ) {
 					$correct  = $row['correct'] ? 'positive has-ui-success' : 'negative has-ui-error';

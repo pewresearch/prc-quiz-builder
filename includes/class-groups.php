@@ -81,7 +81,7 @@ class Groups {
             // Create group:
             $this->db->getReference( 'quiz/' . $this->quiz_id . '/groups/' . $this->group_id )->set( $to_return );
 
-            // Store record of gorup on the user's database:
+            // Store record of group on the user's database:
             $this->db->getReference( 'users/' . $this->owner_id . '/groups/' . $this->group_id )->set( [
                 'created' => $result->created,
                 'quiz_id' => (int) $result->quiz_id,

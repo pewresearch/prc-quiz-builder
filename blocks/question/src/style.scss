@@ -83,6 +83,10 @@
 	.wp-block-prc-quiz-question--image {
 		order: 2;
 		margin-bottom: 1em;
+		img {
+			max-width: 100%;
+			height: auto;
+		}
 	}
 	.wp-block-prc-question--answers,
 	.wp-block-prc-quiz-question--thermometer {

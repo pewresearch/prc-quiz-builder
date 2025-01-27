@@ -314,6 +314,9 @@ class Plugin {
 	 * @hook prc_platform_on_post_init
 	 */
 	public function init_quiz_db_entry_on_new_post($ref_post) {
+		if ( 'quiz' !== $ref_post->post_type ) {
+			return;
+		}
 		$api = new Archetypes([
 			'quiz_id' => $ref_post->ID,
 		]);
