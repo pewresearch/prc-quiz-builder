@@ -16,7 +16,7 @@
 		"test": "wp-scripts test-e2e"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^30.0.2"
+		"@wordpress/scripts": "^30.9.0"
 	},
 	"dependencies": {
 		"@emotion/react": "^11.11.4",
