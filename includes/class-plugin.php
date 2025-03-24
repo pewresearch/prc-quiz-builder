@@ -1,5 +1,6 @@
 <?php
 namespace PRC\Platform\Quiz;
+
 use WP_Error, Community_Groups_Table;
 
 /**
@@ -52,6 +53,7 @@ class Plugin {
 
 	/**
 	 * The active theme.
+	 *
 	 * @var mixed
 	 */
 	protected $active_theme;
@@ -62,7 +64,7 @@ class Plugin {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		$this->version = PRC_QUIZ_VERSION;
+		$this->version     = PRC_QUIZ_VERSION;
 		$this->plugin_name = 'prc-quiz-builder';
 
 		$this->load_dependencies();
@@ -70,13 +72,16 @@ class Plugin {
 		$this->init_blocks();
 
 		// Add a PRC Quiz Category to the Block Editor
-		add_filter( 'block_categories_all' , function( $categories ) {
-			$categories[] = array(
-				'slug'  => 'prc-quiz',
-				'title' => 'Quiz Blocks'
-			);
-			return $categories;
-		} );
+		add_filter(
+			'block_categories_all',
+			function ( $categories ) {
+				$categories[] = array(
+					'slug'  => 'prc-quiz',
+					'title' => 'Quiz Blocks',
+				);
+				return $categories;
+			} 
+		);
 	}
 
 	/**
@@ -90,18 +95,18 @@ class Plugin {
 	 */
 	private function load_dependencies() {
 		// Load plugin loading class.
-		require_once plugin_dir_path( dirname(__FILE__) ) . '/includes/class-loader.php';
+		require_once plugin_dir_path( __DIR__ ) . '/includes/class-loader.php';
 		// 1. Initialize Archetypes system.
-		require_once plugin_dir_path( dirname(__FILE__) ) . '/includes/class-archetypes.php';
+		require_once plugin_dir_path( __DIR__ ) . '/includes/class-archetypes.php';
 		// 2. Initialize Groups system.
-		require_once plugin_dir_path( dirname(__FILE__) ) . '/includes/legacy-groups/index.php';
-		require_once plugin_dir_path( dirname(__FILE__) ) . '/includes/class-groups.php';
+		require_once plugin_dir_path( __DIR__ ) . '/includes/legacy-groups/index.php';
+		require_once plugin_dir_path( __DIR__ ) . '/includes/class-groups.php';
 		// 3. Initialize API class.
-		require_once plugin_dir_path( dirname(__FILE__) ) . '/includes/class-api.php';
+		require_once plugin_dir_path( __DIR__ ) . '/includes/class-api.php';
 		// 4. Initialize the Rest API class.
-		require_once plugin_dir_path( dirname(__FILE__) ) . '/includes/class-rest-api.php';
+		require_once plugin_dir_path( __DIR__ ) . '/includes/class-rest-api.php';
 		// 4. Initialize analytics class.
-		require_once plugin_dir_path( dirname(__FILE__) ) . '/includes/class-analytics.php';
+		require_once plugin_dir_path( __DIR__ ) . '/includes/class-analytics.php';
 
 		// Load block files.
 		$this->load_blocks();
@@ -113,18 +118,18 @@ class Plugin {
 	// This loads the internal dependencies of the plugin.
 	// Most, if not all, these functions link to a PRC Platform manager class.
 	private function define_dependencies() {
-		new Analytics($this->get_loader());
-		new Rest_API($this->get_loader());
+		new Analytics( $this->get_loader() );
+		new Rest_API( $this->get_loader() );
 
 		$community_groups = new Community_Groups_Table();
-        // If the table does not exist, then create the table.
-        if ( ! $community_groups->exists() ) {
-            $community_groups->install();
-        }
+		// If the table does not exist, then create the table.
+		if ( ! $community_groups->exists() ) {
+			$community_groups->install();
+		}
 
 		$this->loader->add_action( 'init', $this, 'register_quiz_post_type' );
 		$this->loader->add_filter( 'prc_platform_rewrite_query_vars', $this, 'register_query_vars' );
-		$this->loader->add_action( 'init',  $this, 'init_quiz_block_on_new_post' );
+		$this->loader->add_action( 'init', $this, 'init_quiz_block_on_new_post' );
 		$this->loader->add_filter( 'prc_iframe_content', $this, 'filter_iframe_content' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $this, 'register_quiz_components', 0 );
 		$this->loader->add_action( 'admin_enqueue_scripts', $this, 'register_quiz_components', 0 );
@@ -133,13 +138,14 @@ class Plugin {
 
 	/**
 	 * Include a file from the plugin's includes directory.
+	 *
 	 * @param mixed $block_file_name
 	 * @return WP_Error|void
 	 */
-	private function include_block($block_file_name) {
+	private function include_block( $block_file_name ) {
 		$block_file_path = 'blocks/' . $block_file_name . '/' . $block_file_name . '.php';
-		if ( file_exists( plugin_dir_path( dirname(__FILE__) ) . $block_file_path ) ) {
-			require_once plugin_dir_path( dirname(__FILE__) ) . $block_file_path;
+		if ( file_exists( plugin_dir_path( __DIR__ ) . $block_file_path ) ) {
+			require_once plugin_dir_path( __DIR__ ) . $block_file_path;
 		} else {
 			return new WP_Error( 'prc_user_accounts_block_missing', __( 'Block missing.', 'prc' ) );
 		}
@@ -147,13 +153,14 @@ class Plugin {
 
 	/**
 	 * Include all blocks from the plugin's /blocks directory.
+	 *
 	 * @return void
 	 */
 	private function load_blocks() {
 		$block_files = glob( PRC_QUIZ_DIR . '/blocks/*', GLOB_ONLYDIR );
-		foreach ($block_files as $block) {
-			$block = basename($block);
-			$loaded = $this->include_block($block);
+		foreach ( $block_files as $block ) {
+			$block  = basename( $block );
+			$loaded = $this->include_block( $block );
 			if ( is_wp_error( $loaded ) ) {
 				error_log( $loaded->get_error_message() );
 			}
@@ -166,18 +173,18 @@ class Plugin {
 	 * @since    3.5.0
 	 */
 	private function init_blocks() {
-		new Controller($this->get_loader());
-		new Answer($this->get_loader());
-		new Embed($this->get_loader());
-		new Group_Results($this->get_loader());
-		new Question($this->get_loader());
-		new Page($this->get_loader());
-		new Pages($this->get_loader());
-		new Results($this->get_loader());
-		new Result_Follow_Us($this->get_loader());
-		new Result_Histogram($this->get_loader());
-		new Result_Score($this->get_loader());
-		new Result_Table($this->get_loader());
+		new Controller( $this->get_loader() );
+		new Answer( $this->get_loader() );
+		new Embed( $this->get_loader() );
+		new Group_Results( $this->get_loader() );
+		new Question( $this->get_loader() );
+		new Page( $this->get_loader() );
+		new Pages( $this->get_loader() );
+		new Results( $this->get_loader() );
+		new Result_Follow_Us( $this->get_loader() );
+		new Result_Histogram( $this->get_loader() );
+		new Result_Score( $this->get_loader() );
+		new Result_Table( $this->get_loader() );
 	}
 
 	/**
@@ -195,18 +202,18 @@ class Plugin {
 
 	public function register_quiz_components() {
 		// get assets file...
-        $asset_file  = include(PRC_QUIZ_DIR . '/blocks/.shared/build/index.asset.php');
-        $script_src  = plugin_dir_url( PRC_QUIZ_FILE ) . '/blocks/.shared/build/index.js';
+		$asset_file = include PRC_QUIZ_DIR . '/blocks/.shared/build/index.asset.php';
+		$script_src = plugin_dir_url( PRC_QUIZ_FILE ) . '/blocks/.shared/build/index.js';
 
 		$script = wp_register_script(
 			'prc-quiz-shared-components',
-            $script_src,
-            $asset_file['dependencies'],
-            $asset_file['version'],
-            true
+			$script_src,
+			$asset_file['dependencies'],
+			$asset_file['version'],
+			true
 		);
 
-		if ( !$script ) {
+		if ( ! $script ) {
 			return new WP_Error( 'prc-quiz-shared-components', __( 'Error registering script.' ) );
 		}
 	}
@@ -235,7 +242,7 @@ class Plugin {
 			'feeds'      => true,
 		);
 
-		$args   = array(
+		$args = array(
 			'labels'             => $labels,
 			'public'             => true,
 			'publicly_queryable' => true,
@@ -250,9 +257,15 @@ class Plugin {
 			'menu_icon'          => 'dashicons-forms',
 			'show_in_rest'       => true,
 			'supports'           => array(
-				'title', 'editor', 'thumbnail', 'excerpt', 'shortlinks', 'custom-fields', 'revisions'
+				'title',
+				'editor',
+				'thumbnail',
+				'excerpt',
+				'shortlinks',
+				'custom-fields',
+				'revisions',
 			),
-			'taxonomies' => array( 'category', 'research-teams' ),
+			'taxonomies'         => array( 'category', 'research-teams' ),
 		);
 
 		register_post_type( self::$post_type, $args );
@@ -268,40 +281,44 @@ class Plugin {
 
 	public static function get_tutorial() {
 		return array(
-			array( 'prc-quiz/controller', array(), array(
+			array(
+				'prc-quiz/controller',
+				array(),
 				array(
-					'prc-quiz/pages',
-					array(),
 					array(
+						'prc-quiz/pages',
+						array(),
 						array(
-							'prc-quiz/page',
-							array(),
 							array(
+								'prc-quiz/page',
+								array(),
 								array(
-									'prc-quiz/question',
-									array(),
 									array(
+										'prc-quiz/question',
+										array(),
 										array(
-											'prc-quiz/answer',
-											array(),
-										)
+											array(
+												'prc-quiz/answer',
+												array(),
+											),
+										),
 									),
-								)
-							)
-						)
+								),
+							),
+						),
 					),
 				),
-			) ),
+			),
 		);
 	}
 
 	public function init_quiz_block_on_new_post() {
-		$quiz_post_type_object           = get_post_type_object( 'quiz' );
+		$quiz_post_type_object = get_post_type_object( 'quiz' );
 		if ( ! $quiz_post_type_object ) {
 			return;
 		}
 		// @TODO: Initialize a full "tutorial" example for users that do not have user_meta of "did_quiz_tutorial" set, and then set it so it doesnt show up again.
-		$shown_user_tutorial              = get_user_meta( get_current_user_id(), 'prc_quiz_tutorial_displayed', true );
+		$shown_user_tutorial             = get_user_meta( get_current_user_id(), 'prc_quiz_tutorial_displayed', true );
 		$quiz_post_type_object->template = $shown_user_tutorial ? array(
 			array( 'prc-quiz/controller', array(), array() ),
 		) : self::get_tutorial();
@@ -313,13 +330,15 @@ class Plugin {
 	/**
 	 * @hook prc_platform_on_post_init
 	 */
-	public function init_quiz_db_entry_on_new_post($ref_post) {
+	public function init_quiz_db_entry_on_new_post( $ref_post ) {
 		if ( 'quiz' !== $ref_post->post_type ) {
 			return;
 		}
-		$api = new Archetypes([
-			'quiz_id' => $ref_post->ID,
-		]);
+		$api = new Archetypes(
+			array(
+				'quiz_id' => $ref_post->ID,
+			)
+		);
 		$api->setup_quiz_entry();
 	}
 
@@ -332,7 +351,7 @@ class Plugin {
 		if ( ! is_singular( 'quiz' ) ) {
 			return $content;
 		}
-		if ( get_query_var('quizEmbed') ) {
+		if ( get_query_var( 'quizEmbed' ) ) {
 			return $content;
 		}
 
@@ -412,5 +431,4 @@ class Plugin {
 	public function get_version() {
 		return $this->version;
 	}
-
 }
