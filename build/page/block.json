@@ -1,0 +1,61 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "prc-quiz/page",
+  "version": "1.0.0",
+  "title": "Page",
+  "description": "A page contains at least one question but may contain more. You can add aditional multimedia options here such as images, videos, or charts.",
+  "category": "prc-quiz",
+  "attributes": {
+    "allowedBlocks": {
+      "type": "array"
+    },
+    "introductionPage": {
+      "type": "boolean",
+      "default": false
+    },
+    "introductionNote": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "uuid": {
+      "type": "string"
+    }
+  },
+  "supports": {
+    "anchor": true,
+    "html": false,
+    "color": {
+      "background": true,
+      "text": true,
+      "link": true
+    },
+    "spacing": {
+      "blockGap": true,
+      "margin": [
+        "top",
+        "bottom"
+      ],
+      "padding": true
+    },
+    "typography": {
+      "fontSize": true,
+      "__experimentalFontFamily": true
+    }
+  },
+  "parent": [
+    "prc-quiz/pages"
+  ],
+  "usesContext": [
+    "prc-quiz/groupsEnabled",
+    "prc-quiz/type",
+    "prc-quiz/note"
+  ],
+  "textdomain": "page",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

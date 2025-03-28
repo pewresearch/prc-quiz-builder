@@ -113,6 +113,9 @@ class Plugin {
 
 		// Initialize the loader.
 		$this->loader = new Loader();
+
+		// Register the block library manifest file.
+		$this->register_block_library_manifest();
 	}
 
 	// This loads the internal dependencies of the plugin.
@@ -143,7 +146,7 @@ class Plugin {
 	 * @return WP_Error|void
 	 */
 	private function include_block( $block_file_name ) {
-		$block_file_path = 'blocks/' . $block_file_name . '/' . $block_file_name . '.php';
+		$block_file_path = 'build/' . $block_file_name . '/' . $block_file_name . '.php';
 		if ( file_exists( plugin_dir_path( __DIR__ ) . $block_file_path ) ) {
 			require_once plugin_dir_path( __DIR__ ) . $block_file_path;
 		} else {
@@ -157,7 +160,7 @@ class Plugin {
 	 * @return void
 	 */
 	private function load_blocks() {
-		$block_files = glob( PRC_QUIZ_DIR . '/blocks/*', GLOB_ONLYDIR );
+		$block_files = glob( PRC_QUIZ_DIR . '/build/*', GLOB_ONLYDIR );
 		foreach ( $block_files as $block ) {
 			$block  = basename( $block );
 			$loaded = $this->include_block( $block );
@@ -165,6 +168,13 @@ class Plugin {
 				error_log( $loaded->get_error_message() );
 			}
 		}
+	}
+
+	public function register_block_library_manifest() {
+		wp_register_block_metadata_collection(
+			PRC_QUIZ_DIR . '/build',
+			PRC_QUIZ_DIR . '/build/blocks-manifest.php'
+		);
 	}
 
 	/**
@@ -175,7 +185,7 @@ class Plugin {
 	private function init_blocks() {
 		new Controller( $this->get_loader() );
 		new Answer( $this->get_loader() );
-		new Embed( $this->get_loader() );
+		new Embeddable( $this->get_loader() );
 		new Group_Results( $this->get_loader() );
 		new Question( $this->get_loader() );
 		new Page( $this->get_loader() );
@@ -202,8 +212,8 @@ class Plugin {
 
 	public function register_quiz_components() {
 		// get assets file...
-		$asset_file = include PRC_QUIZ_DIR . '/blocks/.shared/build/index.asset.php';
-		$script_src = plugin_dir_url( PRC_QUIZ_FILE ) . '/blocks/.shared/build/index.js';
+		$asset_file = include PRC_QUIZ_DIR . '/includes/shared-components/build/index.asset.php';
+		$script_src = plugin_dir_url( PRC_QUIZ_FILE ) . '/includes/shared-components/build/index.js';
 
 		$script = wp_register_script(
 			'prc-quiz-shared-components',
@@ -253,7 +263,7 @@ class Plugin {
 			'capability_type'    => 'page',
 			'has_archive'        => true,
 			'hierarchical'       => false,
-			'menu_position'      => 49,
+			'menu_position'      => 15,
 			'menu_icon'          => 'dashicons-forms',
 			'show_in_rest'       => true,
 			'supports'           => array(
@@ -269,14 +279,6 @@ class Plugin {
 		);
 
 		register_post_type( self::$post_type, $args );
-
-		add_filter(
-			'prc_load_gutenberg',
-			function ( $enabled_post_types ) {
-				$enabled_post_types[] = self::$post_type;
-				return $enabled_post_types;
-			}
-		);
 	}
 
 	public static function get_tutorial() {
@@ -318,10 +320,12 @@ class Plugin {
 			return;
 		}
 		// @TODO: Initialize a full "tutorial" example for users that do not have user_meta of "did_quiz_tutorial" set, and then set it so it doesnt show up again.
-		$shown_user_tutorial             = get_user_meta( get_current_user_id(), 'prc_quiz_tutorial_displayed', true );
+		$shown_user_tutorial = get_user_meta( get_current_user_id(), 'prc_quiz_tutorial_displayed', true );
+		
 		$quiz_post_type_object->template = $shown_user_tutorial ? array(
 			array( 'prc-quiz/controller', array(), array() ),
 		) : self::get_tutorial();
+
 		if ( ! $shown_user_tutorial ) {
 			update_user_meta( get_current_user_id(), 'prc_quiz_tutorial_displayed', true );
 		}

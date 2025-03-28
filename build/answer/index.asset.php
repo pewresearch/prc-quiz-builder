@@ -1,0 +1,1 @@
+<?php return array('dependencies' => array('classnames', 'prc-components', 'prc-icons', 'prc-quiz-shared-components', 'react-jsx-runtime', 'wp-block-editor', 'wp-blocks', 'wp-components', 'wp-data', 'wp-element', 'wp-i18n', 'wp-polyfill'), 'version' => '8fa456a4b1aa024a64ff');

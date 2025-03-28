@@ -7,11 +7,15 @@
     "test": "tests"
   },
   "scripts": {
+    "build": "wp-scripts build --webpack-copy-php; wp-scripts build --experimental-modules --webpack-copy-php; wp-scripts build-blocks-manifest",
+    "start": "wp-scripts build-blocks-manifest; wp-scripts start --webpack-copy-php",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@emotion/styled": "^11.11.0"
+    "@emotion/styled": "^11.14.0",
+    "@wordpress/icons": "^10.20.0",
+    "semantic-ui-react": "^2.1.5"
   }
 }

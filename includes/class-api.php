@@ -189,7 +189,8 @@ class API {
 			'cached'            => false,
 		);
 
-		// @TODO: Right now our "DATA MODEL" includes our presentation markup, this is not intended to be the case. Once WP hydration and directives are in place, we can structure the frontend application to hydrate using the data model.
+		// @TODO: Right now our "DATA MODEL" includes our presentation markup, this is not intended to be the case.
+		// Once WP hydration and directives are in place, we can structure the frontend application to hydrate using the data model.
 		foreach ( $page_blocks as $page_block ) {
 			$page_uuid = $page_block['attrs']['uuid'];
 

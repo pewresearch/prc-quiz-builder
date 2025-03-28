@@ -1,0 +1,36 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "prc-quiz/pages",
+  "version": "1.0.0",
+  "title": "Pages",
+  "category": "text",
+  "attributes": {
+    "orientation": {
+      "type": "string",
+      "enum": [
+        "vertical",
+        "horizontal"
+      ],
+      "default": "vertical"
+    }
+  },
+  "supports": {
+    "anchor": false,
+    "html": false,
+    "multiple": false,
+    "color": {},
+    "typography": {
+      "fontSize": true,
+      "__experimentalFontFamily": true
+    }
+  },
+  "parent": [
+    "prc-quiz/controller"
+  ],
+  "textdomain": "pages",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

@@ -5,8 +5,8 @@
  * Description:       An interactive, block-based quiz builder for the PRC platform..
  * Author:            Seth Rubenstein
  * Author URI:        https://www.pewresearch.org
- * Version:           3.5.0
- * Requires at least: 6.4
+ * Version:           3.6.0
+ * Requires at least: 6.7
  * Requires PHP:      8.1
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
@@ -24,6 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'PRC_QUIZ_FILE', __FILE__ );
 define( 'PRC_QUIZ_DIR', __DIR__ );
 define( 'PRC_QUIZ_VERSION', '3.5.0' );
+define( 'PRC_QUIZ_MANIFEST_FILE', __DIR__ . '/build/block-manifest.php' );
 
 /**
  * The core plugin class that is used to define the hooks that initialize the various platform components.
@@ -44,4 +45,3 @@ function run_prc_quiz_builder() {
 	$plugin->run();
 }
 run_prc_quiz_builder();
-

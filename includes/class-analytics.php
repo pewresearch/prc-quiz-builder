@@ -1,7 +1,21 @@
 <?php
+/**
+ * Analytics class.
+ *
+ * @package PRC\Platform\Quiz
+ */
 namespace PRC\Platform\Quiz;
 
+/**
+ * Analytics class.
+ */
 class Analytics {
+
+	/**
+	 * Constructor.
+	 *
+	 * @param object $loader The loader.
+	 */
 	public function __construct( $loader = null ) {
 		if ( $loader !== null ) {
 			$loader->add_action( 'init', $this, 'init_analytics' );
@@ -10,47 +24,50 @@ class Analytics {
 		}
 	}
 
+	/**
+	 * Initialize analytics.
+	 */
 	public function init_analytics() {
 		$properties = array(
-			'first_24_hours' => [
+			'first_24_hours' => array(
 				'type' => 'integer',
-			],
-			'first_week'     => [
+			),
+			'first_week'     => array(
 				'type' => 'integer',
-			],
-			'total'          => [
+			),
+			'total'          => array(
 				'type' => 'integer',
-			],
-			'2021'           => [
+			),
+			'2021'           => array(
 				'type' => 'array',
-			],
-			'2022'           => [
+			),
+			'2022'           => array(
 				'type' => 'array',
-			],
-			'2023' => [
+			),
+			'2023'           => array(
 				'type' => 'array',
-			],
-			'2024' => [
+			),
+			'2024'           => array(
 				'type' => 'array',
-			],
-			'2025' => [
+			),
+			'2025'           => array(
 				'type' => 'array',
-			],
-			'2026' => [
+			),
+			'2026'           => array(
 				'type' => 'array',
-			],
-			'2027' => [
+			),
+			'2027'           => array(
 				'type' => 'array',
-			],
-			'2028' => [
+			),
+			'2028'           => array(
 				'type' => 'array',
-			],
-			'2029' => [
+			),
+			'2029'           => array(
 				'type' => 'array',
-			],
-			'2030' => [
+			),
+			'2030'           => array(
 				'type' => 'array',
-			],
+			),
 		);
 
 		register_post_meta(
@@ -67,7 +84,7 @@ class Analytics {
 							'properties' => $properties,
 						),
 					),
-					'auth_callback' => function() {
+					'auth_callback' => function () {
 						return current_user_can( 'edit_posts' );
 					},
 				),
@@ -75,6 +92,9 @@ class Analytics {
 		);
 	}
 
+	/**
+	 * Register REST fields.
+	 */
 	public function register_rest_fields() {
 		register_rest_field(
 			'quiz',
@@ -86,11 +106,22 @@ class Analytics {
 		);
 	}
 
+	/**
+	 * Get submission analytics.
+	 *
+	 * @param array $object The object.
+	 * @return array
+	 */
 	public function restfully_get_submission_analytics( $object ) {
 		$post_id = (int) $object['id'];
-		return get_post_meta( $post_id, '_report', true);
+		return get_post_meta( $post_id, '_report', true );
 	}
 
+	/**
+	 * Log quiz submission.
+	 *
+	 * @param int $quiz_id The quiz id.
+	 */
 	public function log_quiz_submission( $quiz_id ) {
 		// Get todays date.
 		$date = gmdate( 'Y-m-d' );
@@ -113,11 +144,11 @@ class Analytics {
 
 		// If the quiz was published within the last 24 hours, increment the first_24_hours counter.
 		if ( $quiz_pub_date >= $date ) {
-			$data['first_24_hours']++;
+			++$data['first_24_hours'];
 		}
 		// If the quiz was published within the last week, increment the first_week counter.
 		if ( $quiz_pub_date >= gmdate( 'Y-m-d', strtotime( '-1 week' ) ) ) {
-			$data['first_week']++;
+			++$data['first_week'];
 		}
 
 		if ( ! array_key_exists( $year, $data ) ) {
@@ -126,10 +157,10 @@ class Analytics {
 		if ( ! array_key_exists( $month, $data[ $year ] ) ) {
 			$data[ $year ][ $month ] = 1;
 		} else {
-			$data[ $year ][ $month ]++;
+			++$data[ $year ][ $month ];
 		}
 
-		$data['total']++;
+		++$data['total'];
 
 		update_post_meta( $quiz_id, '_report', $data );
 	}

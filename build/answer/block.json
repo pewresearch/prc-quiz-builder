@@ -1,0 +1,75 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "prc-quiz/answer",
+  "version": "1.0.0",
+  "title": "Answer",
+  "description": "An answer choice for a question.",
+  "category": "prc-quiz",
+  "attributes": {
+    "allowedBlocks": {
+      "type": "array"
+    },
+    "orientation": {
+      "type": "string",
+      "default": "vertical"
+    },
+    "answer": {
+      "type": "string"
+    },
+    "resultsLabel": {
+      "type": "string"
+    },
+    "points": {
+      "type": "string",
+      "default": 0
+    },
+    "correct": {
+      "type": "boolean"
+    },
+    "uuid": {
+      "type": "string"
+    },
+    "conditionalDisplay": {
+      "type": "boolean",
+      "default": false
+    },
+    "conditionalAnswerUuid": {
+      "type": "string"
+    },
+    "imageId": {
+      "type": "integer"
+    }
+  },
+  "parent": [
+    "prc-quiz/question"
+  ],
+  "supports": {
+    "anchor": false,
+    "html": false,
+    "color": {
+      "background": true,
+      "text": true
+    },
+    "spacing": {
+      "margin": [
+        "top",
+        "bottom"
+      ],
+      "padding": true
+    },
+    "typography": {
+      "fontSize": true,
+      "__experimentalFontFamily": true
+    }
+  },
+  "usesContext": [
+    "prc-quiz/type",
+    "prc-quiz/question/type"
+  ],
+  "textdomain": "answer",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}
