@@ -18,6 +18,7 @@ import Toolbar from './toolbar';
 
 function IntroductionPage({ page }) {
 	let content = '';
+
 	page.content.map((c) => {
 		if (c.hasOwnProperty('rendered')) {
 			content += c.rendered;
