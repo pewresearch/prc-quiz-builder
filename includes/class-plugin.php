@@ -1,4 +1,10 @@
 <?php
+/**
+ * Quiz Builder Plugin
+ *
+ * @package PRC\Platform\Quiz
+ */
+
 namespace PRC\Platform\Quiz;
 
 use WP_Error, Community_Groups_Table;
@@ -20,6 +26,8 @@ use WP_Error, Community_Groups_Table;
 class Plugin {
 	/**
 	 * The post type for quizzes.
+	 *
+	 * @var string
 	 */
 	public static $post_type = 'quiz';
 
@@ -71,7 +79,7 @@ class Plugin {
 		$this->define_dependencies();
 		$this->init_blocks();
 
-		// Add a PRC Quiz Category to the Block Editor
+		// Add a PRC Quiz Category to the Block Editor.
 		add_filter(
 			'block_categories_all',
 			function ( $categories ) {
@@ -80,7 +88,7 @@ class Plugin {
 					'title' => 'Quiz Blocks',
 				);
 				return $categories;
-			} 
+			}
 		);
 	}
 
@@ -118,8 +126,9 @@ class Plugin {
 		$this->register_block_library_manifest();
 	}
 
-	// This loads the internal dependencies of the plugin.
-	// Most, if not all, these functions link to a PRC Platform manager class.
+	/**
+	 * Define the dependencies for the plugin.
+	 */
 	private function define_dependencies() {
 		new Analytics( $this->get_loader() );
 		new Rest_API( $this->get_loader() );
@@ -131,18 +140,22 @@ class Plugin {
 		}
 
 		$this->loader->add_action( 'init', $this, 'register_quiz_post_type' );
+		$this->loader->add_filter( 'prc_platform__datasets_enabled_post_types', $this, 'enable_datasets_support' );
+		$this->loader->add_filter( 'prc_platform__bylines_enabled_post_types', $this, 'enable_bylines_support' );
+		$this->loader->add_filter( 'prc_platform__art_direction_enabled_post_types', $this, 'enable_art_direction_support' );
 		$this->loader->add_filter( 'prc_platform_rewrite_query_vars', $this, 'register_query_vars' );
 		$this->loader->add_action( 'init', $this, 'init_quiz_block_on_new_post' );
 		$this->loader->add_filter( 'prc_iframe_content', $this, 'filter_iframe_content' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $this, 'register_quiz_components', 0 );
 		$this->loader->add_action( 'admin_enqueue_scripts', $this, 'register_quiz_components', 0 );
 		$this->loader->add_action( 'prc_platform_on_post_init', $this, 'init_quiz_db_entry_on_new_post', 100 );
+		$this->loader->add_filter( 'prc_platform_pub_listing_default_args', $this, 'opt_into_pub_listing' );
 	}
 
 	/**
 	 * Include a file from the plugin's includes directory.
 	 *
-	 * @param mixed $block_file_name
+	 * @param mixed $block_file_name The block file name.
 	 * @return WP_Error|void
 	 */
 	private function include_block( $block_file_name ) {
@@ -170,6 +183,11 @@ class Plugin {
 		}
 	}
 
+	/**
+	 * Register the block library manifest.
+	 *
+	 * @since 3.5.0
+	 */
 	public function register_block_library_manifest() {
 		wp_register_block_metadata_collection(
 			PRC_QUIZ_DIR . '/build',
@@ -198,7 +216,12 @@ class Plugin {
 	}
 
 	/**
+	 * Register the query vars.
+	 *
 	 * @hook prc_platform_rewrite_query_vars
+	 *
+	 * @param array $vars The query vars.
+	 * @return array The query vars.
 	 */
 	public function register_query_vars( $vars ) {
 		$vars[] .= 'archetype';
@@ -210,6 +233,11 @@ class Plugin {
 		return $vars;
 	}
 
+	/**
+	 * Register the quiz components.
+	 *
+	 * @since 3.5.0
+	 */
 	public function register_quiz_components() {
 		// get assets file...
 		$asset_file = include PRC_QUIZ_DIR . '/includes/shared-components/build/index.asset.php';
@@ -228,6 +256,11 @@ class Plugin {
 		}
 	}
 
+	/**
+	 * Register the quiz post type.
+	 *
+	 * @since 3.5.0
+	 */
 	public function register_quiz_post_type() {
 		$labels = array(
 			'name'               => 'Quizzes',
@@ -275,12 +308,69 @@ class Plugin {
 				'custom-fields',
 				'revisions',
 			),
-			'taxonomies'         => array( 'category', 'research-teams' ),
+			'taxonomies'         => array( 'category', 'research-teams', 'bylines', 'datasets', 'collections' ),
 		);
 
 		register_post_type( self::$post_type, $args );
 	}
 
+	/**
+	 * Opt the post type into the publication listing.
+	 *
+	 * @hook prc_platform_pub_listing_default_args
+	 *
+	 * @param array $args The arguments.
+	 * @return array The arguments.
+	 */
+	public function opt_into_pub_listing( $args ) {
+		$args['post_type'] = array_merge( $args['post_type'], array( self::$post_type ) );
+		return $args;
+	}
+
+	/**
+	 * Enable datasets support.
+	 *
+	 * @hook prc_platform__datasets_enabled_post_types
+	 *
+	 * @param array $post_types The post types.
+	 * @return array The post types.
+	 */
+	public function enable_datasets_support( $post_types ) {
+		$post_types[] = self::$post_type;
+		return $post_types;
+	}
+
+	/**
+	 * Enable bylines support.
+	 *
+	 * @hook prc_platform__bylines_enabled_post_types
+	 *
+	 * @param array $post_types The post types.
+	 * @return array The post types.
+	 */
+	public function enable_bylines_support( $post_types ) {
+		$post_types[] = self::$post_type;
+		return $post_types;
+	}
+
+	/**
+	 * Enable art direction support.
+	 *
+	 * @hook prc_platform__art_direction_enabled_post_types
+	 *
+	 * @param array $post_types The post types.
+	 * @return array The post types.
+	 */
+	public function enable_art_direction_support( $post_types ) {
+		$post_types[] = 'quiz';
+		return $post_types;
+	}
+
+	/**
+	 * Get the tutorial.
+	 *
+	 * @since 3.5.0
+	 */
 	public static function get_tutorial() {
 		return array(
 			array(
@@ -314,14 +404,18 @@ class Plugin {
 		);
 	}
 
+	/**
+	 * Initialize the quiz block on a new post.
+	 *
+	 * @since 3.5.0
+	 */
 	public function init_quiz_block_on_new_post() {
 		$quiz_post_type_object = get_post_type_object( 'quiz' );
 		if ( ! $quiz_post_type_object ) {
 			return;
 		}
 		// @TODO: Initialize a full "tutorial" example for users that do not have user_meta of "did_quiz_tutorial" set, and then set it so it doesnt show up again.
-		$shown_user_tutorial = get_user_meta( get_current_user_id(), 'prc_quiz_tutorial_displayed', true );
-		
+		$shown_user_tutorial             = get_user_meta( get_current_user_id(), 'prc_quiz_tutorial_displayed', true );
 		$quiz_post_type_object->template = $shown_user_tutorial ? array(
 			array( 'prc-quiz/controller', array(), array() ),
 		) : self::get_tutorial();
@@ -332,7 +426,11 @@ class Plugin {
 	}
 
 	/**
+	 * Initialize the quiz database entry on a new post.
+	 *
 	 * @hook prc_platform_on_post_init
+	 *
+	 * @param WP_Post $ref_post The post object.
 	 */
 	public function init_quiz_db_entry_on_new_post( $ref_post ) {
 		if ( 'quiz' !== $ref_post->post_type ) {
@@ -347,9 +445,12 @@ class Plugin {
 	}
 
 	/**
+	 * Filter the iframe content.
+	 *
 	 * @TODO: Look into revamping the iframe plugin and this function to be more flexible.
-	 * @param mixed $content
-	 * @return mixed
+	 *
+	 * @param mixed $content The content.
+	 * @return mixed The content.
 	 */
 	public function filter_iframe_content( $content ) {
 		if ( ! is_singular( 'quiz' ) ) {
@@ -381,10 +482,9 @@ class Plugin {
 			}
 		</style>
 		<?php
-		return '<div style="max-width: 640px;">' . ob_get_clean() . $content . '</div>';
+		$quiz_title = ob_get_clean();
+		return '<div style="max-width: 640px;">' . $quiz_title . $content . '</div>';
 	}
-
-	
 
 	/**
 	 * Run the loader to execute all of the hooks with WordPress.

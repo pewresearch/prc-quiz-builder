@@ -14,7 +14,12 @@ import {
 	createContext,
 } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { addQueryArgs, getQueryArg, getPath } from '@wordpress/url';
+import {
+	addQueryArgs,
+	getQueryArg,
+	getPath,
+	getPathAndQueryString,
+} from '@wordpress/url';
 import apiFetch from '@wordpress/api-fetch';
 
 const storageKeyHashGen = (quizId, prefix = false) =>
@@ -37,7 +42,8 @@ const useQuizController = (quizId, isEmbedded = false) => {
 		document.querySelector('.wp-block-prc-quiz-controller--react-app')
 	);
 	const isIframe =
-		getQueryArg(href, 'iframe') || getPath(href).includes('/iframe');
+		getQueryArg(href, 'iframe') ||
+		getPathAndQueryString(href).includes('/iframe');
 	const isPreview =
 		href.includes('post_type=quiz') || href.includes('preview=1');
 
