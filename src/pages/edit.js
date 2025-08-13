@@ -10,12 +10,12 @@ import {
 	useInnerBlocksProps,
 	InnerBlocks,
 } from '@wordpress/block-editor';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal Dependencies
  */
 const TEMPLATE = [['prc-quiz/page', {}]];
-const ALLOWED_BLOCKS = ['prc-quiz/page'];
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -38,17 +38,41 @@ export default function Edit({
 	context,
 	clientId,
 	isSelected,
+	__unstableLayoutClassNames: layoutClassNames,
 }) {
-	const blockProps = useBlockProps();
+	const blockProps = useBlockProps({
+		className: layoutClassNames,
+	});
 	const { orientation } = attributes;
+
 	const innerBlocksProps = useInnerBlocksProps(blockProps, {
-		allowedBlocks: ALLOWED_BLOCKS,
 		orientation: orientation || 'vertical',
 		templateLock: false,
 		template: TEMPLATE,
 		renderAppender: isSelected
 			? InnerBlocks.ButtonBlockAppender
 			: undefined,
+		// __experimentalDirectInsert: true,
+		// __experimentalDefaultBlock: {
+		// 	name: 'prc-quiz/page',
+		// 	attributes: {},
+		// 	innerBlocks: [
+		// 		[
+		// 			'core/paragraph',
+		// 			{
+		// 				placeholder: __('Enter page title', 'prc-quiz'),
+		// 				metadata: {
+		// 					bindings: {
+		// 						content: {
+		// 							source: 'prc-quiz/page-title',
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 		],
+		// 		['prc-quiz/question', {}],
+		// 	],
+		// },
 	});
 
 	return <div {...innerBlocksProps} />;

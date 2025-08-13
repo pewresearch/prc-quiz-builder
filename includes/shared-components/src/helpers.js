@@ -1,7 +1,8 @@
 /**
  * WordPress Dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { store as blockEditorStore } from '@wordpress/block-editor';
+import { select } from '@wordpress/data';
 
 const onBlockCreation = (clientId, uuid = null, setAttributes = false) => {
 	if (null === uuid && false !== setAttributes) {
@@ -11,4 +12,14 @@ const onBlockCreation = (clientId, uuid = null, setAttributes = false) => {
 	}
 };
 
-export { onBlockCreation };
+const countTotalQuestionBlocks = (clientId) => {
+	const { getBlockRootClientId, getBlockIndex, getBlockName } =
+		select(blockEditorStore);
+	const blockName = getBlockName(clientId);
+	if (blockName === 'prc-quiz/question') {
+		return 1;
+	}
+	return 0;
+};
+
+export { onBlockCreation, countTotalQuestionBlocks };

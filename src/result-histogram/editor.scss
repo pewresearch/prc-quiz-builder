@@ -12,4 +12,43 @@
 	.cb__chart.cb__chart__bar--vertical {
 		margin: auto;
 	}
+
+	/* Editor-only preview layout */
+	#bar-chart .bars {
+		display: grid;
+		grid-auto-flow: column;
+		grid-auto-columns: 1fr;
+		align-items: end;
+		gap: 24px;
+		max-width: 900px;
+		margin: 0 auto;
+	}
+	#bar-chart .bar {
+		position: relative;
+		background: #000;
+		color: #fff;
+		min-height: 10px;
+		transition: height .2s ease-in-out;
+	}
+	#bar-chart .bar.is-highlighted {
+		outline: 2px solid #000;
+	}
+	#bar-chart .bar__label {
+		position: absolute;
+		top: 8px;
+		left: 0;
+		right: 0;
+		text-align: center;
+		font-weight: 600;
+		color: #fff;
+	}
+	#bar-chart .bar__x {
+		display: block;
+		position: absolute;
+		bottom: -24px;
+		left: 0;
+		right: 0;
+		text-align: center;
+		color: #666;
+	}
 }

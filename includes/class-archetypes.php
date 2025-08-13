@@ -14,6 +14,13 @@ use WP_Error;
  */
 class Archetypes {
 	/**
+	 * The valid hash regex.
+	 *
+	 * @var string
+	 */
+	protected static $valid_hash_regex = '/^[a-f0-9]{32}$/';
+
+	/**
 	 * The quiz ID.
 	 *
 	 * @var string
@@ -47,10 +54,26 @@ class Archetypes {
 				'hash'    => null,
 			)
 		);
-		$this->quiz_id = $args['quiz_id'];
-		$this->hash    = $args['hash'];
-		$firebase      = new \PRC\Platform\Firebase( null );
+		$firebase      = new \PRC\Platform\Firebase();
 		$this->db      = $firebase->db;
+		$this->quiz_id = $args['quiz_id'];
+		if ( ! $this->is_valid_hash( $args['hash'] ) ) {
+			return;
+		}
+		$this->hash = $args['hash'];
+	}
+
+	/**
+	 * Is valid hash.
+	 *
+	 * @param string $md5 The md5.
+	 * @return bool
+	 */
+	public static function is_valid_hash( $md5 = false ) {
+		if ( false !== $md5 ) {
+			return preg_match( self::$valid_hash_regex, $md5 );
+		}
+		return false;
 	}
 
 	/**
@@ -62,12 +85,22 @@ class Archetypes {
 		$quiz_entry = $this->db->getReference( 'quiz/' . $quiz_id )->getValue();
 		if ( empty( $quiz_entry ) ) {
 			$quiz_entry = array(
-				'id'         => $quiz_id,
 				'archetypes' => '',
 			);
 			$this->db->getReference( 'quiz/' . $quiz_id )->set( $quiz_entry );
 		}
 		return $quiz_entry;
+	}
+
+	/**
+	 * Purge the archetypes.
+	 */
+	public function purge_archetypes() {
+		$todays_timestamp = time();
+		$backup           = $this->db->getReference( 'quiz/' . $this->quiz_id . '/archetypes' )->getValue();
+		$this->db->getReference( 'quiz/' . $this->quiz_id . '/archetypes_backup_' . $todays_timestamp )->set( $backup );
+		$this->db->getReference( 'quiz/' . $this->quiz_id . '/archetypes' )->set( array() );
+		return true;
 	}
 
 	/**
@@ -103,7 +136,10 @@ class Archetypes {
 	 * @param int   $score      The score.
 	 * @return array|WP_Error
 	 */
-	public function create_archetype( $submission = null, $score = null ) {
+	public function create_archetype( 
+		$submission = null, 
+		$score = null,
+	) {
 		if ( empty( $submission ) ) {
 			return new WP_Error( 'no-submission', 'No submission provided.' );
 		}

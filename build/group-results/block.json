@@ -2,31 +2,17 @@
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
   "name": "prc-quiz/group-results",
-  "version": "1.0.0",
+  "version": "4.0.0",
   "title": "Group Results",
-  "description": "Results for a community group as given by group id and archetype hash id",
-  "category": "text",
-  "attributes": {
-    "allowedBlocks": {
-      "type": "array"
-    },
-    "name": {
-      "type": "string"
-    },
-    "total": {
-      "type": "integer"
-    },
-    "typologyGroups": {
-      "type": "string"
-    },
-    "answers": {
-      "type": "string"
-    }
-  },
+  "description": "Results for a community group. Without this block, group creation will be disabled, it is required for group quizzes to have a separate version of the results for the community group.",
+  "category": "quiz",
+  "attributes": {},
   "supports": {
     "anchor": true,
     "html": false,
     "multiple": false,
+    "interactivity": true,
+    "animations": true,
     "color": {
       "background": true,
       "text": true,
@@ -48,15 +34,14 @@
   "parent": [
     "prc-quiz/controller"
   ],
-  "providesContext": {
-    "prc-quiz/groups/results/name": "name",
-    "prc-quiz/groups/results/typologyGroups": "typologyGroups",
-    "prc-quiz/groups/results/answers": "answers",
-    "prc-quiz/groups/results/total": "total"
-  },
+  "usesContext": [
+    "prc-quiz/type",
+    "prc-quiz/groupsEnabled",
+    "prc-quiz/quizId"
+  ],
   "textdomain": "group-results",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
   "style": "file:./style-index.css",
-  "render": "file:./render.php"
+  "viewScriptModule": "file:./view.js"
 }

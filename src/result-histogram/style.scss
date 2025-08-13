@@ -10,7 +10,8 @@
 	background: inherit;
 	#bar-chart {
 		div{
-			margin: auto;
+			margin-left: auto;
+			margin-right: auto;
 		}
 	   
 	}
@@ -30,5 +31,52 @@
 			font-weight: bold;
 		}
 	}
-	
+
+	/* Simple bar layout to mimic screenshot */
+	#bar-chart .bars {
+		display: grid;
+		grid-auto-flow: column;
+		grid-auto-columns: 1fr;
+		align-items: end;
+		gap: 24px;
+		max-width: 900px;
+		margin: 0 auto;
+		height: 300px;
+	}
+	#bar-chart .bar {
+		position: relative;
+		background: #000;
+		color: #fff;
+		min-height: 10px;
+		transition: height .2s ease-in-out;
+		align-self: end;
+		padding: 0.25em 0.5em;
+	}
+	#bar-chart .bar.is-highlighted {
+		background: var(--wp--preset--color--mustard, #e0b500);
+	}
+	#bar-chart .bar__label {
+		position: absolute;
+		top: 8px;
+		left: 0;
+		right: 0;
+		text-align: center;
+		font-weight: 600;
+		font-size: 0.75em;
+	}
+	#bar-chart .bar__x {
+		display: block;
+		position: absolute;
+		bottom: -24px;
+		left: 0;
+		right: 0;
+		text-align: center;
+		color: #666;
+	}
+	.x-axis-label {
+		text-align: center;
+		margin-top: 1em;
+		font-size: 0.75em;
+		color: #666;
+	}
 }

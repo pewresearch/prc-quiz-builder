@@ -22,6 +22,7 @@ export default function Controls({ attributes, setAttributes, colors }) {
 		height,
 		barLabelPosition,
 		barLabelCutoff,
+		barWidth,
 		yAxisDomain,
 		xAxisLabel,
 	} = attributes;
@@ -61,6 +62,16 @@ export default function Controls({ attributes, setAttributes, colors }) {
 					max={600}
 				/>
 				<RangeControl
+					label="Bar Width"
+					help={__('Width defaults to 24px')}
+					value={barWidth}
+					onChange={(newWidth) => {
+						setAttributes({ barWidth: newWidth });
+					}}
+					min={10}
+					max={40}
+				/>
+				{/* <RangeControl
 					label="Bar Label Position"
 					help={__('Vertical position of bar label')}
 					value={barLabelPosition}
@@ -79,8 +90,8 @@ export default function Controls({ attributes, setAttributes, colors }) {
 					}}
 					min={0}
 					max={100}
-				/>
-				<RangeControl
+				/> */}
+				{/* <RangeControl
 					label="Y Axis Domain"
 					help={__('Set domain close to highest bar value')}
 					value={yAxisDomain}
@@ -89,7 +100,7 @@ export default function Controls({ attributes, setAttributes, colors }) {
 					}}
 					min={0}
 					max={100}
-				/>
+				/> */}
 				<TextControl
 					label="X Axis Label"
 					value={xAxisLabel}

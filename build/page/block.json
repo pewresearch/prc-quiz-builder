@@ -2,21 +2,30 @@
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
   "name": "prc-quiz/page",
-  "version": "1.0.0",
+  "version": "4.0",
   "title": "Page",
   "description": "A page contains at least one question but may contain more. You can add aditional multimedia options here such as images, videos, or charts.",
-  "category": "prc-quiz",
+  "category": "quiz",
+  "allowedBlocks": [
+    "prc-quiz/question",
+    "core/block",
+    "core/pattern",
+    "core/image",
+    "core/video",
+    "videopress/video",
+    "core/group",
+    "core/paragraph",
+    "core/list",
+    "core/heading",
+    "core/buttons",
+    "core/post-title",
+    "prc-block/animation",
+    "prc-block/dialog",
+    "prc-block/bylines-display",
+    "prc-block/bylines-query",
+    "prc-block/related-query"
+  ],
   "attributes": {
-    "allowedBlocks": {
-      "type": "array"
-    },
-    "introductionPage": {
-      "type": "boolean",
-      "default": false
-    },
-    "introductionNote": {
-      "type": "string"
-    },
     "title": {
       "type": "string"
     },
@@ -27,10 +36,30 @@
   "supports": {
     "anchor": true,
     "html": false,
+    "interactivity": true,
+    "animations": true,
     "color": {
       "background": true,
       "text": true,
       "link": true
+    },
+    "align": [
+      "wide",
+      "full"
+    ],
+    "layout": {
+      "default": {
+        "type": "flex",
+        "orientation": "vertical",
+        "verticalAlignment": "center",
+        "justifyContent": "stretch"
+      },
+      "allowSwitching": true,
+      "allowInheriting": true,
+      "allowVerticalAlignment": true,
+      "allowJustification": true,
+      "allowOrientation": true,
+      "allowSizingOnChildren": true
     },
     "spacing": {
       "blockGap": true,
@@ -51,11 +80,18 @@
   "usesContext": [
     "prc-quiz/groupsEnabled",
     "prc-quiz/type",
-    "prc-quiz/note"
+    "prc-quiz/display-type",
+    "prc-quiz/pages",
+    "prc-quiz/uuids"
   ],
+  "providesContext": {
+    "prc-quiz/page/title": "title",
+    "prc-quiz/page/introductionNote": "introductionNote",
+    "prc-quiz/page/uuid": "uuid"
+  },
   "textdomain": "page",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
   "style": "file:./style-index.css",
-  "render": "file:./render.php"
+  "viewScriptModule": "file:./view.js"
 }

@@ -2,10 +2,10 @@
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
   "name": "prc-quiz/embeddable",
-  "version": "1.0.0",
+  "version": "4.0",
   "title": "Quiz",
   "description": "Create, save, and sync quizzes to reuse across the site. Update the quiz, and the changes apply everywhere it's used.",
-  "category": "prc-quiz",
+  "category": "quiz",
   "allowedBlocks": [
     "prc-quiz/controller"
   ],

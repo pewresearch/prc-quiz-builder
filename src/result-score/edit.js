@@ -7,7 +7,11 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useEffect } from '@wordpress/element';
-import { useBlockProps, RichText } from '@wordpress/block-editor';
+import {
+	useBlockProps,
+	RichText,
+	store as blockEditorStore,
+} from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 
 /**
@@ -41,39 +45,32 @@ export default function Edit({
 	const blockProps = useBlockProps({});
 
 	const { numberOfQuestionBlocks } = useSelect(
-		(select) =>
-			// Get all the question blocks and count them up.
-			({
-				numberOfQuestionBlocks: 15,
-			}),
-		[clientId],
+		(select) => {
+			// Get the parent controller block, then count the number of question blocks inside.
+			const { getBlocksByName } = select(blockEditorStore);
+			const questionBlocks = getBlocksByName('prc-quiz/question');
+			return {
+				numberOfQuestionBlocks: questionBlocks.length || 0,
+			};
+		},
+		[clientId]
 	);
-
-	// Guess the number of questions if it's not set.
-	useEffect(() => {
-		if (numberOfQuestions === undefined || null === numberOfQuestions) {
-			setAttributes({
-				numberOfQuestions: numberOfQuestionBlocks,
-			});
-		}
-	}, [numberOfQuestionBlocks]);
 
 	return (
 		<h1 {...blockProps}>
 			You answered{' '}
 			<strong>
 				{__('{score}')} of{' '}
-				{isSelected && (
-					<RichText
-						tagName="span"
-						value={numberOfQuestions}
-						onChange={(val) => setAttributes({ numberOfQuestions: val })}
-						placeholder={__('0')}
-						allowedFormats={[]}
-						keepPlaceholderOnFocus
-					/>
-				)}
-				{!isSelected && numberOfQuestions}
+				<RichText
+					tagName="span"
+					value={numberOfQuestions}
+					onChange={(val) =>
+						setAttributes({ numberOfQuestions: val })
+					}
+					placeholder={numberOfQuestionBlocks}
+					allowedFormats={[]}
+					keepPlaceholderOnFocus
+				/>
 			</strong>{' '}
 			questions correctly.
 		</h1>

@@ -3,12 +3,16 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
-import { BaseControl, TextControl, ClipboardButton } from '@wordpress/components';
+import {
+	BaseControl,
+	TextControl,
+	ClipboardButton,
+} from '@wordpress/components';
 
-export default function UUIDCopyToClipboard({uuid}) {
+export default function UUIDCopyToClipboard({ uuid, label }) {
 	const [hasCopied, setHasCopied] = useState(false);
-	return(
-		<BaseControl label={__('Answer ID')}>
+	return (
+		<BaseControl label={label} id="uuid-copy-to-clipboard">
 			<TextControl value={uuid} onChange={() => {}} />
 			<ClipboardButton
 				variant="primary"

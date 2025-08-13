@@ -2,40 +2,47 @@
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
   "name": "prc-quiz/controller",
-  "version": "1.0.0",
+  "version": "4.0.0",
   "title": "Quiz Controller",
   "description": "This block controls all aspects of a quiz.",
-  "category": "prc-quiz",
+  "category": "quiz",
   "keywords": [
     "quiz",
     "typology"
   ],
+  "allowedBlocks": [
+    "prc-quiz/pages",
+    "prc-quiz/results",
+    "prc-quiz/group-results"
+  ],
   "attributes": {
-    "allowedBlocks": {
-      "type": "array",
-      "default": [
-        "prc-quiz/pages",
-        "prc-quiz/results"
-      ]
-    },
     "type": {
       "type": "string",
       "enum": [
         "quiz",
-        "typology"
+        "typology",
+        "freeform"
       ],
       "default": "quiz"
     },
-    "groups": {
+    "displayType": {
+      "type": "string",
+      "enum": [
+        "paged",
+        "scrollable"
+      ],
+      "default": "paged"
+    },
+    "allowSubmissions": {
+      "type": "boolean",
+      "default": true
+    },
+    "groupsEnabled": {
       "type": "boolean",
       "default": false
     },
     "mailchimpListId": {
       "type": "string"
-    },
-    "gaTracking": {
-      "type": "boolean",
-      "default": false
     },
     "demoBreakLabels": {
       "type": "string"
@@ -43,21 +50,15 @@
     "threshold": {
       "type": "number",
       "default": 4
-    },
-    "startButtonColor": {
-      "type": "string",
-      "default": "sandwisp"
-    },
-    "buttonColor": {
-      "type": "string",
-      "default": "cape-palliser"
     }
   },
   "providesContext": {
     "prc-quiz/type": "type",
+    "prc-quiz/display-type": "displayType",
     "prc-quiz/demo-break-labels": "demoBreakLabels",
     "prc-quiz/threshold": "threshold",
-    "prc-quiz/groupsEnabled": "groups"
+    "prc-quiz/groupsEnabled": "groupsEnabled",
+    "prc-quiz/allowSubmissions": "allowSubmissions"
   },
   "usesContext": [
     "prc-quiz/isEmbedded"
@@ -65,6 +66,7 @@
   "supports": {
     "anchor": true,
     "html": false,
+    "interactivity": true,
     "color": {
       "background": true,
       "text": true,
@@ -91,9 +93,12 @@
     }
   },
   "textdomain": "controller",
-  "editorScript": "file:./index.js",
+  "editorScript": [
+    "ais-ai",
+    "file:./index.js"
+  ],
   "editorStyle": "file:./index.css",
   "style": "file:./style-index.css",
-  "viewScript": "file:./view/index.js",
-  "viewStyle": "file:./view/style-index.css"
+  "viewStyle": "file:./view/style-index.css",
+  "viewScriptModule": "file:./view.js"
 }

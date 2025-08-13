@@ -5,54 +5,46 @@
  * Replace them with your own styles or remove the file completely.
  */
 
- .wp-block-prc-quiz-page {
-	&.introduction {
-		max-width: 100%!important;
-		width: 100%!important;
+.wp-block-prc-quiz-page {	
+	// Initial hidden state - prepare for animation
+	&:not(.wp-block) {
+		opacity: 0;
+		transform: translateY(20px);
+		transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 	}
-    &:not(.introduction) {
-        max-width: 640px!important;
-		width: 100%;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .page-title {
-        color: #cac6b3;
-        font-family: var(--wp--preset--font-family--sans-serif);
-        font-size: 1.5rem!important;
-        font-weight: bolder!important;
-    }
-
-    .wp-block-prc-quiz-question {
-        margin-bottom: 1.5em;
-        &:last-child {
-            margin-bottom: 0;
-        }
-    }
-
-	&.introduction {
-		.wp-block-prc-quiz-page__innerblocks {
-			h1 {
-				@media screen and (max-width: 640px) {
-					font-size: 26px;
-					line-height: 30px;
-				}
-			}
-			h2 {
-				font-size: 24px!important;
-				@media screen and (max-width: 640px) {
-					font-size: 20px;
-				}
-			}
-		}
-		.introduction--note {
-			font-size: 14px;
-			line-height: 23px;
-			color: #7e7e7e;
-			margin-top: 2.5em;
-			font-family: var(--wp--preset--font-family--sans-serif);
-		}
+	
+	// Hide completely when not visible (fallback for non-JS environments)
+	&:not(.is-visible):not(.wp-block) {
+		display: none;
 	}
+	
+	// Animate in when visible
+	&.is-visible {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	
+	// Animate child elements with staggered delays
+	&.is-visible {
+		> * {
+			opacity: 0;
+			transform: translateY(15px);
+			animation: slideInFade 0.5s ease-out forwards;
+		}
+		
+		> *:nth-child(1) { animation-delay: 0.1s; }
+		> *:nth-child(2) { animation-delay: 0.2s; }
+		> *:nth-child(3) { animation-delay: 0.3s; }
+		> *:nth-child(4) { animation-delay: 0.4s; }
+		> *:nth-child(5) { animation-delay: 0.5s; }
+		> *:nth-child(n+6) { animation-delay: 0.6s; }
+	}
+}
 
+// Keyframe animation for child elements
+@keyframes slideInFade {
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }

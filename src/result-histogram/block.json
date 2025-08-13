@@ -2,9 +2,9 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "prc-quiz/result-histogram",
-	"version": "1.0.0",
+	"version": "4.0",
 	"title": "Result Histogram",
-	"category": "prc-quiz",
+	"category": "quiz",
 	"description": "Histogram representing distribution of scores.",
 	"attributes": {
 		"message": {
@@ -52,6 +52,7 @@
 	"supports": {
 		"anchor": true,
 		"html": false,
+		"interactivity": true,
 		"spacing": {
 			"blockGap": true,
 			"margin": ["top", "bottom"],
@@ -62,12 +63,11 @@
 			"__experimentalFontFamily": true
 		}
 	},
-	"parent": ["prc-quiz/results"],
-	"usesContext": ["prc-quiz/results/score"],
+	"ancestor": ["prc-quiz/results"],
+	"usesContext": ["prc-quiz/id", "prc-quiz/type"],
 	"textdomain": "result-histogram",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
-	"viewScript": "file:./view.js",
-	"style": "file:./style-index.css",
-	"render": "file:./render.php"
+	"viewScriptModule": "file:./view.js",
+	"style": "file:./style-index.css"
 }

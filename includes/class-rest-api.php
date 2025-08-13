@@ -1,8 +1,27 @@
 <?php
+/**
+ * The REST API class.
+ * 
+ * This class is responsible for registering and handling the REST API endpoints for the quiz plugin.
+ * 
+ * @package PRC\Platform\Quiz
+ * @since 1.0.0
+ * @version 1.0.0
+ */
+
 namespace PRC\Platform\Quiz;
 
 use WP_REST_Request, WP_Error;
 
+/**
+ * The REST API class.
+ * 
+ * This class is responsible for registering and handling the REST API endpoints for the quiz plugin.
+ * 
+ * @package PRC\Platform\Quiz
+ * @since 1.0.0
+ * @version 1.0.0
+ */
 class Rest_API {
 	/**
 	 * Quickly disable the REST API in emergency situations.
@@ -23,7 +42,7 @@ class Rest_API {
 	}
 
 	/**
-	 * Verify a nonce.
+	 * Verify a quiz nonce.
 	 *
 	 * @param string $quiz_id The quiz id.
 	 * @param string $key The key.
@@ -34,7 +53,7 @@ class Rest_API {
 		if ( wp_verify_nonce( $nonce, $key . $quiz_id ) ) {
 			return true;
 		} else {
-			return new \WP_Error( 'invalid_nonce', 'Unauthorized access, NONCE invalid. ERROR CODE: 403', array( 'status' => 403 ) );
+			return new \WP_Error( 'invalid_nonce', 'ERROR: verify_nonce/403. Unauthorized access, NONCE invalid.', array( 'status' => 403 ) );
 		}
 	}
 
@@ -66,22 +85,17 @@ class Rest_API {
 			},
 		);
 
-		$get_quiz_data = array(
-			'route'               => 'quiz/get',
+		$get_group = array(
+			'route'               => 'quiz/get-group',
 			'methods'             => 'GET',
-			'callback'            => array( $this, 'restfully_get_quiz' ),
+			'callback'            => array( $this, 'restfully_get_quiz_group' ),
 			'args'                => array(
-				'quizId'  => array(
+				'groupId' => array(
 					'validate_callback' => function ( $param, $request, $key ) {
 						return is_string( $param );
 					},
 				),
 				'nonce'   => array(
-					'validate_callback' => function ( $param, $request, $key ) {
-						return is_string( $param );
-					},
-				),
-				'groupId' => array(
 					'validate_callback' => function ( $param, $request, $key ) {
 						return is_string( $param );
 					},
@@ -118,31 +132,26 @@ class Rest_API {
 			},
 		);
 
-		$get_group = array(
-			'route'               => 'quiz/get-group',
-			'methods'             => 'GET',
-			'callback'            => array( $this, 'restfully_get_quiz_group' ),
+		$purge_archetypes = array(
+			'route'               => 'quiz/purge-archetypes',
+			'methods'             => 'POST',
+			'callback'            => array( $this, 'restfully_purge_archetypes' ),
 			'args'                => array(
-				'groupId' => array(
-					'validate_callback' => function ( $param, $request, $key ) {
-						return is_string( $param );
-					},
-				),
-				'nonce'   => array(
+				'quizId' => array(
 					'validate_callback' => function ( $param, $request, $key ) {
 						return is_string( $param );
 					},
 				),
 			),
 			'permission_callback' => function () {
-				return true;
+				return current_user_can( 'manage_options' );
 			},
 		);
 
 		$endpoints[] = $create_group;
-		$endpoints[] = $get_quiz_data;
-		$endpoints[] = $quiz_submit;
 		$endpoints[] = $get_group;
+		$endpoints[] = $quiz_submit;
+		$endpoints[] = $purge_archetypes;
 
 		return $endpoints;
 	}
@@ -156,24 +165,21 @@ class Rest_API {
 	 * @param array  $typology_groups The typology groups.
 	 * @return string|WP_Error
 	 */
-	public function create_group( $group_name, $owner_id, $quiz_id = false, $typology_groups = array() ) {
+	public function create_group( $group_name, $owner_id, $quiz_id = false, $clusters = array(), $answers = array() ) {
 		if ( false === $quiz_id ) {
 			return new WP_Error(
 				'invalid_quiz_id',
-				'Invalid quiz id. ERROR CODE: 400',
+				'ERROR: group_create/400. Invalid quiz id.',
 				array( 'status' => 400 )
 			);
 		}
-		if ( empty( $typology_groups ) ) {
+		if ( empty( $clusters ) ) {
 			return new WP_Error(
-				'no_typology_groups',
-				'No typology groups found',
+				'no_clusters',
+				'ERROR: group_create/404. No clusters found.',
 				array( 'status' => 404 )
 			);
 		}
-
-		$api       = new API( $quiz_id );
-		$quiz_data = $api->get_quiz_data( false );
 
 		$groups = new Groups(
 			array(
@@ -184,11 +190,16 @@ class Rest_API {
 		);
 
 		$new_group_id = $groups->create_group(
-			$quiz_data,
-			$typology_groups,
+			$clusters,
+			$answers,
 		);
 
-		return $new_group_id;
+		$group_url = $groups->generate_group_url();
+
+		return array(
+			'group_id'  => $new_group_id,
+			'group_url' => $group_url,
+		);
 	}
 
 	/**
@@ -213,7 +224,7 @@ class Rest_API {
 		if ( false === $existing_group ) {
 			return new WP_Error(
 				'group_not_found',
-				'Group not found. ERROR CODE: 404',
+				'ERROR: group_update/404. GROUP_ID: ' . $group_id . '. Group not found.',
 				array( 'status' => 404 )
 			);
 		}
@@ -223,7 +234,7 @@ class Rest_API {
 		if ( false === $success ) {
 			return new WP_Error(
 				'group_not_updated',
-				'Group could not be updated, please contact technical support. Give technical support this error code: 0006 and this id: ' . $group_id,
+				'ERROR: group_update/500. GROUP_ID: ' . $group_id . '. Group could not be updated, please contact technical support.',
 				array( 'status' => 500 )
 			);
 		}
@@ -234,111 +245,83 @@ class Rest_API {
 	/**
 	 * Create a group.
 	 *
-	 * @param WP_REST_Request $request
+	 * @param WP_REST_Request $request The request.
 	 * @return string|false
 	 */
 	public function restfully_create_group( \WP_REST_Request $request ) {
 		$quiz_id     = $request->get_param( 'quizId' );
 		$nonce_param = $request->get_param( 'nonce' );
-		$nonce       = $this->verify_nonce( $quiz_id, 'prc_quiz_submission_nonce--', $nonce_param );
+		$nonce       = $this->verify_nonce( $quiz_id, 'prc_quiz_nonce--', $nonce_param );
 
 		if ( true !== $nonce ) {
 			return $nonce;
 		}
 
-		$data       = json_decode( $request->get_body(), true );
-		$group_name = $data['name'];
-		$owner_id   = $data['owner']['id'];
-		// You must pass through your typology group id's as an array with values set to 0 to initialize the group.
-		$typology_groups = apply_filters( 'prc_quiz_community_group_clusters', array(), $quiz_id );
+		$data = json_decode( $request->get_body(), true );
+		if ( empty( $data ) ) {
+			return new \WP_Error( 'invalid_data', 'ERROR: group_create/400. Invalid data.', array( 'status' => 400 ) );
+		}
+		$group_name = $data['groupName'];
+		$owner_id   = $data['ownerId'];
+		$answers    = $data['answers'];
+		$clusters   = $data['clusters'];
 
 		return $this->create_group(
 			$group_name,
 			$owner_id,
 			$quiz_id,
-			$typology_groups
+			$clusters,
+			$answers
 		);
-	}
-
-	/**
-	 * Get a quiz.
-	 *
-	 * @param WP_REST_Request $request
-	 * @return string|false
-	 */
-	public function restfully_get_quiz( \WP_REST_Request $request ) {
-		$quiz_id = $request->get_param( 'quizId' );
-		$nonce   = $this->verify_nonce( $quiz_id, 'prc_quiz_nonce--', $request->get_param( 'nonce' ) );
-
-		if ( true !== $nonce ) {
-			return $nonce;
-		}
-		$api  = new API( $quiz_id );
-		$data = $api->get_quiz_data( true );
-		return $data;
 	}
 
 	/**
 	 * Handle scoring the user submission, return hash id.
 	 *
-	 * @param WP_REST_Request $request
+	 * @param WP_REST_Request $request The request.
 	 * @return string|false
 	 */
 	public function restfully_submit_quiz( \WP_REST_Request $request ) {
+		$start_time = microtime( true );
+		$success    = false;
+		$quiz_id    = $request->get_param( 'quizId' );
+
 		if ( true === self::$rest_disabled ) {
 			return new \WP_Error(
 				'quiz-submission-error',
-				'Quiz submissions are currently disabled. Your submission has been saved locally, please wait and try again at a later time.'
+				'ERROR: quiz_submit/403. QUIZ_ID: ' . $quiz_id . '. Quiz submissions are currently disabled. Your submission has been saved locally, please wait and try again at a later time.'
 			);
 		}
-		$start_time = microtime( true );
-
-		$success = false;
-
-		$quiz_id     = $request->get_param( 'quizId' );
 		$nonce_param = $request->get_param( 'nonce' );
-		$nonce       = $this->verify_nonce( $quiz_id, 'prc_quiz_submission_nonce--', $nonce_param );
+		$nonce       = $this->verify_nonce( $quiz_id, 'prc_quiz_nonce--', $nonce_param );
 
 		if ( true !== $nonce ) {
 			return $nonce;
 		}
 
-		$group_id   = $request->get_param( 'groupId' );
-		$is_group   = ! empty( $group_id ) && is_string( $group_id );
-		$submission = json_decode( $request->get_body(), true );
-		$hash       = md5( wp_json_encode( $submission ) );
+		$group_id = $request->get_param( 'groupId' );
+		$is_group = ! empty( $group_id ) && is_string( $group_id );
+
+		$user_data = json_decode( $request->get_body(), true );
 		
-		$api  = new API( $quiz_id );
-		$data = $api->get_quiz_data( false );
-		$type = $data['type'];
+		$archetype_hash = $user_data['hash'];
+		$submission     = $user_data['userSubmission'];
+		$score          = $user_data['score'];
 
 		$archetypes = new Archetypes(
 			array(
 				'quiz_id' => $quiz_id,
-				'hash'    => $hash,
+				'hash'    => $archetype_hash,
 			)
 		);
-
-		// Perform calculation of score, only if there is no submission and OR if this is a group that needs to be updated.
-		$score = false;
 		
-		if ( false === $archetypes->get_archetype() || $is_group ) {
-			$score = $api->score_quiz(
-				array(
-					'quizId'     => $quiz_id,
-					'data'       => $data,
-					'submission' => $submission,
-					'type'       => $type,
-				) 
-			);
-		}
-
 		// If the quiz is a group quiz, we need to update the group results.
-		if ( ! empty( $group_id ) && is_string( $group_id ) ) { 
-			$updated = $this->update_group( $quiz_id, $group_id, $submission, $score );
+		if ( $is_group ) { 
+			$group_cluster = is_string( $score ) ? $score : $archetype_hash;
+			$updated       = $this->update_group( $quiz_id, $group_id, $submission, $group_cluster );
 			if ( true !== $updated ) {
 				// If this is a group and it wasnt updated then we should not update the archetype and stop.
-				return new \WP_Error( 'group-submission-error', 'An error occured when updating this group. We have saved your answers and your place. Wait a few minutes and try again, if you still encounter issues please contact technical support. Give technical support this error code: 0004 and this id: ' . $group_id );
+				return new \WP_Error( 'group-submission-error', 'ERROR: group_update/500. GROUP_ID: ' . $group_id . '. An error occured when updating this group. We have saved your answers and your place. Wait a few minutes and try again, if you still encounter issues please contact technical support.', array( 'status' => 500 ) );
 			}
 		}
 
@@ -350,17 +333,16 @@ class Rest_API {
 		}
 
 		if ( is_wp_error( $success ) ) {
-			return new \WP_Error( 'quiz-submission-error', 'An error occured when submitting your quiz. We have saved your answers and your place in the quiz. Wait a few minutes, refresh the page, and try submitting again. If you still encounter issues please contact technical support. Give support this error code 0003 and this id: ' . $hash, $success );
+			return new \WP_Error( 'quiz-submission-error', 'ERROR: quiz_submit/500. ' . $success->get_error_message(), array( 'status' => 500 ) );
 		}
 
-		do_action( 'prc_quiz_log_submission', $quiz_id );
-
-		$end_time       = microtime( true ); // Get the end time in seconds with microseconds
+		$end_time = microtime( true ); 
+		// Get the end time in seconds with microseconds.
 		$execution_time = ( $end_time - $start_time ) / 60;
 
 		return rest_ensure_response(
 			array(
-				'hash' => $hash,
+				'hash' => $archetype_hash,
 				'time' => $execution_time,
 			) 
 		);
@@ -369,16 +351,16 @@ class Rest_API {
 	/**
 	 * Get a quiz group.
 	 *
-	 * @param WP_REST_Request $request
+	 * @param WP_REST_Request $request The request.
 	 * @return string|false
 	 */
 	public function restfully_get_quiz_group( \WP_REST_Request $request ) {
 		$group_id = $request->get_param( 'groupId' );
-		// $nonce = $this->verify_nonce( $group_id, 'prc_quiz_group_nonce--', $request->get_param( 'nonce' ) );
+		$nonce    = $this->verify_nonce( $group_id, 'prc_quiz_nonce--', $request->get_param( 'nonce' ) );
 
-		// if ( true !== $nonce ) {
-		// return $nonce;
-		// }
+		if ( true !== $nonce ) {
+			return $nonce;
+		}
 	
 		$group = $this->get_group( $group_id );
 
@@ -395,10 +377,10 @@ class Rest_API {
 	protected function get_group_results_url( $group_id, $quiz_id ) {
 		$permalink = get_permalink( $quiz_id );
 		if ( ! $permalink ) {
-			return new \WP_Error( 'group_results_url_error', 'Could not get permalink for quiz id: ' . $quiz_id );
+			return new \WP_Error( 'group_results_url_error', 'ERROR: group_results_url/404. QUIZ_ID: ' . $quiz_id . '. Could not get permalink for quiz id: ' . $quiz_id );
 		}
 		return $permalink . 'results/?group=' . $group_id;
-	}
+	}   
 
 	/**
 	 * Get a group.
@@ -414,17 +396,17 @@ class Rest_API {
 		);
 		$group  = $groups->get_group();
 		if ( ! $group ) {
-			return new \WP_Error( 'group_not_found', 'Group ' . $group_id . ' not found, please check the url you were given by your group administrator.', array( 'status' => 404 ) );
+			return new \WP_Error( 'group_not_found', 'ERROR: group_get/404. GROUP_ID: ' . $group_id . '. Group not found, please check the url you were given by your group administrator.', array( 'status' => 404 ) );
 		}
+		// Ensure group is cast as an object.
+		
+		$group = (object) $group;
 		if ( null === get_post( $group->quiz_id ) ) {
-			return new \WP_Error( 'quiz_not_found', 'Quiz ' . $group->quiz_id . ' not found, please contact technical support.', array( 'status' => 404 ) );
+			return new \WP_Error( 'quiz_not_found', 'ERROR: group_get/404. QUIZ_ID: ' . $group->quiz_id . '. Quiz not found, please contact technical support.', array( 'status' => 404 ) );
 		}
 
 		$typology_groups = json_decode( $group->typology_groups, true );
 		$answers         = json_decode( $group->answers, true );
-
-		$api  = new API( $group->quiz_id );
-		$data = $api->get_quiz_data( true );
 
 		$group_results_url = $this->get_group_results_url( $group_id, $group->quiz_id );
 
@@ -437,10 +419,46 @@ class Rest_API {
 			'typology_groups' => $typology_groups,
 			'answers'         => $answers,
 			'total'           => $group->total,
-			'quiz_data'       => $data,
 			'results_url'     => is_wp_error( $group_results_url ) ? null : $group_results_url,
 			'group_url'       => get_permalink( $group->quiz_id ) . '?group=' . $group->group_id,
 			'quiz_name'       => get_the_title( $group->quiz_id ),
+		);
+	}
+
+	/**
+	 * Purge the archetypes.
+	 *
+	 * @param WP_REST_Request $request The request.
+	 * @return string|WP_Error
+	 */
+	public function restfully_purge_archetypes( \WP_REST_Request $request ) {
+		$quiz_id = $request->get_param( 'quizId' );
+		// Check user has manage_options capability.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return new \WP_Error( 'purge_archetypes_error', 'ERROR: purge_archetypes/403. You do not have permission to purge archetypes.', array( 'status' => 403 ) );
+		}
+		// Check if quiz id is valid.       
+		if ( empty( $quiz_id ) ) {
+			return new \WP_Error( 'purge_archetypes_error', 'ERROR: purge_archetypes/400. Quiz ID is required.', array( 'status' => 400 ) );
+		}
+		// Check that post exists and is of quiz type
+		$post = get_post( $quiz_id );
+		if ( ! $post || Plugin::$post_type !== $post->post_type ) {
+			return new \WP_Error( 'purge_archetypes_error', 'ERROR: purge_archetypes/404. Quiz not found.', array( 'status' => 404 ) );
+		}
+
+		$archetypes   = new Archetypes(
+			array(
+				'quiz_id' => $quiz_id,
+			)
+		);
+		$purge_result = $archetypes->purge_archetypes();
+
+		return rest_ensure_response(
+			array(
+				'message'      => 'Archetypes purged successfully for quiz: ' . $quiz_id,
+				'purge_result' => $purge_result,
+			) 
 		);
 	}
 }

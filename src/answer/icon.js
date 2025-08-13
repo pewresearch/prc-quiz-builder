@@ -4,9 +4,6 @@
 import { Icon as PRCIcon } from '@prc/icons';
 
 export default function Icon({ variant = '' }) {
-	if ('correct' === variant) {
-		return <PRCIcon icon="circle-check" />;
-	}
 	if ('conditionalCorrect' === variant) {
 		return (
 			<span style={{ color: '#f0b849' }}>
@@ -31,9 +28,5 @@ export default function Icon({ variant = '' }) {
 			</span>
 		);
 	}
-	return (
-		<span style={{ color: '#f0b849' }}>
-			<PRCIcon icon="circle-question" />
-		</span>
-	);
+	return <PRCIcon icon="circle-check" />;
 }

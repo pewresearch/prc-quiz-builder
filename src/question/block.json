@@ -2,17 +2,23 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "prc-quiz/question",
-	"version": "1.0.0",
+	"version": "4.0",
 	"title": "Question",
-	"description": "A question, contains a question, a set of answers, and optionally a image. Choose from single, multiple choice, or thermometer (if quiz is a typology) question types.",
-	"category": "prc-quiz",
+	"description": "A question contains a set of answers, and other visual blocks. Choose from single, multiple choice, or thermometer question types.",
+	"category": "quiz",
+	"allowedBlocks": [
+		"prc-quiz/answer",
+		"core/group",
+		"core/paragraph",
+		"core/heading",
+    "core/image",
+    "core/list",
+		"core/video",
+		"videopress/video"
+	],
 	"attributes": {
-		"allowedBlocks": {
-			"type": "array"
-		},
 		"question": {
-			"type": "string",
-			"default": "Question text here..."
+			"type": "string"
 		},
 		"internalId": {
 			"type": "string"
@@ -23,7 +29,8 @@
 		},
 		"type": {
 			"type": "string",
-			"default": "single"
+			"default": "single",
+      "enum": ["single", "multiple", "thermometer"]
 		},
 		"conditionalDisplay": {
 			"type": "boolean",
@@ -39,23 +46,32 @@
 			"type": "string"
 		},
 		"uuid": {
-            "type": "string"
-        },
-		"imageId": {
-			"type": "integer"
-		},
-		"imageOnTop": {
-			"type": "boolean",
-			"default": false
-		}
+			"type": "string"
+		}	
 	},
 	"supports": {
 		"anchor": true,
 		"html": false,
+    "interactivity": true,
 		"color": {
 			"background": true,
 			"text": true,
-			"link": true
+			"link": true,
+			"button": true
+		},
+    "layout": {
+			"default": {
+				"type": "flex",
+				"orientation": "vertical",
+				"verticalAlignment": "center",
+        "justifyContent": "stretch"
+			},
+      "allowSwitching": true,
+			"allowInheriting": true,
+			"allowVerticalAlignment": true,
+			"allowJustification": true,
+			"allowOrientation": true,
+			"allowSizingOnChildren": true
 		},
 		"spacing": {
 			"blockGap": true,
@@ -69,12 +85,14 @@
 	},
 	"parent" : ["prc-quiz/page"],
 	"providesContext": {
-		"prc-quiz/question/type": "type"
+		"prc-quiz/question/type": "type",
+		"prc-quiz/question/uuid": "uuid",
+		"prc-quiz/question/text": "question"
 	},
-	"usesContext": ["prc-quiz/type", "prc-quiz/demo-break-labels"],
+	"usesContext": ["prc-quiz/id", "prc-quiz/type", "prc-quiz/demo-break-labels", "prc-quiz/uuids"],
 	"textdomain": "question",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
-	"render": "file:./render.php"
+  "viewScriptModule": "file:./view.js"
 }

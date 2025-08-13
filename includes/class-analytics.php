@@ -17,7 +17,7 @@ class Analytics {
 	 * @param object $loader The loader.
 	 */
 	public function __construct( $loader = null ) {
-		if ( $loader !== null ) {
+		if ( null !== $loader ) {
 			$loader->add_action( 'init', $this, 'init_analytics' );
 			$loader->add_action( 'rest_api_init', $this, 'register_rest_fields' );
 			$loader->add_action( 'prc_quiz_log_submission', $this, 'log_quiz_submission' );
@@ -38,37 +38,18 @@ class Analytics {
 			'total'          => array(
 				'type' => 'integer',
 			),
-			'2021'           => array(
-				'type' => 'array',
-			),
-			'2022'           => array(
-				'type' => 'array',
-			),
-			'2023'           => array(
-				'type' => 'array',
-			),
-			'2024'           => array(
-				'type' => 'array',
-			),
-			'2025'           => array(
-				'type' => 'array',
-			),
-			'2026'           => array(
-				'type' => 'array',
-			),
-			'2027'           => array(
-				'type' => 'array',
-			),
-			'2028'           => array(
-				'type' => 'array',
-			),
-			'2029'           => array(
-				'type' => 'array',
-			),
-			'2030'           => array(
-				'type' => 'array',
-			),
 		);
+
+		// Dynamically generate year properties from 2021 to current year + 5 years.
+		$current_year = (int) gmdate( 'Y' );
+		$start_year   = 2021;
+		$end_year     = $current_year + 5;
+
+		for ( $year = $start_year; $year <= $end_year; $year++ ) {
+			$properties[ (string) $year ] = array(
+				'type' => 'array',
+			);
+		}
 
 		register_post_meta(
 			'quiz',

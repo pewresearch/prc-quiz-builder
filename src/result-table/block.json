@@ -2,9 +2,9 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "prc-quiz/result-table",
-	"version": "1.0.0",
+	"version": "4.0.1",
 	"title": "Result Table",
-	"category": "prc-quiz",
+	"category": "quiz",
   "keywords": [ "table", "results", "results table", "quiz table" ],
 	"attributes": {
 		"rowBackgroundColor": {
@@ -23,6 +23,7 @@
 	"supports": {
 		"anchor": true,
 		"html": false,
+    "interactivity": true,
     "align": [ "wide", "full" ],
 		"spacing": {
 			"margin": [ "top", "bottom" ],
@@ -47,5 +48,6 @@
 	"textdomain": "result-table",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css"
+	"style": "file:./style-index.css",
+  "viewScriptModule": "file:./view.js"
 }

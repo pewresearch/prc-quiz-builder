@@ -7,8 +7,7 @@
 .wp-block-prc-quiz-question.wp-block {
 	color: inherit;
 	background: inherit;
-
-	.wp-block-prc-question--answers > .block-list-appender.wp-block {
+	& > .block-list-appender.wp-block {
 		width: 100%;
 		display: block;
 		position: relative;

@@ -1,18 +1,25 @@
 /**
  * External Dependencies
  */
+import clsx from 'clsx';
 
 /**
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
-import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+import { useMemo } from '@wordpress/element';
+import {
+	useBlockProps,
+	useInnerBlocksProps,
+	BlockContextProvider,
+} from '@wordpress/block-editor';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal Dependencies
  */
 import Controls from './controls';
+import { GenerateQuizButton } from '../utils/ai-generators';
 
 const TEMPLATE = [
 	[
@@ -23,7 +30,6 @@ const TEMPLATE = [
 				'prc-quiz/page',
 				{
 					title: __('Introduction', 'prc-quiz'),
-					introductionPage: true,
 				},
 				[
 					['core/post-title', {}],
@@ -68,9 +74,14 @@ export default function Edit({
 	clientId,
 	isSelected,
 }) {
-	const { allowedBlocks } = attributes;
+	const { allowedBlocks, displayType } = attributes;
 
-	const blockProps = useBlockProps();
+	const blockProps = useBlockProps({
+		className: clsx(className, {
+			'is-scrollable': displayType === 'scrollable',
+			'is-paged': displayType === 'paged',
+		}),
+	});
 
 	const innerBlocksProps = useInnerBlocksProps(blockProps, {
 		allowedBlocks,
@@ -78,10 +89,58 @@ export default function Edit({
 		template: TEMPLATE,
 	});
 
+	/**
+	 * Recursively get all UUIDs from question, answer, and page blocks inside this controller block
+	 * We then pass these UUID's via Block Context so that answer, question, and page blocks
+	 * can access them and utilize them when copying and pasting blocks in order to generate new unique id's for
+	 * the new blocks.
+	 */
+	const existingUuids = useSelect(
+		(select) => {
+			const { getClientIdsOfDescendants, getBlock } =
+				select('core/block-editor');
+
+			// Get all descendant client IDs
+			const descendantClientIds = getClientIdsOfDescendants(clientId);
+
+			// Get all blocks and filter for the ones we want
+			const relevantBlocks = descendantClientIds
+				.map((id) => ({ block: getBlock(id), clientId: id }))
+				.filter(
+					({ block }) =>
+						block?.name === 'prc-quiz/page' ||
+						block?.name === 'prc-quiz/question' ||
+						block?.name === 'prc-quiz/answer'
+				);
+
+			// Create object with uuid as key and clientId as value, filtering out blocks without uuids
+			return relevantBlocks.reduce((acc, { block, clientId }) => {
+				const uuid = block.attributes.uuid;
+				if (uuid) {
+					acc[uuid] = clientId;
+				}
+				return acc;
+			}, {});
+		},
+		[clientId]
+	);
+
 	return (
-		<Fragment>
-			<Controls attributes={attributes} setAttributes={setAttributes} />
-			<div {...innerBlocksProps} />
-		</Fragment>
+		<>
+			<Controls
+				attributes={attributes}
+				setAttributes={setAttributes}
+				clientId={clientId}
+			/>
+			<div {...innerBlocksProps}>
+				<BlockContextProvider
+					value={{
+						'prc-quiz/uuids': existingUuids,
+					}}
+				>
+					<div {...innerBlocksProps} />
+				</BlockContextProvider>
+			</div>
+		</>
 	);
 }

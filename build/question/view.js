@@ -1,0 +1,2 @@
+import*as r from"@wordpress/interactivity";var t={d:(r,e)=>{for(var o in e)t.o(e,o)&&!t.o(r,o)&&Object.defineProperty(r,o,{enumerable:!0,get:e[o]})},o:(r,t)=>Object.prototype.hasOwnProperty.call(r,t)};const e=(a={store:()=>r.store},s={},t.d(s,a),s),{state:o}=(0,e.store)("prc-quiz/controller",{callbacks:{onQuestionInit:()=>{}}});var a,s;
+//# sourceMappingURL=view.js.map

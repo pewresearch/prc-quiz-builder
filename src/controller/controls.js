@@ -1,98 +1,230 @@
 /**
  * External Dependencies
  */
+import { addToCopilotToolbar } from '@prc/copilot';
 
 /**
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 import {
 	InspectorControls,
 	InspectorAdvancedControls,
 } from '@wordpress/block-editor';
 import {
 	BaseControl,
-	CardDivider,
 	PanelBody,
 	ToggleControl,
+	SelectControl,
 	TextControl,
 	__experimentalNumberControl as NumberControl,
+	Button,
 } from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
+import apiFetch from '@wordpress/api-fetch';
 
 /**
  * Internal Dependencies
  */
 // eslint-disable-next-line import/no-relative-packages
 import { JSONSortableList } from '@prc/quiz-components';
+import { aiGenerateKnowledgeQuiz } from '../utils/ai-generators';
+import icon from './icon';
 
-function Controls({ attributes, setAttributes }) {
-	const { groups, type, gaTracking, demoBreakLabels, threshold } = attributes;
+function Controls({ attributes, setAttributes, clientId }) {
+	const {
+		groupsEnabled,
+		demoBreakLabels,
+		threshold,
+		displayType,
+		allowSubmissions,
+	} = attributes;
+
+	const { postId } = useSelect((select) => ({
+		postId: select('core/editor').getCurrentPostId(),
+	}));
+
+	const [isPurgingArchetypes, setIsPurgingArchetypes] = useState(false);
+
+	// Register the copilot toolbar when the component mounts.
+	useEffect(() => {
+		addToCopilotToolbar({
+			title: 'Generate Quiz',
+			icon,
+			toolType: 'request',
+			tool: 'generate-knowledge-quiz',
+			onRequest: async (
+				request,
+				instructions,
+				tool,
+				clientId,
+				notices
+			) => {
+				try {
+					const { data, metadata } = await aiGenerateKnowledgeQuiz(
+						request,
+						instructions
+					);
+					console.log('...data...', data);
+					if (!data) {
+						notices.createErrorNotice(
+							'No data could be generated for your request.'
+						);
+						return;
+					}
+					if (data.length > 1) {
+						notices.createSuccessNotice(
+							'Quiz generated. Please review results.'
+						);
+					}
+
+					console.log('data...', clientId, data, metadata);
+
+					// const tableData = data.data;
+					// const textData = data.text;
+
+					// const newAttributes = {
+					// 	...tableData,
+					// 	caption: textData?.before,
+					// 	sourceNote: textData?.after,
+					// };
+
+					// const currentAttributes = select(blockEditorStore).getBlockAttributes(clientId);
+
+					// const payload = {
+					// 	...newAttributes,
+					// 	metadata: {
+					// 		...currentAttributes.metadata,
+					// 		_copilot: [
+					// 			...((currentAttributes.metadata && currentAttributes.metadata._copilot) ?? []),
+					// 			{
+					// 				feature: tool,
+					// 				...metadata,
+					// 			},
+					// 		],
+					// 	},
+					// };
+
+					// updateBlockAttributes(clientId, payload);
+				} catch (error) {
+					notices.createErrorNotice(error?.message || String(error));
+				}
+			},
+		});
+	}, [clientId]);
+
+	const purgeArchetypes = () => {
+		console.log('purgeArchetypes', postId);
+		setIsPurgingArchetypes(true);
+		apiFetch({
+			path: `/prc-api/v3/quiz/purge-archetypes?quizId=${postId}`,
+			method: 'POST',
+		})
+			.then((response) => {
+				console.log('response', response);
+				setIsPurgingArchetypes(false);
+			})
+			.catch((error) => {
+				console.error('error', error);
+				setIsPurgingArchetypes(false);
+			});
+	};
 
 	return (
-		<Fragment>
-			<InspectorControls>
-				<PanelBody title={__('Quiz Settings')}>
-					<NumberControl
-						label="Answer Threshold"
-						help="The number of correct answers required to pass the quiz."
-						value={threshold}
-						onChange={(t) => {
-							setAttributes({ threshold: t });
-						}}
-						min={1}
-						max={15}
-					/>
-					{'typology' === type && (
-						<BaseControl
-							id="community-groups"
-							label={__('Community Groups')}
-						>
-							<ToggleControl
-								label={groups ? 'Enabled' : 'Disabled'}
-								checked={groups}
-								onChange={() => {
-									setAttributes({ groups: !groups });
-								}}
-							/>
-							{true === groups && (
-								<TextControl
-									label="Mailchimp List ID"
-									help="Enter a Mailchimp list id that group owners will be subscribed to for future communication about this quiz."
-									value={attributes.mailchimpListId}
-									onChange={(value) => {
-										setAttributes({
-											mailchimpListId: value,
-										});
-									}}
-								/>
-							)}
-						</BaseControl>
-					)}
-				</PanelBody>
-			</InspectorControls>
+		<>
 			<InspectorAdvancedControls>
 				<BaseControl
-					id="prc-quiz-ga-tracking"
-					label={__('Google Analytics Tracking', 'prc-quiz')}
-					help={__(
-						'Enable Google Analytics tracking for this quiz. This will track the number of times a quiz is started and number of pages progressed. This will not track any user data. We always track quiz completions in the PRC API.',
-						'prc-quiz'
-					)}
+					label="Purge Quiz Archetypes"
+					help="Purge the quiz archetypes. This will remove all the archetypes for the quiz."
 				>
-					<ToggleControl
-						label={
-							gaTracking
-								? 'Tracking Enabled'
-								: 'Tracking Disabled'
+					<Button
+						variant="primary"
+						isDestructive={true}
+						isBusy={isPurgingArchetypes}
+						text={
+							isPurgingArchetypes
+								? 'Purging...'
+								: 'Purge Archetypes'
 						}
-						checked={gaTracking}
-						onChange={() => {
-							setAttributes({ gaTracking: !gaTracking });
+						onClick={() => {
+							purgeArchetypes();
 						}}
 					/>
 				</BaseControl>
-				{'quiz' === type && (
+			</InspectorAdvancedControls>
+			<InspectorControls>
+				<PanelBody title={__('Quiz Settings')}>
+					<SelectControl
+						label="Display Type"
+						help="Select the display type for the quiz. Paged will display the quiz in pages, scrollable will display the quiz as a single page with a scrollable container."
+						options={[
+							{ label: 'Paged', value: 'paged' },
+							{ label: 'Scrollable', value: 'scrollable' },
+						]}
+						value={displayType}
+						onChange={(value) => {
+							setAttributes({ displayType: value });
+						}}
+					/>
+					<ToggleControl
+						label="Allow Submissions"
+						help="Allow users to submit the quiz. If disabled, users will not be able to submit the quiz and will only be able to view the results. This means the results will not be shareable with the public."
+						checked={allowSubmissions}
+						onChange={() => {
+							setAttributes({
+								allowSubmissions: !allowSubmissions,
+							});
+						}}
+					/>
+					<NumberControl
+						label="Answer Threshold"
+						help="Number of selected answers needed to complete the quiz."
+						value={threshold}
+						isShiftStepEnabled={true}
+						isDragEnabled={true}
+						onChange={(t) => {
+							setAttributes({
+								threshold: Math.round(parseFloat(t) || 0),
+							});
+						}}
+						min={1}
+						max={15}
+						type="number"
+					/>
+				</PanelBody>
+				<PanelBody title={__('Community Groups')} initialOpen={false}>
+					<BaseControl
+						id="community-groups"
+						label={__('Community Groups')}
+					>
+						<ToggleControl
+							label={groupsEnabled ? 'Enabled' : 'Disabled'}
+							checked={groupsEnabled}
+							onChange={() => {
+								setAttributes({
+									groupsEnabled: !groupsEnabled,
+								});
+							}}
+						/>
+						{true === groupsEnabled && (
+							<TextControl
+								label="Mailchimp List ID"
+								help="Enter a Mailchimp list id that group owners will be subscribed to for future communication about this quiz."
+								value={attributes.mailchimpListId}
+								onChange={(value) => {
+									setAttributes({
+										mailchimpListId: value,
+									});
+								}}
+							/>
+						)}
+					</BaseControl>
+				</PanelBody>
+				<PanelBody
+					title={__('Demographic Breakdown')}
+					initialOpen={false}
+				>
 					<JSONSortableList
 						label={__('Demographic Breakdown Labels', 'prc-quiz')}
 						help={__(
@@ -111,11 +243,9 @@ function Controls({ attributes, setAttributes }) {
 							});
 						}}
 					/>
-				)}
-				<CardDivider />
-				<CardDivider />
-			</InspectorAdvancedControls>
-		</Fragment>
+				</PanelBody>
+			</InspectorControls>
+		</>
 	);
 }
 

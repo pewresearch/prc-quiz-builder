@@ -1,0 +1,5 @@
+<!-- wp:buttons {"className":"prc-quiz-start-button-wrapper","fontFamily":"sans-serif","layout":{"type":"flex","orientation":"vertical","justifyContent":"stretch"}} -->
+<div class="wp-block-buttons prc-quiz-start-button-wrapper has-sans-serif-font-family"><!-- wp:button {"textColor":"ui-text-color","width":100,"className":"prc-quiz-start-button","style":{"typography":{"textTransform":"uppercase","letterSpacing":"1px","fontStyle":"normal","fontWeight":"600"},"color":{"background":"#fff1be"},"elements":{"link":{"color":{"text":"var:preset|color|ui-text-color"}}},"border":{"width":"1px"}},"fontSize":"large","borderColor":"ui-gray-dark"} -->
+<div class="wp-block-button has-custom-width wp-block-button__width-100 prc-quiz-start-button"><a class="wp-block-button__link has-ui-text-color-color has-text-color has-background has-link-color has-border-color has-ui-gray-dark-border-color has-large-font-size has-custom-font-size wp-element-button" style="border-width:1px;background-color:#fff1be;font-style:normal;font-weight:600;letter-spacing:1px;text-transform:uppercase">Start</a></div>
+<!-- /wp:button --></div>
+<!-- /wp:buttons -->

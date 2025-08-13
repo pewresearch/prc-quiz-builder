@@ -1,28 +1,26 @@
 /**
  * External Dependencies
  */
-import classnames from 'classnames';
+import clsx from 'clsx';
 
 /**
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment, useEffect } from '@wordpress/element';
-import { useSelect, useDispatch } from '@wordpress/data';
+import { useEffect } from '@wordpress/element';
+import { useSelect, useDispatch, select } from '@wordpress/data';
 import {
 	useBlockProps,
-	RichText,
+	useInnerBlocksProps,
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
-import { createBlock } from '@wordpress/blocks';
 
 /**
  * Internal Dependencies
  */
 // eslint-disable-next-line import/no-relative-packages
-import { onBlockCreation, ConditionalDot } from '@prc/quiz-components';
 import Controls from './controls';
-import CorrectToggleWatcher from './correct-toggle';
+import { CorrectToolbar } from './correct-toggle';
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -49,112 +47,168 @@ export default function Edit({
 	setAttributes,
 	isSelected,
 	insertBlocksAfter,
+	__unstableLayoutClassNames: layoutClassNames,
 }) {
-	const { answer, correct, uuid, conditionalDisplay } = attributes;
+	const { correct, uuid, conditionalDisplay } = attributes;
+	const existingUuids = context['prc-quiz/uuids'] || [];
 
-	const { selectNextBlock } = useDispatch(blockEditorStore);
+	// Determine quiz and question types from context (stable across renders)
 	const quizType = context['prc-quiz/type'];
+	const questionType = context['prc-quiz/question/type'];
 
-	const { nextIndex, nextAnswerClientId, questionClientId } = useSelect(
-		(select) => {
-			// Get the parentBlock clientId and then the parentBlock itself
-			const parentClientId =
-				select(blockEditorStore).getBlockRootClientId(clientId);
-			const parentBlock =
-				select(blockEditorStore).getBlock(parentClientId);
-			if ('prc-quiz/question' !== parentBlock.name) {
-				return {
-					questionClientId: null,
-					nextIndex: null,
-					nextAnswerClientId: null,
-				};
-			}
+	// Access block editor dispatcher once (hooks must be top-level)
+	const { updateBlockAttributes } = useDispatch(blockEditorStore);
 
-			// Remove this block from the list of our parent's innerblocks
-			const innerBlocks = parentBlock.innerBlocks.filter(
-				(block) => block.clientId !== clientId
-			);
-			return {
-				questionClientId: parentClientId,
-				nextIndex: innerBlocks.length + 1,
-				nextAnswerClientId:
-					select(blockEditorStore).getAdjacentBlockClientId(clientId),
-			};
-		},
-		[correct]
-	);
-
-	// Generates a new answer block after the current one.
-	const insertNewBlock = () => {
-		const attrs = {};
-		if ('typology' !== quizType) {
-			attrs.correct = false;
+	/**
+	 * Handle toggling the correct state for this answer.
+	 * For single-choice questions, ensures only one answer can be correct.
+	 */
+	const handleToggleCorrect = () => {
+		if ('freeform' === quizType) {
+			return;
 		}
-		return insertBlocksAfter(createBlock('prc-quiz/answer', attrs));
+		const newCorrectState = !correct;
+
+		// For single-choice questions, set all other answers to false first
+		if (questionType === 'single' && newCorrectState === true) {
+			// Find all other answer blocks in the same question
+			const {
+				getBlockParentsByBlockName,
+				getClientIdsOfDescendants,
+				getBlock,
+			} = select(blockEditorStore);
+
+			const [questionClientId] = getBlockParentsByBlockName(
+				clientId,
+				'prc-quiz/question'
+			);
+
+			if (questionClientId) {
+				const descendantClientIds =
+					getClientIdsOfDescendants(questionClientId);
+				const otherAnswerClientIds = descendantClientIds.filter(
+					(descendantId) => {
+						const block = getBlock(descendantId);
+						return (
+							block?.name === 'prc-quiz/answer' &&
+							descendantId !== clientId
+						);
+					}
+				);
+
+				// Set all other answers to false
+				otherAnswerClientIds.forEach((id) => {
+					updateBlockAttributes(id, { correct: false, points: 0 });
+				});
+			}
+		}
+
+		// Set this answer's correct state
+		setAttributes({
+			correct: newCorrectState,
+			points: newCorrectState ? 1 : 0,
+		});
 	};
 
 	const blockProps = useBlockProps({
-		className: classnames(className, {
+		className: clsx(className, layoutClassNames, {
 			'is-correct': correct,
 		}),
 	});
 
-	const onNextAnswerKeyShortcut = () => {
-		if (null !== nextAnswerClientId) {
-			selectNextBlock(clientId);
-		} else {
-			insertNewBlock();
-		}
-	};
+	const innerBlocksProps = useInnerBlocksProps(blockProps, {
+		template: [
+			[
+				'core/paragraph',
+				{
+					placeholder: __(
+						'Start typing your answer here...',
+						'prc-quiz'
+					),
+					metadata: {
+						bindings: {
+							content: {
+								source: 'prc-quiz/answer',
+							},
+						},
+					},
+				},
+			],
+		],
+	});
 
+	/**
+	 * Iniitalize a uuid for the answer block.
+	 */
 	useEffect(() => {
-		onBlockCreation(clientId, uuid, setAttributes);
-	}, []);
+		// If a uuid is already set, check if existinguuids includes it, and if it does does it have this clientId? If not then lets set a new uuid using this clientId.
+		if (
+			uuid &&
+			Object.keys(existingUuids).includes(uuid) &&
+			existingUuids[uuid] !== clientId
+		) {
+			console.log('Setting new answer uuid');
+			setAttributes({
+				uuid: clientId,
+			});
+		}
+		// If the uuid is not set, set it to the clientId.
+		if (!uuid) {
+			setAttributes({
+				uuid: clientId,
+			});
+		}
+	}, [existingUuids]);
+
+	/**
+	 * If the quiz type changes to freeform, remove the correct attribute from the answer.
+	 */
+	useEffect(() => {
+		if (quizType === 'freeform') {
+			setAttributes({
+				correct: undefined,
+			});
+		}
+	}, [quizType]);
+
+	/**
+	 * Enforce 1|0 point value for correct|incorrect answers.
+	 */
+	// useEffect(() => {
+	// 	// Is this is a freeform quiz do not try to set the points.
+	// 	if ('freeform' === quizType) {
+	// 		return;
+	// 	}
+
+	// 	// If no points are set and this answer is marked as correct then assign 1 point to this answer.
+	// 	if ((undefined === points || 0 === points) && true === correct) {
+	// 		setAttributes({
+	// 			points: 1,
+	// 		});
+	// 	}
+	// 	// If points are set and this answer is marked as inccorrect then remove points from this answer.
+	// 	if (true !== correct && undefined !== points) {
+	// 		setAttributes({
+	// 			points: 0,
+	// 		});
+	// 	}
+	// }, [correct, points, quizType, setAttributes]);
 
 	return (
-		<Fragment>
+		<>
 			<Controls
 				attributes={attributes}
 				clientId={clientId}
 				context={context}
 				setAttributes={setAttributes}
+				handleToggleCorrect={handleToggleCorrect}
 			/>
-			<div {...blockProps}>
-				<ConditionalDot {...{ attributes }} />
-				{'typology' === quizType && (
-					<RichText
-						tagName="div"
-						value={answer}
-						onChange={(value) => setAttributes({ answer: value })}
-						multiline={false}
-						allowedFormats={['core/bold', 'core/italic']}
-						placeholder={__('Answer text here…')}
-						__unstableOnSplitAtEnd={() => onNextAnswerKeyShortcut()}
-					/>
-				)}
-				{'typology' !== quizType && (
-					<CorrectToggleWatcher
-						clientId={clientId}
-						context={context}
-						attributes={attributes}
-						setAttributes={setAttributes}
-					>
-						<RichText
-							tagName="div"
-							value={answer}
-							onChange={(value) =>
-								setAttributes({ answer: value })
-							}
-							multiline={false}
-							allowedFormats={['core/bold', 'core/italic']}
-							placeholder={__('Answer text here…')}
-							__unstableOnSplitAtEnd={() =>
-								onNextAnswerKeyShortcut()
-							}
-						/>
-					</CorrectToggleWatcher>
-				)}
-			</div>
-		</Fragment>
+			<CorrectToolbar
+				context={context}
+				correct={correct}
+				onToggle={handleToggleCorrect}
+			/>
+			<div {...innerBlocksProps}>{innerBlocksProps.children}</div>
+		</>
 	);
 }

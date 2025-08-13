@@ -3,7 +3,6 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment, useEffect, useState } from '@wordpress/element';
 import {
 	InspectorControls,
 	InspectorAdvancedControls,
@@ -13,51 +12,18 @@ import {
 	BaseControl,
 	ToggleControl,
 	TextControl,
+	TextareaControl,
 } from '@wordpress/components';
 
 /**
  * Internal Dependencies
  */
 
-import { JSONSortableList, ConditionalPanel } from '@prc/quiz-components';
-
-function ThermometerControls({ attributes, setAttributes }) {
-	const { thermometerValues } = attributes;
-	const initValues =
-		undefined === thermometerValues
-			? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-			: thermometerValues.split(',');
-	const [values, setValues] = useState(initValues);
-
-	useEffect(() => {
-		setAttributes({
-			thermometerValues: values.join(','),
-		});
-	}, [values]);
-
-	const onChange = (value, index) => {
-		const newValues = [...values];
-		newValues[index] = value;
-		setValues(newValues);
-	};
-
-	return (
-		<BaseControl
-			id="question-thermo-values"
-			label={__(`Thermometer Values`, 'prc-quiz')}
-		>
-			{values.map((value, index) => (
-				<Fragment key={index}>
-					<TextControl
-						label={`Value for: ${0 === index ? index : index * 10}`}
-						value={value}
-						onChange={(newValue) => onChange(newValue, index)}
-					/>
-				</Fragment>
-			))}
-		</BaseControl>
-	);
-}
+import {
+	JSONSortableList,
+	ConditionalPanel,
+	UUIDCopyToClipboard,
+} from '@prc/quiz-components';
 
 function DemographicBreaksControls({ attributes, setAttributes, labels }) {
 	const { demoBreakValues } = attributes;
@@ -97,13 +63,13 @@ export default function Controls({
 	context,
 }) {
 	const {
+		uuid,
 		internalId,
 		type,
 		randomizeAnswers,
 		conditionalDisplay,
 		conditionalAnswerUuid,
-		imageId,
-		imageOnTop,
+		question,
 	} = attributes;
 
 	const quizType = context['prc-quiz/type'];
@@ -115,33 +81,20 @@ export default function Controls({
 		'thermometer' !== type;
 
 	return (
-		<Fragment>
-			{/* <ConditionalBlockControls attributes={attributes} /> */}
+		<>
 			<InspectorControls>
 				<PanelBody title={__('Question Settings')}>
-					<ToggleControl
-						label={
-							imageOnTop
-								? 'Image Above Question'
-								: 'Image Below Question'
-						}
-						help={__(
-							'When enabled, the image will appear above the question text.'
-						)}
-						checked={imageOnTop}
-						onChange={() => {
-							setAttributes({ imageOnTop: !imageOnTop });
-						}}
+					<TextareaControl
+						label={__('Question Text', 'prc-quiz')}
+						value={question}
+						placeholder={__('Enter question text here...')}
+						onChange={(value) => setAttributes({ question: value })}
 					/>
 					{'thermometer' !== type && (
 						<ToggleControl
-							label={
-								randomizeAnswers
-									? 'Answer Randomization Enabled'
-									: 'Answer Randomization Disabled'
-							}
+							label={__('Randomize Answer Order', 'prc-quiz')}
 							help={__(
-								'When enabled answers will appear randomized on the frontend.'
+								'When enabled answer order will be randomized on the frontend. When disabled, answers will appear in the order they are defined in the block editor.'
 							)}
 							checked={randomizeAnswers}
 							onChange={() => {
@@ -151,16 +104,17 @@ export default function Controls({
 							}}
 						/>
 					)}
-					{'thermometer' === type && (
-						<ThermometerControls
-							attributes={attributes}
-							setAttributes={setAttributes}
-						/>
-					)}
 				</PanelBody>
 				<ConditionalPanel
-					{...{ attributes, setAttributes, blockType: 'question' }}
-				/>
+					attributes={attributes}
+					setAttributes={setAttributes}
+					blockType="question"
+				>
+					<UUIDCopyToClipboard
+						uuid={uuid}
+						label={__('Question ID')}
+					/>
+				</ConditionalPanel>
 			</InspectorControls>
 			<InspectorAdvancedControls>
 				{displayAdvancedDemoBreaks && (
@@ -176,10 +130,10 @@ export default function Controls({
 				)}
 
 				<BaseControl
-					id="question-research-id"
-					label={__('Research ID')}
+					id="question-internal-id"
+					label={__('Internal ID')}
 					help={__(
-						'This field is used to identify this question in the scoring process. If left empty, the auto-generated UUID for this question will be used. However, for typology quizzes, the research team often has a specific internal ID used for scoring. Use that ID here.'
+						'This field identifies the question in the scoring process. If left empty, an auto-generated ID will be used. For "typology" or "freeform" quizzes, research teams often have an internal ID for scoring in their Excel file. Use that ID here for consistency.'
 					)}
 				>
 					<TextControl
@@ -187,10 +141,12 @@ export default function Controls({
 						onChange={(value) =>
 							setAttributes({ internalId: value })
 						}
-						placeholder={__('Enter research id e.g. "govsize3"')}
+						placeholder={__(
+							'Enter internal research ID e.g. "govsize3"'
+						)}
 					/>
 				</BaseControl>
 			</InspectorAdvancedControls>
-		</Fragment>
+		</>
 	);
 }

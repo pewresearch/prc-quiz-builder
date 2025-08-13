@@ -14,28 +14,23 @@ export default [
 		isDefault: true,
 		title: __('Knowledge Quiz'),
 		description: __(
-			`A "knowledge" quiz, where the user is asked a series of questions with single and multiple choice answers. The user's answers are scored and a result is displayed at the end of the quiz.`,
+			`A knowledge quiz includes a series of questions with single, multiple-choice, or thermometer-type answers. Users receive scores based on their responses, which are either correct or incorrect. Correct answers contribute points to the total score at the end of the quiz, incorrect answers do not.`
 		),
 		attributes: { type: 'quiz' },
 		scope: ['inserter', 'transform'],
 		isActive: (blockAttributes) => 'quiz' === blockAttributes.type,
 	},
 	{
-		name: 'typology',
-		title: __('Typology Quiz'),
+		name: 'freeform',
+		title: __('Freeform Quiz'),
 		description: __(
-			`A "personality" or "survey" quiz, where the user is asked a series of questions with single, multiple choice, and "thermometer" type answers. The user's answers are calculated against a matrix, usually logarithmic probability or eucledian distance and the user is placed in a typology group and a result is displayed at the end of the quiz.`,
+			`A freeform quiz presents users with a series of questions, including single-choice, multiple-choice, and thermometer-type answers. Users responses are scored based on point values rather than correct or incorrect answers. The score can generate various result configurations or custom result pages with tailored score calculations, such as in a political freeform quiz.`
 		),
-		icon: <Icon variant="typology" />,
+		icon: <Icon variant="freeform" />,
 		attributes: {
-			type: 'typology',
-			allowedBlocks: [
-				'prc-quiz/pages',
-				'prc-quiz/results',
-				'prc-quiz/group-results',
-			],
+			type: 'freeform',
 		},
 		scope: ['inserter', 'transform'],
-		isActive: (blockAttributes) => 'typology' === blockAttributes.type,
+		isActive: (blockAttributes) => 'freeform' === blockAttributes.type,
 	},
 ];

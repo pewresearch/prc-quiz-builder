@@ -20,30 +20,23 @@ import { useSelect } from '@wordpress/data';
  * Internal Dependencies
  */
 // eslint-disable-next-line import/no-relative-packages
-import { onBlockCreation } from '@prc/quiz-components';
 import NewPageKeyboardHandler from './new-page-keyboard-handler';
-import Actions from './actions';
 
-const TEMPLATE = [['prc-quiz/question', {}]];
-const ALLOWED_BLOCKS = [
-	'prc-quiz/question',
-	'core/image',
-	'core/paragraph',
-	'core/heading',
-	'core/table',
-];
-// a version of allowed_blocks without the questino block
-const ALLOWED_BLOCKS_INTRO_PAGE = [
-	'core/image',
-	'core/paragraph',
-	'core/cover',
-	'core/group',
-	'core/heading',
-	'core/table',
-	'core/post-title',
-	'prc-block/bylines-display',
-	'prc-block/bylines-query',
-	'prc-block/related-query',
+const TEMPLATE = [
+	[
+		'core/paragraph',
+		{
+			placeholder: __('Enter page title', 'prc-quiz'),
+			metadata: {
+				bindings: {
+					content: {
+						source: 'prc-quiz/page-title',
+					},
+				},
+			},
+		},
+	],
+	['prc-quiz/question', {}, []],
 ];
 
 /**
@@ -73,31 +66,22 @@ export default function Edit({
 	context,
 	clientId,
 	isSelected,
+	__unstableLayoutClassNames: layoutClassNames,
 }) {
-	const { title, uuid, introductionPage, introductionNote } = attributes;
+	const { title, uuid } = attributes;
 
 	const groupsEnabled = context['prc-quiz/groupsEnabled'] || false;
 	const quizType = context['prc-quiz/type'] || 'quiz';
+	const existingUuids = context['prc-quiz/uuids'] || [];
 
 	const blockProps = useBlockProps({
-		className: classNames(className, {
-			introduction: introductionPage,
-		}),
+		className: layoutClassNames,
 	});
 
-	const innerBlocksProps = useInnerBlocksProps(
-		{
-			className: 'wp-block-prc-quiz-page__innerblocks',
-		},
-		{
-			allowedBlocks: introductionPage
-				? ALLOWED_BLOCKS_INTRO_PAGE
-				: ALLOWED_BLOCKS,
-			orientation: 'vertical',
-			templateLock: false,
-			template: TEMPLATE,
-		}
-	);
+	const innerBlocksProps = useInnerBlocksProps(blockProps, {
+		templateLock: false,
+		template: TEMPLATE,
+	});
 
 	const { pageIndex } = useSelect((select) => {
 		const rootClientId =
@@ -109,46 +93,32 @@ export default function Edit({
 		};
 	});
 
+	// When the block is created, set the initial uuid and the title.
 	useEffect(() => {
-		onBlockCreation(clientId, uuid, setAttributes);
+		// If a uuid is already set, check if existinguuids includes it, and if it does does it have this clientId? If not then lets set a new uuid using this clientId.
+		if (
+			uuid &&
+			Object.keys(existingUuids).includes(uuid) &&
+			existingUuids[uuid] !== clientId
+		) {
+			console.log('Setting new page uuid');
+			setAttributes({
+				uuid: clientId,
+			});
+		}
+		// If the uuid is not set, set it to the clientId.
+		if (!uuid) {
+			setAttributes({
+				uuid: clientId,
+			});
+		}
 		// Set default title to be "Question X of Y" where X is the current question number and Y is the total number of questions.
 		if (!title) {
 			setAttributes({
 				title: sprintf('Question %1$d of X', pageIndex - 1),
 			});
 		}
-	}, []);
+	}, [existingUuids]);
 
-	return (
-		<div {...blockProps}>
-			<NewPageKeyboardHandler clientId={clientId}>
-				<RichText
-					tagName="h3"
-					value={title}
-					className="page-title"
-					onChange={(value) => setAttributes({ title: value })}
-					placeholder={__('Question 1 of …', 'prc-quiz')}
-					multiline={false}
-				/>
-				<div {...innerBlocksProps} />
-			</NewPageKeyboardHandler>
-			<Actions
-				{...{
-					isFirstPage: introductionPage,
-					quizType,
-					groupsEnabled,
-				}}
-			/>
-			{introductionPage && (
-				<RichText
-					className="introduction--note"
-					value={introductionNote}
-					onChange={(value) =>
-						setAttributes({ introductionNote: value })
-					}
-					placeholder="Add a note to your quiz"
-				/>
-			)}
-		</div>
-	);
+	return <div {...innerBlocksProps}></div>;
 }

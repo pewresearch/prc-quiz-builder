@@ -5,18 +5,20 @@ return array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
 		'name' => 'prc-quiz/answer',
-		'version' => '1.0.0',
+		'version' => '4.0',
 		'title' => 'Answer',
 		'description' => 'An answer choice for a question.',
-		'category' => 'prc-quiz',
+		'category' => 'quiz',
+		'allowedBlocks' => array(
+			'core/paragraph',
+			'core/heading',
+			'core/list',
+			'core/image',
+			'core/video',
+			'videopress/video',
+			'core/group'
+		),
 		'attributes' => array(
-			'allowedBlocks' => array(
-				'type' => 'array'
-			),
-			'orientation' => array(
-				'type' => 'string',
-				'default' => 'vertical'
-			),
 			'answer' => array(
 				'type' => 'string'
 			),
@@ -24,7 +26,7 @@ return array(
 				'type' => 'string'
 			),
 			'points' => array(
-				'type' => 'string',
+				'type' => 'number',
 				'default' => 0
 			),
 			'correct' => array(
@@ -39,9 +41,6 @@ return array(
 			),
 			'conditionalAnswerUuid' => array(
 				'type' => 'string'
-			),
-			'imageId' => array(
-				'type' => 'integer'
 			)
 		),
 		'parent' => array(
@@ -50,9 +49,33 @@ return array(
 		'supports' => array(
 			'anchor' => false,
 			'html' => false,
+			'interactivity' => true,
 			'color' => array(
 				'background' => true,
-				'text' => true
+				'text' => true,
+				'link' => true,
+				'button' => true
+			),
+			'__experimentalBorder' => array(
+				'color' => true,
+				'radius' => true,
+				'style' => true,
+				'width' => true
+			),
+			'layout' => array(
+				'type' => 'flex',
+				'default' => array(
+					'type' => 'flex',
+					'orientation' => 'vertical',
+					'verticalAlignment' => 'center',
+					'justifyContent' => 'stretch',
+					'allowOrientation' => true
+				),
+				'allowInheriting' => true,
+				'allowVerticalAlignment' => true,
+				'allowJustification' => true,
+				'allowOrientation' => true,
+				'allowSizingOnChildren' => true
 			),
 			'spacing' => array(
 				'margin' => array(
@@ -67,53 +90,69 @@ return array(
 			)
 		),
 		'usesContext' => array(
+			'prc-quiz/id',
 			'prc-quiz/type',
-			'prc-quiz/question/type'
+			'prc-quiz/question/type',
+			'prc-quiz/question/uuid',
+			'prc-quiz/uuids'
+		),
+		'providesContext' => array(
+			'prc-quiz/answer/text' => 'answer',
+			'prc-quiz/answer/correct' => 'correct',
+			'prc-quiz/answer/uuid' => 'uuid',
+			'prc-quiz/answer/points' => 'points'
 		),
 		'textdomain' => 'answer',
 		'editorScript' => 'file:./index.js',
 		'editorStyle' => 'file:./index.css',
 		'style' => 'file:./style-index.css',
-		'render' => 'file:./render.php'
+		'viewScriptModule' => 'file:./view.js'
 	),
 	'controller' => array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
 		'name' => 'prc-quiz/controller',
-		'version' => '1.0.0',
+		'version' => '4.0.0',
 		'title' => 'Quiz Controller',
 		'description' => 'This block controls all aspects of a quiz.',
-		'category' => 'prc-quiz',
+		'category' => 'quiz',
 		'keywords' => array(
 			'quiz',
 			'typology'
 		),
+		'allowedBlocks' => array(
+			'prc-quiz/pages',
+			'prc-quiz/results',
+			'prc-quiz/group-results'
+		),
 		'attributes' => array(
-			'allowedBlocks' => array(
-				'type' => 'array',
-				'default' => array(
-					'prc-quiz/pages',
-					'prc-quiz/results'
-				)
-			),
 			'type' => array(
 				'type' => 'string',
 				'enum' => array(
 					'quiz',
-					'typology'
+					'typology',
+					'freeform'
 				),
 				'default' => 'quiz'
 			),
-			'groups' => array(
+			'displayType' => array(
+				'type' => 'string',
+				'enum' => array(
+					'paged',
+					'scrollable'
+				),
+				'default' => 'paged'
+			),
+			'allowSubmissions' => array(
+				'type' => 'boolean',
+				'default' => true
+			),
+			'groupsEnabled' => array(
 				'type' => 'boolean',
 				'default' => false
 			),
 			'mailchimpListId' => array(
 				'type' => 'string'
-			),
-			'gaTracking' => array(
-				'type' => 'boolean',
-				'default' => false
 			),
 			'demoBreakLabels' => array(
 				'type' => 'string'
@@ -121,21 +160,15 @@ return array(
 			'threshold' => array(
 				'type' => 'number',
 				'default' => 4
-			),
-			'startButtonColor' => array(
-				'type' => 'string',
-				'default' => 'sandwisp'
-			),
-			'buttonColor' => array(
-				'type' => 'string',
-				'default' => 'cape-palliser'
 			)
 		),
 		'providesContext' => array(
 			'prc-quiz/type' => 'type',
+			'prc-quiz/display-type' => 'displayType',
 			'prc-quiz/demo-break-labels' => 'demoBreakLabels',
 			'prc-quiz/threshold' => 'threshold',
-			'prc-quiz/groupsEnabled' => 'groups'
+			'prc-quiz/groupsEnabled' => 'groupsEnabled',
+			'prc-quiz/allowSubmissions' => 'allowSubmissions'
 		),
 		'usesContext' => array(
 			'prc-quiz/isEmbedded'
@@ -143,6 +176,7 @@ return array(
 		'supports' => array(
 			'anchor' => true,
 			'html' => false,
+			'interactivity' => true,
 			'color' => array(
 				'background' => true,
 				'text' => true,
@@ -169,20 +203,23 @@ return array(
 			)
 		),
 		'textdomain' => 'controller',
-		'editorScript' => 'file:./index.js',
+		'editorScript' => array(
+			'ais-ai',
+			'file:./index.js'
+		),
 		'editorStyle' => 'file:./index.css',
 		'style' => 'file:./style-index.css',
-		'viewScript' => 'file:./view/index.js',
-		'viewStyle' => 'file:./view/style-index.css'
+		'viewStyle' => 'file:./view/style-index.css',
+		'viewScriptModule' => 'file:./view.js'
 	),
 	'embeddable' => array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
 		'name' => 'prc-quiz/embeddable',
-		'version' => '1.0.0',
+		'version' => '4.0',
 		'title' => 'Quiz',
 		'description' => 'Create, save, and sync quizzes to reuse across the site. Update the quiz, and the changes apply everywhere it\'s used.',
-		'category' => 'prc-quiz',
+		'category' => 'quiz',
 		'allowedBlocks' => array(
 			'prc-quiz/controller'
 		),
@@ -210,31 +247,19 @@ return array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
 		'name' => 'prc-quiz/group-results',
-		'version' => '1.0.0',
+		'version' => '4.0.0',
 		'title' => 'Group Results',
-		'description' => 'Results for a community group as given by group id and archetype hash id',
-		'category' => 'text',
+		'description' => 'Results for a community group. Without this block, group creation will be disabled, it is required for group quizzes to have a separate version of the results for the community group.',
+		'category' => 'quiz',
 		'attributes' => array(
-			'allowedBlocks' => array(
-				'type' => 'array'
-			),
-			'name' => array(
-				'type' => 'string'
-			),
-			'total' => array(
-				'type' => 'integer'
-			),
-			'typologyGroups' => array(
-				'type' => 'string'
-			),
-			'answers' => array(
-				'type' => 'string'
-			)
+			
 		),
 		'supports' => array(
 			'anchor' => true,
 			'html' => false,
 			'multiple' => false,
+			'interactivity' => true,
+			'animations' => true,
 			'color' => array(
 				'background' => true,
 				'text' => true,
@@ -256,37 +281,45 @@ return array(
 		'parent' => array(
 			'prc-quiz/controller'
 		),
-		'providesContext' => array(
-			'prc-quiz/groups/results/name' => 'name',
-			'prc-quiz/groups/results/typologyGroups' => 'typologyGroups',
-			'prc-quiz/groups/results/answers' => 'answers',
-			'prc-quiz/groups/results/total' => 'total'
+		'usesContext' => array(
+			'prc-quiz/type',
+			'prc-quiz/groupsEnabled',
+			'prc-quiz/quizId'
 		),
 		'textdomain' => 'group-results',
 		'editorScript' => 'file:./index.js',
 		'editorStyle' => 'file:./index.css',
 		'style' => 'file:./style-index.css',
-		'render' => 'file:./render.php'
+		'viewScriptModule' => 'file:./view.js'
 	),
 	'page' => array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
 		'name' => 'prc-quiz/page',
-		'version' => '1.0.0',
+		'version' => '4.0',
 		'title' => 'Page',
 		'description' => 'A page contains at least one question but may contain more. You can add aditional multimedia options here such as images, videos, or charts.',
-		'category' => 'prc-quiz',
+		'category' => 'quiz',
+		'allowedBlocks' => array(
+			'prc-quiz/question',
+			'core/block',
+			'core/pattern',
+			'core/image',
+			'core/video',
+			'videopress/video',
+			'core/group',
+			'core/paragraph',
+			'core/list',
+			'core/heading',
+			'core/buttons',
+			'core/post-title',
+			'prc-block/animation',
+			'prc-block/dialog',
+			'prc-block/bylines-display',
+			'prc-block/bylines-query',
+			'prc-block/related-query'
+		),
 		'attributes' => array(
-			'allowedBlocks' => array(
-				'type' => 'array'
-			),
-			'introductionPage' => array(
-				'type' => 'boolean',
-				'default' => false
-			),
-			'introductionNote' => array(
-				'type' => 'string'
-			),
 			'title' => array(
 				'type' => 'string'
 			),
@@ -297,10 +330,30 @@ return array(
 		'supports' => array(
 			'anchor' => true,
 			'html' => false,
+			'interactivity' => true,
+			'animations' => true,
 			'color' => array(
 				'background' => true,
 				'text' => true,
 				'link' => true
+			),
+			'align' => array(
+				'wide',
+				'full'
+			),
+			'layout' => array(
+				'default' => array(
+					'type' => 'flex',
+					'orientation' => 'vertical',
+					'verticalAlignment' => 'center',
+					'justifyContent' => 'stretch'
+				),
+				'allowSwitching' => true,
+				'allowInheriting' => true,
+				'allowVerticalAlignment' => true,
+				'allowJustification' => true,
+				'allowOrientation' => true,
+				'allowSizingOnChildren' => true
 			),
 			'spacing' => array(
 				'blockGap' => true,
@@ -321,37 +374,55 @@ return array(
 		'usesContext' => array(
 			'prc-quiz/groupsEnabled',
 			'prc-quiz/type',
-			'prc-quiz/note'
+			'prc-quiz/display-type',
+			'prc-quiz/pages',
+			'prc-quiz/uuids'
+		),
+		'providesContext' => array(
+			'prc-quiz/page/title' => 'title',
+			'prc-quiz/page/introductionNote' => 'introductionNote',
+			'prc-quiz/page/uuid' => 'uuid'
 		),
 		'textdomain' => 'page',
 		'editorScript' => 'file:./index.js',
 		'editorStyle' => 'file:./index.css',
 		'style' => 'file:./style-index.css',
-		'render' => 'file:./render.php'
+		'viewScriptModule' => 'file:./view.js'
 	),
 	'pages' => array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
 		'name' => 'prc-quiz/pages',
-		'version' => '1.0.0',
+		'version' => '4.0',
 		'title' => 'Pages',
-		'category' => 'text',
+		'category' => 'quiz',
+		'allowedBlocks' => array(
+			'prc-quiz/page'
+		),
 		'attributes' => array(
-			'orientation' => array(
-				'type' => 'string',
-				'enum' => array(
-					'vertical',
-					'horizontal'
-				),
-				'default' => 'vertical'
-			)
+			
 		),
 		'supports' => array(
 			'anchor' => false,
 			'html' => false,
 			'multiple' => false,
+			'interactivity' => true,
 			'color' => array(
-				
+				'background' => true,
+				'text' => true,
+				'link' => true,
+				'button' => true
+			),
+			'layout' => array(
+				'default' => array(
+					'type' => 'constrained'
+				),
+				'allowSwitching' => true,
+				'allowInheriting' => true,
+				'allowVerticalAlignment' => true,
+				'allowJustification' => true,
+				'allowOrientation' => false,
+				'allowSizingOnChildren' => true
 			),
 			'typography' => array(
 				'fontSize' => true,
@@ -365,23 +436,29 @@ return array(
 		'editorScript' => 'file:./index.js',
 		'editorStyle' => 'file:./index.css',
 		'style' => 'file:./style-index.css',
-		'render' => 'file:./render.php'
+		'viewScriptModule' => 'file:./view.js'
 	),
 	'question' => array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
 		'name' => 'prc-quiz/question',
-		'version' => '1.0.0',
+		'version' => '4.0',
 		'title' => 'Question',
-		'description' => 'A question, contains a question, a set of answers, and optionally a image. Choose from single, multiple choice, or thermometer (if quiz is a typology) question types.',
-		'category' => 'prc-quiz',
+		'description' => 'A question contains a set of answers, and other visual blocks. Choose from single, multiple choice, or thermometer question types.',
+		'category' => 'quiz',
+		'allowedBlocks' => array(
+			'prc-quiz/answer',
+			'core/group',
+			'core/paragraph',
+			'core/heading',
+			'core/image',
+			'core/list',
+			'core/video',
+			'videopress/video'
+		),
 		'attributes' => array(
-			'allowedBlocks' => array(
-				'type' => 'array'
-			),
 			'question' => array(
-				'type' => 'string',
-				'default' => 'Question text here...'
+				'type' => 'string'
 			),
 			'internalId' => array(
 				'type' => 'string'
@@ -392,7 +469,12 @@ return array(
 			),
 			'type' => array(
 				'type' => 'string',
-				'default' => 'single'
+				'default' => 'single',
+				'enum' => array(
+					'single',
+					'multiple',
+					'thermometer'
+				)
 			),
 			'conditionalDisplay' => array(
 				'type' => 'boolean',
@@ -409,22 +491,31 @@ return array(
 			),
 			'uuid' => array(
 				'type' => 'string'
-			),
-			'imageId' => array(
-				'type' => 'integer'
-			),
-			'imageOnTop' => array(
-				'type' => 'boolean',
-				'default' => false
 			)
 		),
 		'supports' => array(
 			'anchor' => true,
 			'html' => false,
+			'interactivity' => true,
 			'color' => array(
 				'background' => true,
 				'text' => true,
-				'link' => true
+				'link' => true,
+				'button' => true
+			),
+			'layout' => array(
+				'default' => array(
+					'type' => 'flex',
+					'orientation' => 'vertical',
+					'verticalAlignment' => 'center',
+					'justifyContent' => 'stretch'
+				),
+				'allowSwitching' => true,
+				'allowInheriting' => true,
+				'allowVerticalAlignment' => true,
+				'allowJustification' => true,
+				'allowOrientation' => true,
+				'allowSizingOnChildren' => true
 			),
 			'spacing' => array(
 				'blockGap' => true,
@@ -443,65 +534,29 @@ return array(
 			'prc-quiz/page'
 		),
 		'providesContext' => array(
-			'prc-quiz/question/type' => 'type'
+			'prc-quiz/question/type' => 'type',
+			'prc-quiz/question/uuid' => 'uuid',
+			'prc-quiz/question/text' => 'question'
 		),
 		'usesContext' => array(
+			'prc-quiz/id',
 			'prc-quiz/type',
-			'prc-quiz/demo-break-labels'
+			'prc-quiz/demo-break-labels',
+			'prc-quiz/uuids'
 		),
 		'textdomain' => 'question',
 		'editorScript' => 'file:./index.js',
 		'editorStyle' => 'file:./index.css',
 		'style' => 'file:./style-index.css',
-		'render' => 'file:./render.php'
-	),
-	'result-follow-us' => array(
-		'$schema' => 'https://schemas.wp.org/trunk/block.json',
-		'apiVersion' => 3,
-		'name' => 'prc-quiz/result-follow-us',
-		'version' => '1.0.0',
-		'title' => 'Result Follow Us',
-		'category' => 'prc-quiz',
-		'attributes' => array(
-			
-		),
-		'supports' => array(
-			'anchor' => true,
-			'html' => false,
-			'color' => array(
-				'background' => true,
-				'text' => true,
-				'link' => true
-			),
-			'spacing' => array(
-				'blockGap' => true,
-				'margin' => array(
-					'top',
-					'bottom'
-				),
-				'padding' => true
-			),
-			'typography' => array(
-				'fontSize' => true,
-				'__experimentalFontFamily' => true
-			)
-		),
-		'parent' => array(
-			'prc-quiz/results'
-		),
-		'textdomain' => 'result-follow-us',
-		'editorScript' => 'file:./index.js',
-		'editorStyle' => 'file:./index.css',
-		'style' => 'file:./style-index.css',
-		'render' => 'file:./render.php'
+		'viewScriptModule' => 'file:./view.js'
 	),
 	'result-histogram' => array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
 		'name' => 'prc-quiz/result-histogram',
-		'version' => '1.0.0',
+		'version' => '4.0',
 		'title' => 'Result Histogram',
-		'category' => 'prc-quiz',
+		'category' => 'quiz',
 		'description' => 'Histogram representing distribution of scores.',
 		'attributes' => array(
 			'message' => array(
@@ -549,6 +604,7 @@ return array(
 		'supports' => array(
 			'anchor' => true,
 			'html' => false,
+			'interactivity' => true,
 			'spacing' => array(
 				'blockGap' => true,
 				'margin' => array(
@@ -562,26 +618,26 @@ return array(
 				'__experimentalFontFamily' => true
 			)
 		),
-		'parent' => array(
+		'ancestor' => array(
 			'prc-quiz/results'
 		),
 		'usesContext' => array(
-			'prc-quiz/results/score'
+			'prc-quiz/id',
+			'prc-quiz/type'
 		),
 		'textdomain' => 'result-histogram',
 		'editorScript' => 'file:./index.js',
 		'editorStyle' => 'file:./index.css',
-		'viewScript' => 'file:./view.js',
-		'style' => 'file:./style-index.css',
-		'render' => 'file:./render.php'
+		'viewScriptModule' => 'file:./view.js',
+		'style' => 'file:./style-index.css'
 	),
 	'result-score' => array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
 		'name' => 'prc-quiz/result-score',
-		'version' => '1.0.0',
+		'version' => '4.0',
 		'title' => 'Results Score',
-		'category' => 'prc-quiz',
+		'category' => 'quiz',
 		'description' => 'Your score from this quiz.',
 		'attributes' => array(
 			'numberOfQuestions' => array(
@@ -589,9 +645,6 @@ return array(
 			),
 			'questionsToCheck' => array(
 				'type' => 'array'
-			),
-			'uuid' => array(
-				'type' => 'string'
 			)
 		),
 		'supports' => array(
@@ -623,16 +676,15 @@ return array(
 		'textdomain' => 'result-score',
 		'editorScript' => 'file:./index.js',
 		'editorStyle' => 'file:./index.css',
-		'style' => 'file:./style-index.css',
-		'render' => 'file:./render.php'
+		'style' => 'file:./style-index.css'
 	),
 	'result-table' => array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
 		'name' => 'prc-quiz/result-table',
-		'version' => '1.0.0',
+		'version' => '4.0.1',
 		'title' => 'Result Table',
-		'category' => 'prc-quiz',
+		'category' => 'quiz',
 		'keywords' => array(
 			'table',
 			'results',
@@ -656,6 +708,7 @@ return array(
 		'supports' => array(
 			'anchor' => true,
 			'html' => false,
+			'interactivity' => true,
 			'align' => array(
 				'wide',
 				'full'
@@ -691,31 +744,25 @@ return array(
 		'textdomain' => 'result-table',
 		'editorScript' => 'file:./index.js',
 		'editorStyle' => 'file:./index.css',
-		'style' => 'file:./style-index.css'
+		'style' => 'file:./style-index.css',
+		'viewScriptModule' => 'file:./view.js'
 	),
 	'results' => array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
 		'name' => 'prc-quiz/results',
-		'version' => '1.0.0',
+		'version' => '4.0',
 		'title' => 'Results',
-		'category' => 'prc-quiz',
+		'category' => 'quiz',
 		'attributes' => array(
-			'allowedBlocks' => array(
-				'type' => 'array'
-			),
-			'score' => array(
-				'type' => 'string'
-			),
-			'submission' => array(
-				'type' => 'string'
-			)
+			
 		),
 		'supports' => array(
 			'anchor' => true,
 			'html' => false,
 			'multiple' => false,
-			'customClassName' => true,
+			'interactivity' => true,
+			'animations' => true,
 			'align' => array(
 				'wide',
 				'full',
@@ -724,7 +771,19 @@ return array(
 			'color' => array(
 				'background' => true,
 				'text' => true,
-				'link' => true
+				'link' => true,
+				'button' => true
+			),
+			'layout' => array(
+				'default' => array(
+					'type' => 'constrained'
+				),
+				'allowSwitching' => true,
+				'allowInheriting' => true,
+				'allowVerticalAlignment' => true,
+				'allowJustification' => true,
+				'allowOrientation' => false,
+				'allowSizingOnChildren' => true
 			),
 			'spacing' => array(
 				'blockGap' => true,
@@ -743,16 +802,13 @@ return array(
 			'prc-quiz/controller'
 		),
 		'usesContext' => array(
-			'prc-quiz/type'
-		),
-		'providesContext' => array(
-			'prc-quiz/results/score' => 'score',
-			'prc-quiz/results/submissionData' => 'submission'
+			'prc-quiz/type',
+			'prc-quiz/id'
 		),
 		'textdomain' => 'results',
 		'editorScript' => 'file:./index.js',
 		'editorStyle' => 'file:./index.css',
 		'style' => 'file:./style-index.css',
-		'render' => 'file:./render.php'
+		'viewScriptModule' => 'file:./view.js'
 	)
 );

@@ -2,9 +2,9 @@
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
   "name": "prc-quiz/result-score",
-  "version": "1.0.0",
+  "version": "4.0",
   "title": "Results Score",
-  "category": "prc-quiz",
+  "category": "quiz",
   "description": "Your score from this quiz.",
   "attributes": {
     "numberOfQuestions": {
@@ -12,9 +12,6 @@
     },
     "questionsToCheck": {
       "type": "array"
-    },
-    "uuid": {
-      "type": "string"
     }
   },
   "supports": {
@@ -46,6 +43,5 @@
   "textdomain": "result-score",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
-  "style": "file:./style-index.css",
-  "render": "file:./render.php"
+  "style": "file:./style-index.css"
 }

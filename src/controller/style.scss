@@ -6,16 +6,57 @@
  */
 
 .wp-block-prc-quiz-controller {
-	color: inherit;
-	background: inherit;
-	max-width: 920px!important;
-	margin-left: auto;
-    margin-right: auto;
-	&:not(.wp-block) {
-		padding-top: 4em;
+	[hidden] {
+		display: none;
 	}
-	&:not(.wp-block)[data-iframe-height] {
-		padding-top: 1.25em!important;
-		padding-bottom: 1.25em!important;
+	
+	&:not(.is-processing) {
+		.wp-block-prc-quiz-controller-processing {
+			display: none;
+		}
+	}
+
+	&.is-processing {
+		opacity: 0.5;
+		pointer-events: none;
+		position: relative;
+		.wp-block-prc-quiz-controller-processing {
+			align-items: center;
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+			justify-content: center;
+			left: 0;
+			margin: 0;
+			max-width: 100%;
+			position: absolute;
+			top: 0;
+			width: 100%;
+			// add a spiner to the pseudo before element and position it in the center of the block
+			.wp-block-prc-quiz-controller-processing_spinner {
+				position: relative;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				flex-direction: column;
+				gap: 1em;
+				font-family: inherit;
+				&::before {
+					content: '';
+					display: block;
+					width: 20px;
+					height: 20px;
+					border: 2px solid #000;
+					border-radius: 50%;
+					border-top-color: transparent;
+					animation: spin 1s linear infinite;
+				}
+			}
+			@keyframes spin {
+				to {
+					transform: rotate(360deg);
+				}
+			}
+		}
 	}
 }

@@ -2,25 +2,16 @@
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
   "name": "prc-quiz/results",
-  "version": "1.0.0",
+  "version": "4.0",
   "title": "Results",
-  "category": "prc-quiz",
-  "attributes": {
-    "allowedBlocks": {
-      "type": "array"
-    },
-    "score": {
-      "type": "string"
-    },
-    "submission": {
-      "type": "string"
-    }
-  },
+  "category": "quiz",
+  "attributes": {},
   "supports": {
     "anchor": true,
     "html": false,
     "multiple": false,
-    "customClassName": true,
+    "interactivity": true,
+    "animations": true,
     "align": [
       "wide",
       "full",
@@ -29,7 +20,19 @@
     "color": {
       "background": true,
       "text": true,
-      "link": true
+      "link": true,
+      "button": true
+    },
+    "layout": {
+      "default": {
+        "type": "constrained"
+      },
+      "allowSwitching": true,
+      "allowInheriting": true,
+      "allowVerticalAlignment": true,
+      "allowJustification": true,
+      "allowOrientation": false,
+      "allowSizingOnChildren": true
     },
     "spacing": {
       "blockGap": true,
@@ -48,15 +51,12 @@
     "prc-quiz/controller"
   ],
   "usesContext": [
-    "prc-quiz/type"
+    "prc-quiz/type",
+    "prc-quiz/id"
   ],
-  "providesContext": {
-    "prc-quiz/results/score": "score",
-    "prc-quiz/results/submissionData": "submission"
-  },
   "textdomain": "results",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
   "style": "file:./style-index.css",
-  "render": "file:./render.php"
+  "viewScriptModule": "file:./view.js"
 }

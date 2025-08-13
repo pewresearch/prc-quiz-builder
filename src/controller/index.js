@@ -31,7 +31,7 @@ import edit from './edit';
 import save from './save';
 import icon from './icon';
 import variations from './variations';
-
+import registerGroupForm from './register-group-form';
 import metadata from './block.json';
 
 const { name } = metadata;
@@ -43,9 +43,5 @@ const settings = {
 	variations,
 };
 
-/**
- * Every block starts by registering a new block type definition.
- *
- * @see https://developer.wordpress.org/block-editor/developers/block-api/#registering-a-block
- */
 registerBlockType(name, { ...metadata, ...settings });
+registerGroupForm();

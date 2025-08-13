@@ -71,34 +71,24 @@
 }
 
 .wp-block-prc-quiz-question {
-	display: flex;
-	flex-direction: column;
-	.wp-block-prc-quiz-question--label {
-		order: 1;
-		font-family: var(--wp--preset--font-family--serif);
-		font-size: var(--wp--preset--font-size--h-3);
-		line-height: 26px;
-		margin-top: 0;
-	}
-	.wp-block-prc-quiz-question--image {
-		order: 2;
-		margin-bottom: 1em;
-		img {
-			max-width: 100%;
-			height: auto;
+	&.is-conditional {
+		&[hidden] {
+			display: none;
 		}
-	}
-	.wp-block-prc-question--answers,
-	.wp-block-prc-quiz-question--thermometer {
-		order: 3;
-		width: 100%;
-	}
-	&.is-style-image-on-top {
-		.wp-block-prc-quiz-question--label {
-			order: 2;
+		&:not([hidden]) {
+			animation: fadeIn 0.3s ease-in-out;
+			opacity: 1;
+			transform: translateY(0);
 		}
-		.wp-block-prc-quiz-question--image {
-			order: 1;
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+				transform: translateY(-10px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
 		}
 	}
 }

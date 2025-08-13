@@ -36,7 +36,7 @@ const getRowClassName = (colors, index, correct = null) => {
 	const rowColor = !isEven ? rowBackgroundColor : altRowBackgroundColor;
 	const textColor = !isEven ? rowTextColor : altRowTextColor;
 
-	return classNames('wp-block-prc-quiz-result-table__row', {
+	return classNames('prc-quiz-result-table__row', {
 		'has-text-color': !!textColor.color || !!textColor?.class,
 		[getColorClassName('color', textColor?.slug)]: !!textColor?.slug,
 		// eslint-disable-next-line prettier/prettier

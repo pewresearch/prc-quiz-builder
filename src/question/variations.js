@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal Dependencies
  */
 import Icon from './icon';
+import thermometerTemplate from './thermometer-template';
 
 export default [
 	{
@@ -37,8 +38,12 @@ export default [
 			'A question with with a scale of answers, a "thermometer".'
 		),
 		icon: <Icon variant="thermometer" />,
-		attributes: { type: 'thermometer' },
+		attributes: {
+			type: 'thermometer',
+			...thermometerTemplate.questionAttributes,
+		},
 		scope: ['inserter', 'transform'],
+		innerBlocks: thermometerTemplate.questionInnerBlocks,
 		isActive: (blockAttributes) => 'thermometer' === blockAttributes.type,
 	},
 	{

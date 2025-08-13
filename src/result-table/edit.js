@@ -60,7 +60,7 @@ function Edit({
 
 	const { questions, demoBreakLabels } = data;
 
-	console.log('demoBreakLabelsComputed', data, questions, demoBreakLabels);
+	console.log('Results Table::', data);
 
 	const colors = {
 		rowBackgroundColor,
@@ -74,8 +74,8 @@ function Edit({
 	};
 
 	return (
-		<Fragment>
-			<Controls {...{ colors }} />
+		<>
+			<Controls colors={colors} />
 			<div {...blockProps}>
 				{loading && (
 					<div>
@@ -84,23 +84,25 @@ function Edit({
 					</div>
 				)}
 				{!loading && 0 >= demoBreakLabels?.length && (
-					<Table {...{ questions, colors, isSelected }} />
+					<Table
+						questions={questions}
+						colors={colors}
+						isSelected={isSelected}
+					/>
 				)}
 				{!loading && 0 < demoBreakLabels?.length && (
 					<TableDemoBreaks
-						{...{
-							questions,
-							colors,
-							demoBreakLabels,
-							isSelected,
-						}}
+						questions={questions}
+						colors={colors}
+						demoBreakLabels={demoBreakLabels}
+						isSelected={isSelected}
 					/>
 				)}
 				<p className="wp-block-prc-quiz-result-table__instructions">
 					The answers here are randomized for preview purposes only.
 				</p>
 			</div>
-		</Fragment>
+		</>
 	);
 }
 

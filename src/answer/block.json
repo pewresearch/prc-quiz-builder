@@ -2,18 +2,20 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "prc-quiz/answer",
-	"version": "1.0.0",
+	"version": "4.0",
 	"title": "Answer",
 	"description": "An answer choice for a question.",
-	"category": "prc-quiz",
+	"category": "quiz",
+  "allowedBlocks": [
+    "core/paragraph",
+    "core/heading",
+    "core/list",
+    "core/image",
+    "core/video",
+    "videopress/video",
+    "core/group"
+  ],
 	"attributes": {
-		"allowedBlocks": {
-			"type": "array"
-		},
-		"orientation": {
-			"type": "string",
-			"default": "vertical"
-		},
 		"answer": {
 			"type": "string"
 		},
@@ -21,33 +23,54 @@
 			"type": "string"
 		},
 		"points": {
-			"type": "string",
+			"type": "number",
 			"default": 0
 		},
 		"correct": {
 			"type": "boolean"
 		},
 		"uuid": {
-            "type": "string"
-        },
+      "type": "string"
+    },
 		"conditionalDisplay": {
 			"type": "boolean",
 			"default": false
 		},
 		"conditionalAnswerUuid": {
 			"type": "string"
-		},
-		"imageId": {
-			"type": "integer"
 		}
 	},
 	"parent" : ["prc-quiz/question"],
 	"supports": {
 		"anchor": false,
 		"html": false,
+		"interactivity": true,
 		"color": {
 			"background": true,
-			"text": true
+			"text": true,
+			"link": true,
+			"button": true
+		},
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "layout": {
+			"type": "flex",
+			"default": {
+				"type": "flex",
+				"orientation": "vertical",
+				"verticalAlignment": "center",
+        "justifyContent": "stretch",
+				"allowOrientation": true
+			},
+			"allowInheriting": true,
+			"allowVerticalAlignment": true,
+			"allowJustification": true,
+			"allowOrientation": true,
+			"allowSizingOnChildren": true
 		},
 		"spacing": {
 			"margin": [ "top", "bottom" ],
@@ -58,10 +81,16 @@
 			"__experimentalFontFamily": true
 		}
 	},
-	"usesContext": ["prc-quiz/type", "prc-quiz/question/type"],
+	"usesContext": ["prc-quiz/id", "prc-quiz/type", "prc-quiz/question/type", "prc-quiz/question/uuid", "prc-quiz/uuids"],
+  "providesContext": {
+    "prc-quiz/answer/text": "answer",
+    "prc-quiz/answer/correct": "correct",
+    "prc-quiz/answer/uuid": "uuid",
+    "prc-quiz/answer/points": "points"
+  },
 	"textdomain": "answer",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
-	"render": "file:./render.php"
+  "viewScriptModule": "file:./view.js"
 }

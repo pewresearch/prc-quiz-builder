@@ -7,7 +7,7 @@
 
 namespace PRC\Platform\Quiz;
 
-use WP_Block_Parser_Block, WP_Error;
+use WP_Block_Parser_Block, WP_Error, WP_HTML_Tag_Processor;
 
 /**
  * Controller class.
@@ -16,384 +16,63 @@ use WP_Block_Parser_Block, WP_Error;
  */
 class Controller {
 	/**
-	 * View script handle.
-	 *
-	 * @var string
-	 */
-	public static $view_script_handle = 'prc-quiz-controller-view-script';
-
-	/**
 	 * Constructor.
 	 *
 	 * @param object $loader The loader.
 	 */
 	public function __construct( $loader ) {
 		$loader->add_action( 'init', $this, 'block_init' );
+		$loader->add_filter( 'render_block_context', $this, 'set_quiz_id_in_context', 10, 2 );
+		$loader->add_filter( 'render_block_core/buttons', $this, 'modify_buttons', 10, 2 );
 	}
 
 	/**
-	 * No archetype found markup.
-	 *
-	 * @return string
-	 */
-	public function no_archetype_found() {
-		// redirect to the url without the results/?archetype= query string.
-		$redirect_url = remove_query_arg( 'archetype' );
-		$redirect_url = str_replace( '/results/', '/', $redirect_url );
-		ob_start();
-		?>
-		<div class="prc-quiz__no-archetype-found" style="padding-top: 1em; text-align: center;">
-			<h2>Sorry, we could not retrieve those results.</h2>
-			<p>Try taking the quiz again.</p>
-			<a href="<?php echo esc_url( $redirect_url ); ?>" class="prc-quiz__no-archetype-found__button ui button">Take the quiz</a>
-		</div>
-		<?php
-		return ob_get_clean();
-	}
-
-	/**
-	 * No group found markup.
-	 *
-	 * @return string
-	 */
-	public function no_group_found() {
-		// redirect to the url without the results/?group= query string
-		$redirect_url = remove_query_arg( 'group' );
-		$redirect_url = str_replace( '/results/', '/', $redirect_url );
-		ob_start();
-		?>
-		<div class="prc-quiz__no-group-found" style="padding-top: 1em; text-align: center;">
-			<h2>Sorry, we could not retrieve those results.</h2>
-			<p>Please check your group ID or contact your group administrator to upgrade the group in the admin panel.</p>
-		</div>
-		<?php
-		return ob_get_clean();
-	}
-
-	/**
-	 * Renders the first page (the introduction page), in a placeholder format.
-	 *
-	 * @param object $block The block.
-	 * @return string|false
-	 */
-	public function render_placeholder( $block ) {
-		if ( is_admin() ) {
-			return;
-		}
-		$inner_blocks = $block->parsed_block['innerBlocks'];
-		$pages        = array_filter(
-			$inner_blocks,
-			function ( $a ) {
-				return 'prc-quiz/pages' === $a['blockName'];
-			}
-		);
-		$pages        = array_shift( $pages );
-		if ( empty( $pages ) ) {
-			return false;
-		}
-		$first_page = array_shift( $pages['innerBlocks'] );
-		ob_start();
-		?>
-		<div class="wp-block-prc-quiz-controller--react-placeholder ui basic segment">
-			<div class="ui active inverted dimmer">
-				<div class="ui text loader">Loading Quiz...</div>
-			</div>
-			<?php echo render_block( $first_page ); ?>
-		</div>
-		<?php
-		return ob_get_clean();
-	}
-
-	/**
-	 * Parse the controller block.
-	 *
-	 * @param object $post_object The post object.
+	 * Adds the current quiz object id to the block context.
+	 * Used by the question and answer blocks to scope their data into the proper prc-quiz/controller
+	 * block's state/instance.
+	 * 
+	 * @hook render_block_context
+	 * 
+	 * @param array $context The context.
+	 * @param array $parsed_block The parsed block.
 	 * @return array
 	 */
-	public function parse_controller_block( $post_object ) {
-		$blocks = parse_blocks( $post_object->post_content );
-		$blocks = array_filter(
-			$blocks,
-			function ( $a ) {
-				return 'prc-quiz/controller' === $a['blockName'];
-			}
-		);
-		return array_pop( $blocks );
+	public function set_quiz_id_in_context( $context, $parsed_block ) {
+		if ( 'prc-quiz/controller' === $parsed_block['blockName'] && is_singular( 'quiz' ) ) {
+			$context['prc-quiz/id'] = get_the_ID();
+		}
+		return $context;
 	}
 
 	/**
-	 * Is valid hash.
+	 * Modify the buttons to add the appropriate directives to them.
+	 * 
+	 * @hook render_block_core/buttons
 	 *
-	 * @param string $md5 The md5.
-	 * @return bool
-	 */
-	public function is_valid_hash( $md5 = false ) {
-		if ( false !== $md5 ) {
-			return preg_match( '/^[a-f0-9]{32}$/', $md5 );
-		}
-		return false;
-	}
-
-	/**
-	 * Render group results.
-	 *
-	 * @param string $group_id The group id.
-	 * @param string $post_id The post id.
-	 * @return string|WP_Error
-	 */ 
-	public function render_group_results( $group_id = false, $post_id = false ) {
-		if ( ! $post_id ) {
-			return new WP_Error( 'quiz_not_found', 'Quiz not found', array( 'status' => 404 ) );
-		}
-
-		if ( false === $group_id || ! is_string( $group_id ) || empty( $group_id ) || false === $this->is_valid_hash( $group_id ) ) {
-			return new WP_Error( 'missing_group_id', __( 'Missing group ID', 'prc-quiz' ), array( 'status' => 403 ) );
-		}
-
-		wp_dequeue_script( self::$view_script_handle );
-
-		$cache_key = md5(
-			wp_json_encode(
-				array(
-					'group_id' => $group_id,
-					'post_id'  => $post_id,
-				)
-			)
-		);
-		$cached    = wp_cache_get( $cache_key );
-		if ( $cached && ! is_preview() && ! is_user_logged_in() ) {
-			// return $cached;
-		}
-
-		$groups = new Groups(
-			array(
-				'quiz_id'  => $post_id,
-				'group_id' => $group_id,
-			)
-		);
-		$group  = $groups->get_group();
-
-		// if result total is less than 1 then we don't have any results to show
-		
-		if ( false === $group || $group['total'] < 1 ) {
-			return new WP_Error(
-				'not_enough_results',
-				'Not enough results',
-				array(
-					'status'   => 404,
-					'group_id' => $group_id,
-					'quiz_id'  => $post_id,
-				)
-			);
-		}
-
-		$quiz = get_post( $post_id );
-		if ( ! $quiz ) {
-			return new WP_Error( 'quiz_not_found', 'Quiz not found', array( 'status' => 404 ) );
-		}
-
-		$controller_block = $this->parse_controller_block( $quiz );
-
-		$group_results_block = array_filter(
-			$controller_block['innerBlocks'],
-			function ( $a ) {
-				return 'prc-quiz/group-results' === $a['blockName'];
-			}
-		);
-
-		if ( empty( $group_results_block ) ) {
-			return new WP_Error(
-				'group_results_block_not_found',
-				'Group results block not found',
-				array(
-					'status'   => 404,
-					'group_id' => $group_id,
-					'quiz_id'  => $post_id,
-				)
-			);
-		}
-		
-		$group_results_block = array_values( $group_results_block );
-		$group_results_block = array_pop( $group_results_block );
-
-		$group_results_block['attrs']['typologyGroups'] = wp_json_encode( $group['typology_groups'] );
-		$group_results_block['attrs']['answers']        = wp_json_encode( $group['answers'] );
-		$group_results_block['attrs']['total']          = $group['total'];
-		$group_results_block['attrs']['name']           = $group['name'];
-
-		$parsed = new WP_Block_Parser_Block(
-			$group_results_block['blockName'],
-			$group_results_block['attrs'],
-			$group_results_block['innerBlocks'],
-			$group_results_block['innerHTML'],
-			$group_results_block['innerContent']
-		);
-
-		$rendered = render_block( (array) $parsed );
-		if ( ! is_preview() ) {
-			// wp_cache_set( $cache_key, $rendered, '', 15 * MINUTE_IN_SECONDS );
-		}
-		return $rendered;
-	}
-
-	/**
-	 * Render results.
-	 *
-	 * @param string $archetype The archetype.
-	 * @param string $post_id The post id.
-	 * @return string|WP_Error
-	 */
-	public function render_results( $archetype = false, $post_id = false ) {
-		if ( ! $post_id ) {
-			return new \WP_Error( 'quiz_not_found', 'Quiz not found', array( 'status' => 404 ) );
-		}
-		if ( false === $archetype || ! is_string( $archetype ) || empty( $archetype ) || ! $this->is_valid_hash( $archetype ) ) {
-			return new \WP_Error( 'missing_archetype', __( 'Missing archetype', 'prc-quiz' ), array( 'status' => 403 ) );
-		}
-
-		$nonce = wp_create_nonce( 'prc_quiz_nonce--' . $post_id );
-		wp_add_inline_script(
-			self::$view_script_handle,
-			'window.prcQuizController =' . wp_json_encode(
-				array(
-					'nonce'  => $nonce,
-					'postId' => $post_id,
-				)
-			) . ';',
-			'before' 
-		);
-
-		$archetypes        = new Archetypes(
-			array(
-				'quiz_id' => $post_id,
-				'hash'    => $archetype,
-			)
-		);
-		$matched_archetype = $archetypes->get_archetype();
-
-		if ( false === $matched_archetype ) {
-			return $this->no_archetype_found();
-		}
-
-		$quiz = get_post( $post_id );
-		if ( ! $quiz ) {
-			return new WP_Error( 'quiz_not_found', 'Quiz not found', array( 'status' => 404 ) );
-		}
-
-		$controller_block = $this->parse_controller_block( $quiz );
-
-		// Get prc-quiz/results block:
-		$results_block = array_filter(
-			$controller_block['innerBlocks'],
-			function ( $a ) {
-				return 'prc-quiz/results' === $a['blockName'];
-			}
-		);
-		$results_block = array_values( $results_block );
-		$results_block = array_pop( $results_block );
-
-		$results_block['attrs']['score']      = (string) $matched_archetype->score['score'];
-		$results_block['attrs']['submission'] = wp_json_encode( $matched_archetype->submission );
-
-		$parsed = new WP_Block_Parser_Block(
-			$results_block['blockName'],
-			$results_block['attrs'],
-			$results_block['innerBlocks'],
-			$results_block['innerHTML'],
-			$results_block['innerContent']
-		);
-
-		return render_block( (array) $parsed );
-	}
-
-	/**
-	 * Render controller app.
-	 *
-	 * @param array  $attributes The attributes.
-	 * @param object $block The block.
-	 * @param int    $post_id The post id.
+	 * @param string $block_content The block content.
+	 * @param object $block The block instance.
 	 * @return string
 	 */
-	public function render_controller_app( $attributes, $block, $post_id ) {        
-		$nonce = wp_create_nonce( 'prc_quiz_nonce--' . $post_id );
-		wp_add_inline_script(
-			self::$view_script_handle,
-			'window.prcQuizController =' . wp_json_encode(
-				array(
-					'nonce'  => $nonce,
-					'postId' => $post_id,
-				)
-			) . ';',
-			'before' 
-		);
-		$block_attrs = array(
-			'data-threshold' => $attributes['threshold'],
-			'data-quiz-id'   => $post_id,
-		);
-		if ( get_query_var( 'quizEmbed' ) ) {
-			$block_attrs['data-embed'] = true;
-		}
-		if ( is_iframe() ) {
-			$block_attrs['data-iframe-height'] = true;
-		}
-		$block_attrs = get_block_wrapper_attributes( $block_attrs );
-
-		ob_start();
-		?>
-		<div <?php echo $block_attrs; ?>>
-			<?php
-				echo $this->render_placeholder( $block );
-				echo '<div class="wp-block-prc-quiz-controller--react-app" style="display:none">' . self::$view_script_handle . '</div>';
-			?>
-		</div>
-		<?php
-		return ob_get_clean();
-	}
-
-	/**
-	 * Render results app.
-	 *
-	 * @param array $attributes The attributes.
-	 * @param int   $post_id The post id.
-	 * @return string
-	 */
-	public function render_results_app( $attributes, $post_id ) {
-		$allow_group = array_key_exists( 'groups', $attributes ) ? $attributes['groups'] : false;
-		$archetype   = get_query_var( 'archetype', 0 );
-		$group_id    = get_query_var( 'group', false );
-
-		$block_attrs = array(
-			'data-threshold' => $attributes['threshold'],
-			'data-quiz-id'   => $post_id,
-		);
-		if ( is_iframe() ) {
-			$block_attrs['data-iframe-height'] = true;
-		}
-		$block_attrs = get_block_wrapper_attributes( $block_attrs );
-
-		ob_start();
-		?>
-		<div <?php echo $block_attrs; ?>>
-			<?php
-			$results = '';
-			if ( 0 === $archetype && false !== $group_id && false !== $allow_group ) {
-				$results = $this->render_group_results( $group_id, $post_id );
-				if ( is_wp_error( $results ) ) {
-					$results = $this->no_group_found();
-				}
-			} else {
-				$results = $this->render_results( $archetype, $post_id );
-				if ( is_wp_error( $results ) ) {
-					$results = $this->no_archetype_found();
-				}
+	public function modify_buttons( $block_content, $block ) {
+		$tag = new WP_HTML_Tag_Processor( $block_content );
+		while ( $tag->next_tag() ) {
+			if ( $tag->has_class( 'prc-quiz-next-page-button' ) ) {
+				$tag->set_attribute( 'data-wp-on--click', 'actions.onNextPageClick' );
 			}
-			if ( ! is_wp_error( $results ) ) {
-				echo $results;
+			if ( $tag->has_class( 'prc-quiz-previous-page-button' ) ) {
+				$tag->set_attribute( 'data-wp-on--click', 'actions.onPreviousPageClick' );
 			}
-			?>
-		</div>
-		<?php
-		return ob_get_clean();
+			if ( $tag->has_class( 'prc-quiz-start-button' ) ) {
+				$tag->set_attribute( 'data-wp-on--click', 'actions.onStartQuizClick' );
+			}
+			if ( $tag->has_class( 'prc-quiz-submit-button' ) ) {
+				$tag->set_attribute( 'data-wp-on--click', 'actions.onSubmitQuizClick' );
+			}
+			if ( $tag->has_class( 'prc-quiz-reset-button' ) ) {
+				$tag->set_attribute( 'data-wp-on--click', 'actions.onResetQuizClick' );
+			}
+		}
+		return $tag->get_updated_html();
 	}
 
 	/**
@@ -405,19 +84,96 @@ class Controller {
 	 * @return string
 	 */
 	public function render_block_callback( $attributes, $content, $block ) {
-		if ( is_admin() ) {
-			return;
-		}
+		// Enqueue some additional non-module scripts.
+		wp_enqueue_script( 'wp-url' );
+		wp_enqueue_script( 'wp-api-fetch' );
 
-		$show_results = get_query_var( 'showResults', false );
+		// Get the current post.
 		global $post;
+		// Get the post id.
 		$post_id = $post->ID;
 
-		if ( $show_results ) {
-			return $this->render_results_app( $attributes, $post_id );
-		} else {
-			return $this->render_controller_app( $attributes, $block, $post_id );
+		// This is a flag to determine if the quiz has support for community groups.
+		$groups_enabled = $attributes['groupsEnabled'];
+		// Create a nonce for the quiz.
+		$nonce = wp_create_nonce( 'prc_quiz_nonce--' . $post_id );
+		
+		// This is a flag to exeplicitly display the results if the user is entering through a link.
+		$show_results = get_query_var( 'quizShowResults', false );
+		// The archetype is a md5 hash of a user's answers. There are only so many possible combinations of answers for any given quiz.
+		// This allows us to deterministically display results for a user based on their answers.
+		// It also, as a byproduct of technical efficiency, allows us to group users into clusters based on their answers, or "typologies".
+		$archetype = get_query_var( 'quizArchetype', false );
+		// Quizzes can be embedded in other pages.
+		$is_embedded = get_query_var( 'quizEmbed', false );
+		// If a user is utilizing community groups we need their group's id.
+		$group_id = get_query_var( 'quizGroup', false );
+		// Additionally, some groups may have a vanity domain corresponding to the owner's email domain. Like harvard-edu.
+		$group_domain = get_query_var( 'quizGroupDomain', false );
+		// If the quiz allows submissions.
+		$allow_submissions = array_key_exists( 'allowSubmissions', $attributes ) ? $attributes['allowSubmissions'] : true;
+		// If a quiz is being previewed, we want to disable submissions.
+		if ( is_preview() ) {
+			$allow_submissions = false;
 		}
+
+		$tag = new WP_HTML_Tag_Processor( $content );
+		$tag->next_tag();
+		$tag->set_attribute( 'data-wp-interactive', 'prc-quiz/controller' );
+		// Set up initial local state/context for the block.
+		$tag->set_attribute(
+			'data-wp-context',
+			wp_json_encode(
+				array(
+					'nonce'               => $nonce,
+					'quizTitle'           => get_the_title(),
+					'quizId'              => $post_id,
+					'quizType'            => $attributes['type'],
+					'quizUrl'             => get_permalink( $post_id ),
+					'displayType'         => $attributes['displayType'],
+					'groupsEnabled'       => $groups_enabled,
+					'groupId'             => $group_id,
+					'groupDomain'         => $group_domain,
+					'archetype'           => $archetype,
+					'answerThreshold'     => $attributes['threshold'],
+					'isEmbedded'          => $is_embedded,
+					'processing'          => false,
+					'loaded'              => false,
+					'readyForSubmission'  => false,
+					'submitted'           => false,
+					'displayResults'      => $show_results && $archetype, // If the user is entering through a link and explicitly requesting to view results and has an archetype, we want to display the results. (If there is no archetype then we can not display the results.).
+					'displayGroupResults' => $group_id && $show_results && $groups_enabled && ! $archetype, // If the user is entering through a group link with a show results flag BUT NO archetype, we want to display the group's aggregate results.
+					'selectedAnswers'     => array(), // A nested array of user selected answers uuid matched to the question uuid. questionUuid: [answerUuid1, answerUuid2, ...]
+					'userSubmission'      => array(), // A flat array of user selected answers uuid. Constructed by callback. 
+					'userScore'           => array(), // An array of the user's score data. This includes the final score, as well as some other resultsData.
+					'allowSubmissions'    => $allow_submissions,
+					'isPreview'           => is_preview(),
+					'shareText'           => 'I scored %score% on the "%title%" quiz',
+				)
+			) 
+		);
+		
+		// This is triggered when the block is initialized into the DOM.
+		$tag->set_attribute( 'data-wp-init', 'callbacks.onInit' );
+		// Apply a class to the block if it is processing. Mainly used to show/hide the loading spinner.
+		$tag->set_attribute( 'data-wp-class--is-processing', 'context.processing' );
+		// Update's the user's submission data as they answer questions.
+		$tag->set_attribute( 'data-wp-watch--update-user-submission', 'callbacks.updateUserSubmission' );
+		// Update's the user's score data as we update their submission data.
+		$tag->set_attribute( 'data-wp-watch--update-user-score', 'callbacks.updateUserScore' );
+		// On scrollable quizzes, watch for the user reaching the answerThreshold, then submit the quiz.
+		$tag->set_attribute( 'data-wp-watch--on-scrollable-submit', 'callbacks.onScrollableSubmit' );
+		// These data attributes are used in internal analytics tools.
+		$tag->set_attribute( 'data-wp-bind--threshold', 'context.answerThreshold' );
+		$tag->set_attribute( 'data-wp-bind--quiz-id', 'context.quizId' );
+		$content = $tag->get_updated_html();
+
+		// Add a loading spinner to the block.
+		$loading = '<div class="wp-block-prc-quiz-controller-processing"><div class="wp-block-prc-quiz-controller-processing_spinner"><span>Loading...</span></div></div>';
+		// Add the loading spinner to inside the very last </div> tag.
+		$content = preg_replace( '/<\/div>$/', $loading . '</div>', $content );
+
+		return $content;
 	}
 
 	/**

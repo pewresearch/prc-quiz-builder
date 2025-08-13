@@ -12,6 +12,13 @@ class Groups {
 	public $quiz_id;
 
 	/**
+	 * The quiz slug.
+	 *
+	 * @var string
+	 */
+	public $quiz_slug;
+
+	/**
 	 * The group name.
 	 *
 	 * @var string
@@ -62,9 +69,12 @@ class Groups {
 			)
 		);
 
-		$firebase         = new \PRC\Platform\Firebase( null );
-		$this->db         = $firebase->db;
-		$this->quiz_id    = $args['quiz_id'];
+		$firebase      = new \PRC\Platform\Firebase();
+		$this->db      = $firebase->db;
+		$this->quiz_id = $args['quiz_id'];
+		if ( $args['quiz_id'] ) {
+			$this->quiz_slug = get_post_field( 'post_name', $args['quiz_id'] );
+		}
 		$this->group_name = $args['group_name'];
 		$this->owner_id   = $args['owner_id'];
 		
@@ -101,12 +111,7 @@ class Groups {
 	 */
 	public function generate_results_url() {
 		$permalink = get_permalink( $this->quiz_id );
-		return add_query_arg(
-			array(
-				'group' => $this->group_id,
-			),
-			$permalink . 'results/' 
-		);
+		return wp_sprintf( '%sgroup/%s/results/', $permalink, $this->group_id );
 	}
 
 	/**
@@ -116,12 +121,7 @@ class Groups {
 	 */
 	public function generate_group_url() {
 		$permalink = get_permalink( $this->quiz_id );
-		return add_query_arg(
-			array(
-				'group' => $this->group_id,
-			),
-			$permalink 
-		);
+		return wp_sprintf( '%sgroup/%s', $permalink, $this->group_id );
 	}
 
 	/**
@@ -146,7 +146,9 @@ class Groups {
 				'name'            => $result->name,
 				'quiz_id'         => (int) $result->quiz_id,
 				'created'         => $result->created,
+				'last_updated'    => gmdate( 'Y-m-d H:i:s' ),
 				'owner'           => $this->owner_id,
+				'clusters'        => json_decode( $result->typology_groups, true ),
 				'typology_groups' => json_decode( $result->typology_groups, true ),
 				'answers'         => json_decode( $result->answers, true ),
 				'total'           => (int) $result->total,
@@ -160,7 +162,7 @@ class Groups {
 				array(
 					'created'   => $result->created,
 					'quiz_id'   => (int) $result->quiz_id,
-					'quiz_slug' => get_post_field( 'post_name', $result->quiz_id ),
+					'quiz_slug' => $this->quiz_slug,
 					'name'      => $result->name,
 					'version'   => self::$groups_version,
 				) 
@@ -175,10 +177,13 @@ class Groups {
 	}
 
 	/**
-	 * Get an archetype for a quiz by hash.
-	 * If the archetype does not exist, return false.
+	 * Get the group.
+	 * If the group does not exist, return false.
+	 *
+	 * @param bool $return_as_array Whether to return the group as an array or an object.
+	 * @return array|object|false
 	 */
-	public function get_group() {
+	public function get_group( $return_as_array = false ) {
 		$existing_group = $this->db->getReference( 'quiz/' . $this->quiz_id . '/groups/' . $this->group_id )->getValue();
 		if ( empty( $existing_group ) ) {
 			$existing_group = $this->upgrade_legacy_group_if_exists();
@@ -194,25 +199,25 @@ class Groups {
 			'quiz_name'   => get_the_title( $this->quiz_id ),
 		);
 		$existing_group = array_merge( $existing_group, $dynamic_data );
-		return $existing_group;
+		return false === $return_as_array ? (object) $existing_group : $existing_group;
 	}
 
 	/**
 	 * Create a group.
 	 *
-	 * @param array $quiz_data The quiz data.
+	 * @param array $answers All answer uuids for the quiz.
 	 * @param array $typology_groups The typology groups.
 	 * @return string|WP_Error
 	 */
 	public function create_group(
-		$quiz_data,
-		$typology_groups = array(),
+		$clusters = array(),
+		$answers = array(),
 	) {
-		if ( empty( $typology_groups ) ) {
-			return new WP_Error( 'no-typology-groups', 'No typology groups provided.' );
+		if ( empty( $clusters ) ) {
+			return new WP_Error( 'no-clusters', 'No clusters provided.' );
 		}
-		if ( empty( $quiz_data ) ) {
-			return new WP_Error( 'no-quiz-data', 'No quiz data provided.' );
+		if ( empty( $answers ) ) {
+			return new WP_Error( 'no-answers', 'No answers provided. All answer uuids for the quiz are required to seed the group with data.' );
 		}
 
 		$created_timestamp = gmdate( 'Y-m-d H:i:s' );
@@ -226,39 +231,29 @@ class Groups {
 			$this->group_id = $this->generate_group_id( $created_timestamp );
 		}
 		
-		$answers = array();
-		foreach ( $quiz_data['pages'] as $page ) {
-			$answrs = array();
-			foreach ( $page['questions'] as $question ) {
-				foreach ( $question['answers'] as $answer ) {
-					$answrs[ $answer['uuid'] ] = 0;
-				}
-			}
-			$answers = array_merge( $answers, $answrs );
-		}
-
 		$group_name = $duplicate_name_exists ? $this->group_name . ' (' . $created_pretty . ')' : $this->group_name;
 
-		
-		// Create group:
+		// Create the group in the quiz groups database.
 		$this->db->getReference( 'quiz/' . $this->quiz_id . '/groups/' . $this->group_id )->set(
 			array(
 				'name'            => $group_name,
 				'quiz_id'         => (int) $this->quiz_id,
 				'created'         => $created_timestamp,
+				'last_updated'    => $created_timestamp,
 				'owner'           => $this->owner_id,
-				'typology_groups' => $typology_groups,
-				'answers'         => $answers,
-				'total'           => 0,
+				'clusters'        => $clusters, // This is an array of all the clusters with values set to 0 initially. We will increment these values as the group is updated.
+				'typology_groups' => $clusters, // This is the legacy field for the typology groups or "clusters" for the quiz.
+				'answers'         => $answers, // This is an array of all the answer uuid's given with values set to 0 initially. We will increment these values as the group is updated.
+				'total'           => 0, // This is the total number of responses posted to the group.
 			) 
 		);
 
-		// Store record of gorup on the user's database:
+		// Store record of group on the users database.
 		$this->db->getReference( 'users/' . $this->owner_id . '/groups/' . $this->group_id )->set(
 			array(
 				'created'   => $created_timestamp,
 				'quiz_id'   => (int) $this->quiz_id,
-				'quiz_slug' => $quiz_data['quizSlug'],
+				'quiz_slug' => $this->quiz_slug,
 				'name'      => $group_name,
 				'version'   => self::$groups_version,
 			) 
@@ -275,32 +270,45 @@ class Groups {
 	 * @return void
 	 */
 	public function update_group( $submission, $score ) {
-		$group_assigned = $score['score'];
+		$cluster_assigned = $score;
 
-		$existing_group          = $this->get_group();
-		$current_total           = $existing_group['total'];
-		$current_answers         = $existing_group['answers'];
-		$current_typology_groups = $existing_group['typology_groups'];
+		$existing_group   = $this->get_group();
+		$current_total    = $existing_group->total;
+		$current_answers  = $existing_group->answers;
+		$current_clusters = $existing_group->clusters;
+		// If clusters does not exists, check if typology_groups exists, if so, use that.
+		// This will upgrade the legacy field to the new field.
+		if ( empty( $current_clusters ) && ! empty( $existing_group->typology_groups ) ) {
+			$current_clusters = $existing_group->typology_groups;
+		}
 
-		$total           = $current_total + 1;
-		$answers         = $current_answers;
-		$typology_groups = $current_typology_groups;
+		$total    = $current_total + 1;
+		$answers  = $current_answers;
+		$clusters = $current_clusters;
+
+		$last_updated = gmdate( 'Y-m-d H:i:s' );
 
 		// Increment the count for each answer given.
 		foreach ( $answers as $answer_uuid => $value ) {
-			if ( in_array( $answer_uuid, $submission['answers'] ) ) {
+			if ( in_array( $answer_uuid, $submission ) ) {
 				++$answers[ $answer_uuid ];
 			}
 		}
 
-		// Increment the total count for the group.
-		++$typology_groups[ $group_assigned ];
+		// Increment the total count for the cluster.
+		if ( array_key_exists( $cluster_assigned, $clusters ) ) {
+			++$clusters[ $cluster_assigned ];
+		} else {
+			$clusters[ $cluster_assigned ] = 1;
+		}
 
 		$this->db->getReference( 'quiz/' . $this->quiz_id . '/groups/' . $this->group_id )->update(
 			array(
 				'answers'         => $answers,
-				'typology_groups' => $typology_groups,
+				'clusters'        => $clusters,
+				'typology_groups' => $clusters, // This is the legacy field for the typology groups or "clusters" for the quiz.
 				'total'           => $total,
+				'last_updated'    => $last_updated,
 			) 
 		);
 	}
