@@ -96,11 +96,7 @@ class Archetypes {
 	 * Purge the archetypes.
 	 */
 	public function purge_archetypes() {
-		$todays_timestamp = time();
-		$backup           = $this->db->getReference( 'quiz/' . $this->quiz_id . '/archetypes' )->getValue();
-		$this->db->getReference( 'quiz/' . $this->quiz_id . '/archetypes_backup_' . $todays_timestamp )->set( $backup );
-		$this->db->getReference( 'quiz/' . $this->quiz_id . '/archetypes' )->set( array() );
-		return true;
+		return $this->db->getReference( 'quiz/' . $this->quiz_id . '/archetypes' )->set( null );
 	}
 
 	/**

@@ -14,6 +14,13 @@ namespace PRC\Platform\Quiz;
  */
 class Group_Results {
 	/**
+	 * Cache duration.
+	 *
+	 * @var int
+	 */
+	private $cache_duration = 10;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param object $loader The loader.
@@ -77,12 +84,18 @@ class Group_Results {
 
 		// If the quiz ID is not found, we can not display the group results.
 		if ( ! $quiz_id ) {
-			do_action( 'qm/debug', 'No quiz ID found' );
 			return;
 		}
 
 		// If the group ID is not found, we can not display the group results.
-		$group = $this->get_group_data( $group_id, $quiz_id );
+		$cached_data = wp_cache_get( $group_id, 'prc_quiz_group_data' );
+		if ( false === $cached_data ) {
+			$group  = $this->get_group_data( $group_id, $quiz_id );
+			$expiry = $this->cache_duration * MINUTE_IN_SECONDS;
+			wp_cache_set( $group_id, $group, 'prc_quiz_group_data', $expiry );
+		} else {
+			$group = $cached_data;
+		}
 		if ( false === $group ) {
 			$content = $this->no_group_found();
 		}
@@ -101,7 +114,7 @@ class Group_Results {
 		);
 		$message             = "<div class='prc-quiz__group-results-info'><p><strong>Group results update every %s minutes.</strong> If you don't see recent results, please wait and refresh the page.</p></div>";
 
-		$content = wp_sprintf( $message, 10 ) . $content;
+		$content = wp_sprintf( $message, $this->cache_duration ) . $content;
 
 		return wp_sprintf(
 			'<div %1$s>%2$s</div>',

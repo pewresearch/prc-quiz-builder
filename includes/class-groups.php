@@ -191,6 +191,10 @@ class Groups {
 		if ( empty( $existing_group ) ) {
 			return false;
 		}
+		// Check if $existing_group has typology_groups if so convert it clusters.
+		if ( ! empty( $existing_group['typology_groups'] ) && ! array_key_exists( 'clusters', $existing_group ) ) {
+			$existing_group['clusters'] = $existing_group['typology_groups'];
+		}
 		// Get the latest data for results_url, group_Url, and quiz_name to return back here...
 		// This ensures the data is always up to date.
 		$dynamic_data   = array(

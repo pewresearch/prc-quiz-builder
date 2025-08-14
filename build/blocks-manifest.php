@@ -317,7 +317,9 @@ return array(
 			'prc-block/dialog',
 			'prc-block/bylines-display',
 			'prc-block/bylines-query',
-			'prc-block/related-query'
+			'prc-block/related-query',
+			'prc-platform/public-behavior-quiz-results',
+			'prc-platform/public-behavior-quiz-dial'
 		),
 		'attributes' => array(
 			'title' => array(
