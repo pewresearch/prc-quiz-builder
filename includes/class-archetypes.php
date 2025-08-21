@@ -109,17 +109,44 @@ class Archetypes {
 	}
 
 	/**
+	 * Get the cache key.
+	 *
+	 * @return string
+	 */
+	public function get_cache_key() {
+		return md5(
+			wp_json_encode(
+				array(
+					'quiz_id' => $this->quiz_id,
+					'hash'    => $this->hash,
+				) 
+			) 
+		);
+	}
+
+	/**
 	 * Get an archetype for a quiz by hash from Firebase.
 	 * If the archetype does not exist, return false.
 	 *
 	 * @param bool $return_as_array Whether to return the archetype as an array.
+	 * @param bool $force_refresh Whether to force a refresh of the cache.
 	 * @return array|object|false
 	 */
-	public function get_archetype( $return_as_array = false ) {
+	public function get_archetype( $return_as_array = false, $force_refresh = false ) {
+		$cache_key = $this->get_cache_key();
+		$cache     = wp_cache_get( $cache_key, 'prc_quiz_builder_archetypes' );
+		if ( false !== $cache && false === $force_refresh ) {
+			return false === $return_as_array ? (object) $cache : $cache;
+		}
+
 		$existing_archetype = $this->db->getReference( $this->archetype_ref() )->getValue();
 
 		if ( empty( $existing_archetype ) ) {
 			return false;
+		}
+
+		if ( false === $force_refresh ) {
+			wp_cache_set( $cache_key, $existing_archetype, 'prc_quiz_builder_archetypes', 1 * DAY_IN_SECONDS );
 		}
 
 		return false === $return_as_array ? (object) $existing_archetype : $existing_archetype;
@@ -149,16 +176,18 @@ class Archetypes {
 			'hits'       => 1,
 		);
 		$this->db->getReference( $this->archetype_ref() )->set( $new_archetype );
+		wp_cache_delete( $this->get_cache_key(), 'prc_quiz_builder_archetypes' );
 		return $new_archetype;
 	}
 
 	/**
 	 * Log an archetype hit.
+	 * These requests bypass the cache.
 	 *
 	 * @return array|WP_Error
 	 */
 	public function log_archetype_hit() {
-		$existing_archetype = $this->get_archetype();
+		$existing_archetype = $this->get_archetype( false, true );
 		if ( empty( $existing_archetype ) ) {
 			return new WP_Error( 'no-archetype', 'No archetype found.' );
 		}

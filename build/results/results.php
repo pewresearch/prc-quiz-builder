@@ -84,6 +84,8 @@ class Results {
 				'<div data-wp-interactive="prc-quiz/controller">%s</div>',
 				$block_content
 			);
+			// If New Relic is available, add a custom tracer or log a custom event for transaction tracing.
+			\PRC\Platform\Newrelic\trace( 'quiz-builder/results/handle_results_display_logic', 'wrapped_interactive_block' );
 			// Reset the tag processor.
 			$tag = new WP_HTML_Tag_Processor( $content );
 			$tag->next_tag();
@@ -147,7 +149,7 @@ class Results {
 			$error_message = $this->no_archetype_found( $quiz_id );
 		}
 
-		// If the archetype is found, we re-construct the userScore context object form the stored archetype data.
+		// If the archetype is found, we re-construct the userScore context object from the stored archetype data.
 		// When the page loads, directly into the results view, the userScore context object is then available to the view.js file.
 		// This allows us to display the results without having to re-submit the quiz.
 		if ( null !== $archetype && false !== $archetype && ! empty( $archetype ) ) {
@@ -199,17 +201,13 @@ class Results {
 				$tag->remove_attribute( 'data-wp-context' );
 			}
 			$tag->set_attribute( 'data-wp-interactive', 'prc-quiz/controller' ); // Now our view.js actions.onShareClick will be used instead.
+			\PRC\Platform\Newrelic\trace( 'quiz-builder/results/render_block_callback', 'hijack_social_links_block' );
 		}
 
 		$content = $tag->get_updated_html();
 
 		// If there's an error message, we replace the contents of the results block with the error message.
 		if ( $error_message ) {
-			// $content = preg_replace(
-			// '/<div([^>]*(?:class=["\'][^"\']*wp-block-prc-quiz-results[^"\']*["\'])[^>]*)>(.*?)<\/div>/s',
-			// '<div$1>' . $error_message . '</div>',
-			// $content
-			// );
 			$content = $error_message;
 		}
 

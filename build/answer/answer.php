@@ -48,7 +48,7 @@ class Answer {
 		$state = wp_interactivity_state( 'prc-quiz/controller', array() );
 		$state[ 'quiz_' . $quiz_id ]['questions'][ $question_uuid ]['answers'][ $attributes['uuid'] ] = array(
 			'uuid'                  => $attributes['uuid'],
-			'text'                  => $attributes['answer'],
+			'text'                  => wp_strip_all_tags( $attributes['answer'] ),
 			'correct'               => array_key_exists( 'correct', $attributes ) ? (bool) $attributes['correct'] : false,
 			'points'                => array_key_exists( 'points', $attributes ) ? $attributes['points'] : 0,
 			'resultsLabel'          => array_key_exists( 'resultsLabel', $attributes ) ? $attributes['resultsLabel'] : null,

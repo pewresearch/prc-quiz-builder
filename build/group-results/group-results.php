@@ -79,25 +79,26 @@ class Group_Results {
 			return;
 		}
 		$quiz_id      = get_the_ID();
-		$group_id     = get_query_var( 'quizGroup' );
+		$group_id     = get_query_var( 'quizGroup', false );
 		$group_domain = get_query_var( 'quizGroupDomain' );
 
 		// If the quiz ID is not found, we can not display the group results.
 		if ( ! $quiz_id ) {
 			return;
 		}
-
+		
+		// Set up group data.
+		$group = false;
 		// If the group ID is not found, we can not display the group results.
-		$cached_data = wp_cache_get( $group_id, 'prc_quiz_group_data' );
-		if ( false === $cached_data ) {
-			$group  = $this->get_group_data( $group_id, $quiz_id );
-			$expiry = $this->cache_duration * MINUTE_IN_SECONDS;
-			wp_cache_set( $group_id, $group, 'prc_quiz_group_data', $expiry );
-		} else {
-			$group = $cached_data;
-		}
-		if ( false === $group ) {
-			$content = $this->no_group_found();
+		if ( false !== $group_id ) {
+			$cached_data = wp_cache_get( $group_id, 'prc_quiz_group_data' );
+			if ( false === $cached_data ) {
+				$group  = $this->get_group_data( $group_id, $quiz_id );
+				$expiry = $this->cache_duration * MINUTE_IN_SECONDS;
+				wp_cache_set( $group_id, $group, 'prc_quiz_group_data', $expiry );
+			} else {
+				$group = $cached_data;
+			}
 		}
 
 		$block_wrapper_attrs = get_block_wrapper_attributes(
@@ -112,9 +113,14 @@ class Group_Results {
 				'data-wp-bind--hidden'         => '!state.displayGroupResults',
 			)
 		);
-		$message             = "<div class='prc-quiz__group-results-info'><p><strong>Group results update every %s minutes.</strong> If you don't see recent results, please wait and refresh the page.</p></div>";
 
-		$content = wp_sprintf( $message, $this->cache_duration ) . $content;
+		if ( false === $group ) {
+			$content = $this->no_group_found();
+		} else {
+			$message = "<div class='prc-quiz__group-results-info'><p><strong>Group results update every %s minutes.</strong> If you don't see recent results, please wait and refresh the page.</p></div>";
+	
+			$content = wp_sprintf( $message, $this->cache_duration ) . $content;
+		}
 
 		return wp_sprintf(
 			'<div %1$s>%2$s</div>',

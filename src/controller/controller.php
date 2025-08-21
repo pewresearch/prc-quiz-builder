@@ -76,14 +76,13 @@ class Controller {
 	}
 
 	/**
-	 * Render block callback.
+	 * Render quiz controller block.
 	 *
 	 * @param array  $attributes The attributes.
 	 * @param string $content The content.
-	 * @param object $block The block.
 	 * @return string
 	 */
-	public function render_block_callback( $attributes, $content, $block ) {
+	public function render_block_callback( $attributes, $content ) {
 		// Enqueue some additional non-module scripts.
 		wp_enqueue_script( 'wp-url' );
 		wp_enqueue_script( 'wp-api-fetch' );
@@ -166,6 +165,7 @@ class Controller {
 		// These data attributes are used in internal analytics tools.
 		$tag->set_attribute( 'data-wp-bind--threshold', 'context.answerThreshold' );
 		$tag->set_attribute( 'data-wp-bind--quiz-id', 'context.quizId' );
+		
 		$content = $tag->get_updated_html();
 
 		// Add a loading spinner to the block.

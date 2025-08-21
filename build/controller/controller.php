@@ -166,6 +166,7 @@ class Controller {
 		// These data attributes are used in internal analytics tools.
 		$tag->set_attribute( 'data-wp-bind--threshold', 'context.answerThreshold' );
 		$tag->set_attribute( 'data-wp-bind--quiz-id', 'context.quizId' );
+		
 		$content = $tag->get_updated_html();
 
 		// Add a loading spinner to the block.

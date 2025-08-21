@@ -369,10 +369,10 @@ const { state, actions } = store('prc-quiz/controller', {
 
 			setTimeout(
 				withScope(function* () {
-					const router = yield import(
-						'@wordpress/interactivity-router'
-					);
+					// Always display the results page.
 					context.displayResults = true;
+
+					// If this is a preview, we don't want to submit the quiz.
 					if (isPreview) {
 						context.readyForSubmission = false;
 						context.processing = false;
@@ -384,10 +384,7 @@ const { state, actions } = store('prc-quiz/controller', {
 						}
 						return;
 					}
-					// Clear the cookie before navigating to the results page.
-					actions.clearCookie();
 
-					router.actions.navigate(`${quizUrl}results/${hash}`);
 					// Stop execution if this user has already submitted a quiz with the same archetype
 					// OR if the quiz does not allow submissions.
 					if (
@@ -404,6 +401,15 @@ const { state, actions } = store('prc-quiz/controller', {
 						}
 						return;
 					}
+
+					const router = yield import(
+						'@wordpress/interactivity-router'
+					);
+					// Clear the cookie before navigating to the results page.
+					actions.clearCookie();
+					// After checking the allow submissions and clearing the cookie, navigate to the results page.
+					router.actions.navigate(`${quizUrl}results/${hash}`);
+					// Push the hash to the current session archetypes array.
 					state.currentSessionArchetypes.push(hash);
 
 					// Store the submission in the database, pass the requestArgs and requestBody to the
