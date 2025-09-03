@@ -419,7 +419,7 @@ class Plugin {
 				'custom-fields',
 				'revisions',
 			),
-			'taxonomies'         => array( 'category', 'research-teams', 'bylines', 'datasets', 'collections' ),
+			'taxonomies'         => array( 'category', 'research-teams', 'bylines', 'datasets', 'collections', 'level_of_effort', 'primary_audience', 'information_type' ),
 		);
 
 		register_post_type( self::$post_type, $args );
