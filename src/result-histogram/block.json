@@ -13,10 +13,6 @@
 		"histogramData": {
 			"type": "string"
 		},
-		"width": {
-			"type": "number",
-			"default": 640
-		},
 		"height": {
 			"type": "number",
 			"default": 300
@@ -53,6 +49,8 @@
 		"anchor": true,
 		"html": false,
 		"interactivity": true,
+		"align": true,
+		"alignWide": true,
 		"spacing": {
 			"blockGap": true,
 			"margin": ["top", "bottom"],

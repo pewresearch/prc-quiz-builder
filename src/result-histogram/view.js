@@ -55,12 +55,12 @@ const { state, actions } = store('prc-quiz/controller', {
 		get getBarStyle() {
 			const context = getContext();
 			const { bar } = context;
-			return `height: ${bar.height}; width: ${bar.width};`;
+			const { background, height, width } = bar;
+			return `height: ${height}; width: ${width}; background: ${background};`;
 		},
 		get histogramBars() {
 			const {
 				histogramData,
-				height = 300,
 				barLabelCutoff = 0,
 				barColor,
 				isHighlightedColor,
@@ -69,6 +69,8 @@ const { state, actions } = store('prc-quiz/controller', {
 			const s = toNumber(state.score);
 			const bins = normalizeBins(histogramData);
 			const maxY = Math.max(1, ...bins.map((b) => b.y));
+			const highlightedBarColorResolved = actions.getColor(isHighlightedColor);
+			const barColorResolved = actions.getColor(barColor);
 			return bins.map((b) => {
 				const heightPct = (b.y / maxY) * 100;
 				const isHighlighted = b.x === s;
@@ -80,9 +82,9 @@ const { state, actions } = store('prc-quiz/controller', {
 					y: b.y,
 					height: `${heightPct}%`,
 					background:
-						isHighlighted && isHighlightedColor
-							? isHighlightedColor
-							: barColor || '#000',
+						isHighlighted && highlightedBarColorResolved
+							? highlightedBarColorResolved
+							: barColorResolved || '#000',
 					isHighlighted,
 					label,
 					ariaLabel,
@@ -95,8 +97,14 @@ const { state, actions } = store('prc-quiz/controller', {
 		},
 	},
 	actions: {
-		// Accessing state in template keeps it reactive; mount hook reserved for side-effects
-		prepareHistogram: withSyncEvent(() => {}),
+		getColor: (color) => {
+			// determine if theres a hex code at the begining or if this is a string, if its a hex code let it through, if its a string wrap it in var(--)
+			if (typeof color !== 'string') {
+				return '';
+			}
+			const isHex = /^#([0-9A-F]{3}){1,2}$/i.test(color);
+			return isHex ? color : `var(--wp--preset--color--${color})`;
+		}
 	},
 	callbacks: {},
 });

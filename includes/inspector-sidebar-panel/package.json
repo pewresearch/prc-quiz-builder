@@ -1,0 +1,28 @@
+{
+	"name": "@prc/quiz-builder-inspector-sidebar-panel",
+	"version": "1.0.0",
+	"description": "Inspector sidebar panel for quiz analytics",
+	"main": "src/index.js",
+	"scripts": {
+		"build": "wp-scripts build --webpack-copy-php",
+		"start": "wp-scripts start --webpack-copy-php",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"packages-update": "wp-scripts packages-update"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^30.21.0"
+	},
+	"dependencies": {
+		"@wordpress/api-fetch": "^7.28.0",
+		"@wordpress/components": "^29.28.0",
+		"@wordpress/core-data": "^7.28.0",
+		"@wordpress/data": "^10.28.0",
+		"@wordpress/editor": "^14.28.0",
+		"@wordpress/element": "^6.28.0",
+		"@wordpress/i18n": "^5.28.0",
+		"@wordpress/icons": "^10.28.0",
+		"@wordpress/plugins": "^7.28.0"
+	}
+}

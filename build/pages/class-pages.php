@@ -26,9 +26,9 @@ class Pages {
 
 	/**
 	 * Adds an array of page uuid's to context.
-	 * 
+	 *
 	 * @hook render_block_context
-	 * 
+	 *
 	 * @param array $context The context.
 	 * @param array $parsed_block The parsed block.
 	 * @return array
@@ -73,10 +73,10 @@ class Pages {
 						function ( $page ) {
 							return $page['attrs']['uuid'];
 						},
-						$inner_blocks 
+						$inner_blocks
 					),
 				)
-			) 
+			)
 		);
 		$tag->set_attribute( 'data-wp-init--on-pages-init', 'callbacks.onPagesInit' );
 		$tag->set_attribute( 'data-wp-watch--store-current-page-uuid', 'callbacks.storeCurrentPageUuid' );
@@ -96,7 +96,7 @@ class Pages {
 			PRC_QUIZ_DIR . '/build/pages',
 			array(
 				'render_callback' => array( $this, 'render_block_callback' ),
-			) 
+			)
 		);
 	}
 }

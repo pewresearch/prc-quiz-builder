@@ -12,7 +12,6 @@ namespace PRC\Platform\Quiz;
  *
  * @package PRC\Platform\Quiz
  */
-
 class Result_Score {
 	/**
 	 * Constructor.

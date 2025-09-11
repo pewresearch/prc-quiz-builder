@@ -113,6 +113,8 @@ class Plugin {
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-rest-api.php';
 		// 4. Initialize analytics class.
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-analytics.php';
+		// 5. Initialize the inspector sidebar panel.
+		require_once plugin_dir_path( __DIR__ ) . '/includes/inspector-sidebar-panel/class-inspector-sidebar-panel.php';
 
 		// Load block files.
 		$this->load_blocks();
@@ -130,6 +132,7 @@ class Plugin {
 	private function define_dependencies() {
 		new Analytics( $this->get_loader() );
 		new Rest_API( $this->get_loader() );
+		new Inspector_Sidebar_Panel( $this->get_loader() );
 
 		$community_groups = new Community_Groups_Table();
 		// If the table does not exist, then create the table.
@@ -150,7 +153,7 @@ class Plugin {
 		$this->loader->add_action( 'prc_platform_on_post_init', $this, 'init_quiz_db_entry_on_new_post', 100 );
 		$this->loader->add_filter( 'prc_platform_pub_listing_default_args', $this, 'opt_into_pub_listing' );
 		// $this->loader->add_action( 'init', $this, 'register_quiz_patterns' ); // @TODO: When block pattern overrides or a method to load patterns into sycned patterns is implemented, re-enable this.
-		
+
 		// Register quiz cookie information with WP Consent API.
 		$this->loader->add_action( 'init', $this, 'register_quiz_cookie_info' );
 	}
@@ -163,7 +166,7 @@ class Plugin {
 	 */
 	private function include_block( $block_file_name ) {
 		$dir             = wp_get_environment_type() === 'local' ? 'src' : 'build';
-		$block_file_path = $dir . '/' . $block_file_name . '/' . $block_file_name . '.php';
+		$block_file_path = $dir . '/' . $block_file_name . '/class-' . $block_file_name . '.php';
 		if ( file_exists( plugin_dir_path( __DIR__ ) . $block_file_path ) ) {
 			require_once plugin_dir_path( __DIR__ ) . $block_file_path;
 		} else {
@@ -182,6 +185,7 @@ class Plugin {
 			$block  = basename( $block );
 			$loaded = $this->include_block( $block );
 			if ( is_wp_error( $loaded ) ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 				error_log( $loaded->get_error_message() );
 			}
 		}
@@ -306,7 +310,7 @@ class Plugin {
 	 * Register the quiz patterns.
 	 *
 	 * @hook init
-	 * 
+	 *
 	 * @since 3.5.0
 	 */
 	public function register_quiz_patterns() {
@@ -599,7 +603,7 @@ class Plugin {
 
 	/**
 	 * Register quiz cookies with WP Consent API.
-	 * 
+	 *
 	 * 1. A standard cookie for storing quiz progress data.
 	 * 2. A cookie for specifically storing typology group data.
 	 *

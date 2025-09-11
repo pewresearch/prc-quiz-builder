@@ -1,8 +1,17 @@
 <?php
+/**
+ * Groups class.
+ *
+ * @package PRC\Platform\Quiz
+ */
+
 namespace PRC\Platform\Quiz;
 
 use Community_Groups_Query, WP_Error, Kreait\Firebase\Factory;
 
+/**
+ * Groups class.
+ */
 class Groups {
 	/**
 	 * The quiz id.
@@ -77,7 +86,7 @@ class Groups {
 		}
 		$this->group_name = $args['group_name'];
 		$this->owner_id   = $args['owner_id'];
-		
+
 		if ( false === $args['group_id'] ) {
 			$this->group_id = $this->generate_group_id();
 		} else {
@@ -99,8 +108,8 @@ class Groups {
 					$this->owner_id,
 					$this->quiz_id,
 					$ext,
-				) 
-			) 
+				)
+			)
 		);
 	}
 
@@ -154,10 +163,10 @@ class Groups {
 				'total'           => (int) $result->total,
 			);
 
-			// Create group:
+			// Create group.
 			$this->db->getReference( 'quiz/' . $this->quiz_id . '/groups/' . $this->group_id )->set( $to_return );
 
-			// Store record of group on the user's database:
+			// Store record of group on the user's database.
 			$this->db->getReference( 'users/' . $this->owner_id . '/groups/' . $this->group_id )->set(
 				array(
 					'created'   => $result->created,
@@ -165,14 +174,15 @@ class Groups {
 					'quiz_slug' => $this->quiz_slug,
 					'name'      => $result->name,
 					'version'   => self::$groups_version,
-				) 
+				)
 			);
 
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log, WordPress.PHP.DevelopmentFunctions.error_log_print_r
 			error_log( 'UPGRADING_GROUP' . print_r( $to_return, true ) );
 
 			return $to_return;
 		}
-		
+
 		return $to_return;
 	}
 
@@ -209,8 +219,8 @@ class Groups {
 	/**
 	 * Create a group.
 	 *
+	 * @param array $clusters The clusters data.
 	 * @param array $answers All answer uuids for the quiz.
-	 * @param array $typology_groups The typology groups.
 	 * @return string|WP_Error
 	 */
 	public function create_group(
@@ -234,7 +244,7 @@ class Groups {
 			// We'll generate a new group id if the group already exists, in the event someone makes an identical group name.
 			$this->group_id = $this->generate_group_id( $created_timestamp );
 		}
-		
+
 		$group_name = $duplicate_name_exists ? $this->group_name . ' (' . $created_pretty . ')' : $this->group_name;
 
 		// Create the group in the quiz groups database.
@@ -249,7 +259,7 @@ class Groups {
 				'typology_groups' => $clusters, // This is the legacy field for the typology groups or "clusters" for the quiz.
 				'answers'         => $answers, // This is an array of all the answer uuid's given with values set to 0 initially. We will increment these values as the group is updated.
 				'total'           => 0, // This is the total number of responses posted to the group.
-			) 
+			)
 		);
 
 		// Store record of group on the users database.
@@ -260,7 +270,7 @@ class Groups {
 				'quiz_slug' => $this->quiz_slug,
 				'name'      => $group_name,
 				'version'   => self::$groups_version,
-			) 
+			)
 		);
 
 		return $this->group_id;
@@ -313,7 +323,7 @@ class Groups {
 				'typology_groups' => $clusters, // This is the legacy field for the typology groups or "clusters" for the quiz.
 				'total'           => $total,
 				'last_updated'    => $last_updated,
-			) 
+			)
 		);
 	}
 }

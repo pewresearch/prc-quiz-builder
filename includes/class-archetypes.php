@@ -119,8 +119,8 @@ class Archetypes {
 				array(
 					'quiz_id' => $this->quiz_id,
 					'hash'    => $this->hash,
-				) 
-			) 
+				)
+			)
 		);
 	}
 
@@ -159,8 +159,8 @@ class Archetypes {
 	 * @param int   $score      The score.
 	 * @return array|WP_Error
 	 */
-	public function create_archetype( 
-		$submission = null, 
+	public function create_archetype(
+		$submission = null,
 		$score = null,
 	) {
 		if ( empty( $submission ) ) {

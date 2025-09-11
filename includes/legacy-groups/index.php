@@ -1,4 +1,10 @@
 <?php
+/**
+ * Legacy groups index file.
+ *
+ * @package PRC\Platform\Quiz
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }

@@ -567,10 +567,6 @@ return array(
 			'histogramData' => array(
 				'type' => 'string'
 			),
-			'width' => array(
-				'type' => 'number',
-				'default' => 640
-			),
 			'height' => array(
 				'type' => 'number',
 				'default' => 300
@@ -607,6 +603,8 @@ return array(
 			'anchor' => true,
 			'html' => false,
 			'interactivity' => true,
+			'align' => true,
+			'alignWide' => true,
 			'spacing' => array(
 				'blockGap' => true,
 				'margin' => array(
@@ -740,8 +738,7 @@ return array(
 			'prc-quiz/results'
 		),
 		'usesContext' => array(
-			'prc-quiz/results/score',
-			'prc-quiz/results/submissionData'
+			'prc-quiz/demo-break-labels'
 		),
 		'textdomain' => 'result-table',
 		'editorScript' => 'file:./index.js',

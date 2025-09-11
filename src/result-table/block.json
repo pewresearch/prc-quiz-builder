@@ -5,7 +5,7 @@
 	"version": "4.0.1",
 	"title": "Result Table",
 	"category": "quiz",
-  "keywords": [ "table", "results", "results table", "quiz table" ],
+	"keywords": ["table", "results", "results table", "quiz table"],
 	"attributes": {
 		"rowBackgroundColor": {
 			"type": "string"
@@ -23,10 +23,10 @@
 	"supports": {
 		"anchor": true,
 		"html": false,
-    "interactivity": true,
-    "align": [ "wide", "full" ],
+		"interactivity": true,
+		"align": ["wide", "full"],
 		"spacing": {
-			"margin": [ "top", "bottom" ],
+			"margin": ["top", "bottom"],
 			"padding": true
 		},
 		"typography": {
@@ -43,11 +43,11 @@
 			}
 		}
 	},
-	"parent": [ "prc-quiz/results" ],
-	"usesContext": [ "prc-quiz/results/score", "prc-quiz/results/submissionData" ],
+	"parent": ["prc-quiz/results"],
+	"usesContext": ["prc-quiz/demo-break-labels"],
 	"textdomain": "result-table",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
-  "viewScriptModule": "file:./view.js"
+	"viewScriptModule": "file:./view.js"
 }

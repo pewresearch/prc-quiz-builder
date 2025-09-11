@@ -14,7 +14,6 @@ use WP_HTML_Tag_Processor;
  *
  * @package PRC\Platform\Quiz
  */
-
 class Page {
 	/**
 	 * Constructor.
@@ -76,7 +75,7 @@ class Page {
 		$pages         = $block->context['prc-quiz/pages'];
 		$is_last_page  = end( $pages ) === $page_uuid;
 		$is_first_page = reset( $pages ) === $page_uuid;
-		
+
 		$tag = new WP_HTML_Tag_Processor( $content );
 		$tag->next_tag();
 		$tag->set_attribute( 'data-wp-interactive', 'prc-quiz/controller' );
@@ -88,12 +87,12 @@ class Page {
 					'isLastPage'  => $is_last_page,
 					'isFirstPage' => $is_first_page,
 				)
-			) 
+			)
 		);
 		$tag->set_attribute( 'data-wp-class--is-visible', 'state.isPageVisible' );
 		$tag->set_attribute( 'data-wp-watch--is-visible', 'callbacks.onPageVisibleChange' );
 		$tag->set_attribute( 'data-wp-bind--data-page-uuid', 'context.uuid' );
-		
+
 		// If the quiz is scrollable, add a scroll event listener to the last page.
 		// if ( isset( $block->context['prc-quiz/display-type'] ) && 'scrollable' === $block->context['prc-quiz/display-type'] && $is_last_page ) {
 		// $tag->set_attribute( 'data-wp-on-async-document--scroll', 'callbacks.onLastPageScroll' );

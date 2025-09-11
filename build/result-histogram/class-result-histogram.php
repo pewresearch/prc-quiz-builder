@@ -56,9 +56,9 @@ class Result_Histogram {
 						'yAxisDomain'        => $attributes['yAxisDomain'] ?? 100,
 						'xAxisLabel'         => $attributes['xAxisLabel'] ?? 'Score',
 						'message'            => $message,
-					) 
+					)
 				),
-			) 
+			)
 		);
 
 		$histogram_chart_template = '<div class="bars" role="img" aria-label="Distribution of public scores">'
@@ -71,7 +71,7 @@ class Result_Histogram {
 			. '</div>';
 
 		return wp_sprintf(
-			'<div %1$s><div id="score"><h2>You answered <span data-wp-text="state.answeredCorrectly"></span> questions correctly</h2><h3>You scored better than <span data-wp-text="state.betterThan"></span> of the public, below <span data-wp-text="state.lowerThan"></span> of the public and the same as <span data-wp-text="state.sameAs"></span>.</h3></div><div id="bar-chart" data-wp-on--mount="actions.prepareHistogram">%2$s</div><div class="x-axis-label" data-wp-text="context.xAxisLabel"></div></div>',
+			'<div %1$s><div id="score"><h2>You answered <span data-wp-text="state.answeredCorrectly"></span> questions correctly</h2><h3>You scored better than <span data-wp-text="state.betterThan"></span> of the public, below <span data-wp-text="state.lowerThan"></span> of the public and the same as <span data-wp-text="state.sameAs"></span>.</h3></div><div id="bar-chart">%2$s</div><div class="x-axis-label" data-wp-text="context.xAxisLabel"></div></div>',
 			$block_attrs,
 			$histogram_chart_template
 		);

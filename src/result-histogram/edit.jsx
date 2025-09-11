@@ -23,7 +23,6 @@ import Controls from './controls';
 function HistogramPreview({ attributes, barColor, isHighlightedColor }) {
 	const {
 		histogramData,
-		width,
 		height,
 		barLabelCutoff = 0,
 		barWidth,
@@ -50,7 +49,7 @@ function HistogramPreview({ attributes, barColor, isHighlightedColor }) {
 		: null;
 
 	return (
-		<div className="histogram-preview" style={{ width }}>
+		<div className="histogram-preview">
 			<div className="bars" style={{ height }}>
 				{bins.map((b) => {
 					const heightPct = (b.y / maxY) * 100;
@@ -163,13 +162,6 @@ function Edit({
 	const {
 		message,
 		histogramData,
-		width,
-		height,
-		barWidth,
-		barLabelPosition,
-		barLabelCutoff,
-		yAxisDomain,
-		xAxisLabel,
 	} = attributes;
 
 	const blockProps = useBlockProps();
@@ -204,7 +196,7 @@ function Edit({
 	}, [tableBlock]);
 
 	return (
-		<Fragment>
+		<>
 			<Controls
 				{...{
 					attributes,
@@ -231,8 +223,6 @@ function Edit({
 						public and the same as z% of the public.
 					</h3>
 				</div>
-
-				{/* Editor preview of the histogram */}
 				<div id="bar-chart">
 					<HistogramPreview
 						{...{
@@ -243,7 +233,7 @@ function Edit({
 					/>
 				</div>
 			</div>
-		</Fragment>
+		</>
 	);
 }
 

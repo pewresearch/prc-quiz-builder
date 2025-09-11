@@ -4,6 +4,7 @@
  *
  * @package PRC\Platform\Quiz
  */
+
 namespace PRC\Platform\Quiz;
 
 /**

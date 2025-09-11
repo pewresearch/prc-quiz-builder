@@ -1,81 +1,71 @@
 {
-  "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 3,
-  "name": "prc-quiz/result-histogram",
-  "version": "4.0",
-  "title": "Result Histogram",
-  "category": "quiz",
-  "description": "Histogram representing distribution of scores.",
-  "attributes": {
-    "message": {
-      "type": "string"
-    },
-    "histogramData": {
-      "type": "string"
-    },
-    "width": {
-      "type": "number",
-      "default": 640
-    },
-    "height": {
-      "type": "number",
-      "default": 300
-    },
-    "barWidth": {
-      "type": "number",
-      "default": 30
-    },
-    "barLabelPosition": {
-      "type": "number",
-      "default": 0
-    },
-    "barLabelCutoff": {
-      "type": "number",
-      "default": 0
-    },
-    "barColor": {
-      "type": "string",
-      "default": "oatmeal"
-    },
-    "isHighlightedColor": {
-      "type": "string",
-      "default": "mustard"
-    },
-    "yAxisDomain": {
-      "type": "number",
-      "default": 50
-    },
-    "xAxisLabel": {
-      "type": "string"
-    }
-  },
-  "supports": {
-    "anchor": true,
-    "html": false,
-    "interactivity": true,
-    "spacing": {
-      "blockGap": true,
-      "margin": [
-        "top",
-        "bottom"
-      ],
-      "padding": true
-    },
-    "typography": {
-      "fontSize": true,
-      "__experimentalFontFamily": true
-    }
-  },
-  "ancestor": [
-    "prc-quiz/results"
-  ],
-  "usesContext": [
-    "prc-quiz/id",
-    "prc-quiz/type"
-  ],
-  "textdomain": "result-histogram",
-  "editorScript": "file:./index.js",
-  "editorStyle": "file:./index.css",
-  "viewScriptModule": "file:./view.js",
-  "style": "file:./style-index.css"
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "prc-quiz/result-histogram",
+	"version": "4.0",
+	"title": "Result Histogram",
+	"category": "quiz",
+	"description": "Histogram representing distribution of scores.",
+	"attributes": {
+		"message": {
+			"type": "string"
+		},
+		"histogramData": {
+			"type": "string"
+		},
+		"height": {
+			"type": "number",
+			"default": 300
+		},
+		"barWidth": {
+			"type": "number",
+			"default": 30
+		},
+		"barLabelPosition": {
+			"type": "number",
+			"default": 0
+		},
+		"barLabelCutoff": {
+			"type": "number",
+			"default": 0
+		},
+		"barColor": {
+			"type": "string",
+			"default": "oatmeal"
+		},
+		"isHighlightedColor": {
+			"type": "string",
+			"default": "mustard"
+		},
+		"yAxisDomain": {
+			"type": "number",
+			"default": 50
+		},
+		"xAxisLabel": {
+			"type": "string"
+		}
+	},
+	"supports": {
+		"anchor": true,
+		"html": false,
+		"interactivity": true,
+		"align": true,
+		"alignWide": true,
+		"spacing": {
+			"blockGap": true,
+			"margin": ["top", "bottom"],
+			"padding": true
+		},
+		"typography": {
+			"fontSize": true,
+			"__experimentalFontFamily": true
+		}
+	},
+	"ancestor": ["prc-quiz/results"],
+	"usesContext": ["prc-quiz/id", "prc-quiz/type"],
+	"textdomain": "result-histogram",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"viewScriptModule": "file:./view.js",
+	"style": "file:./style-index.css"
 }

@@ -5,6 +5,17 @@ import { store, getContext, getElement } from '@wordpress/interactivity';
 
 const { state } = store('prc-quiz/controller', {
 	state: {
+		get demoBreakHeaders() {
+			const context = getContext();
+			const { quizId, demoBreakLabels } = context;
+			const quizData = state[`quiz_${quizId}`];
+			
+			if (!quizData || !quizData.demoBreakLabels) {
+				return [];
+			}
+			
+			return quizData.demoBreakLabels;
+		},
 		get resultsTableRows() {
 			if (!state.displayResults) {
 				return [];
@@ -19,7 +30,7 @@ const { state } = store('prc-quiz/controller', {
 			const questionsArray = Object.values(questions);
 
 			return questionsArray.map((question) => {
-				const { uuid, text, answers } = question;
+				const { uuid, text, answers, demoBreakValues } = question;
 
 				// Convert answers object to array if it's also an object
 				const answersArray = Array.isArray(answers)
@@ -96,6 +107,7 @@ const { state } = store('prc-quiz/controller', {
 					question: text,
 					selectedAnswer: formatSelectedAnswers(),
 					correctAnswer: formatCorrectAnswers(),
+					demoBreakValues: demoBreakValues || [],
 				};
 			});
 		},

@@ -30,9 +30,9 @@ class Controller {
 	 * Adds the current quiz object id to the block context.
 	 * Used by the question and answer blocks to scope their data into the proper prc-quiz/controller
 	 * block's state/instance.
-	 * 
+	 *
 	 * @hook render_block_context
-	 * 
+	 *
 	 * @param array $context The context.
 	 * @param array $parsed_block The parsed block.
 	 * @return array
@@ -46,7 +46,7 @@ class Controller {
 
 	/**
 	 * Modify the buttons to add the appropriate directives to them.
-	 * 
+	 *
 	 * @hook render_block_core/buttons
 	 *
 	 * @param string $block_content The block content.
@@ -96,7 +96,7 @@ class Controller {
 		$groups_enabled = $attributes['groupsEnabled'];
 		// Create a nonce for the quiz.
 		$nonce = wp_create_nonce( 'prc_quiz_nonce--' . $post_id );
-		
+
 		// This is a flag to exeplicitly display the results if the user is entering through a link.
 		$show_results = get_query_var( 'quizShowResults', false );
 		// The archetype is a md5 hash of a user's answers. There are only so many possible combinations of answers for any given quiz.
@@ -142,16 +142,16 @@ class Controller {
 					'submitted'           => false,
 					'displayResults'      => $show_results && $archetype, // If the user is entering through a link and explicitly requesting to view results and has an archetype, we want to display the results. (If there is no archetype then we can not display the results.).
 					'displayGroupResults' => $group_id && $show_results && $groups_enabled && ! $archetype, // If the user is entering through a group link with a show results flag BUT NO archetype, we want to display the group's aggregate results.
-					'selectedAnswers'     => array(), // A nested array of user selected answers uuid matched to the question uuid. questionUuid: [answerUuid1, answerUuid2, ...]
-					'userSubmission'      => array(), // A flat array of user selected answers uuid. Constructed by callback. 
+					'selectedAnswers'     => array(), // A nested array of user selected answers uuid matched to the question uuid. questionUuid: [answerUuid1, answerUuid2, ...].
+					'userSubmission'      => array(), // A flat array of user selected answers uuid. Constructed by callback.
 					'userScore'           => array(), // An array of the user's score data. This includes the final score, as well as some other resultsData.
 					'allowSubmissions'    => $allow_submissions,
 					'isPreview'           => is_preview(),
 					'shareText'           => 'I scored %score% on the "%title%" quiz',
 				)
-			) 
+			)
 		);
-		
+
 		// This is triggered when the block is initialized into the DOM.
 		$tag->set_attribute( 'data-wp-init', 'callbacks.onInit' );
 		// Apply a class to the block if it is processing. Mainly used to show/hide the loading spinner.
@@ -165,7 +165,7 @@ class Controller {
 		// These data attributes are used in internal analytics tools.
 		$tag->set_attribute( 'data-wp-bind--threshold', 'context.answerThreshold' );
 		$tag->set_attribute( 'data-wp-bind--quiz-id', 'context.quizId' );
-		
+
 		$content = $tag->get_updated_html();
 
 		// Add a loading spinner to the block.
@@ -188,7 +188,7 @@ class Controller {
 			PRC_QUIZ_DIR . '/build/controller',
 			array(
 				'render_callback' => array( $this, 'render_block_callback' ),
-			) 
+			)
 		);
 	}
 }

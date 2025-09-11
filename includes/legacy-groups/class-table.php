@@ -1,4 +1,6 @@
 <?php
+//phpcs:ignoreFile -- This is a 3rd party library.
+
 use BerlinDB\Database\Table as BerlinDB_Table;
 
 if ( ! defined( 'ABSPATH' ) ) {

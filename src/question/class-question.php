@@ -91,8 +91,8 @@ class Question {
 					'questionType'          => $attributes['type'],
 					'conditionalDisplay'    => array_key_exists( 'conditionalDisplay', $attributes ) ? $attributes['conditionalDisplay'] : false,
 					'conditionalAnswerUuid' => array_key_exists( 'conditionalAnswerUuid', $attributes ) ? $attributes['conditionalAnswerUuid'] : null,
-				) 
-			) 
+				)
+			)
 		);
 		$tag->set_attribute( 'data-wp-init--on-question-init', 'callbacks.onQuestionInit' );
 		if ( array_key_exists( 'conditionalDisplay', $attributes ) && $attributes['conditionalDisplay'] ) {

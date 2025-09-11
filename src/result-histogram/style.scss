@@ -9,24 +9,24 @@
 	color: inherit;
 	background: inherit;
 	#bar-chart {
-		div{
+		div {
 			margin-left: auto;
 			margin-right: auto;
 		}
-	   
 	}
-	
+
 	#score {
-		h2, h3 {
+		h2,
+		h3 {
 			text-align: center;
 		}
-		
+
 		h2 {
 			font-weight: normal;
 			background-color: #efefef;
-			padding: .5em;
+			padding: 0.5em;
 		}
-		
+
 		span {
 			font-weight: bold;
 		}
@@ -48,12 +48,13 @@
 		background: #000;
 		color: #fff;
 		min-height: 10px;
-		transition: height .2s ease-in-out;
+		transition: height 0.2s ease-in-out;
 		align-self: end;
 		padding: 0.25em 0.5em;
 	}
 	#bar-chart .bar.is-highlighted {
 		background: var(--wp--preset--color--mustard, #e0b500);
+		outline: 2px solid #000;
 	}
 	#bar-chart .bar__label {
 		position: absolute;
@@ -75,7 +76,7 @@
 	}
 	.x-axis-label {
 		text-align: center;
-		margin-top: 1em;
+		margin-top: 30px;
 		font-size: 0.75em;
 		color: #666;
 	}

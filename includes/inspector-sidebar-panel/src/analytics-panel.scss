@@ -1,0 +1,128 @@
+/* Analytics Summary Stats */
+.analytics-summary {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	margin-bottom: 1.5rem;
+	padding: 1rem;
+	background: #f8f9fa;
+	border-radius: 4px;
+	border: 1px solid #e0e5ea;
+}
+
+.summary-stat {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	.stat-label {
+		font-size: 0.875rem;
+		color: #666;
+		font-weight: 500;
+	}
+
+	.stat-value {
+		font-size: 1.125rem;
+		font-weight: 600;
+		color: var(--wp-admin-theme-color-darker-10, #006ba1);
+	}
+}
+
+/* Calendar Chart (Monthly Breakdown) */
+.calendar-chart {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1rem;
+	max-width: 100%;
+	margin-top: 0.5rem;
+}
+
+.calendar-chart-item {
+	position: relative;
+	background: #fff;
+	border: 1px solid var(--wp-admin-theme-color-lighter-70, #c5d9ed);
+	border-radius: 4px;
+	padding: 0.75rem;
+	text-align: center;
+	min-height: 70px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	transition: all 0.2s ease;
+}
+
+.calendar-chart-item::before {
+	content: attr(data-month);
+	position: absolute;
+	top: 0.25rem;
+	left: 0.5rem;
+	font-size: 0.75rem;
+	color: var(--wp-admin-theme-color, #007cba);
+	opacity: 0.8;
+}
+
+.calendar-chart-item:hover {
+	background: var(--wp-admin-theme-color-lighter-80, #e5f0f8);
+}
+
+/* Value styling */
+.calendar-chart-item .value {
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: var(--wp-admin-theme-color-darker-10, #006ba1);
+}
+
+@media (max-width: 600px) {
+	.calendar-chart {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+.calendar-chart-item[data-heat="none"] {
+	background: #fff;
+}
+
+/* Heat map variations based on value ranges */
+.calendar-chart-item[data-heat="low"] {
+	background: #ffffb2; /* Light yellow */
+	border-color: rgba(0, 0, 0, 0.1);
+	color: #666;
+
+	&::before,
+	.value {
+		color: #666;
+	}
+}
+
+.calendar-chart-item[data-heat="medium"] {
+	background: #fed976; /* Warm yellow/orange */
+	border-color: rgba(0, 0, 0, 0.1);
+	color: #444;
+
+	&::before,
+	.value {
+		color: #444;
+	}
+}
+
+.calendar-chart-item[data-heat="high"] {
+	background: #fd8d3c; /* Orange */
+	border-color: rgba(0, 0, 0, 0.1);
+	color: #fff;
+
+	&::before,
+	.value {
+		color: #fff;
+	}
+}
+
+.calendar-chart-item[data-heat="very-high"] {
+	background: #e31a1c; /* Deep red */
+	border-color: rgba(0, 0, 0, 0.1);
+	color: #fff;
+
+	&::before,
+	.value {
+		color: #fff;
+	}
+}

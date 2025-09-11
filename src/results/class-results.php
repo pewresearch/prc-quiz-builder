@@ -51,6 +51,9 @@ class Results {
 	 * Wraps inner results blocks with display logic dependent on score.
 	 *
 	 * @hook render_block
+	 * @param string $block_content The block content.
+	 * @param array  $block The block data.
+	 * @return string
 	 */
 	public function handle_results_display_logic( $block_content, $block ) {
 		if ( ! isset( $block['attrs']['resultsDisplayMode'] ) ) {
@@ -136,7 +139,7 @@ class Results {
 	 * @param WP_Block $block The block instance.
 	 * @return string The block content.
 	 */
-	public function render_block_callback( $attributes, $content, $block ) {        
+	public function render_block_callback( $attributes, $content, $block ) {
 		$error_message = null;
 		$quiz_id       = $block->context['prc-quiz/id'] ?? null;
 		// First we check if the user is requesting an archetype.
@@ -161,13 +164,13 @@ class Results {
 				),
 			);
 		}
-		
+
 		/**
 		 * Process the HTML and add iAPI directives for the results block.
 		 */
 		$tag = new WP_HTML_Tag_Processor( $content );
 		$tag->next_tag(
-			array( 
+			array(
 				'class_name' => 'wp-block-prc-quiz-results',
 			)
 		);
@@ -175,10 +178,10 @@ class Results {
 		$tag->set_attribute( 'data-wp-bind--hidden', '!state.displayResults' );
 		$tag->set_attribute(
 			'data-wp-context',
-			wp_json_encode( 
+			wp_json_encode(
 				array(
 					...$archetype_context,
-				) 
+				)
 			)
 		);
 		$tag->set_attribute( 'data-wp-watch--resultsDisplay', 'callbacks.onResultsDisplay' );

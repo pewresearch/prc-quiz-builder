@@ -1,69 +1,53 @@
 {
-  "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 3,
-  "name": "prc-quiz/result-table",
-  "version": "4.0.1",
-  "title": "Result Table",
-  "category": "quiz",
-  "keywords": [
-    "table",
-    "results",
-    "results table",
-    "quiz table"
-  ],
-  "attributes": {
-    "rowBackgroundColor": {
-      "type": "string"
-    },
-    "altRowBackgroundColor": {
-      "type": "string"
-    },
-    "rowTextColor": {
-      "type": "string"
-    },
-    "altRowTextColor": {
-      "type": "string"
-    }
-  },
-  "supports": {
-    "anchor": true,
-    "html": false,
-    "interactivity": true,
-    "align": [
-      "wide",
-      "full"
-    ],
-    "spacing": {
-      "margin": [
-        "top",
-        "bottom"
-      ],
-      "padding": true
-    },
-    "typography": {
-      "fontSize": true,
-      "lineHeight": true,
-      "__experimentalFontFamily": true,
-      "__experimentalTextDecoration": true,
-      "__experimentalFontStyle": true,
-      "__experimentalFontWeight": true,
-      "__experimentalLetterSpacing": true,
-      "__experimentalTextTransform": true,
-      "__experimentalDefaultControls": {
-        "fontSize": true
-      }
-    }
-  },
-  "parent": [
-    "prc-quiz/results"
-  ],
-  "usesContext": [
-    "prc-quiz/results/score",
-    "prc-quiz/results/submissionData"
-  ],
-  "textdomain": "result-table",
-  "editorScript": "file:./index.js",
-  "editorStyle": "file:./index.css",
-  "style": "file:./style-index.css",
-  "viewScriptModule": "file:./view.js"
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "prc-quiz/result-table",
+	"version": "4.0.1",
+	"title": "Result Table",
+	"category": "quiz",
+	"keywords": ["table", "results", "results table", "quiz table"],
+	"attributes": {
+		"rowBackgroundColor": {
+			"type": "string"
+		},
+		"altRowBackgroundColor": {
+			"type": "string"
+		},
+		"rowTextColor": {
+			"type": "string"
+		},
+		"altRowTextColor": {
+			"type": "string"
+		}
+	},
+	"supports": {
+		"anchor": true,
+		"html": false,
+		"interactivity": true,
+		"align": ["wide", "full"],
+		"spacing": {
+			"margin": ["top", "bottom"],
+			"padding": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalFontFamily": true,
+			"__experimentalTextDecoration": true,
+			"__experimentalFontStyle": true,
+			"__experimentalFontWeight": true,
+			"__experimentalLetterSpacing": true,
+			"__experimentalTextTransform": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		}
+	},
+	"parent": ["prc-quiz/results"],
+	"usesContext": ["prc-quiz/demo-break-labels"],
+	"textdomain": "result-table",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScriptModule": "file:./view.js"
 }

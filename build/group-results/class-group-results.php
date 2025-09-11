@@ -86,7 +86,7 @@ class Group_Results {
 		if ( ! $quiz_id ) {
 			return;
 		}
-		
+
 		// Set up group data.
 		$group = false;
 		// If the group ID is not found, we can not display the group results.
@@ -118,7 +118,7 @@ class Group_Results {
 			$content = $this->no_group_found();
 		} else {
 			$message = "<div class='prc-quiz__group-results-info'><p><strong>Group results update every %s minutes.</strong> If you don't see recent results, please wait and refresh the page.</p></div>";
-	
+
 			$content = wp_sprintf( $message, $this->cache_duration ) . $content;
 		}
 

@@ -1,4 +1,6 @@
 <?php
+//phpcs:ignoreFile -- This is a 3rd party library.
+
 use BerlinDB\Database\Row as BerlinDB_Row;
 
 class Community_Group_Shape extends BerlinDB_Row {
@@ -34,5 +36,4 @@ class Community_Group_Shape extends BerlinDB_Row {
 		$result = print_r( $this, true );
 		return $result;
 	}
-
 }

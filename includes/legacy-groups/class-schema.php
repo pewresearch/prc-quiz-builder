@@ -1,4 +1,6 @@
 <?php
+//phpcs:ignoreFile -- This is a 3rd party library.
+
 use BerlinDB\Database\Schema as BerlinDB_Schema;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -84,5 +86,4 @@ class Community_Groups_Schema extends BerlinDB_Schema {
 		),
 
 	);
-
 }

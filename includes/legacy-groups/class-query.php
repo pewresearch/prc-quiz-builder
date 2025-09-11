@@ -1,4 +1,6 @@
 <?php
+//phpcs:ignoreFile -- This is a 3rd party library.
+
 use BerlinDB\Database\Query as BerlinDB_Query;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -70,5 +72,4 @@ class Community_Groups_Query extends BerlinDB_Query {
 	 * @var   mixed
 	 */
 	protected $item_shape = 'Community_Group_Shape';
-
 }

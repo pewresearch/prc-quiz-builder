@@ -12,7 +12,6 @@ namespace PRC\Platform\Quiz;
  *
  * @package PRC\Platform\Quiz
  */
-
 class Result_Table {
 	/**
 	 * Constructor.
@@ -32,7 +31,7 @@ class Result_Table {
 	public function render_simple_results( $block_attrs ) {
 		ob_start();
 		?>
-		<table <?php echo $block_attrs; ?>>
+		<table <?php echo wp_kses_post( $block_attrs ); ?>>
 			<thead class="">
 				<tr class="">
 					<th class=""></th>
@@ -46,10 +45,10 @@ class Result_Table {
 					<tr data-wp-key="context.row.uuid" class="prc-quiz-result-table__row">
 						<td>
 							<span class="prc-quiz-result-table__icon" data-wp-bind--hidden="!context.row.correct">
-								<?php echo \PRC\Platform\Icons\render( 'light', 'check' ); ?>
+								<?php echo wp_kses_post( \PRC\Platform\Icons\render( 'light', 'check' ) ); ?>
 							</span>
 							<span class="prc-quiz-result-table__icon" data-wp-bind--hidden="context.row.correct">
-								<?php echo \PRC\Platform\Icons\render( 'light', 'xmark' ); ?>
+								<?php echo wp_kses_post( \PRC\Platform\Icons\render( 'light', 'xmark' ) ); ?>
 							</span>
 						</td>
 						<td>
@@ -78,7 +77,7 @@ class Result_Table {
 	public function render_demo_break_results( $block_attrs ) {
 		ob_start();
 		?>
-		<table <?php echo $block_attrs; ?>>
+		<table <?php echo wp_kses_post( $block_attrs ); ?>>
 			<thead class="">
 				<tr class="">
 					<th class=""></th>
@@ -95,10 +94,10 @@ class Result_Table {
 					<tr class="prc-quiz-result-table__row" data-wp-key="context.row.uuid">
 						<td>
 							<span class="prc-quiz-result-table__icon" data-wp-class--is-visible="context.row.correct">
-								<?php echo \PRC\Platform\Icons\render( 'light', 'check' ); ?>
+								<?php echo wp_kses_post( \PRC\Platform\Icons\render( 'light', 'check' ) ); ?>
 							</span>
 							<span class="prc-quiz-result-table__icon" data-wp-class--is-visible="!context.row.correct">
-								<?php echo \PRC\Platform\Icons\render( 'light', 'xmark' ); ?>
+								<?php echo wp_kses_post( \PRC\Platform\Icons\render( 'light', 'xmark' ) ); ?>
 							</span>
 						</td>
 						<td class="">
@@ -147,11 +146,16 @@ class Result_Table {
 			)
 		);
 
-		if ( false !== $demo_breaks ) {
-			return $this->render_demo_break_results( $block_attrs );
-		} else {
-			return $this->render_simple_results( $block_attrs );
-		}
+		/*
+		 * @TODO: This needs more work, not working correctly.
+		 * if ( false !== $demo_breaks ) {
+		 *     return $this->render_demo_break_results( $block_attrs );
+		 * } else {
+		 *     return $this->render_simple_results( $block_attrs );
+		 * }
+		 */
+
+		return $this->render_simple_results( $block_attrs );
 	}
 
 	/**
