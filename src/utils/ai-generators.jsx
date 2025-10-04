@@ -1,7 +1,7 @@
 /**
  * External Dependencies
  */
-import { processToolRequest, RequestModal } from '@prc/copilot';
+import { processToolRequest, RequestModal } from '@prc/nexus';
 
 /**
  * WordPress Dependencies

@@ -1,7 +1,7 @@
 /**
  * External Dependencies
  */
-import { addToCopilotToolbar } from '@prc/copilot';
+import { addToNexusToolbar } from '@prc/nexus';
 
 /**
  * WordPress Dependencies
@@ -47,9 +47,9 @@ function Controls({ attributes, setAttributes, clientId }) {
 
 	const [isPurgingArchetypes, setIsPurgingArchetypes] = useState(false);
 
-	// Register the copilot toolbar when the component mounts.
+	// Register the Nexus toolbar when the component mounts.
 	useEffect(() => {
-		addToCopilotToolbar({
+		addToNexusToolbar({
 			title: 'Generate Quiz',
 			icon,
 			toolType: 'request',
@@ -96,8 +96,8 @@ function Controls({ attributes, setAttributes, clientId }) {
 					// 	...newAttributes,
 					// 	metadata: {
 					// 		...currentAttributes.metadata,
-					// 		_copilot: [
-					// 			...((currentAttributes.metadata && currentAttributes.metadata._copilot) ?? []),
+					// 		_nexus: [
+					// 			...((currentAttributes.metadata && currentAttributes.metadata._nexus) ?? []),
 					// 			{
 					// 				feature: tool,
 					// 				...metadata,
