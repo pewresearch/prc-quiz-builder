@@ -1,7 +1,6 @@
 /**
  * External Dependencies
  */
-import { addToNexusToolbar } from '@prc/nexus';
 
 /**
  * WordPress Dependencies
@@ -29,8 +28,6 @@ import apiFetch from '@wordpress/api-fetch';
  */
 // eslint-disable-next-line import/no-relative-packages
 import { JSONSortableList } from '@prc/quiz-components';
-import { aiGenerateKnowledgeQuiz } from '../utils/ai-generators';
-import icon from './icon';
 
 function Controls({ attributes, setAttributes, clientId }) {
 	const {
@@ -46,73 +43,6 @@ function Controls({ attributes, setAttributes, clientId }) {
 	}));
 
 	const [isPurgingArchetypes, setIsPurgingArchetypes] = useState(false);
-
-	// Register the Nexus toolbar when the component mounts.
-	useEffect(() => {
-		addToNexusToolbar({
-			title: 'Generate Quiz',
-			icon,
-			toolType: 'request',
-			tool: 'generate-knowledge-quiz',
-			onRequest: async (
-				request,
-				instructions,
-				tool,
-				clientId,
-				notices
-			) => {
-				try {
-					const { data, metadata } = await aiGenerateKnowledgeQuiz(
-						request,
-						instructions
-					);
-					console.log('...data...', data);
-					if (!data) {
-						notices.createErrorNotice(
-							'No data could be generated for your request.'
-						);
-						return;
-					}
-					if (data.length > 1) {
-						notices.createSuccessNotice(
-							'Quiz generated. Please review results.'
-						);
-					}
-
-					console.log('data...', clientId, data, metadata);
-
-					// const tableData = data.data;
-					// const textData = data.text;
-
-					// const newAttributes = {
-					// 	...tableData,
-					// 	caption: textData?.before,
-					// 	sourceNote: textData?.after,
-					// };
-
-					// const currentAttributes = select(blockEditorStore).getBlockAttributes(clientId);
-
-					// const payload = {
-					// 	...newAttributes,
-					// 	metadata: {
-					// 		...currentAttributes.metadata,
-					// 		_nexus: [
-					// 			...((currentAttributes.metadata && currentAttributes.metadata._nexus) ?? []),
-					// 			{
-					// 				feature: tool,
-					// 				...metadata,
-					// 			},
-					// 		],
-					// 	},
-					// };
-
-					// updateBlockAttributes(clientId, payload);
-				} catch (error) {
-					notices.createErrorNotice(error?.message || String(error));
-				}
-			},
-		});
-	}, [clientId]);
 
 	const purgeArchetypes = () => {
 		console.log('purgeArchetypes', postId);

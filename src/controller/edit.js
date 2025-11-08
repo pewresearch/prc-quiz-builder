@@ -19,7 +19,6 @@ import { useSelect } from '@wordpress/data';
  * Internal Dependencies
  */
 import Controls from './controls';
-import { GenerateQuizButton } from '../utils/ai-generators';
 
 const TEMPLATE = [
 	[

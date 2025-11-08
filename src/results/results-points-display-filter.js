@@ -64,7 +64,7 @@ export default function registerResultsPointsDisplayFilter() {
 	);
 
 	/**
-	 * Add support for left and right alignment, and add transform support from prc-block/callout to group.
+	 * Add support for results display logic controls to blocks.
 	 *
 	 * @param {Object} settings Settings for the block.
 	 *

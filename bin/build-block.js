@@ -287,13 +287,22 @@ let blockName = args[0];
 			process.stdout.write(' '.repeat(50)); // Clear the line
 			readline.cursorTo(process.stdout, 0);
 
-			if (error) {
+			// Check for webpack compilation errors in stdout
+			const hasWebpackError = stdout && (
+				stdout.includes('webpack compiled with') && stdout.includes('error') ||
+				stdout.includes('ERROR in') ||
+				stdout.includes('Failed to compile')
+			);
+
+			if (error || hasWebpackError) {
 				process.stdout.write(
 					chalk.red(`❌ Failed to build block: ${blockName}!\n`)
 				);
-				process.stdout.write(chalk.red('Error details:\n'));
-				process.stdout.write(chalk.red(`Exit code: ${error.code}\n`));
-				process.stdout.write(chalk.red(`Command: ${command}\n`));
+				if (error) {
+					process.stdout.write(chalk.red('Error details:\n'));
+					process.stdout.write(chalk.red(`Exit code: ${error.code}\n`));
+					process.stdout.write(chalk.red(`Command: ${command}\n`));
+				}
 
 				if (stderr) {
 					process.stdout.write(chalk.red('\nSTDERR:\n'));
