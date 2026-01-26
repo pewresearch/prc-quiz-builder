@@ -147,7 +147,6 @@ export default function Edit({
 			Object.keys(existingUuids).includes(uuid) &&
 			existingUuids[uuid] !== clientId
 		) {
-			console.log('Setting new answer uuid');
 			setAttributes({
 				uuid: clientId,
 			});

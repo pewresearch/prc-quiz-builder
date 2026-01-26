@@ -43,4 +43,4 @@ const settings = {
  * @see https://developer.wordpress.org/block-editor/developers/block-api/#registering-a-block
  */
 const x = registerBlockType(name, { ...metadata, ...settings });
-console.log('Quiz Embed', x);
+

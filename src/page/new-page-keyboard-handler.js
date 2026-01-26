@@ -33,7 +33,6 @@ export default function NewPageKeyboardHandler({
 
 	const onNewPageShortcut = (event, combo) => {
 		event.preventDefault();
-		console.log('new page shortcut...', event, combo, clientId);
 		const newPageBlock = createBlock('prc-quiz/page', {}, []);
 		insertBlock(newPageBlock, nextBlockIndex, pagesClientId);
 	};

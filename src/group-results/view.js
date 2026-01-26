@@ -68,17 +68,9 @@ const { state, actions } = store('prc-quiz/controller', {
 		createGroup: async (formFields) => {
 			const { nonce, quizId } = state;
 			const { groupAnswers, groupClusters } = state;
-			console.log('createGroup Request::', {
-				formFields,
-				nonce,
-				quizId,
-				groupAnswers,
-				groupClusters,
-			});
 			const ownerId = await store(
 				'prc-user-accounts/content-gate'
 			).actions.getUserIdFromCookie();
-			console.log('createGroup Owner ID', ownerId);
 			if (
 				!Object.keys(groupAnswers).length ||
 				!Object.keys(groupClusters).length

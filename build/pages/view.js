@@ -1,2 +1,1 @@
 import{getContext as e,store as s,withScope as r}from"@wordpress/interactivity";const{state:t,actions:o}=s("prc-quiz/controller",{callbacks:{onPagesInit:()=>{const s=e();setTimeout(r(()=>{const{quizProgress:e,hasQuizProgress:r}=t;if(r){const{currentPageUuid:r,selectedAnswers:t}=e;r&&(s.currentPageUuid=r),t&&(s.selectedAnswers=t)}}),1505)},storeCurrentPageUuid:()=>{}}});
-//# sourceMappingURL=view.js.map

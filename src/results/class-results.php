@@ -24,7 +24,24 @@ class Results {
 	 */
 	public function __construct( $loader ) {
 		$loader->add_action( 'init', $this, 'block_init' );
+		$loader->add_action( 'render_block_core/paragraph', $this, 'handle_block_bits', 10, 2 );
 		$loader->add_filter( 'render_block', $this, 'handle_results_display_logic', 10, 2 );
+	}
+
+	/**
+	 * Handle block bits.
+	 *
+	 * @param string $block_content The block content.
+	 */
+	public function handle_block_bits( $block_content ) {
+		$tag = new WP_HTML_Tag_Processor( $block_content );
+		while ( $tag->next_tag( array( 'class_name' => 'prc-quiz-quiz-group-results-url' ) ) ) {
+			$tag->set_attribute( 'data-wp-interactive', 'prc-quiz/controller' );
+			$tag->set_attribute( 'data-wp-bind--hidden', '!state.hasGroup' );
+			$tag->set_attribute( 'data-wp-text', 'state.groupResultsLinkText' );
+			$tag->set_attribute( 'data-wp-bind--href', 'state.groupResultsLinkUrl' );
+		}
+		return $tag->get_updated_html();
 	}
 
 	/**

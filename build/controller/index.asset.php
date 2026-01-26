@@ -1,1 +1,1 @@
-<?php return array('dependencies' => array('prc-icons', 'prc-quiz-shared-components', 'react-jsx-runtime', 'wp-api-fetch', 'wp-block-editor', 'wp-blocks', 'wp-components', 'wp-data', 'wp-element', 'wp-i18n', 'wp-polyfill'), 'version' => '72b22d912b2e573a23b5');
+<?php return array('dependencies' => array('prc-icons', 'prc-quiz-shared-components', 'react-jsx-runtime', 'wp-api-fetch', 'wp-block-editor', 'wp-blocks', 'wp-components', 'wp-data', 'wp-element', 'wp-i18n'), 'version' => 'e794f809f815e974dd2c');

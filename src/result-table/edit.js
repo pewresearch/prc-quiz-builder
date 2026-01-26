@@ -60,8 +60,6 @@ function Edit({
 
 	const { questions, demoBreakLabels } = data;
 
-	console.log('Results Table::', data);
-
 	const colors = {
 		rowBackgroundColor,
 		setRowBackgroundColor,

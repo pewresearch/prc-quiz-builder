@@ -101,7 +101,6 @@ export default function Edit({
 			Object.keys(existingUuids).includes(uuid) &&
 			existingUuids[uuid] !== clientId
 		) {
-			console.log('Setting new page uuid');
 			setAttributes({
 				uuid: clientId,
 			});

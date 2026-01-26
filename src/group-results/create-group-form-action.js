@@ -17,14 +17,6 @@ export default async function createGroupFormAction(
 	// We need to get the answers which is an initial array of answer uuids set to 0 this will be provided by the group results block available at state.groups.answers
 	// We need to the clusters, which the group results block will add into state available at state.groups.clusters
 	return new Promise((resolve, reject) => {
-		console.log('createGroupFormAction', {
-			quizId,
-			ownerId,
-			formFields,
-			answers,
-			clusters,
-			nonce,
-		});
 		// Find the group name from the form fields.
 		const groupName = formFields.find(
 			(field) => field.name === 'groupName'
@@ -53,7 +45,6 @@ export default async function createGroupFormAction(
 				status: 'error',
 			});
 		}
-		console.log('createGroupFormAction do api fetch');
 		// Create the group.
 		apiFetch({
 			path: addQueryArgs('prc-api/v3/quiz/create-group', {
@@ -69,7 +60,6 @@ export default async function createGroupFormAction(
 			},
 		})
 			.then((group) => {
-				console.log('Group created successfully', group);
 				return resolve({
 					message: `Group created successfully. You can now share this url: ${group.group_url} with your group members. For group: ${group.group_id}`,
 					data: group,

@@ -30,6 +30,22 @@ const { state, actions } = store('prc-quiz/controller', {
 			const { quizId } = getContext();
 			return quizId;
 		},
+		get goupId() {
+			const { groupId } = getContext();
+			return groupId;
+		},
+		get hasGroup() {
+			const { groupId } = getContext();
+			return groupId ? true : false;
+		},
+		get groupResultsLinkText() {
+			const { groupId } = getContext();
+			return groupId ? "See your quiz group\'s results." : '';
+		},
+		get groupResultsLinkUrl() {
+			const { groupId, quizUrl } = getContext();
+			return groupId ? `${quizUrl}group/${groupId}/results` : ``;
+		},
 		get nonce() {
 			const { nonce } = getContext();
 			return nonce;
@@ -286,13 +302,14 @@ const { state, actions } = store('prc-quiz/controller', {
 
 		/**
 		 * Save quiz progress data as JSON object
+		 * @param score
 		 */
 		saveQuizProgress: (score = null) => {
 			const { selectedAnswers, currentPageUuid, quizId } = getContext();
 			const quizData = {
 				quiz_id: quizId,
-				selectedAnswers: selectedAnswers,
-				currentPageUuid: currentPageUuid,
+				selectedAnswers,
+				currentPageUuid,
 				timestamp: Date.now(),
 			};
 			if (score) {
@@ -423,7 +440,10 @@ const { state, actions } = store('prc-quiz/controller', {
 						data: requestBody,
 					})
 						.then((response) => {
-							console.log('submitQuiz response ->', response);
+							console.log('submitQuiz response ->', {
+								response,
+								groupId,
+							});
 						})
 						.catch((error) => {
 							console.error('submitQuiz error ->', error);

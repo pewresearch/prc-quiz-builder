@@ -45,7 +45,6 @@ function Controls({ attributes, setAttributes, clientId }) {
 	const [isPurgingArchetypes, setIsPurgingArchetypes] = useState(false);
 
 	const purgeArchetypes = () => {
-		console.log('purgeArchetypes', postId);
 		setIsPurgingArchetypes(true);
 		apiFetch({
 			path: `/prc-api/v3/quiz/purge-archetypes?quizId=${postId}`,
