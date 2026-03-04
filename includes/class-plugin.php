@@ -141,17 +141,14 @@ class Plugin {
 		}
 
 		$this->loader->add_action( 'init', $this, 'register_quiz_post_type' );
-		$this->loader->add_filter( 'prc_platform__datasets_enabled_post_types', $this, 'enable_datasets_support' );
 		$this->loader->add_filter( 'prc_platform_rewrite_rules', $this, 'register_rewrite_rules' );
-		$this->loader->add_filter( 'prc_platform__bylines_enabled_post_types', $this, 'enable_bylines_support' );
-		$this->loader->add_filter( 'prc_platform__art_direction_enabled_post_types', $this, 'enable_art_direction_support' );
 		$this->loader->add_filter( 'prc_platform_rewrite_query_vars', $this, 'register_query_vars' );
+		$this->loader->add_filter( 'prc_research_teams_rewrite_config', $this, 'register_research_teams_config' );
 		$this->loader->add_action( 'init', $this, 'init_quiz_block_on_new_post' );
 		$this->loader->add_filter( 'prc_iframe_content', $this, 'filter_iframe_content' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $this, 'register_quiz_components', 0 );
 		$this->loader->add_action( 'admin_enqueue_scripts', $this, 'register_quiz_components', 0 );
 		$this->loader->add_action( 'prc_platform_on_post_init', $this, 'init_quiz_db_entry_on_new_post', 100 );
-		$this->loader->add_filter( 'prc_platform_pub_listing_default_args', $this, 'opt_into_pub_listing' );
 		// $this->loader->add_action( 'init', $this, 'register_quiz_patterns' ); // @TODO: When block pattern overrides or a method to load patterns into sycned patterns is implemented, re-enable this.
 
 		// Register quiz cookie information with WP Consent API.
@@ -282,6 +279,36 @@ class Plugin {
 				'quiz/([^/]+)/iframe/?$' => 'index.php?quiz=$matches[1]&iframe=true',
 			),
 		);
+	}
+
+	/**
+	 * Register quiz rewrite configuration for research team prefixed URLs.
+	 *
+	 * This provides the quiz URL patterns for research-team-prefixed URLs like
+	 * /politics/quiz/political-typology/ instead of just /quiz/political-typology/.
+	 *
+	 * @hook prc_research_teams_rewrite_config
+	 *
+	 * @param array $config The rewrite configuration.
+	 * @return array Modified configuration.
+	 */
+	public function register_research_teams_config( $config ) {
+		$config['quiz'] = array(
+			'slug_pattern'       => 'quiz/([^/]+)',
+			'query_string'       => 'quiz=$matches[2]',
+			'supports'           => array( 'iframe', 'embed', 'attachment' ),
+			'attachment_pattern' => 'quiz/[^/]+/([^/]+)',
+			'additional_rules'   => array(
+				// Results archetype rule.
+				'quiz/([^/]+)/results/([a-zA-Z0-9-]+)'                         => 'quiz=$matches[2]&quizArchetype=$matches[3]&quizShowResults=true',
+				// Group rules.
+				'quiz/([^/]+)/group/([a-zA-Z0-9-]+)'                           => 'quiz=$matches[2]&quizGroup=$matches[3]',
+				'quiz/([^/]+)/group/([a-zA-Z0-9-]+)/results'                   => 'quiz=$matches[2]&quizGroup=$matches[3]&quizShowResults=true',
+				'quiz/([^/]+)/group/([a-zA-Z0-9-]+)/results/([a-zA-Z0-9-]+)'   => 'quiz=$matches[2]&quizGroup=$matches[3]&quizArchetype=$matches[4]&quizShowResults=true',
+				'quiz/([^/]+)/group/([a-zA-Z0-9-]+)/([a-zA-Z0-9-]+)/results'   => 'quiz=$matches[2]&quizGroup=$matches[3]&quizGroupDomain=$matches[4]&quizShowResults=true',
+			),
+		);
+		return $config;
 	}
 
 	/**
@@ -422,63 +449,18 @@ class Plugin {
 				'shortlinks',
 				'custom-fields',
 				'revisions',
+				'prc-revisions',
+				'prc-schema-seo',
+				'prc-social',
+				'prc-bylines',
+				'prc-art-direction',
+				'prc-datasets',
+				'prc-publication-listing',
 			),
 			'taxonomies'         => array( 'category', 'research-teams', 'bylines', 'datasets', 'collections', 'level_of_effort', 'primary_audience', 'information_type' ),
 		);
 
 		register_post_type( self::$post_type, $args );
-	}
-
-	/**
-	 * Opt the post type into the publication listing.
-	 *
-	 * @hook prc_platform_pub_listing_default_args
-	 *
-	 * @param array $args The arguments.
-	 * @return array The arguments.
-	 */
-	public function opt_into_pub_listing( $args ) {
-		$args['post_type'] = array_merge( $args['post_type'], array( self::$post_type ) );
-		return $args;
-	}
-
-	/**
-	 * Enable datasets support.
-	 *
-	 * @hook prc_platform__datasets_enabled_post_types
-	 *
-	 * @param array $post_types The post types.
-	 * @return array The post types.
-	 */
-	public function enable_datasets_support( $post_types ) {
-		$post_types[] = self::$post_type;
-		return $post_types;
-	}
-
-	/**
-	 * Enable bylines support.
-	 *
-	 * @hook prc_platform__bylines_enabled_post_types
-	 *
-	 * @param array $post_types The post types.
-	 * @return array The post types.
-	 */
-	public function enable_bylines_support( $post_types ) {
-		$post_types[] = self::$post_type;
-		return $post_types;
-	}
-
-	/**
-	 * Enable art direction support.
-	 *
-	 * @hook prc_platform__art_direction_enabled_post_types
-	 *
-	 * @param array $post_types The post types.
-	 * @return array The post types.
-	 */
-	public function enable_art_direction_support( $post_types ) {
-		$post_types[] = 'quiz';
-		return $post_types;
 	}
 
 	/**
