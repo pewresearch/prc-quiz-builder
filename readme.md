@@ -1,127 +1,164 @@
 # PRC Quiz Builder
 
-A block-first, interactive quiz system for the PRC platform. Authors compose quizzes using Gutenberg blocks powered by the WordPress Interactivity API. Supports classic quizzes, typology clustering, embeddable usage, and community group results.
+An interactive, block-based quiz system for the PRC platform.
 
-## Requirements
-- WordPress ≥ 6.7
-- PHP ≥ 8.1
-- PRC Platform (monorepo) with standard PRC plugins/themes enabled
+## Overview
 
-## Features
-- Custom post type `quiz` with pretty permalinks and embeddable views
-- Block library for end-to-end quiz authoring
-- Paged or scrollable display modes
-- Quiz types: scored quiz, typology, freeform
-- Group creation and group results for typology quizzes
-- Results components: score, table, histogram, group results
-- WordPress Interactivity API for frontend state and persistence
-- REST API endpoints for submission and group operations
-- Cookies registered with WP Consent API for transparency
+Quiz Builder provides a custom `quiz` post type and a suite of Gutenberg blocks backed by the WordPress Interactivity API. Authors compose quizzes in the block editor using a Controller → Pages → Page → Question → Answer hierarchy; the Controller block injects all runtime state into the Interactivity API context and coordinates submission, scoring, and results display on the frontend. The plugin supports three quiz modes (scored quiz, typology/clustering, freeform), paged and scrollable display, community group results, and iframe-embeddable views.
 
-## Included Blocks
-- Controller — `prc-quiz/controller`
-  - Controls quiz type, display mode, and global behaviors; provides context to child blocks
-- Pages — `prc-quiz/pages`
-  - Wrapper for a multi-page quiz
-- Page — `prc-quiz/page`
-  - A single page that can contain one or more questions and other content
-- Question — `prc-quiz/question`
-  - Single-choice, multiple-choice, or thermometer; supports randomization and conditional display
-- Answer — `prc-quiz/answer`
-  - Answer choice with optional correctness, points, and labeling
-- Results — `prc-quiz/results`
-  - Container for results display once a quiz is completed
-- Result Score — `prc-quiz/result-score`
-  - Displays the participant’s score
-- Result Table — `prc-quiz/result-table`
-  - Tabular results view; supports demo breaks
-- Result Histogram — `prc-quiz/result-histogram`
-  - Histogram of score distribution
-- Group Results — `prc-quiz/group-results`
-  - Community group results. Required for enabling group creation and group-specific results views.
-- Embeddable — `prc-quiz/embeddable`
-  - Save and reuse quizzes across the site; updates propagate to all embeds
+Firebase Realtime Database is the persistence layer for archetype (result) records and community groups. WordPress post meta tracks submission analytics.
 
-## Authoring Workflow (Editor)
-1. Insert a Quiz post (`quiz` post type)
-2. Add the Quiz Controller (`prc-quiz/controller`)
-3. Add Pages → Page → Question → Answer blocks following this tree:
-   - Controller → Pages → Page → Question → Answer(s)
-4. Configure Controller settings (quiz type: quiz/typology/freeform; display: paged/scrollable)
-5. Optionally add Results blocks (score, table, histogram) and Group Results for typology group experiences
-6. Publish. Use standard PRC patterns for start/next/submit buttons (see Patterns below)
+### Dependencies
 
-## Patterns
-The plugin registers a `Quiz Builder` block pattern category and provides button/dialog patterns (start, next, submit, create group). Depending on platform configuration, patterns may be loaded as synced patterns.
+- **Upstream**: `prc-platform-core` (provides `\PRC\Platform\Firebase` and the `prc_api_endpoints`, `prc_platform_rewrite_rules`, `prc_platform_rewrite_query_vars`, `prc_platform_on_post_init`, and `prc_iframe_content` hooks), `prc-research-teams` (optional — registers team-prefixed quiz URLs via `prc_research_teams_rewrite_config`), WP Consent API (`wp_add_cookie_info`)
+- **Downstream**: Internal analytics tooling queries the `_submissions` REST field on the `quiz` post type; any page embedding a quiz via `/embed/` or `/iframe/` URLs
 
-## Routes and Query Vars
-The plugin registers rewrite rules for human-friendly quiz and results URLs.
-- Quiz: `/quiz/{quiz-slug}/`
-- Results: `/quiz/{quiz-slug}/results/{archetype-hash}/`
-- Grouped quiz: `/quiz/{quiz-slug}/group/{group-id}/`
-- Group results: `/quiz/{quiz-slug}/group/{group-id}/results/`
-- Group results (with domain): `/quiz/{quiz-slug}/group/{group-domain}/{group-id}/results/`
-- Embed views: `/quiz/{quiz-slug}/embed/` and `/quiz/{quiz-slug}/iframe/`
+## Architecture
 
-Registered query vars include: `quizArchetype`, `quizGroup`, `quizGroupDomain`, `quizShowResults`, `quizShareQuiz`, `quizEmbed`.
+The plugin bootstraps through `includes/class-plugin.php`, which loads all dependencies, registers the `quiz` CPT, sets up rewrite rules, and instantiates each block class. Blocks are loaded from `build/` (production) or `src/` (local/dev), controlled by `wp_get_environment_type()`.
+
+Archetype lookups are cached in the WordPress object cache (`prc_quiz_builder_archetypes` group, 1-day TTL) and backed by Firebase. Community groups have two layers: a legacy MySQL custom table (`Community_Groups_Table`) and Firebase — `get_group()` lazily migrates records from MySQL to Firebase on first access and keeps both fields for backward compatibility.
+
+The Controller block's `render_callback` is the key server/client bridge: it writes all runtime context (`quizId`, `nonce`, `quizType`, `displayType`, `groupId`, `archetype`, etc.) into `data-wp-context` and wires up all Interactivity API directives. Core/buttons blocks that carry specific CSS classes (`prc-quiz-next-page-button`, `prc-quiz-submit-button`, etc.) have `data-wp-on--click` attributes injected server-side via `WP_HTML_Tag_Processor`.
+
+### Key Files
+
+| Path | Purpose |
+|------|---------|
+| `prc-quiz-builder.php` | Plugin entry point; defines `PRC_QUIZ_FILE`, `PRC_QUIZ_DIR`, `PRC_QUIZ_VERSION` constants |
+| `includes/class-plugin.php` | Core orchestrator — loads deps, registers CPT, rewrite rules, query vars, cookies, and all blocks |
+| `includes/class-archetypes.php` | Firebase CRUD for archetype (result hash) records; object-cache layer |
+| `includes/class-groups.php` | Firebase CRUD for community groups; lazy migration from legacy MySQL table |
+| `includes/class-rest-api.php` | REST endpoint registration and handlers; contains the `$rest_disabled` kill switch |
+| `includes/class-analytics.php` | `_report` post meta schema and submission counter; exposes `_submissions` REST field |
+| `includes/class-loader.php` | Hook registration queue |
+| `includes/inspector-sidebar-panel/` | Block editor plugin that renders a quiz analytics sidebar panel; only enqueued on the `quiz` CPT screen |
+| `includes/legacy-groups/index.php` | MySQL custom table definition (`Community_Groups_Table`, `Community_Groups_Query`) |
+| `src/controller/class-controller.php` | Controller block — server render, Interactivity API context injection, button directive patching |
+| `src/results/class-results.php` | Results block server render |
+| `src/group-results/` | Group results block (view script + create-group action) |
+| `src/embeddable/` | Embeddable block for cross-site reuse |
+| `build/` | Compiled JS/CSS/asset manifests for all blocks |
+
+## Blocks
+
+| Block | Namespace | Role |
+|-------|-----------|------|
+| Controller | `prc-quiz/controller` | Root block; owns all Interactivity API state, nonce, submission flow |
+| Pages | `prc-quiz/pages` | Wrapper for a multi-page quiz |
+| Page | `prc-quiz/page` | A single page; contains questions and arbitrary content |
+| Question | `prc-quiz/question` | Single-choice, multiple-choice, or thermometer; supports randomization |
+| Answer | `prc-quiz/answer` | Answer choice with optional correctness, points, and label |
+| Results | `prc-quiz/results` | Container rendered after quiz completion |
+| Result Score | `prc-quiz/result-score` | Displays the participant's score |
+| Result Table | `prc-quiz/result-table` | Tabular results view; supports demographic breaks |
+| Result Histogram | `prc-quiz/result-histogram` | Score distribution histogram |
+| Group Results | `prc-quiz/group-results` | Community group aggregate results; required to enable group creation |
+| Embeddable | `prc-quiz/embeddable` | Reuse a quiz across other posts; edits propagate to all embeds |
+
+The block editor receives a `Quiz Builder` block category (`prc-quiz` slug) so these blocks are grouped separately from the standard library.
+
+## Hooks & Filters
+
+| Hook | Type | Description |
+|------|------|-------------|
+| `block_categories_all` | filter | Appends the `prc-quiz` block category |
+| `prc_api_endpoints` | filter | Registers `quiz/create-group`, `quiz/get-group`, `quiz/submit`, and `quiz/purge-archetypes` REST routes |
+| `prc_platform_rewrite_rules` | filter | Adds all quiz URL patterns (results, group, embed) |
+| `prc_platform_rewrite_query_vars` | filter | Registers `quizArchetype`, `quizGroup`, `quizGroupDomain`, `quizShowResults`, `quizShareQuiz`, `quizEmbed` |
+| `prc_research_teams_rewrite_config` | filter | Injects quiz URL patterns for research-team-prefixed routes (e.g. `/politics/quiz/...`) |
+| `prc_platform_on_post_init` | action | Creates the Firebase quiz entry when a new `quiz` post is initialized |
+| `prc_iframe_content` | filter | Wraps quiz content with a PRC-branded header in iframe/embed views |
+| `render_block_context` | filter | Injects `prc-quiz/id` into block context for `prc-quiz/controller` on singular quiz pages |
+| `render_block_core/buttons` | filter | Patches Interactivity API `data-wp-on--click` onto quiz action buttons by CSS class |
+| `prc_quiz_log_submission` | action | Fired on quiz submit; consumed internally by `Analytics` to increment `_report` post meta |
+| `enqueue_block_editor_assets` | action | Enqueues the inspector sidebar panel assets (quiz CPT only) |
 
 ## REST API
-Endpoints are registered through the PRC Platform API aggregator.
 
-- POST `quiz/create-group`
-  - Body JSON: `{ groupName, ownerId, answers, clusters }`
-  - Params: `quizId` (string), `nonce` (string)
-  - Response: `{ group_id, group_url }` or `WP_Error`
+All endpoints are registered through the platform's `prc_api_endpoints` filter. Every public endpoint validates a nonce of the form `prc_quiz_nonce--{id}`.
 
-- GET `quiz/get-group`
-  - Params: `groupId` (string), `nonce` (string)
-  - Response: `{ group_id, name, quiz_id, created, owner, typology_groups, answers, total, results_url, group_url, quiz_name }` or `WP_Error`
+| Method | Route | Auth | Description |
+|--------|-------|------|-------------|
+| `POST` | `quiz/submit` | Nonce | Records a submission; creates or increments the archetype in Firebase; updates group if `groupId` is present |
+| `POST` | `quiz/create-group` | Nonce | Creates a community group in Firebase; returns `{ group_id, group_url }` |
+| `GET` | `quiz/get-group` | Nonce | Returns full group data including typology clusters, answer tallies, and result/group URLs |
+| `POST` | `quiz/purge-archetypes` | `manage_options` | Admin-only; wipes all archetypes for a quiz from Firebase |
 
-- POST `quiz/submit`
-  - Body JSON: `{ hash, userSubmission, score }`
-  - Params: `quizId` (string), `nonce` (string), optional `groupId` (string)
-  - Response: `{ hash, time }` or `WP_Error`
+The `quiz` REST resource also exposes a `_submissions` field containing the `_report` post meta (requires `edit_posts` capability).
 
-Security: All endpoints validate a nonce of the form `prc_quiz_nonce--{id}`.
+## URL Patterns
 
-## Cookies (WP Consent API)
-- `prc-quiz-builder` — 30 days — Stores quiz JSON (answers, scores, hash, completion timestamp)
-- `prc-quiz-builder__typology` — 30 days — Stores typology answers and group for personalization
+| Pattern | Query Vars |
+|---------|-----------|
+| `/quiz/{slug}/` | `quiz={slug}` |
+| `/quiz/{slug}/results/{hash}/` | `quiz`, `quizArchetype`, `quizShowResults=true` |
+| `/quiz/{slug}/group/{group-id}/` | `quiz`, `quizGroup` |
+| `/quiz/{slug}/group/{group-id}/results/` | `quiz`, `quizGroup`, `quizShowResults=true` |
+| `/quiz/{slug}/group/{group-id}/results/{hash}/` | `quiz`, `quizGroup`, `quizArchetype`, `quizShowResults=true` |
+| `/quiz/{slug}/group/{domain}/{group-id}/results/` | `quiz`, `quizGroup`, `quizGroupDomain`, `quizShowResults=true` |
+| `/quiz/{slug}/embed/` or `/quiz/{slug}/iframe/` | `quiz`, `iframe=true` |
 
-## Custom Post Type
-- Type: `quiz`
-- Public, queryable, REST-enabled; archive on `/quiz/`
-- Taxonomies: `category`, `research-teams`, `bylines`, `datasets`, `collections`
-- Menu icon: `dashicons-forms`
+Research-team-prefixed variants (e.g. `/politics/quiz/{slug}/...`) follow the same sub-patterns, registered via `prc_research_teams_rewrite_config`.
 
-## Development
-Inside `plugins/prc-quiz-builder/`:
+## Data Storage
 
-- Build blocks:
-  ```bash
-  npm run build           # production build
-  npm run start           # watch mode for development
-  npm run build:all       # legacy + ESM + blocks manifest
-  ```
+| Store | Key / Path | Contents |
+|-------|-----------|----------|
+| Firebase | `quiz/{quiz_id}/archetypes/{hash}` | `{ score, submission, hits }` |
+| Firebase | `quiz/{quiz_id}/groups/{group_id}` | Group metadata, cluster tallies, answer tallies, total |
+| Firebase | `users/{owner_id}/groups/{group_id}` | Group index per user |
+| WP post meta | `_report` | Submission counts: first 24 hrs, first week, total, by year/month |
+| WP object cache | MD5 of `{quiz_id, hash}` | Cached archetype lookup; group `prc_quiz_builder_archetypes`; TTL 1 day |
+| MySQL (legacy) | `community_groups` custom table | Legacy group data — migrated lazily to Firebase on first `get_group()` call |
 
-- Tests (Playwright):
-  ```bash
-  npm install
-  npm run test:env:start
-  npm test
-  # debugging
-  npm run test:debug
-  npm run test:ui
-  npm run test:headed
-  ```
-  See `plugins/prc-quiz-builder/tests/README.md` for details.
+## Cookies
 
-## Embedding
-- Use the `Embeddable` block to reuse a quiz across pages.
-- Iframe-friendly views are available at `/quiz/{slug}/embed/` and `/quiz/{slug}/iframe/`.
+Both cookies are registered with WP Consent API as `functional`, 30-day expiry.
 
-## License
-GPL-2.0+ — see header in `prc-quiz-builder.php`.
+| Cookie | Contents |
+|--------|---------|
+| `prc-quiz-builder` | Quiz progress JSON: answers, scores, archetype hash, completion timestamp |
+| `prc-quiz-builder__typology` | Typology answers and assigned group for personalization |
 
-## Credits
-Author: Seth Rubenstein. Part of the PRC Platform monorepo.
+## Local Development
+
+```bash
+# From the monorepo root:
+npm run build -w @prc/quiz-builder
+npm run start -w @prc/quiz-builder
+```
+
+To run Playwright tests:
+
+```bash
+cd plugins/prc-quiz-builder
+npm run test:env:start
+npm test
+```
+
+## Troubleshooting
+
+### Blocks not appearing after a build
+
+**Symptom**: `prc-quiz/controller` (or any quiz block) is missing from the editor or throws a "block is invalid" error.  
+**Cause**: `load_blocks()` globs `build/*/` for block directories and calls `include_block()` on each. If a compiled PHP file is missing from `build/{block-name}/class-{block-name}.php`, the error is logged but swallowed silently — the block just won't register.  
+**Fix**: Run `npm run build -w @prc/quiz-builder` and confirm PHP files exist under `build/`. Check PHP error logs for `Block missing.` entries.
+
+### Quiz submissions failing silently
+
+**Symptom**: Users complete a quiz but results don't persist; the submit endpoint returns a 403 or generic error.  
+**Cause**: Either the nonce is stale (format `prc_quiz_nonce--{quiz_id}`) or `Rest_API::$rest_disabled` has been flipped to `true` (emergency kill switch in `class-rest-api.php`).  
+**Fix**: Verify the nonce is generated fresh on each page load in the Controller's `render_block_callback`. If the kill switch is active, set `$rest_disabled = false` and redeploy.
+
+### Legacy group URLs returning 404
+
+**Symptom**: A group URL created before the Firebase migration returns "Group not found".  
+**Cause**: `Groups::get_group()` first queries Firebase; if empty, it attempts `upgrade_legacy_group_if_exists()` which queries the legacy MySQL table. If the MySQL record was already deleted or the table was dropped, migration fails silently.  
+**Fix**: Confirm `Community_Groups_Table::exists()` returns true. If the table was removed, the group cannot be recovered from legacy storage.
+
+### Inspector sidebar panel not loading
+
+**Symptom**: No quiz analytics panel appears in the block editor sidebar.  
+**Cause**: `Inspector_Sidebar_Panel::enqueue_block_plugin_assets()` only enqueues on screens where `$screen->post_type === 'quiz'`. It also checks `is_admin()`. Opening the editor from a non-`quiz` post type silently skips enqueue.  
+**Fix**: Confirm you are editing a `quiz` post type, not a page or another CPT that embeds the quiz via `prc-quiz/embeddable`.
