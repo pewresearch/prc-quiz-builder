@@ -22,7 +22,7 @@
 		"test:env:reset": "wp-env destroy && wp-env start"
 	},
 	"author": "",
-	"license": "ISC",
+	"license": "GPL-2.0-or-later",
 	"dependencies": {
 		"@emotion/styled": "^11.14.0",
 		"@wordpress/icons": "^11.3.0",
