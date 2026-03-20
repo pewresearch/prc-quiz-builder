@@ -7,38 +7,15 @@ import clsx from 'clsx';
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	useBlockProps,
-	useInnerBlocksProps,
-	InspectorControls,
-} from '@wordpress/block-editor';
-import { PanelBody, SelectControl } from '@wordpress/components';
+import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+import { Placeholder } from '@wordpress/components';
 
 /**
  * Internal Dependencies
  */
+import Icon from './icon';
 
-/**
- * The edit function describes the structure of your block in the context of the
- * editor. This represents what the editor will render when the block is used.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
- *
- * @param {Object}   props               Properties passed to the function.
- * @param {Object}   props.attributes    Available block attributes.
- * @param            props.context
- * @param            props.clientId
- * @param            props.isSelected
- * @param {Function} props.setAttributes Function that updates individual attributes.
- * @param {Object}   props.__unstableLayoutClassNames The class names for the layout.
- *
- * @return {WPElement} Element to render.
- */
 export default function Edit({
-	attributes,
-	setAttributes,
-	context,
-	clientId,
 	isSelected,
 	__unstableLayoutClassNames: layoutClassNames,
 }) {
@@ -46,5 +23,17 @@ export default function Edit({
 		className: clsx(layoutClassNames),
 	});
 	const innerBlocksProps = useInnerBlocksProps(blockProps, {});
-	return <div {...innerBlocksProps} />;
+
+	return (
+		<div {...blockProps}>
+			<Placeholder
+				label={__('Results', 'prc-quiz')}
+				instructions={__(
+					'Contains the results of the users awarded archetype for this quiz. This is the final page of the quiz.',
+					'prc-quiz'
+				)}
+			/>
+			{innerBlocksProps.children}
+		</div>
+	);
 }

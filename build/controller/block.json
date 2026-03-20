@@ -13,7 +13,9 @@
   "allowedBlocks": [
     "prc-quiz/pages",
     "prc-quiz/results",
-    "prc-quiz/group-results"
+    "prc-quiz/group-results",
+    "prc-quiz-cast/host",
+    "prc-quiz-cast/player"
   ],
   "attributes": {
     "type": {

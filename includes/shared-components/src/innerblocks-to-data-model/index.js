@@ -62,7 +62,8 @@ function structureData(controllerBlock) {
 	}
 
 	// get all `prc-quiz/question` blocks and their children from all pages
-	pages.forEach((page) => {
+	pages.forEach((page, pageIndex) => {
+		const pageTitle = page.attributes?.title || `Page ${pageIndex + 1}`;
 		const questionBlocks = findQuestionBlocks(page.innerBlocks);
 
 		questionBlocks.forEach((question) => {
@@ -81,12 +82,15 @@ function structureData(controllerBlock) {
 				demoBreakValues: question.attributes.demoBreakValues
 					? JSON.parse(question.attributes.demoBreakValues)
 					: [],
+				pageTitle,
+				pageIndex,
 			};
 
 			// Parse Answer Blocks recursively:
 			const answerBlocks = findAnswerBlocks(question.innerBlocks);
 			answerBlocks.forEach((answer) => {
 				questionBlock.answers.push({
+					clientId: answer.clientId,
 					uuid: answer.attributes.uuid,
 					answer: answer.attributes.answer,
 					questionId: questionInternalId,

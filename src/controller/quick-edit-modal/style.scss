@@ -1,0 +1,39 @@
+.quiz-quick-edit-modal {
+	.components-modal__content {
+		display: flex;
+		flex-direction: column;
+		padding: 0;
+	}
+
+	.dataviews-wrapper {
+		flex: 1;
+		overflow: auto;
+	}
+}
+
+.quiz-quick-edit__editable-cell {
+	.components-textarea-control__input {
+		min-height: 36px;
+		font-size: 13px;
+		line-height: 1.4;
+		resize: vertical;
+	}
+}
+
+.quiz-quick-edit__question-number {
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+}
+
+.quiz-quick-edit__cell--grouped {
+	display: block;
+}
+
+.quiz-quick-edit__points-input {
+	max-width: 64px;
+
+	.components-input-control__input {
+		text-align: center;
+		font-variant-numeric: tabular-nums;
+	}
+}

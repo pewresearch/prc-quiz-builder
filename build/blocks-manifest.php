@@ -123,7 +123,9 @@ return array(
 		'allowedBlocks' => array(
 			'prc-quiz/pages',
 			'prc-quiz/results',
-			'prc-quiz/group-results'
+			'prc-quiz/group-results',
+			'prc-quiz-cast/host',
+			'prc-quiz-cast/player'
 		),
 		'attributes' => array(
 			'type' => array(
@@ -334,6 +336,7 @@ return array(
 			'html' => false,
 			'interactivity' => true,
 			'animations' => true,
+			'listView' => true,
 			'color' => array(
 				'background' => true,
 				'text' => true,

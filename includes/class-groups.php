@@ -277,53 +277,108 @@ class Groups {
 	}
 
 	/**
-	 * Update a group.
+	 * Validate a value for use as a Firebase RTDB path segment.
 	 *
-	 * @param array $submission The submission.
-	 * @param int   $score The score.
-	 * @return void
+	 * Uses a regex allowlist to reject path traversal and special characters.
+	 * Intentionally does NOT transform the value (e.g. lowercase) to avoid
+	 * silently writing to mismatched keys.
+	 *
+	 * @param mixed  $value The value to validate.
+	 * @param string $label Human-readable label for error messages.
+	 * @return true|WP_Error
+	 */
+	private static function validate_path_segment( $value, $label = 'value' ) {
+		if ( ! is_string( $value ) && ! is_numeric( $value ) ) {
+			return new WP_Error(
+				'invalid_path_segment',
+				sprintf( 'Invalid %s: must be a string or number.', $label ),
+				array( 'status' => 400 )
+			);
+		}
+		$value = (string) $value;
+		if ( '' === $value ) {
+			return new WP_Error(
+				'invalid_path_segment',
+				sprintf( 'Invalid %s: must not be empty.', $label ),
+				array( 'status' => 400 )
+			);
+		}
+		if ( ! preg_match( '/^[a-zA-Z0-9_\-]+$/', $value ) ) {
+			return new WP_Error(
+				'invalid_path_segment',
+				sprintf( 'Invalid %s: contains disallowed characters.', $label ),
+				array( 'status' => 400 )
+			);
+		}
+		return true;
+	}
+
+	/**
+	 * Update a group using atomic Firebase server-side increments.
+	 *
+	 * Each counter (total, cluster, answer) is incremented atomically via
+	 * Firebase's .sv increment in a single multi-path update, eliminating
+	 * the read-modify-write race condition.
+	 *
+	 * @param array  $submission Flat array of answer UUID strings.
+	 * @param string $score      Cluster/archetype identifier.
+	 * @return true|WP_Error
 	 */
 	public function update_group( $submission, $score ) {
-		$cluster_assigned = $score;
-
-		$existing_group   = $this->get_group();
-		$current_total    = $existing_group->total;
-		$current_answers  = $existing_group->answers;
-		$current_clusters = $existing_group->clusters;
-		// If clusters does not exists, check if typology_groups exists, if so, use that.
-		// This will upgrade the legacy field to the new field.
-		if ( empty( $current_clusters ) && ! empty( $existing_group->typology_groups ) ) {
-			$current_clusters = $existing_group->typology_groups;
+		if ( ! is_array( $submission ) ) {
+			return new WP_Error( 'invalid_submission', 'Submission must be an array.', array( 'status' => 400 ) );
+		}
+		if ( ! is_string( $score ) || '' === $score ) {
+			return new WP_Error( 'invalid_score', 'Score must be a non-empty string.', array( 'status' => 400 ) );
 		}
 
-		$total    = $current_total + 1;
-		$answers  = $current_answers;
-		$clusters = $current_clusters;
-
-		$last_updated = gmdate( 'Y-m-d H:i:s' );
-
-		// Increment the count for each answer given.
-		foreach ( $answers as $answer_uuid => $value ) {
-			if ( in_array( $answer_uuid, $submission ) ) {
-				++$answers[ $answer_uuid ];
+		// Validate all values used as Firebase path segments.
+		foreach (
+			array(
+				array( $this->quiz_id, 'quiz ID' ),
+				array( $this->group_id, 'group ID' ),
+				array( $score, 'score' ),
+			) as list( $val, $label )
+		) {
+			$valid = self::validate_path_segment( $val, $label );
+			if ( is_wp_error( $valid ) ) {
+				return $valid;
 			}
 		}
 
-		// Increment the total count for the cluster.
-		if ( array_key_exists( $cluster_assigned, $clusters ) ) {
-			++$clusters[ $cluster_assigned ];
-		} else {
-			$clusters[ $cluster_assigned ] = 1;
+		$increment = array( '.sv' => array( 'increment' => 1 ) );
+
+		$updates = array(
+			'total'                     => $increment,
+			'clusters/' . $score        => $increment,
+			'typology_groups/' . $score => $increment,
+			'last_updated'              => gmdate( 'Y-m-d H:i:s' ),
+		);
+
+		foreach ( $submission as $answer_uuid ) {
+			if ( ! is_string( $answer_uuid ) ) {
+				continue;
+			}
+			$valid = self::validate_path_segment( $answer_uuid, 'answer UUID' );
+			if ( is_wp_error( $valid ) ) {
+				return $valid;
+			}
+			$updates[ 'answers/' . $answer_uuid ] = $increment;
 		}
 
-		$this->db->getReference( 'quiz/' . $this->quiz_id . '/groups/' . $this->group_id )->update(
-			array(
-				'answers'         => $answers,
-				'clusters'        => $clusters,
-				'typology_groups' => $clusters, // This is the legacy field for the typology groups or "clusters" for the quiz.
-				'total'           => $total,
-				'last_updated'    => $last_updated,
-			)
-		);
+		try {
+			$ref = $this->db->getReference(
+				'quiz/' . $this->quiz_id . '/groups/' . $this->group_id
+			);
+			$ref->update( $updates );
+		} catch ( \Kreait\Firebase\Exception\DatabaseException $e ) {
+			return new WP_Error(
+				'firebase_error',
+				'Group update failed.',
+				array( 'status' => 500 )
+			);
+		}
+
+		return true;
 	}
 }

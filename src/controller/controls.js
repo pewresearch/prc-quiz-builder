@@ -8,6 +8,7 @@
 import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
 import {
+	BlockControls,
 	InspectorControls,
 	InspectorAdvancedControls,
 } from '@wordpress/block-editor';
@@ -17,17 +18,21 @@ import {
 	ToggleControl,
 	SelectControl,
 	TextControl,
+	ToolbarGroup,
+	ToolbarButton,
 	__experimentalNumberControl as NumberControl,
 	Button,
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
+import { table } from '@wordpress/icons';
 
 /**
  * Internal Dependencies
  */
 // eslint-disable-next-line import/no-relative-packages
 import { JSONSortableList } from '@prc/quiz-components';
+import QuizQuickEditModal from './quick-edit-modal';
 
 function Controls({ attributes, setAttributes, clientId }) {
 	const {
@@ -42,6 +47,7 @@ function Controls({ attributes, setAttributes, clientId }) {
 		postId: select('core/editor').getCurrentPostId(),
 	}));
 
+	const [isQuickEditOpen, setIsQuickEditOpen] = useState(false);
 	const [isPurgingArchetypes, setIsPurgingArchetypes] = useState(false);
 
 	const purgeArchetypes = () => {
@@ -62,6 +68,21 @@ function Controls({ attributes, setAttributes, clientId }) {
 
 	return (
 		<>
+			<BlockControls>
+				<ToolbarGroup>
+					<ToolbarButton
+						icon={table}
+						label={__('Quick Edit Content', 'prc-quiz')}
+						onClick={() => setIsQuickEditOpen(true)}
+					/>
+				</ToolbarGroup>
+			</BlockControls>
+			{isQuickEditOpen && (
+				<QuizQuickEditModal
+					clientId={clientId}
+					onClose={() => setIsQuickEditOpen(false)}
+				/>
+			)}
 			<InspectorAdvancedControls>
 				<BaseControl
 					label="Purge Quiz Archetypes"

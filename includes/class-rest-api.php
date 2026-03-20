@@ -209,8 +209,8 @@ class Rest_API {
 	 * @param string $quiz_id The quiz id.
 	 * @param string $group_id The group id.
 	 * @param array  $submission The submission.
-	 * @param int    $score The score.
-	 * @return bool|WP_Error
+	 * @param string $score The score / cluster identifier.
+	 * @return true|WP_Error
 	 */
 	public function update_group( $quiz_id, $group_id, $submission, $score ) {
 		$groups = new Groups(
@@ -225,20 +225,26 @@ class Rest_API {
 		if ( false === $existing_group ) {
 			return new WP_Error(
 				'group_not_found',
-				'ERROR: group_update/404. GROUP_ID: ' . $group_id . '. Group not found.',
+				'Group not found.',
 				array( 'status' => 404 )
 			);
 		}
 
 		$success = $groups->update_group( $submission, $score );
 
-		if ( false === $success ) {
+		if ( is_wp_error( $success ) ) {
+			return $success;
+		}
+
+		if ( true !== $success ) {
 			return new WP_Error(
 				'group_not_updated',
-				'ERROR: group_update/500. GROUP_ID: ' . $group_id . '. Group could not be updated, please contact technical support.',
+				'Group could not be updated.',
 				array( 'status' => 500 )
 			);
 		}
+
+		wp_cache_delete( $group_id, 'prc_quiz_group_data' );
 
 		return true;
 	}
@@ -300,6 +306,22 @@ class Rest_API {
 			return $nonce;
 		}
 
+		// Per-IP rate limiting: 10 submissions per quiz per minute (fixed window).
+		// wp_cache_add only sets when key is absent, establishing the window TTL once.
+		// wp_cache_incr atomically increments without resetting the TTL.
+		$client_ip    = $_SERVER['REMOTE_ADDR'] ?? 'unknown'; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$throttle_key = 'prc_quiz_submit_' . md5( $client_ip . '_' . $quiz_id );
+		wp_cache_add( $throttle_key, 0, 'prc_quiz_throttle', MINUTE_IN_SECONDS );
+		$recent_count = wp_cache_incr( $throttle_key, 1, 'prc_quiz_throttle' );
+
+		if ( $recent_count > 10 ) {
+			return new \WP_Error(
+				'rate_limited',
+				'Too many submissions. Please try again later.',
+				array( 'status' => 429 )
+			);
+		}
+
 		$group_id = $request->get_param( 'groupId' );
 		$is_group = ! empty( $group_id ) && is_string( $group_id );
 
@@ -321,8 +343,14 @@ class Rest_API {
 			$group_cluster = is_string( $score ) ? $score : $archetype_hash;
 			$updated       = $this->update_group( $quiz_id, $group_id, $submission, $group_cluster );
 			if ( true !== $updated ) {
-				// If this is a group and it wasnt updated then we should not update the archetype and stop.
-				return new \WP_Error( 'group-submission-error', 'ERROR: group_update/500. GROUP_ID: ' . $group_id . '. An error occured when updating this group. We have saved your answers and your place. Wait a few minutes and try again, if you still encounter issues please contact technical support.', array( 'status' => 500 ) );
+				if ( is_wp_error( $updated ) ) {
+					return $updated;
+				}
+				return new \WP_Error(
+					'group-submission-error',
+					'An error occurred when updating this group. We have saved your answers and your place. Wait a few minutes and try again, if you still encounter issues please contact technical support.',
+					array( 'status' => 500 )
+				);
 			}
 		}
 
