@@ -467,6 +467,34 @@ const { state, actions } = store('prc-quiz/controller', {
 		onInit: () => {
 			const context = getContext();
 			context.processing = true;
+
+			// Handling for fluid display type.
+
+			if ('fluid' === context.displayType && window.innerWidth < 782) {
+				context.displayType = 'scrollable';
+				const buttonWrappers = document.querySelectorAll(
+					'.prc-quiz-next-page-button-wrapper'
+				);
+				buttonWrappers.forEach((buttonWrapper) => {
+					buttonWrapper.setAttribute('hidden', 'true');
+				});
+			}
+
+			if ('fluid' === context.displayType && window.innerWidth >= 782) {
+				context.displayType = 'paged';
+			}
+
+			// Also hide button wrappers for scrollable display type.
+
+			if ('scrollable' === context.displayType) {
+				const buttonWrappers = document.querySelectorAll(
+					'.prc-quiz-next-page-button-wrapper'
+				);
+				buttonWrappers.forEach((buttonWrapper) => {
+					buttonWrapper.setAttribute('hidden', 'true');
+				});
+			}
+
 			// Check if the user has a cookie for this quiz, and if so check if currentPageUuid is set, if so, set context to it.
 			setTimeout(
 				withScope(() => {

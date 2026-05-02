@@ -31,9 +31,9 @@ class Result_Histogram {
 	 * @return string The block content.
 	 */
 	public function render_block_callback( $attributes, $content, $block ) {
-		// $attributes                       = \PRC\Platform\Block_Utils\get_block_attributes( 'prc-quiz/result-histogram', $attributes );
-		// $attributes['barColor']           = \PRC\Platform\Block_Utils\get_color_by_slug( $attributes['barColor'] )['hex'];
-		// $attributes['isHighlightedColor'] = \PRC\Platform\Block_Utils\get_color_by_slug( $attributes['isHighlightedColor'] )['hex'];
+		// $attributes                       = \PRC\BlockUtils\get_block_attributes( 'prc-quiz/result-histogram', $attributes );
+		// $attributes['barColor']           = \PRC\BlockUtils\get_color_by_slug( $attributes['barColor'] )['hex'];
+		// $attributes['isHighlightedColor'] = \PRC\BlockUtils\get_color_by_slug( $attributes['isHighlightedColor'] )['hex'];
 
 		$message = array_key_exists( 'message', $attributes ) ? $attributes['message'] : "I scored %s on a Pew Research Center's " . get_the_title() . ' quiz.';
 		$data    = json_decode( $attributes['histogramData'] );

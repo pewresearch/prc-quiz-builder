@@ -1,0 +1,119 @@
+
+> @prc/quiz-builder@4.0.0 build
+> wp-scripts build --webpack-copy-php && wp-scripts build --experimental-modules --webpack-copy-php && wp-scripts build-blocks-manifest
+
+assets by chunk 15.3 KiB (id hint: style) 20 assets
+assets by path [1m[32membeddable/[39m[22m 29.1 KiB 5 assets
+assets by chunk 244 KiB (name: controller/index) 4 assets
+assets by chunk 14.2 KiB (name: question/index) 4 assets
+assets by chunk 10.5 KiB (name: answer/index) 4 assets
+assets by chunk 8.83 KiB (name: page/index) 4 assets
+assets by chunk 8.84 KiB (name: result-table/index) 4 assets
+assets by chunk 8.17 KiB (name: result-histogram/index) 4 assets
+assets by chunk 3.15 KiB (name: pages/index) 4 assets
+assets by chunk 2.81 KiB (name: result-score/index) 4 assets
+assets by chunk 2.68 KiB (name: group-results/index) 4 assets
+assets by path [1m[32mresults/*.php[39m[22m 8.86 KiB
+  asset [1m[32mresults/class-results.php[39m[22m 8.63 KiB [1m[32m[emitted][39m[22m [from: src/results/class-results.php] [1m[32m[copied][39m[22m
+  asset [1m[32mresults/index.asset.php[39m[22m 229 bytes [1m[32m[emitted][39m[22m (name: results/index)
++ 20 assets
+orphan modules 4.39 MiB (javascript) 18.3 KiB (runtime) [1m[33m[orphan][39m[22m 2814 modules
+runtime modules 28.3 KiB 39 modules
+built modules 9.38 KiB (css/mini-extract) 900 KiB (javascript) [1m[33m[built][39m[22m
+  cacheable modules 9.38 KiB (css/mini-extract) 10.1 KiB (javascript)
+    modules by path [1m./src/[39m[22m 9.38 KiB 20 modules
+    javascript modules 10.1 KiB
+      modules by path [1m../../node_modules/use-sync-external-store/[39m[22m 2.15 KiB
+        [1m../../node_modules/use-sync-external-store/shim/index.js[39m[22m 234 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+        [1m../../node_modules/use-sync-external-store/cjs/use-sync-external-store-shim...(truncated)[39m[22m 1.92 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+      [1m../../node_modules/remove-accents/index.js[39m[22m 6.07 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+      [1m../../node_modules/fast-deep-equal/es6/index.js[39m[22m 1.89 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  + 12 modules
+
+[1m[33mWARNING[39m[22m in [1mentrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+Entrypoints:
+  controller/index (247 KiB)
+      controller/style-index.css
+      controller/style-index-rtl.css
+      controller/index.css
+      controller/index.js
+      controller/index-rtl.css
+      controller/index.asset.php
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1mwebpack performance recommendations: 
+You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+For more info visit https://webpack.js.org/guides/code-splitting/[39m[22m
+
+webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 35966 ms
+assets by chunk 15.3 KiB (id hint: style) 20 assets
+assets by path [1m[32membeddable/[39m[22m 29.1 KiB 5 assets
+assets by chunk 244 KiB (name: controller/index) 4 assets
+assets by chunk 14.2 KiB (name: question/index) 4 assets
+assets by chunk 10.5 KiB (name: answer/index) 4 assets
+assets by chunk 8.83 KiB (name: page/index) 4 assets
+assets by chunk 8.84 KiB (name: result-table/index) 4 assets
+assets by chunk 8.17 KiB (name: result-histogram/index) 4 assets
+assets by chunk 3.15 KiB (name: pages/index) 4 assets
+assets by chunk 2.81 KiB (name: result-score/index) 4 assets
+assets by chunk 2.68 KiB (name: group-results/index) 4 assets
+assets by path [1m[32mresults/*.php[39m[22m 8.86 KiB
+  asset [1m[32mresults/class-results.php[39m[22m 8.63 KiB [1m[33m[compared for emit][39m[22m [from: src/results/class-results.php] [1m[32m[copied][39m[22m
+  asset [1m[32mresults/index.asset.php[39m[22m 229 bytes [1m[33m[compared for emit][39m[22m (name: results/index)
++ 20 assets
+orphan modules 4.39 MiB (javascript) 18.3 KiB (runtime) [1m[33m[orphan][39m[22m 2814 modules
+runtime modules 28.3 KiB 39 modules
+built modules 9.38 KiB (css/mini-extract) 900 KiB (javascript) [1m[33m[built][39m[22m
+  cacheable modules 9.38 KiB (css/mini-extract) 10.1 KiB (javascript)
+    modules by path [1m./src/[39m[22m 9.38 KiB 20 modules
+    javascript modules 10.1 KiB
+      modules by path [1m../../node_modules/use-sync-external-store/[39m[22m 2.15 KiB
+        [1m../../node_modules/use-sync-external-store/shim/index.js[39m[22m 234 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+        [1m../../node_modules/use-sync-external-store/cjs/use-sync-external-store-shim...(truncated)[39m[22m 1.92 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+      [1m../../node_modules/remove-accents/index.js[39m[22m 6.07 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+      [1m../../node_modules/fast-deep-equal/es6/index.js[39m[22m 1.89 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  + 12 modules
+
+[1m[33mWARNING[39m[22m in [1mentrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+Entrypoints:
+  controller/index (247 KiB)
+      controller/style-index.css
+      controller/style-index-rtl.css
+      controller/index.css
+      controller/index.js
+      controller/index-rtl.css
+      controller/index.asset.php
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1mwebpack performance recommendations: 
+You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+For more info visit https://webpack.js.org/guides/code-splitting/[39m[22m
+
+webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 34069 ms
+
+assets by path [1m[32mcontroller/[39m[22m 12.8 KiB 2 assets
+assets by path [1m[32mgroup-results/[39m[22m 2.91 KiB 2 assets
+assets by path [1m[32mresult-histogram/[39m[22m 1.57 KiB 2 assets
+assets by path [1m[32mresults/[39m[22m 1.15 KiB 2 assets
+assets by path [1m[32mresult-table/[39m[22m 1.07 KiB 2 assets
+assets by path [1m[32mpage/[39m[22m 768 bytes 2 assets
+assets by path [1m[32manswer/[39m[22m 707 bytes 2 assets
+assets by path [1m[32mpages/[39m[22m 502 bytes 2 assets
+assets by path [1m[32mquestion/[39m[22m 255 bytes 2 assets
+orphan modules 6.88 KiB [1m[33m[orphan][39m[22m 3 modules
+runtime modules 663 bytes 3 modules
+built modules 53.7 KiB [1m[33m[built][39m[22m
+  modules by path [1m./src/[39m[22m 43.4 KiB
+    [1m./src/answer/view.js + 1 modules[39m[22m 1.98 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m./src/controller/view.js + 2 modules[39m[22m 21.8 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m./src/group-results/view.js + 2 modules[39m[22m 7.41 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m./src/page/view.js + 1 modules[39m[22m 1.45 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    + 5 modules
+  cacheable modules 10.3 KiB
+    [1m../../node_modules/md5/md5.js[39m[22m 5.89 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m../../node_modules/crypt/crypt.js[39m[22m 2.9 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m../../node_modules/charenc/charenc.js[39m[22m 850 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m../../node_modules/is-buffer/index.js[39m[22m 698 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  [1mexternal "@wordpress/interactivity-router"[39m[22m 42 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 12832 ms
+Block metadata PHP file generated at: build/blocks-manifest.php

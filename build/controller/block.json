@@ -31,7 +31,8 @@
       "type": "string",
       "enum": [
         "paged",
-        "scrollable"
+        "scrollable",
+        "fluid"
       ],
       "default": "paged"
     },

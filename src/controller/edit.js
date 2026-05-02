@@ -78,7 +78,7 @@ export default function Edit({
 	const blockProps = useBlockProps({
 		className: clsx(className, {
 			'is-scrollable': displayType === 'scrollable',
-			'is-paged': displayType === 'paged',
+			'is-paged': displayType === 'paged' || displayType === 'fluid',
 		}),
 	});
 

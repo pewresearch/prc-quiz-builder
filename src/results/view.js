@@ -80,13 +80,18 @@ const { state, actions } = store('prc-quiz/controller', {
 	callbacks: {
 		*onResultsDisplay() {
 			const context = getContext();
-			const { displayResults } = context;
+			const { displayResults, displayType, configuredDisplayType } =
+				context;
 			if (!displayResults) {
 				return;
 			}
 			const { ref } = getElement();
-			// When results become available, scroll to the top of the element.
-			ref.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			const skipScrollToResults =
+				configuredDisplayType === 'fluid' &&
+				displayType === 'scrollable';
+			if (!skipScrollToResults) {
+				ref.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			}
 			actions.runAnimation();
 		},
 	},

@@ -37,7 +37,7 @@ class Rest_API {
 	 */
 	public function __construct( $loader ) {
 		if ( null !== $loader ) {
-			$loader->add_filter( 'prc_api_endpoints', $this, 'register_rest_endpoints' );
+			$loader->add_action( 'rest_api_init', $this, 'register_rest_endpoints' );
 		}
 	}
 
@@ -63,97 +63,102 @@ class Rest_API {
 	 * @param array $endpoints The endpoints.
 	 * @return array
 	 */
-	public function register_rest_endpoints( $endpoints ) {
-		$create_group = array(
-			'route'               => 'quiz/create-group',
-			'methods'             => 'POST',
-			'callback'            => array( $this, 'restfully_create_group' ),
-			'args'                => array(
-				'quizId' => array(
-					'validate_callback' => function ( $param, $request, $key ) {
-						return is_string( $param );
-					},
+	/**
+	 * @hook rest_api_init
+	 */
+	public function register_rest_endpoints() {
+		register_rest_route(
+			'prc-api/v3',
+			'quiz/create-group',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'restfully_create_group' ),
+				'args'                => array(
+					'quizId' => array(
+						'validate_callback' => function ( $param, $request, $key ) {
+							return is_string( $param );
+						},
+					),
+					'nonce'  => array(
+						'validate_callback' => function ( $param, $request, $key ) {
+							return is_string( $param );
+						},
+					),
 				),
-				'nonce'  => array(
-					'validate_callback' => function ( $param, $request, $key ) {
-						return is_string( $param );
-					},
-				),
-			),
-			'permission_callback' => function () {
-				return true;
-			},
+				'permission_callback' => function () {
+					return true;
+				},
+			)
 		);
-
-		$get_group = array(
-			'route'               => 'quiz/get-group',
-			'methods'             => 'GET',
-			'callback'            => array( $this, 'restfully_get_quiz_group' ),
-			'args'                => array(
-				'groupId' => array(
-					'validate_callback' => function ( $param, $request, $key ) {
-						return is_string( $param );
-					},
+		register_rest_route(
+			'prc-api/v3',
+			'quiz/get-group',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'restfully_get_quiz_group' ),
+				'args'                => array(
+					'groupId' => array(
+						'validate_callback' => function ( $param, $request, $key ) {
+							return is_string( $param );
+						},
+					),
+					'nonce'   => array(
+						'validate_callback' => function ( $param, $request, $key ) {
+							return is_string( $param );
+						},
+					),
 				),
-				'nonce'   => array(
-					'validate_callback' => function ( $param, $request, $key ) {
-						return is_string( $param );
-					},
-				),
-			),
-			'permission_callback' => function () {
-				return true;
-			},
+				'permission_callback' => function () {
+					return true;
+				},
+			)
 		);
-
-		$quiz_submit = array(
-			'route'               => 'quiz/submit',
-			'methods'             => 'POST',
-			'callback'            => array( $this, 'restfully_submit_quiz' ),
-			'args'                => array(
-				'quizId'  => array(
-					'validate_callback' => function ( $param, $request, $key ) {
-						return is_string( $param );
-					},
+		register_rest_route(
+			'prc-api/v3',
+			'quiz/submit',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'restfully_submit_quiz' ),
+				'args'                => array(
+					'quizId'  => array(
+						'validate_callback' => function ( $param, $request, $key ) {
+							return is_string( $param );
+						},
+					),
+					'groupId' => array(
+						'validate_callback' => function ( $param, $request, $key ) {
+							return is_string( $param );
+						},
+					),
+					'nonce'   => array(
+						'validate_callback' => function ( $param, $request, $key ) {
+							return is_string( $param );
+						},
+					),
 				),
-				'groupId' => array(
-					'validate_callback' => function ( $param, $request, $key ) {
-						return is_string( $param );
-					},
-				),
-				'nonce'   => array(
-					'validate_callback' => function ( $param, $request, $key ) {
-						return is_string( $param );
-					},
-				),
-			),
-			'permission_callback' => function () {
-				return true;
-			},
+				'permission_callback' => function () {
+					return true;
+				},
+			)
 		);
-
-		$purge_archetypes = array(
-			'route'               => 'quiz/purge-archetypes',
-			'methods'             => 'POST',
-			'callback'            => array( $this, 'restfully_purge_archetypes' ),
-			'args'                => array(
-				'quizId' => array(
-					'validate_callback' => function ( $param, $request, $key ) {
-						return is_string( $param );
-					},
+		register_rest_route(
+			'prc-api/v3',
+			'quiz/purge-archetypes',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'restfully_purge_archetypes' ),
+				'args'                => array(
+					'quizId' => array(
+						'validate_callback' => function ( $param, $request, $key ) {
+							return is_string( $param );
+						},
+					),
 				),
-			),
-			'permission_callback' => function () {
-				return current_user_can( 'manage_options' );
-			},
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
 		);
-
-		$endpoints[] = $create_group;
-		$endpoints[] = $get_group;
-		$endpoints[] = $quiz_submit;
-		$endpoints[] = $purge_archetypes;
-
-		return $endpoints;
 	}
 
 	/**
@@ -273,13 +278,29 @@ class Rest_API {
 		$answers    = $data['answers'];
 		$clusters   = $data['clusters'];
 
-		return $this->create_group(
+		$result = $this->create_group(
 			$group_name,
 			$owner_id,
 			$quiz_id,
 			$clusters,
 			$answers
 		);
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		// Optionally seed the group with the owner's own submission when creating
+		// a group from the results page (owner_submission and owner_score present).
+		$owner_submission = isset( $data['ownerSubmission'] ) && is_array( $data['ownerSubmission'] ) ? $data['ownerSubmission'] : null;
+		$owner_score      = isset( $data['ownerScore'] ) ? $data['ownerScore'] : null;
+
+		if ( ! empty( $owner_submission ) && ! empty( $owner_score ) ) {
+			$group_cluster = is_string( $owner_score ) ? $owner_score : (string) $result['group_id'];
+			$this->update_group( $quiz_id, $result['group_id'], $owner_submission, $group_cluster );
+		}
+
+		return $result;
 	}
 
 	/**

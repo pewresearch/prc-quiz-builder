@@ -141,7 +141,8 @@ return array(
 				'type' => 'string',
 				'enum' => array(
 					'paged',
-					'scrollable'
+					'scrollable',
+					'fluid'
 				),
 				'default' => 'paged'
 			),
@@ -236,7 +237,12 @@ return array(
 		),
 		'supports' => array(
 			'anchor' => true,
-			'html' => false
+			'html' => false,
+			'align' => array(
+				'full',
+				'wide',
+				'center'
+			)
 		),
 		'providesContext' => array(
 			'prc-quiz/isEmbedded' => 'ref'

@@ -8,7 +8,7 @@ import { store, getContext } from '@wordpress/interactivity';
  */
 import createGroupFormAction from './create-group-form-action';
 
-const { state, actions } = store('prc-quiz/controller', {
+const { state } = store('prc-quiz/controller', {
 	state: {
 		get communityGroupResultsUrl() {
 			const context = getContext();
@@ -63,7 +63,7 @@ const { state, actions } = store('prc-quiz/controller', {
 		/**
 		 * Create a new group.
 		 * @param {Object} formFields - The form fields.
-		 * @returns {Promise<object>} - The create group response.
+		 * @return {Promise<object>} - The create group response.
 		 */
 		createGroup: async (formFields) => {
 			const { nonce, quizId } = state;
@@ -98,24 +98,81 @@ const { state, actions } = store('prc-quiz/controller', {
 				throw error;
 			}
 		},
+
+		/**
+		 * Create a new group from the results page, seeding it with the owner's
+		 * own quiz submission so they are automatically the first member.
+		 *
+		 * The user's submission data lives in the results block context as
+		 * `userScore`, which is populated server-side by class-results.php when
+		 * the user lands on the results URL.  It is also set client-side by
+		 * submitQuiz() after the user finishes the quiz in the same page load.
+		 *
+		 * @param {Object} formFields - The form fields (must contain groupName).
+		 * @return {Promise<object>} - The create group response.
+		 */
+		createGroupFromResults: async (formFields) => {
+			const { nonce, quizId } = state;
+			const { groupAnswers, groupClusters } = state;
+			const context = getContext();
+			const { userScore } = context;
+
+			const ownerId = await store(
+				'prc-user-accounts/content-gate'
+			).actions.getUserIdFromCookie();
+
+			if (!ownerId) {
+				throw new Error('Owner ID is required to create a group.');
+			}
+			if (!quizId) {
+				throw new Error('Quiz ID is required to create a group.');
+			}
+			if (
+				!groupAnswers ||
+				!groupClusters ||
+				!Object.keys(groupAnswers).length ||
+				!Object.keys(groupClusters).length
+			) {
+				throw new Error(
+					'Answers and clusters are required to create a group.'
+				);
+			}
+
+			// Gather the owner's submission to seed the group.
+			const ownerSubmission = userScore?.userSubmission?.length
+				? userScore.userSubmission
+				: null;
+			const ownerScore =
+				userScore?.score !== undefined && userScore?.score !== null
+					? userScore.score
+					: null;
+
+			try {
+				return await createGroupFormAction(
+					quizId,
+					ownerId,
+					formFields,
+					groupAnswers,
+					groupClusters,
+					nonce,
+					ownerSubmission,
+					ownerScore
+				);
+			} catch (error) {
+				throw error;
+			}
+		},
 	},
 	callbacks: {
 		onGroupsInit: () => {
 			const context = getContext();
-			const { groupsEnabled, groupData, groupDomain, groupId, quizId } =
-				context;
+			const { groupsEnabled, quizId } = context;
 			if (!groupsEnabled) {
 				return;
 			}
-			const quizData = state[`quiz_${quizId}`];
-			if (!quizData) {
-				return;
-			}
-			// console.log('onGroupsInit::', {
-			// 	...quizData,
-			// 	groupAnswers: state.groupAnswers,
-			// 	groupClusters: state.groupClusters,
-			// });
+			// Ensure quiz data is available before doing any group initialization.
+			const _quizData = state[`quiz_${quizId}`];
+			void _quizData;
 		},
 	},
 });

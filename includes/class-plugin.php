@@ -7,7 +7,7 @@
 
 namespace PRC\Platform\Quiz;
 
-use WP_Error, Community_Groups_Table;
+use WP_Error;
 
 /**
  * The core plugin class, responsible for loading all dependencies, defining
@@ -107,7 +107,6 @@ class Plugin {
 		// 1. Initialize Archetypes system.
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-archetypes.php';
 		// 2. Initialize Groups system.
-		require_once plugin_dir_path( __DIR__ ) . '/includes/legacy-groups/index.php';
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-groups.php';
 		// 3. Initialize the Rest API class.
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-rest-api.php';
@@ -134,15 +133,9 @@ class Plugin {
 		new Rest_API( $this->get_loader() );
 		new Inspector_Sidebar_Panel( $this->get_loader() );
 
-		$community_groups = new Community_Groups_Table();
-		// If the table does not exist, then create the table.
-		if ( ! $community_groups->exists() ) {
-			$community_groups->install();
-		}
-
 		$this->loader->add_action( 'init', $this, 'register_quiz_post_type' );
-		$this->loader->add_filter( 'prc_platform_rewrite_rules', $this, 'register_rewrite_rules' );
-		$this->loader->add_filter( 'prc_platform_rewrite_query_vars', $this, 'register_query_vars' );
+		$this->loader->add_action( 'init', $this, 'register_rewrite_rules' );
+		$this->loader->add_filter( 'query_vars', $this, 'register_query_vars' );
 		$this->loader->add_filter( 'prc_research_teams_rewrite_config', $this, 'register_research_teams_config' );
 		$this->loader->add_action( 'init', $this, 'init_quiz_block_on_new_post' );
 		$this->loader->add_filter( 'prc_iframe_content', $this, 'filter_iframe_content' );
@@ -225,7 +218,7 @@ class Plugin {
 	/**
 	 * Register the query vars.
 	 *
-	 * @hook prc_platform_rewrite_query_vars
+	 * @hook query_vars
 	 *
 	 * @param array $vars The query vars.
 	 * @return array The query vars.
@@ -249,36 +242,21 @@ class Plugin {
 	 * /quiz/{quiz-slug}/group/{group-id}/results/{archetype-hash}/ - The user's results page, with a group enabled.
 	 * /quiz/{quiz-slug}/group/{group-domain}/{group-id}/results/ - The results page for a group, with a group org enabled. i.e. /politics/quiz/political-typology/stanford-edu/xyawer1823na213/results/
 	 *
-	 * @hook prc_platform_rewrite_rules
-	 *
-	 * @param array $rules The rewrite rules.
-	 * @return array The rewrite rules.
+	 * @hook init
 	 */
-	public function register_rewrite_rules( $rules ) {
-		return array_merge(
-			$rules,
-			array(
-				'quiz/([^/]+)/results/([a-zA-Z0-9-]+)/?$' => 'index.php?quiz=$matches[1]&quizArchetype=$matches[2]&quizShowResults=true',
-			),
-			array(
-				'quiz/([^/]+)/group/([a-zA-Z0-9-]+)/?$' => 'index.php?quiz=$matches[1]&quizGroup=$matches[2]',
-			),
-			array(
-				'quiz/([^/]+)/group/([a-zA-Z0-9-]+)/results/?$' => 'index.php?quiz=$matches[1]&quizGroup=$matches[2]&quizShowResults=true',
-			),
-			array(
-				'quiz/([^/]+)/group/([a-zA-Z0-9-]+)/results/([a-zA-Z0-9-]+)/?$' => 'index.php?quiz=$matches[1]&quizGroup=$matches[2]&quizArchetype=$matches[3]&quizShowResults=true',
-			),
-			array(
-				'quiz/([^/]+)/group/([a-zA-Z0-9-]+)/([a-zA-Z0-9-]+)/results/?$' => 'index.php?quiz=$matches[1]&quizGroup=$matches[2]&quizGroupDomain=$matches[3]&quizShowResults=true',
-			),
-			array(
-				'quiz/([^/]+)/embed/?$' => 'index.php?quiz=$matches[1]&iframe=true',
-			),
-			array(
-				'quiz/([^/]+)/iframe/?$' => 'index.php?quiz=$matches[1]&iframe=true',
-			),
+	public function register_rewrite_rules() {
+		$rules = array(
+			'quiz/([^/]+)/results/([a-zA-Z0-9-]+)/?$' => 'index.php?quiz=$matches[1]&quizArchetype=$matches[2]&quizShowResults=true',
+			'quiz/([^/]+)/group/([a-zA-Z0-9-]+)/?$'   => 'index.php?quiz=$matches[1]&quizGroup=$matches[2]',
+			'quiz/([^/]+)/group/([a-zA-Z0-9-]+)/results/?$' => 'index.php?quiz=$matches[1]&quizGroup=$matches[2]&quizShowResults=true',
+			'quiz/([^/]+)/group/([a-zA-Z0-9-]+)/results/([a-zA-Z0-9-]+)/?$' => 'index.php?quiz=$matches[1]&quizGroup=$matches[2]&quizArchetype=$matches[3]&quizShowResults=true',
+			'quiz/([^/]+)/group/([a-zA-Z0-9-]+)/([a-zA-Z0-9-]+)/results/?$' => 'index.php?quiz=$matches[1]&quizGroup=$matches[2]&quizGroupDomain=$matches[3]&quizShowResults=true',
+			'quiz/([^/]+)/embed/?$'                   => 'index.php?quiz=$matches[1]&iframe=true',
+			'quiz/([^/]+)/iframe/?$'                  => 'index.php?quiz=$matches[1]&iframe=true',
 		);
+		foreach ( $rules as $rule => $query ) {
+			add_rewrite_rule( $rule, $query, 'top' );
+		}
 	}
 
 	/**
@@ -300,12 +278,12 @@ class Plugin {
 			'attachment_pattern' => 'quiz/[^/]+/([^/]+)',
 			'additional_rules'   => array(
 				// Results archetype rule.
-				'quiz/([^/]+)/results/([a-zA-Z0-9-]+)'                         => 'quiz=$matches[2]&quizArchetype=$matches[3]&quizShowResults=true',
+				'quiz/([^/]+)/results/([a-zA-Z0-9-]+)' => 'quiz=$matches[2]&quizArchetype=$matches[3]&quizShowResults=true',
 				// Group rules.
-				'quiz/([^/]+)/group/([a-zA-Z0-9-]+)'                           => 'quiz=$matches[2]&quizGroup=$matches[3]',
-				'quiz/([^/]+)/group/([a-zA-Z0-9-]+)/results'                   => 'quiz=$matches[2]&quizGroup=$matches[3]&quizShowResults=true',
-				'quiz/([^/]+)/group/([a-zA-Z0-9-]+)/results/([a-zA-Z0-9-]+)'   => 'quiz=$matches[2]&quizGroup=$matches[3]&quizArchetype=$matches[4]&quizShowResults=true',
-				'quiz/([^/]+)/group/([a-zA-Z0-9-]+)/([a-zA-Z0-9-]+)/results'   => 'quiz=$matches[2]&quizGroup=$matches[3]&quizGroupDomain=$matches[4]&quizShowResults=true',
+				'quiz/([^/]+)/group/([a-zA-Z0-9-]+)'   => 'quiz=$matches[2]&quizGroup=$matches[3]',
+				'quiz/([^/]+)/group/([a-zA-Z0-9-]+)/results' => 'quiz=$matches[2]&quizGroup=$matches[3]&quizShowResults=true',
+				'quiz/([^/]+)/group/([a-zA-Z0-9-]+)/results/([a-zA-Z0-9-]+)' => 'quiz=$matches[2]&quizGroup=$matches[3]&quizArchetype=$matches[4]&quizShowResults=true',
+				'quiz/([^/]+)/group/([a-zA-Z0-9-]+)/([a-zA-Z0-9-]+)/results' => 'quiz=$matches[2]&quizGroup=$matches[3]&quizGroupDomain=$matches[4]&quizShowResults=true',
 			),
 		);
 		return $config;
@@ -394,6 +372,19 @@ class Plugin {
 				'filePath'      => PRC_QUIZ_DIR . '/includes/patterns/create-group-form-dialog.php',
 				'categories'    => array( 'prc-quiz' ),
 				'viewportWidth' => 320,
+			)
+		);
+
+		register_block_pattern(
+			'prc-quiz/create-group-from-results-form-dialog',
+			array(
+				'title'         => __( 'Create Group from Results Form Dialog', 'prc-quiz' ),
+				'description'   => _x( 'Create a group directly from the results page with your result pre-included.', 'Block pattern description', 'prc-quiz' ),
+				'postTypes'     => array( self::$post_type ),
+				'filePath'      => PRC_QUIZ_DIR . '/includes/patterns/create-group-from-results-form-dialog.php',
+				'blockTypes'    => array( 'prc-quiz/results' ),
+				'categories'    => array( 'prc-quiz' ),
+				'viewportWidth' => 420,
 			)
 		);
 	}

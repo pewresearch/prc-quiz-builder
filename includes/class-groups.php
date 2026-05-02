@@ -7,7 +7,7 @@
 
 namespace PRC\Platform\Quiz;
 
-use Community_Groups_Query, WP_Error, Kreait\Firebase\Factory;
+use WP_Error;
 
 /**
  * Groups class.
@@ -134,59 +134,6 @@ class Groups {
 	}
 
 	/**
-	 * Upgrade a legacy group if it exists.
-	 *
-	 * @return array|false
-	 */
-	public function upgrade_legacy_group_if_exists() {
-		$query     = new Community_Groups_Query(
-			array(
-				'group_id' => $this->group_id,
-				'limit'    => 1,
-				'fields'   => array( 'name', 'created', 'quiz_id', 'typology_groups', 'answers', 'total', 'owner' ),
-			)
-		);
-		$result    = array_pop( $query->items );
-		$to_return = false;
-		// If we have a result, then we should create a new group in the new database, then remove it from the old database and then return the result we just created.
-		if ( ! empty( $result ) ) {
-			$this->owner_id = $result->owner;
-			$to_return      = array(
-				'name'            => $result->name,
-				'quiz_id'         => (int) $result->quiz_id,
-				'created'         => $result->created,
-				'last_updated'    => gmdate( 'Y-m-d H:i:s' ),
-				'owner'           => $this->owner_id,
-				'clusters'        => json_decode( $result->typology_groups, true ),
-				'typology_groups' => json_decode( $result->typology_groups, true ),
-				'answers'         => json_decode( $result->answers, true ),
-				'total'           => (int) $result->total,
-			);
-
-			// Create group.
-			$this->db->getReference( 'quiz/' . $this->quiz_id . '/groups/' . $this->group_id )->set( $to_return );
-
-			// Store record of group on the user's database.
-			$this->db->getReference( 'users/' . $this->owner_id . '/groups/' . $this->group_id )->set(
-				array(
-					'created'   => $result->created,
-					'quiz_id'   => (int) $result->quiz_id,
-					'quiz_slug' => $this->quiz_slug,
-					'name'      => $result->name,
-					'version'   => self::$groups_version,
-				)
-			);
-
-			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log, WordPress.PHP.DevelopmentFunctions.error_log_print_r
-			error_log( 'UPGRADING_GROUP' . print_r( $to_return, true ) );
-
-			return $to_return;
-		}
-
-		return $to_return;
-	}
-
-	/**
 	 * Get the group.
 	 * If the group does not exist, return false.
 	 *
@@ -195,9 +142,6 @@ class Groups {
 	 */
 	public function get_group( $return_as_array = false ) {
 		$existing_group = $this->db->getReference( 'quiz/' . $this->quiz_id . '/groups/' . $this->group_id )->getValue();
-		if ( empty( $existing_group ) ) {
-			$existing_group = $this->upgrade_legacy_group_if_exists();
-		}
 		if ( empty( $existing_group ) ) {
 			return false;
 		}

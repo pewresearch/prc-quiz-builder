@@ -129,7 +129,8 @@ class Controller {
 					'quizId'              => $post_id,
 					'quizType'            => $attributes['type'],
 					'quizUrl'             => get_permalink( $post_id ),
-					'displayType'         => $attributes['displayType'],
+					'displayType'         => $attributes['displayType'],	
+					'configuredDisplayType' => $attributes['displayType'], // Immutable copy for client logic; onInit may rewrite displayType (e.g. fluid -> scrollable on narrow viewports).
 					'groupsEnabled'       => $groups_enabled,
 					'groupId'             => $group_id,
 					'groupDomain'         => $group_domain,

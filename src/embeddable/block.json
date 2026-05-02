@@ -6,7 +6,9 @@
 	"title": "Quiz",
 	"description": "Create, save, and sync quizzes to reuse across the site. Update the quiz, and the changes apply everywhere it's used.",
 	"category": "quiz",
-  "allowedBlocks": ["prc-quiz/controller"],
+	"allowedBlocks": [
+		"prc-quiz/controller"
+	],
 	"keywords": [
 		"quiz",
 		"typology"
@@ -18,12 +20,17 @@
 	},
 	"supports": {
 		"anchor": true,
-		"html": false
+		"html": false,
+		"align": [
+			"full",
+			"wide",
+			"center"
+		]
 	},
-  "providesContext": {
-    "prc-quiz/isEmbedded": "ref"
-  },
+	"providesContext": {
+		"prc-quiz/isEmbedded": "ref"
+	},
 	"textdomain": "prc-quiz-embeddable",
 	"editorScript": "file:./index.js",
-  "render": "file:./render.php"
+	"render": "file:./render.php"
 }

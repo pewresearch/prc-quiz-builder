@@ -141,7 +141,7 @@ class Result_Table {
 
 		$block_attrs = get_block_wrapper_attributes(
 			array(
-				'class'               => \PRC\Platform\Block_Utils\classNames( $classnames ),
+				'class'               => \PRC\BlockUtils\classNames( $classnames ),
 				'data-wp-interactive' => 'prc-quiz/controller',
 			)
 		);

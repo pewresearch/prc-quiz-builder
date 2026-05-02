@@ -107,10 +107,11 @@ function Controls({ attributes, setAttributes, clientId }) {
 				<PanelBody title={__('Quiz Settings')}>
 					<SelectControl
 						label="Display Type"
-						help="Select the display type for the quiz. Paged will display the quiz in pages, scrollable will display the quiz as a single page with a scrollable container."
+						help="Select the display type for the quiz. Paged shows one page at a time. Scrollable shows all questions in a single scrollable view. Fluid uses paged on desktop (≥782px) and scrollable on smaller screens, determined once at load."
 						options={[
 							{ label: 'Paged', value: 'paged' },
 							{ label: 'Scrollable', value: 'scrollable' },
+							{ label: 'Fluid', value: 'fluid' },
 						]}
 						value={displayType}
 						onChange={(value) => {

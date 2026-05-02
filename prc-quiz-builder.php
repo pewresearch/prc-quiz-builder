@@ -8,6 +8,7 @@
  * Version:           4.0.0
  * Requires at least: 6.7
  * Requires PHP:      8.1
+ * Requires Plugins:  prc-scripts, prc-post-publish-pipeline
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       prc-quiz-builder
@@ -22,6 +23,15 @@ if ( ! defined( 'WPINC' ) ) {
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+// Load the Jetpack Autoloader so runtime version-selection can pick the
+// highest version across all plugins that ship the same library dep
+// (see .cursor/plans/composer-shape-b-migration_0e4e9991.plan.md).
+$prc_quiz_builder_autoloader = __DIR__ . '/vendor/autoload_packages.php';
+if ( file_exists( $prc_quiz_builder_autoloader ) ) {
+	require_once $prc_quiz_builder_autoloader;
+}
+unset( $prc_quiz_builder_autoloader );
 
 define( 'PRC_QUIZ_FILE', __FILE__ );
 define( 'PRC_QUIZ_DIR', __DIR__ );

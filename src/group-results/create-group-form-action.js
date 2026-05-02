@@ -12,7 +12,9 @@ export default async function createGroupFormAction(
 	formFields,
 	answers,
 	clusters,
-	nonce
+	nonce,
+	ownerSubmission = null,
+	ownerScore = null
 ) {
 	// We need to get the answers which is an initial array of answer uuids set to 0 this will be provided by the group results block available at state.groups.answers
 	// We need to the clusters, which the group results block will add into state available at state.groups.clusters
@@ -45,19 +47,35 @@ export default async function createGroupFormAction(
 				status: 'error',
 			});
 		}
+
+		const postData = {
+			groupName,
+			ownerId,
+			answers,
+			clusters,
+		};
+
+		// When creating a group from the results page, include the owner's
+		// submission so the backend can seed the group with their result.
+		if (
+			ownerSubmission &&
+			Array.isArray(ownerSubmission) &&
+			ownerSubmission.length
+		) {
+			postData.ownerSubmission = ownerSubmission;
+		}
+		if (ownerScore !== null && ownerScore !== undefined) {
+			postData.ownerScore = ownerScore;
+		}
+
 		// Create the group.
 		apiFetch({
 			path: addQueryArgs('prc-api/v3/quiz/create-group', {
-				nonce: nonce,
-				quizId: quizId,
+				nonce,
+				quizId,
 			}),
 			method: 'POST',
-			data: {
-				groupName,
-				ownerId,
-				answers: answers,
-				clusters: clusters,
-			},
+			data: postData,
 		})
 			.then((group) => {
 				return resolve({

@@ -20,7 +20,12 @@
   },
   "supports": {
     "anchor": true,
-    "html": false
+    "html": false,
+    "align": [
+      "full",
+      "wide",
+      "center"
+    ]
   },
   "providesContext": {
     "prc-quiz/isEmbedded": "ref"
