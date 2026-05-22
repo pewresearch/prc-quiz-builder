@@ -54,6 +54,7 @@ class Controller {
 	 * @return string
 	 */
 	public function modify_buttons( $block_content, $block ) {
+		unset( $block );
 		$tag = new WP_HTML_Tag_Processor( $block_content );
 		while ( $tag->next_tag() ) {
 			if ( $tag->has_class( 'prc-quiz-next-page-button' ) ) {
@@ -124,31 +125,34 @@ class Controller {
 			'data-wp-context',
 			wp_json_encode(
 				array(
-					'nonce'               => $nonce,
-					'quizTitle'           => get_the_title(),
-					'quizId'              => $post_id,
-					'quizType'            => $attributes['type'],
-					'quizUrl'             => get_permalink( $post_id ),
-					'displayType'         => $attributes['displayType'],	
-					'configuredDisplayType' => $attributes['displayType'], // Immutable copy for client logic; onInit may rewrite displayType (e.g. fluid -> scrollable on narrow viewports).
-					'groupsEnabled'       => $groups_enabled,
-					'groupId'             => $group_id,
-					'groupDomain'         => $group_domain,
-					'archetype'           => $archetype,
-					'answerThreshold'     => $attributes['threshold'],
-					'isEmbedded'          => $is_embedded,
-					'processing'          => false,
-					'loaded'              => false,
-					'readyForSubmission'  => false,
-					'submitted'           => false,
-					'displayResults'      => $show_results && $archetype, // If the user is entering through a link and explicitly requesting to view results and has an archetype, we want to display the results. (If there is no archetype then we can not display the results.).
-					'displayGroupResults' => $group_id && $show_results && $groups_enabled && ! $archetype, // If the user is entering through a group link with a show results flag BUT NO archetype, we want to display the group's aggregate results.
-					'selectedAnswers'     => array(), // A nested array of user selected answers uuid matched to the question uuid. questionUuid: [answerUuid1, answerUuid2, ...].
-					'userSubmission'      => array(), // A flat array of user selected answers uuid. Constructed by callback.
-					'userScore'           => array(), // An array of the user's score data. This includes the final score, as well as some other resultsData.
-					'allowSubmissions'    => $allow_submissions,
-					'isPreview'           => is_preview(),
-					'shareText'           => 'I scored %score% on the "%title%" quiz',
+					'nonce'                  => $nonce,
+					'quizTitle'              => get_the_title(),
+					'quizId'                 => $post_id,
+					'quizType'               => $attributes['type'],
+					'quizUrl'                => get_permalink( $post_id ),
+					'displayType'            => $attributes['displayType'],    
+					'configuredDisplayType'  => $attributes['displayType'], // Immutable copy for client logic; onInit may rewrite displayType (e.g. fluid -> scrollable on narrow viewports).
+					'groupsEnabled'          => $groups_enabled,
+					'groupId'                => $group_id,
+					'groupDomain'            => $group_domain,
+					'archetype'              => $archetype,
+					'answerThreshold'        => $attributes['threshold'],
+					'isEmbedded'             => $is_embedded,
+					'processing'             => false,
+					'loaded'                 => false,
+					'readyForSubmission'     => false,
+					'submitted'              => false,
+					'submissionPending'      => false,
+					'pendingSubmissionHash'  => '',
+					'submissionErrorMessage' => '',
+					'displayResults'         => $show_results && $archetype, // If the user is entering through a link and explicitly requesting to view results and has an archetype, we want to display the results. (If there is no archetype then we can not display the results.).
+					'displayGroupResults'    => $group_id && $show_results && $groups_enabled && ! $archetype, // If the user is entering through a group link with a show results flag BUT NO archetype, we want to display the group's aggregate results.
+					'selectedAnswers'        => array(), // A nested array of user selected answers uuid matched to the question uuid. questionUuid: [answerUuid1, answerUuid2, ...].
+					'userSubmission'         => array(), // A flat array of user selected answers uuid. Constructed by callback.
+					'userScore'              => array(), // An array of the user's score data. This includes the final score, as well as some other resultsData.
+					'allowSubmissions'       => $allow_submissions,
+					'isPreview'              => is_preview(),
+					'shareText'              => 'I scored %score% on the "%title%" quiz',
 				)
 			)
 		);
@@ -170,9 +174,10 @@ class Controller {
 		$content = $tag->get_updated_html();
 
 		// Add a loading spinner to the block.
-		$loading = '<div class="wp-block-prc-quiz-controller-processing"><div class="wp-block-prc-quiz-controller-processing_spinner"><span>Loading...</span></div></div>';
+		$submission_error = '<div class="wp-block-prc-quiz-controller-submission-error" role="alert" data-wp-bind--hidden="!context.submissionErrorMessage"><p data-wp-text="context.submissionErrorMessage"></p><button type="button" class="ui button wp-element-button" data-wp-on--click="actions.onRetryPendingSubmissionClick">Try saving again</button></div>';
+		$loading          = '<div class="wp-block-prc-quiz-controller-processing"><div class="wp-block-prc-quiz-controller-processing_spinner"><span>Loading...</span></div></div>';
 		// Add the loading spinner to inside the very last </div> tag.
-		$content = preg_replace( '/<\/div>$/', $loading . '</div>', $content );
+		$content = preg_replace( '/<\/div>$/', $submission_error . $loading . '</div>', $content );
 
 		return $content;
 	}

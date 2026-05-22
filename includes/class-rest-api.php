@@ -58,12 +58,18 @@ class Rest_API {
 	}
 
 	/**
+	 * Validate a quiz post ID.
+	 *
+	 * @param mixed $param The REST parameter value.
+	 * @return bool
+	 */
+	private function is_valid_quiz_id( $param ) {
+		return is_numeric( $param ) && 0 < absint( $param );
+	}
+
+	/**
 	 * Register REST endpoints.
 	 *
-	 * @param array $endpoints The endpoints.
-	 * @return array
-	 */
-	/**
 	 * @hook rest_api_init
 	 */
 	public function register_rest_endpoints() {
@@ -75,12 +81,12 @@ class Rest_API {
 				'callback'            => array( $this, 'restfully_create_group' ),
 				'args'                => array(
 					'quizId' => array(
-						'validate_callback' => function ( $param, $request, $key ) {
-							return is_string( $param );
+						'validate_callback' => function ( $param ) {
+							return $this->is_valid_quiz_id( $param );
 						},
 					),
 					'nonce'  => array(
-						'validate_callback' => function ( $param, $request, $key ) {
+						'validate_callback' => function ( $param ) {
 							return is_string( $param );
 						},
 					),
@@ -98,12 +104,12 @@ class Rest_API {
 				'callback'            => array( $this, 'restfully_get_quiz_group' ),
 				'args'                => array(
 					'groupId' => array(
-						'validate_callback' => function ( $param, $request, $key ) {
+						'validate_callback' => function ( $param ) {
 							return is_string( $param );
 						},
 					),
 					'nonce'   => array(
-						'validate_callback' => function ( $param, $request, $key ) {
+						'validate_callback' => function ( $param ) {
 							return is_string( $param );
 						},
 					),
@@ -121,17 +127,17 @@ class Rest_API {
 				'callback'            => array( $this, 'restfully_submit_quiz' ),
 				'args'                => array(
 					'quizId'  => array(
-						'validate_callback' => function ( $param, $request, $key ) {
-							return is_string( $param );
+						'validate_callback' => function ( $param ) {
+							return $this->is_valid_quiz_id( $param );
 						},
 					),
 					'groupId' => array(
-						'validate_callback' => function ( $param, $request, $key ) {
+						'validate_callback' => function ( $param ) {
 							return is_string( $param );
 						},
 					),
 					'nonce'   => array(
-						'validate_callback' => function ( $param, $request, $key ) {
+						'validate_callback' => function ( $param ) {
 							return is_string( $param );
 						},
 					),
@@ -149,8 +155,8 @@ class Rest_API {
 				'callback'            => array( $this, 'restfully_purge_archetypes' ),
 				'args'                => array(
 					'quizId' => array(
-						'validate_callback' => function ( $param, $request, $key ) {
-							return is_string( $param );
+						'validate_callback' => function ( $param ) {
+							return $this->is_valid_quiz_id( $param );
 						},
 					),
 				),
@@ -255,13 +261,108 @@ class Rest_API {
 	}
 
 	/**
+	 * Get the cache key for a processed submission id.
+	 *
+	 * @param string $quiz_id The quiz id.
+	 * @param string $submission_id The client-generated submission id.
+	 * @return string
+	 */
+	protected function get_submission_idempotency_key( $quiz_id, $submission_id ) {
+		return 'prc_quiz_submission_' . md5( $quiz_id . ':' . $submission_id );
+	}
+
+	/**
+	 * Get the cache key for an in-flight submission id.
+	 *
+	 * @param string $quiz_id The quiz id.
+	 * @param string $submission_id The client-generated submission id.
+	 * @return string
+	 */
+	protected function get_submission_processing_key( $quiz_id, $submission_id ) {
+		return $this->get_submission_idempotency_key( $quiz_id, $submission_id ) . '_processing';
+	}
+
+	/**
+	 * Acquire an in-flight submission lock.
+	 *
+	 * @param string $quiz_id The quiz id.
+	 * @param string $submission_id The client-generated submission id.
+	 * @return bool
+	 */
+	protected function acquire_submission_processing_lock( $quiz_id, $submission_id ) {
+		$cache_key = $this->get_submission_processing_key( $quiz_id, $submission_id );
+
+		return wp_cache_add( $cache_key, time(), 'prc_quiz_submissions', MINUTE_IN_SECONDS );
+	}
+
+	/**
+	 * Release an in-flight submission lock.
+	 *
+	 * @param string $quiz_id The quiz id.
+	 * @param string $submission_id The client-generated submission id.
+	 */
+	protected function release_submission_processing_lock( $quiz_id, $submission_id ) {
+		$cache_key = $this->get_submission_processing_key( $quiz_id, $submission_id );
+
+		wp_cache_delete( $cache_key, 'prc_quiz_submissions' );
+	}
+
+	/**
+	 * Get a processed submission marker.
+	 *
+	 * @param string $quiz_id The quiz id.
+	 * @param string $submission_id The client-generated submission id.
+	 * @return array|false
+	 */
+	protected function get_processed_submission( $quiz_id, $submission_id ) {
+		$cache_key = $this->get_submission_idempotency_key( $quiz_id, $submission_id );
+		$processed = wp_cache_get( $cache_key, 'prc_quiz_submissions' );
+
+		if ( false !== $processed ) {
+			return $processed;
+		}
+
+		$processed = get_transient( $cache_key );
+
+		if ( false !== $processed ) {
+			wp_cache_set( $cache_key, $processed, 'prc_quiz_submissions', DAY_IN_SECONDS );
+		}
+
+		return $processed;
+	}
+
+	/**
+	 * Mark a submission id as processed.
+	 *
+	 * @param string $quiz_id The quiz id.
+	 * @param string $submission_id The client-generated submission id.
+	 * @param array  $data The response data to return for duplicate retries.
+	 */
+	protected function mark_submission_processed( $quiz_id, $submission_id, $data ) {
+		$cache_key = $this->get_submission_idempotency_key( $quiz_id, $submission_id );
+
+		wp_cache_set( $cache_key, $data, 'prc_quiz_submissions', DAY_IN_SECONDS );
+		set_transient( $cache_key, $data, DAY_IN_SECONDS );
+	}
+
+	/**
+	 * Validate a client-generated submission id.
+	 *
+	 * @param mixed $submission_id The submission id.
+	 * @return bool
+	 */
+	protected function is_valid_submission_id( $submission_id ) {
+		return is_string( $submission_id ) && 1 === preg_match( '/^[a-zA-Z0-9_-]{8,128}$/', $submission_id );
+	}
+
+	/**
 	 * Create a group.
 	 *
 	 * @param WP_REST_Request $request The request.
 	 * @return string|false
 	 */
 	public function restfully_create_group( WP_REST_Request $request ) {
-		$quiz_id     = $request->get_param( 'quizId' );
+		$quiz_id     = absint( $request->get_param( 'quizId' ) );
 		$nonce_param = $request->get_param( 'nonce' );
 		$nonce       = $this->verify_nonce( $quiz_id, 'prc_quiz_nonce--', $nonce_param );
 
@@ -312,7 +413,7 @@ class Rest_API {
 	public function restfully_submit_quiz( WP_REST_Request $request ) {
 		$start_time = microtime( true );
 		$success    = false;
-		$quiz_id    = $request->get_param( 'quizId' );
+		$quiz_id    = absint( $request->get_param( 'quizId' ) );
 
 		if ( true === self::$rest_disabled ) {
 			return new \WP_Error(
@@ -327,75 +428,148 @@ class Rest_API {
 			return $nonce;
 		}
 
-		// Per-IP rate limiting: 10 submissions per quiz per minute (fixed window).
-		// wp_cache_add only sets when key is absent, establishing the window TTL once.
-		// wp_cache_incr atomically increments without resetting the TTL.
-		$client_ip    = $_SERVER['REMOTE_ADDR'] ?? 'unknown'; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		$throttle_key = 'prc_quiz_submit_' . md5( $client_ip . '_' . $quiz_id );
-		wp_cache_add( $throttle_key, 0, 'prc_quiz_throttle', MINUTE_IN_SECONDS );
-		$recent_count = wp_cache_incr( $throttle_key, 1, 'prc_quiz_throttle' );
+		$user_data = json_decode( $request->get_body(), true );
 
-		if ( $recent_count > 10 ) {
+		if ( ! is_array( $user_data ) ) {
 			return new \WP_Error(
-				'rate_limited',
-				'Too many submissions. Please try again later.',
-				array( 'status' => 429 )
+				'invalid_data',
+				'ERROR: quiz_submit/400. Invalid submission data.',
+				array( 'status' => 400 )
 			);
 		}
 
-		$group_id = $request->get_param( 'groupId' );
-		$is_group = ! empty( $group_id ) && is_string( $group_id );
+		$archetype_hash = $user_data['hash'] ?? null;
+		$submission     = $user_data['userSubmission'] ?? null;
+		$score          = $user_data['score'] ?? null;
+		$submission_id  = isset( $user_data['submissionId'] )
+			? sanitize_text_field( (string) $user_data['submissionId'] )
+			: null;
 
-		$user_data = json_decode( $request->get_body(), true );
+		if ( ! Archetypes::is_valid_hash( $archetype_hash ) || ! is_array( $submission ) ) {
+			return new \WP_Error(
+				'invalid_submission',
+				'ERROR: quiz_submit/400. Invalid quiz submission.',
+				array( 'status' => 400 )
+			);
+		}
 
-		$archetype_hash = $user_data['hash'];
-		$submission     = $user_data['userSubmission'];
-		$score          = $user_data['score'];
+		if ( null !== $submission_id && ! $this->is_valid_submission_id( $submission_id ) ) {
+			return new \WP_Error(
+				'invalid_submission_id',
+				'ERROR: quiz_submit/400. Invalid submission id.',
+				array( 'status' => 400 )
+			);
+		}
 
-		$archetypes = new Archetypes(
-			array(
-				'quiz_id' => $quiz_id,
-				'hash'    => $archetype_hash,
-			)
-		);
+		if ( null !== $submission_id ) {
+			$processed_submission = $this->get_processed_submission( $quiz_id, $submission_id );
 
-		// If the quiz is a group quiz, we need to update the group results.
-		if ( $is_group ) {
-			$group_cluster = is_string( $score ) ? $score : $archetype_hash;
-			$updated       = $this->update_group( $quiz_id, $group_id, $submission, $group_cluster );
-			if ( true !== $updated ) {
-				if ( is_wp_error( $updated ) ) {
-					return $updated;
+			if ( false !== $processed_submission ) {
+				return rest_ensure_response(
+					array_merge(
+						$processed_submission,
+						array(
+							'idempotent' => true,
+						)
+					)
+				);
+			}
+
+			if ( ! $this->acquire_submission_processing_lock( $quiz_id, $submission_id ) ) {
+				$processed_submission = $this->get_processed_submission( $quiz_id, $submission_id );
+
+				if ( false !== $processed_submission ) {
+					return rest_ensure_response(
+						array_merge(
+							$processed_submission,
+							array(
+								'idempotent' => true,
+							)
+						)
+					);
 				}
+
 				return new \WP_Error(
-					'group-submission-error',
-					'An error occurred when updating this group. We have saved your answers and your place. Wait a few minutes and try again, if you still encounter issues please contact technical support.',
-					array( 'status' => 500 )
+					'submission_processing',
+					'ERROR: quiz_submit/409. This quiz submission is already being processed.',
+					array( 'status' => 409 )
 				);
 			}
 		}
 
-		// If there isn't an archetype yet create one, otherwise just update the hits counter.
-		if ( false === $archetypes->get_archetype() ) {
-			$success = $archetypes->create_archetype( $submission, $score );
-		} else {
-			$success = $archetypes->log_archetype_hit();
-		}
+		try {
+			// Per-IP rate limiting: 10 submissions per quiz per minute (fixed window).
+			// wp_cache_add only sets when key is absent, establishing the window TTL once.
+			// wp_cache_incr atomically increments without resetting the TTL.
+			$client_ip    = filter_input( INPUT_SERVER, 'REMOTE_ADDR', FILTER_VALIDATE_IP );
+			$client_ip    = false === $client_ip || null === $client_ip ? 'unknown' : $client_ip;
+			$throttle_key = 'prc_quiz_submit_' . md5( $client_ip . '_' . $quiz_id );
+			wp_cache_add( $throttle_key, 0, 'prc_quiz_throttle', MINUTE_IN_SECONDS );
+			$recent_count = wp_cache_incr( $throttle_key, 1, 'prc_quiz_throttle' );
 
-		if ( is_wp_error( $success ) ) {
-			return new \WP_Error( 'quiz-submission-error', 'ERROR: quiz_submit/500. ' . $success->get_error_message(), array( 'status' => 500 ) );
-		}
+			if ( $recent_count > 10 ) {
+				return new \WP_Error(
+					'rate_limited',
+					'Too many submissions. Please try again later.',
+					array( 'status' => 429 )
+				);
+			}
 
-		$end_time = microtime( true );
-		// Get the end time in seconds with microseconds.
-		$execution_time = ( $end_time - $start_time ) / 60;
+			$group_id = $request->get_param( 'groupId' );
+			$is_group = ! empty( $group_id ) && is_string( $group_id );
 
-		return rest_ensure_response(
-			array(
+			$archetypes = new Archetypes(
+				array(
+					'quiz_id' => $quiz_id,
+					'hash'    => $archetype_hash,
+				)
+			);
+
+			// If the quiz is a group quiz, we need to update the group results.
+			if ( $is_group ) {
+				$group_cluster = is_string( $score ) ? $score : $archetype_hash;
+				$updated       = $this->update_group( $quiz_id, $group_id, $submission, $group_cluster );
+				if ( true !== $updated ) {
+					if ( is_wp_error( $updated ) ) {
+						return $updated;
+					}
+					return new \WP_Error(
+						'group-submission-error',
+						'An error occurred when updating this group. We have saved your answers and your place. Wait a few minutes and try again, if you still encounter issues please contact technical support.',
+						array( 'status' => 500 )
+					);
+				}
+			}
+
+			// If there isn't an archetype yet create one, otherwise just update the hits counter.
+			if ( false === $archetypes->get_archetype() ) {
+				$success = $archetypes->create_archetype( $submission, $score );
+			} else {
+				$success = $archetypes->log_archetype_hit();
+			}
+
+			if ( is_wp_error( $success ) ) {
+				return new \WP_Error( 'quiz-submission-error', 'ERROR: quiz_submit/500. ' . $success->get_error_message(), array( 'status' => 500 ) );
+			}
+
+			$end_time = microtime( true );
+			// Get the end time in seconds with microseconds.
+			$execution_time = ( $end_time - $start_time ) / 60;
+			$response_data  = array(
 				'hash' => $archetype_hash,
 				'time' => $execution_time,
-			)
-		);
+			);
+
+			if ( null !== $submission_id ) {
+				$this->mark_submission_processed( $quiz_id, $submission_id, $response_data );
+			}
+
+			return rest_ensure_response( $response_data );
+		} finally {
+			if ( null !== $submission_id ) {
+				$this->release_submission_processing_lock( $quiz_id, $submission_id );
+			}
+		}
 	}
 
 	/**
@@ -482,7 +656,7 @@ class Rest_API {
 	 * @return string|WP_Error
 	 */
 	public function restfully_purge_archetypes( WP_REST_Request $request ) {
-		$quiz_id = $request->get_param( 'quizId' );
+		$quiz_id = absint( $request->get_param( 'quizId' ) );
 		// Check user has manage_options capability.
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return new \WP_Error( 'purge_archetypes_error', 'ERROR: purge_archetypes/403. You do not have permission to purge archetypes.', array( 'status' => 403 ) );

@@ -9,7 +9,17 @@
 	[hidden] {
 		display: none;
 	}
-	
+
+	.wp-block-prc-quiz-controller-submission-error {
+		border: 1px solid currentColor;
+		margin-block: 1rem;
+		padding: 1rem;
+
+		p {
+			margin-top: 0;
+		}
+	}
+
 	&:not(.is-processing) {
 		.wp-block-prc-quiz-controller-processing {
 			display: none;
@@ -42,7 +52,7 @@
 				gap: 1em;
 				font-family: inherit;
 				&::before {
-					content: '';
+					content: "";
 					display: block;
 					width: 20px;
 					height: 20px;

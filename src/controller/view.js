@@ -5,8 +5,6 @@ import {
 	store,
 	getElement,
 	getContext,
-	getServerContext,
-	getServerState,
 	withScope,
 	withSyncEvent,
 } from '@wordpress/interactivity';
@@ -15,13 +13,8 @@ import {
  * Internal Dependencies
  */
 import scoreQuiz from './scoring';
-
-/**
- * Hoisted Dependencies
- */
-const { wp, location, localStorage } = window;
-const { url, apiFetch } = wp;
-const { addQueryArgs, getQueryArg, getPathAndQueryString } = url;
+import './progress-storage';
+import './submission-recovery';
 
 const { state, actions } = store('prc-quiz/controller', {
 	state: {
@@ -116,66 +109,6 @@ const { state, actions } = store('prc-quiz/controller', {
 			const { displayGroupResults } = getContext();
 			return displayGroupResults;
 		},
-		/**
-		 * Check if user has given consent for functional cookies
-		 */
-		get hasConsentForCookies() {
-			// Check if WP Consent API is available and user has given consent
-			if (typeof window.wp_has_consent === 'function') {
-				return window.wp_has_consent('functional');
-			}
-			// If consent API is not available, assume consent (for backwards compatibility)
-			return true;
-		},
-		/**
-		 * Get quiz progress data (returns JSON object if available)
-		 */
-		get quizProgress() {
-			const data = state.cookie;
-			// Check if it's a valid quiz progress object
-			if (data && typeof data === 'object' && data.quiz_id) {
-				return data;
-			}
-			return null;
-		},
-
-		/**
-		 * Check if current quiz has saved progress
-		 */
-		get hasQuizProgress() {
-			const { quizId } = getContext();
-			const data = state.quizProgress;
-			return data && data.quiz_id === quizId;
-		},
-
-		get cookie() {
-			const name = `prc-quiz-builder`;
-
-			// Only try to read cookie if user has consented or consent API is not available
-			if (!state.hasConsentForCookies) {
-				return null;
-			}
-
-			const nameEQ = name + '=';
-			const ca = document.cookie.split(';');
-			for (let i = 0; i < ca.length; i++) {
-				let c = ca[i];
-				while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-				if (c.indexOf(nameEQ) === 0) {
-					const cookieValue = c.substring(nameEQ.length, c.length);
-					const decodedValue = decodeURIComponent(cookieValue);
-
-					// Try to parse as JSON first
-					try {
-						return JSON.parse(decodedValue);
-					} catch (e) {
-						// If JSON parsing fails, return as string
-						return decodedValue;
-					}
-				}
-			}
-			return null;
-		},
 	},
 	actions: {
 		scoreQuiz: () => {
@@ -204,35 +137,39 @@ const { state, actions } = store('prc-quiz/controller', {
 				});
 			}
 		},
-		onStartQuizClick: withSyncEvent((event) => {
+		onStartQuizClick: withSyncEvent(() => {
 			const context = getContext();
-			const { uuid, currentPageUuid, pages } = context;
+			const { pages } = context;
 			// Set the current page uuid to the next page uuid.
 			context.currentPageUuid = pages[1];
 			actions.saveQuizProgress();
 		}),
-		onNextPageClick: withSyncEvent((event) => {
+		onNextPageClick: withSyncEvent(() => {
 			const context = getContext();
-			const { uuid, currentPageUuid, pages } = context;
+			const { currentPageUuid, pages } = context;
 			// Find the index of the current page in the pages array.
 			const currentPageIndex = pages.indexOf(currentPageUuid);
 			// Set the current page uuid to the next page uuid.
 			context.currentPageUuid = pages[currentPageIndex + 1];
 			actions.saveQuizProgress();
 		}),
-		onPreviousPageClick: withSyncEvent((event) => {
+		onPreviousPageClick: withSyncEvent(() => {
 			const context = getContext();
-			const { uuid, currentPageUuid, pages } = context;
+			const { currentPageUuid, pages } = context;
 			// Find the index of the current page in the pages array.
 			const currentPageIndex = pages.indexOf(currentPageUuid);
 			// Set the current page uuid to the previous page uuid.
 			context.currentPageUuid = pages[currentPageIndex - 1];
 			actions.saveQuizProgress();
 		}),
-		onSubmitQuizClick: withSyncEvent((event) => {
+		onSubmitQuizClick: withSyncEvent(() => {
 			actions.submitQuiz();
 		}),
-		onResetQuizClick: withSyncEvent((event) => {
+		onRetryPendingSubmissionClick: withSyncEvent((event) => {
+			event.preventDefault();
+			actions.retryPendingSubmission();
+		}),
+		onResetQuizClick: withSyncEvent(() => {
 			const context = getContext();
 			const { quizUrl, displayResults } = context;
 			// If the user is on the results page, we should just go back to the quiz url.
@@ -257,66 +194,24 @@ const { state, actions } = store('prc-quiz/controller', {
 		 */
 		resetQuiz: () => {
 			const context = getContext();
+			const pendingSubmission = actions.getPendingSubmission();
 			context.submitted = false;
 			context.processing = false;
 			context.displayResults = false;
+			context.readyForSubmission = false;
 			context.selectedAnswers = {};
 			context.userSubmission = {};
 			context.userScore = {};
 			context.currentPageUuid = context.firstPageUuid;
-		},
-
-		clearCookie: () => {
-			const name = `prc-quiz-builder`;
-			document.cookie =
-				name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-		},
-
-		setCookie: (value) => {
-			const { quizId } = getContext();
-			const name = `prc-quiz-builder`;
-
-			// Check consent before setting cookie
-			if (!state.hasConsentForCookies) {
-				return false;
+			if (pendingSubmission) {
+				actions.clearPendingSubmission(pendingSubmission, context);
+				return;
 			}
-
-			// Convert value to string for storage
-			let cookieValue;
-			if (typeof value === 'object' && value !== null) {
-				// If it's an object, JSON stringify it
-				cookieValue = encodeURIComponent(JSON.stringify(value));
-			} else {
-				// If it's a primitive, convert to string
-				cookieValue = encodeURIComponent(String(value));
-			}
-
-			// Set cookie with consent
-			const d = new Date();
-			d.setTime(d.getTime() + 30 * 24 * 60 * 60 * 1000);
-			const expires = 'expires=' + d.toUTCString();
-			document.cookie =
-				name + '=' + cookieValue + ';' + expires + ';path=/';
-			return true;
+			context.submissionPending = false;
+			context.pendingSubmissionHash = '';
+			context.submissionErrorMessage = '';
 		},
 
-		/**
-		 * Save quiz progress data as JSON object
-		 * @param score
-		 */
-		saveQuizProgress: (score = null) => {
-			const { selectedAnswers, currentPageUuid, quizId } = getContext();
-			const quizData = {
-				quiz_id: quizId,
-				selectedAnswers,
-				currentPageUuid,
-				timestamp: Date.now(),
-			};
-			if (score) {
-				quizData.score = score;
-			}
-			return actions.setCookie(quizData);
-		},
 		/**
 		 * Navigate the user to the results view and submit the user's results to the database.
 		 */
@@ -348,20 +243,23 @@ const { state, actions } = store('prc-quiz/controller', {
 			// If the user has not answered enough questions we prompt them to reset the quiz, or in the case
 			// of paginated quizzes, go back to the first page.
 			if (!readyForSubmission) {
-				const shouldReset = confirm(
+				// eslint-disable-next-line no-alert
+				const shouldReset = window.confirm(
 					`You must answer ${answerThreshold} questions to submit the quiz.\n\nWould you like to reset the quiz and start over?`
 				);
 
 				if (shouldReset) {
 					actions.resetQuiz();
 				} else if ('scrollable' !== displayType) {
-					const shouldGoToFirstPage = confirm(
+					// eslint-disable-next-line no-alert
+					const shouldGoToFirstPage = window.confirm(
 						`Would you like to go back to the first page to answer more questions?`
 					);
 					if (shouldGoToFirstPage) {
 						actions.goBackToFirstPage();
 					}
 				}
+				context.processing = false;
 				return; // Stop execution here.
 			}
 
@@ -386,11 +284,9 @@ const { state, actions } = store('prc-quiz/controller', {
 
 			setTimeout(
 				withScope(function* () {
-					// Always display the results page.
-					context.displayResults = true;
-
 					// If this is a preview, we don't want to submit the quiz.
 					if (isPreview) {
+						context.displayResults = true;
 						context.readyForSubmission = false;
 						context.processing = false;
 						if (newScore) {
@@ -408,6 +304,7 @@ const { state, actions } = store('prc-quiz/controller', {
 						state.currentSessionArchetypes.includes(hash) ||
 						!allowSubmissions
 					) {
+						context.displayResults = true;
 						context.readyForSubmission = false;
 						context.processing = false;
 						if (newScore) {
@@ -419,45 +316,23 @@ const { state, actions } = store('prc-quiz/controller', {
 						return;
 					}
 
-					const router = yield import(
-						'@wordpress/interactivity-router'
-					);
-					// Clear the cookie before navigating to the results page.
-					actions.clearCookie();
-					// After checking the allow submissions and clearing the cookie, navigate to the results page.
-					router.actions.navigate(`${quizUrl}results/${hash}`);
-					// Push the hash to the current session archetypes array.
-					state.currentSessionArchetypes.push(hash);
+					const existingPendingSubmission =
+						actions.getPendingSubmission();
+					const pendingSubmission =
+						existingPendingSubmission?.hash === hash
+							? existingPendingSubmission
+							: actions.createPendingSubmission({
+									quizId,
+									hash,
+									requestArgs,
+									requestBody,
+									destinationUrl: `${quizUrl}results/${hash}`,
+								});
 
-					// Store the submission in the database, pass the requestArgs and requestBody to the
-					// quiz builder REST API.
-					apiFetch({
-						path: addQueryArgs(
-							'/prc-api/v3/quiz/submit',
-							requestArgs
-						),
-						method: 'POST',
-						data: requestBody,
-					})
-						.then((response) => {
-							console.log('submitQuiz response ->', {
-								response,
-								groupId,
-							});
-						})
-						.catch((error) => {
-							console.error('submitQuiz error ->', error);
-						})
-						.finally(() => {
-							if (newScore) {
-								context.userScore = {
-									...context.userScore,
-									score: newScore,
-								};
-							}
-							context.processing = false;
-							context.readyForSubmission = false;
-						});
+					yield actions.submitPendingSubmission(
+						pendingSubmission,
+						newScore
+					);
 				}),
 				1000
 			);
@@ -498,6 +373,7 @@ const { state, actions } = store('prc-quiz/controller', {
 			// Check if the user has a cookie for this quiz, and if so check if currentPageUuid is set, if so, set context to it.
 			setTimeout(
 				withScope(() => {
+					actions.restorePendingSubmission();
 					context.processing = false;
 					context.loaded = true;
 				}),
@@ -509,13 +385,18 @@ const { state, actions } = store('prc-quiz/controller', {
 		 */
 		onScrollableSubmit: withSyncEvent(() => {
 			const context = getContext();
-			const { submitted, readyForSubmission, displayType, processing } =
-				context;
+			const {
+				readyForSubmission,
+				displayType,
+				processing,
+				submissionPending,
+			} = context;
 
 			if (
 				'scrollable' !== displayType ||
 				!readyForSubmission ||
-				processing
+				processing ||
+				submissionPending
 			) {
 				return;
 			}
@@ -566,8 +447,6 @@ const { state, actions } = store('prc-quiz/controller', {
 			if (0 === userSubmission.length) {
 				return;
 			}
-
-			const before = context.userScore;
 
 			const after = actions.scoreQuiz();
 

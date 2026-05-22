@@ -74,8 +74,8 @@ class Results {
 		?>
 		<div class="prc-quiz__no-archetype-found">
 			<h2>Sorry, we could not retrieve those results.</h2>
-			<p>Try taking the quiz again.</p>
-			<a href="<?php echo esc_url( $quiz_permalink ); ?>" class="prc-quiz__no-archetype-found__button ui button">Take the quiz again</a>
+			<p>Your results may not have finished saving. If you just submitted the quiz, return to the quiz and try saving your results again.</p>
+			<a href="<?php echo esc_url( $quiz_permalink ); ?>" class="prc-quiz__no-archetype-found__button ui button">Return to the quiz</a>
 		</div>
 		<?php
 		return ob_get_clean();
