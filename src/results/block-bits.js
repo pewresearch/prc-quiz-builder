@@ -1,45 +1,22 @@
+/**
+ * Editor-side overlay for the quiz-builder group-results-link bit.
+ *
+ * The PHP-side `define_block_bits()` (in class-results.php) registers the bit
+ * on the platform-wide @prc/block-bits registry and projects label /
+ * allowedBlockTypes / defaultText onto `window.prcBlockBits.bits` for
+ * hydration. This file attaches the editor-only `title` + `icon` overlay.
+ *
+ * No `edit` component needed — this is a state-driven iAPI bit with no
+ * author-supplied attributes; the toolbar inserts it on click.
+ */
+
 import { __ } from '@wordpress/i18n';
-import { toggleFormat, registerFormatType } from '@wordpress/rich-text';
-import {
-	RichTextToolbarButton,
-	store as blockEditorStore,
-} from '@wordpress/block-editor';
-import { useSelect } from '@wordpress/data';
-
-function QuizGroupResultsUrlButton({ isActive, onChange, value }) {
-	const selectedBlock = useSelect((select) => {
-		const currentBlock = select(blockEditorStore).getSelectedBlock();
-		return currentBlock;
-	}, []);
-
-	if (selectedBlock && selectedBlock.name !== 'core/paragraph') {
-		return null;
-	}
-
-	return (
-		<RichTextToolbarButton
-			icon="editor-code"
-			title="Quiz Group Results URL"
-			onClick={() => {
-				onChange(
-					toggleFormat(value, {
-						type: 'prc-quiz/quiz-group-results-url',
-					})
-				);
-			}}
-			isActive={isActive}
-		/>
-	);
-}
-
-const quizGroupResultsUrl = {
-	name: 'prc-quiz/quiz-group-results-url',
-	title: __('Quiz Group Results URL'),
-	tagName: 'a',
-	className: 'prc-quiz-quiz-group-results-url',
-	edit: QuizGroupResultsUrlButton,
-};
+import { link } from '@wordpress/icons';
+import { registerBlockBit } from '@prc/block-bits';
 
 export default function registerBlockBits() {
-	registerFormatType('prc-quiz/quiz-group-results-url', quizGroupResultsUrl);
+	registerBlockBit('prc-quiz-builder/group-results-link', {
+		title: __('Group Results Link', 'prc-quiz-builder'),
+		icon: link,
+	});
 }

@@ -14,6 +14,7 @@
 	"license": "GPL-2.0-or-later",
 	"dependencies": {
 		"@emotion/styled": "^11.14.0",
+		"@prc/block-bits": "*",
 		"@prc/components": "*",
 		"@prc/hooks": "*",
 		"@prc/icons": "*",

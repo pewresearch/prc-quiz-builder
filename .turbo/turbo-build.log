@@ -13,9 +13,9 @@ assets by chunk 8.17 KiB (name: result-histogram/index) 4 assets
 assets by chunk 3.15 KiB (name: pages/index) 4 assets
 assets by chunk 2.81 KiB (name: result-score/index) 4 assets
 assets by chunk 2.68 KiB (name: group-results/index) 4 assets
-assets by path [1m[32mresults/*.php[39m[22m 8.86 KiB
-  asset [1m[32mresults/class-results.php[39m[22m 8.63 KiB [1m[32m[emitted][39m[22m [from: src/results/class-results.php] [1m[32m[copied][39m[22m
-  asset [1m[32mresults/index.asset.php[39m[22m 229 bytes [1m[32m[emitted][39m[22m (name: results/index)
+assets by path [1m[32mresults/*.php[39m[22m 9.38 KiB
+  asset [1m[32mresults/class-results.php[39m[22m 9.13 KiB [1m[32m[emitted][39m[22m [from: src/results/class-results.php] [1m[32m[copied][39m[22m
+  asset [1m[32mresults/index.asset.php[39m[22m 255 bytes [1m[32m[emitted][39m[22m (name: results/index)
 + 20 assets
 orphan modules 4.39 MiB (javascript) 18.3 KiB (runtime) [1m[33m[orphan][39m[22m 2814 modules
 runtime modules 28.3 KiB 39 modules
@@ -45,7 +45,7 @@ Entrypoints:
 You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
 For more info visit https://webpack.js.org/guides/code-splitting/[39m[22m
 
-webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 35966 ms
+webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 34724 ms
 assets by chunk 15.3 KiB (id hint: style) 20 assets
 assets by path [1m[32membeddable/[39m[22m 29.1 KiB 5 assets
 assets by chunk 244 KiB (name: controller/index) 4 assets
@@ -57,9 +57,9 @@ assets by chunk 8.17 KiB (name: result-histogram/index) 4 assets
 assets by chunk 3.15 KiB (name: pages/index) 4 assets
 assets by chunk 2.81 KiB (name: result-score/index) 4 assets
 assets by chunk 2.68 KiB (name: group-results/index) 4 assets
-assets by path [1m[32mresults/*.php[39m[22m 8.86 KiB
-  asset [1m[32mresults/class-results.php[39m[22m 8.63 KiB [1m[33m[compared for emit][39m[22m [from: src/results/class-results.php] [1m[32m[copied][39m[22m
-  asset [1m[32mresults/index.asset.php[39m[22m 229 bytes [1m[33m[compared for emit][39m[22m (name: results/index)
+assets by path [1m[32mresults/*.php[39m[22m 9.38 KiB
+  asset [1m[32mresults/class-results.php[39m[22m 9.13 KiB [1m[33m[compared for emit][39m[22m [from: src/results/class-results.php] [1m[32m[copied][39m[22m
+  asset [1m[32mresults/index.asset.php[39m[22m 255 bytes [1m[33m[compared for emit][39m[22m (name: results/index)
 + 20 assets
 orphan modules 4.39 MiB (javascript) 18.3 KiB (runtime) [1m[33m[orphan][39m[22m 2814 modules
 runtime modules 28.3 KiB 39 modules
@@ -89,7 +89,7 @@ Entrypoints:
 You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
 For more info visit https://webpack.js.org/guides/code-splitting/[39m[22m
 
-webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 34069 ms
+webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 33230 ms
 
 assets by path [1m[32mcontroller/[39m[22m 12.8 KiB 2 assets
 assets by path [1m[32mgroup-results/[39m[22m 2.91 KiB 2 assets
@@ -115,5 +115,5 @@ built modules 53.7 KiB [1m[33m[built][39m[22m
     [1m../../node_modules/charenc/charenc.js[39m[22m 850 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
     [1m../../node_modules/is-buffer/index.js[39m[22m 698 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
   [1mexternal "@wordpress/interactivity-router"[39m[22m 42 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 12832 ms
+webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 10937 ms
 Block metadata PHP file generated at: build/blocks-manifest.php

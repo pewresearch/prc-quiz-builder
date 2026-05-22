@@ -24,24 +24,41 @@ class Results {
 	 */
 	public function __construct( $loader ) {
 		$loader->add_action( 'init', $this, 'block_init' );
-		$loader->add_action( 'render_block_core/paragraph', $this, 'handle_block_bits', 10, 2 );
+		$loader->add_action( 'init', $this, 'define_block_bits', 11 );
 		$loader->add_filter( 'render_block', $this, 'handle_results_display_logic', 10, 2 );
 	}
 
 	/**
-	 * Handle block bits.
+	 * Register the group-results-link bit with the platform-wide @prc/block-bits
+	 * registry. The central bits walker at priority 100 emits the iAPI directives
+	 * onto any saved bit span, replacing the per-plugin handle_block_bits() walker.
 	 *
-	 * @param string $block_content The block content.
+	 * @hook init priority 11
 	 */
-	public function handle_block_bits( $block_content ) {
-		$tag = new WP_HTML_Tag_Processor( $block_content );
-		while ( $tag->next_tag( array( 'class_name' => 'prc-quiz-quiz-group-results-url' ) ) ) {
-			$tag->set_attribute( 'data-wp-interactive', 'prc-quiz/controller' );
-			$tag->set_attribute( 'data-wp-bind--hidden', '!state.hasGroup' );
-			$tag->set_attribute( 'data-wp-text', 'state.groupResultsLinkText' );
-			$tag->set_attribute( 'data-wp-bind--href', 'state.groupResultsLinkUrl' );
+	public function define_block_bits(): void {
+		if ( ! function_exists( '\PRC\Platform\Block_Bits\register_block_bit' ) ) {
+			return;
 		}
-		return $tag->get_updated_html();
+
+		\PRC\Platform\Block_Bits\register_block_bit(
+			'prc-quiz-builder/group-results-link',
+			array(
+				'label'               => __( 'Quiz: Group Results Link', 'prc-quiz-builder' ),
+				'allowed_block_types' => array( 'core/paragraph', 'core/heading' ),
+				'render_strategy'     => 'iapi',
+				'iapi'                => array(
+					'namespace' => 'prc-quiz/controller',
+					'text'      => 'state.groupResultsLinkText',
+					'bind'      => array(
+						'href'   => 'state.groupResultsLinkUrl',
+						'hidden' => '!state.hasGroup',
+					),
+					// Renders as <a> so data-wp-bind--href creates a real clickable link.
+					'tag_name'  => 'a',
+				),
+				'default_text'        => __( 'view your results', 'prc-quiz-builder' ),
+			)
+		);
 	}
 
 	/**

@@ -114,6 +114,8 @@ class Plugin {
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-analytics.php';
 		// 5. Initialize the inspector sidebar panel.
 		require_once plugin_dir_path( __DIR__ ) . '/includes/inspector-sidebar-panel/class-inspector-sidebar-panel.php';
+		// 6. WP-CLI: build newsletter audience from quiz group owners.
+		require_once plugin_dir_path( __DIR__ ) . '/includes/class-cli-build-audience.php';
 
 		// Load block files.
 		$this->load_blocks();
@@ -447,6 +449,7 @@ class Plugin {
 				'prc-art-direction',
 				'prc-datasets',
 				'prc-publication-listing',
+				'prc-publish-workflows',
 			),
 			'taxonomies'         => array( 'category', 'research-teams', 'bylines', 'datasets', 'collections', 'level_of_effort', 'primary_audience', 'information_type' ),
 		);

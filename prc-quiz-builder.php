@@ -24,14 +24,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Load the Jetpack Autoloader so runtime version-selection can pick the
-// highest version across all plugins that ship the same library dep
-// (see .cursor/plans/composer-shape-b-migration_0e4e9991.plan.md).
-$prc_quiz_builder_autoloader = __DIR__ . '/vendor/autoload_packages.php';
-if ( file_exists( $prc_quiz_builder_autoloader ) ) {
-	require_once $prc_quiz_builder_autoloader;
+// When running inside the PRC Platform monorepo the root autoloader already
+// provides every dependency; skip per-plugin Jetpack Autoloader initialization.
+if ( ! defined( 'PRC_PLATFORM' ) ) {
+	$prc_quiz_builder_autoloader = __DIR__ . '/vendor/autoload_packages.php';
+	if ( file_exists( $prc_quiz_builder_autoloader ) ) {
+		require_once $prc_quiz_builder_autoloader;
+	}
+	unset( $prc_quiz_builder_autoloader );
 }
-unset( $prc_quiz_builder_autoloader );
 
 define( 'PRC_QUIZ_FILE', __FILE__ );
 define( 'PRC_QUIZ_DIR', __DIR__ );
