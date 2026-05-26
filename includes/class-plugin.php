@@ -135,7 +135,11 @@ class Plugin {
 		new Rest_API( $this->get_loader() );
 		new Inspector_Sidebar_Panel( $this->get_loader() );
 
-		$this->loader->add_action( 'init', $this, 'register_quiz_post_type' );
+		// Priority 5 ensures the quiz post type (and its declared supports like
+		// `prc-publication-listing`) is registered before any other plugin runs
+		// `get_post_types_by_support()` at the default init/10 priority — most
+		// notably prc-publication-listing's `_post_visibility` taxonomy binding.
+		$this->loader->add_action( 'init', $this, 'register_quiz_post_type', 5 );
 		$this->loader->add_action( 'init', $this, 'register_rewrite_rules' );
 		$this->loader->add_filter( 'query_vars', $this, 'register_query_vars' );
 		$this->loader->add_filter( 'prc_research_teams_rewrite_config', $this, 'register_research_teams_config' );
