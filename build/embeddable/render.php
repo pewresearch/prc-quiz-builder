@@ -23,7 +23,10 @@ $iframe_url = add_query_arg(
 	),
 	$permalink
 );
-$content    = function_exists( 'prc_get_post_as_iframe' ) ? prc_get_post_as_iframe( (int) $attributes['ref'], $iframe_url ) : 'Quiz cannot be embedded at this time.';
+
+$content = function_exists( '\PRC\Platform\Embeds\prc_get_post_as_iframe' )
+	? \PRC\Platform\Embeds\prc_get_post_as_iframe( (int) $attributes['ref'], $iframe_url )
+	: 'Quiz cannot be embedded at this time.';
 
 // We need to pass the embed option down to the quiz... regardless if the embed option is enabled or not..
 echo wp_sprintf(
