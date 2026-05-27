@@ -548,18 +548,49 @@ class Plugin {
 	 * @return mixed The content.
 	 */
 	public function filter_iframe_content( $content ) {
+		$style = '<style>
+			.wp-block-prc-quiz-answer {
+				flex-grow: 1;
+				justify-content: center;
+				width: 100%;
+			}
+			.wp-block-prc-quiz-question {
+				display: flex;
+				flex-direction: column;
+			}
+			.wp-block-prc-quiz-page {
+				flex-direction: column;
+				align-items: stretch;
+			}
+		</style>';
+
 		if ( ! is_singular( 'quiz' ) ) {
 			return $content;
 		}
-		if ( get_query_var( 'quizEmbed' ) ) {
-			return $content;
+
+		$is_quiz_embed = get_query_var( 'quizEmbed' )
+			|| ( isset( $_GET['quizEmbed'] ) && filter_var( wp_unslash( $_GET['quizEmbed'] ), FILTER_VALIDATE_BOOLEAN ) );
+
+		if ( $is_quiz_embed ) {
+			return $content . $style;
 		}
 
-		$assets_dir = WP_CONTENT_URL . '/themes/prc_parent/src/images/logos';
+		$is_entity_iframe = get_query_var( 'prc_entity_iframe' )
+			|| ( isset( $_GET['prc_entity_iframe'] ) && '1' === sanitize_text_field( wp_unslash( $_GET['prc_entity_iframe'] ) ) );
+
+		if ( $is_entity_iframe ) {
+			$style .= '<style>
+				#prc-iframe-title {
+					display: none;
+				}
+			</style>';
+		}
+
+		$assets_dir = WP_CONTENT_URL . '/images/logos/';
 		ob_start();
 		?>
 		<div id="prc-iframe-title">
-			<h1 style=""><img src="<?php echo esc_url( $assets_dir . '/logo-standard.svg' ); ?>" alt="Pew Research Center Logo" style="width: 300px; margin-right: 10px;"><span><?php the_title(); ?></span></h1>
+			<h1 style=""><img src="<?php echo esc_url( $assets_dir . 'primary.svg' ); ?>" alt="Pew Research Center Logo" style="width: 300px; margin-right: 10px;"><span><?php the_title(); ?></span></h1>
 		</div>
 		<style>
 			#prc-iframe-title {
@@ -576,6 +607,7 @@ class Plugin {
 				}
 			}
 		</style>
+		<?php echo $style; ?>
 		<?php
 		$quiz_title = ob_get_clean();
 		return '<div style="max-width: 640px;">' . $quiz_title . $content . '</div>';

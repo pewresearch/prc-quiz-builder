@@ -3,7 +3,7 @@
 > wp-scripts build --webpack-copy-php && wp-scripts build --experimental-modules --webpack-copy-php && wp-scripts build-blocks-manifest
 
 assets by chunk 15.7 KiB (id hint: style) 20 assets
-assets by path [1m[32membeddable/[39m[22m 29.2 KiB 5 assets
+assets by path [1m[32membeddable/[39m[22m 29.3 KiB 5 assets
 assets by chunk 244 KiB (name: controller/index) 4 assets
 assets by chunk 14.2 KiB (name: question/index) 4 assets
 assets by chunk 10.5 KiB (name: answer/index) 4 assets
@@ -45,9 +45,9 @@ Entrypoints:
 You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
 For more info visit https://webpack.js.org/guides/code-splitting/[39m[22m
 
-webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 46836 ms
+webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 34252 ms
 assets by chunk 15.7 KiB (id hint: style) 20 assets
-assets by path [1m[32membeddable/[39m[22m 29.2 KiB 5 assets
+assets by path [1m[32membeddable/[39m[22m 29.3 KiB 5 assets
 assets by chunk 244 KiB (name: controller/index) 4 assets
 assets by chunk 14.2 KiB (name: question/index) 4 assets
 assets by chunk 10.5 KiB (name: answer/index) 4 assets
@@ -89,7 +89,7 @@ Entrypoints:
 You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
 For more info visit https://webpack.js.org/guides/code-splitting/[39m[22m
 
-webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 37959 ms
+webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 12598 ms
 
 assets by path [1m[32mcontroller/[39m[22m 15.3 KiB 2 assets
 assets by path [1m[32mgroup-results/[39m[22m 2.91 KiB 2 assets
@@ -115,5 +115,5 @@ built modules 59 KiB [1m[33m[built][39m[22m
     [1m../../node_modules/charenc/charenc.js[39m[22m 850 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
     [1m../../node_modules/is-buffer/index.js[39m[22m 698 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
   [1mexternal "@wordpress/interactivity-router"[39m[22m 42 bytes [1m[33m[optional][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 13011 ms
+webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 4948 ms
 Block metadata PHP file generated at: build/blocks-manifest.php

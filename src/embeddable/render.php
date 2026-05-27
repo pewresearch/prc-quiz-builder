@@ -16,12 +16,14 @@ $block_wrapper_attrs = get_block_wrapper_attributes(
 );
 
 $permalink  = get_permalink( (int) $attributes['ref'] );
+$iframe_url = trailingslashit( $permalink ) . 'iframe/';
 $iframe_url = add_query_arg(
 	array(
-		'iframe'    => true,
-		'quizEmbed' => true,
+		'prc_entity_iframe' => '1',
+		'iframeTemplate'    => 'content',
+		'quizEmbed'         => true,
 	),
-	$permalink
+	$iframe_url
 );
 
 $content = function_exists( '\PRC\Platform\Embeds\prc_get_post_as_iframe' )

@@ -7,4 +7,4 @@ asset [1m[32mindex.asset.php[39m[22m 184 bytes [1m[32m[emitted][39m[22m 
 Entrypoint [1mindex[39m[22m 26 KiB = [1m[32mindex.js[39m[22m 25.8 KiB [1m[32mindex.asset.php[39m[22m 184 bytes
 orphan modules 94.7 KiB [1m[33m[orphan][39m[22m 40 modules
 [1m./src/index.js + 32 modules[39m[22m 75.8 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 5263 ms
+webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 5027 ms
