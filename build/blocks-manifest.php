@@ -435,6 +435,14 @@ return array(
 				'allowOrientation' => false,
 				'allowSizingOnChildren' => true
 			),
+			'spacing' => array(
+				'blockGap' => true,
+				'margin' => array(
+					'top',
+					'bottom'
+				),
+				'padding' => true
+			),
 			'typography' => array(
 				'fontSize' => true,
 				'__experimentalFontFamily' => true

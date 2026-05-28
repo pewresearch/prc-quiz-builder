@@ -10,7 +10,7 @@ assets by chunk 10.5 KiB (name: answer/index) 4 assets
 assets by chunk 8.83 KiB (name: page/index) 4 assets
 assets by chunk 8.84 KiB (name: result-table/index) 4 assets
 assets by chunk 8.17 KiB (name: result-histogram/index) 4 assets
-assets by chunk 3.15 KiB (name: pages/index) 4 assets
+assets by chunk 3.21 KiB (name: pages/index) 4 assets
 assets by chunk 2.81 KiB (name: result-score/index) 4 assets
 assets by chunk 2.68 KiB (name: group-results/index) 4 assets
 assets by path [1m[32mresults/*.php[39m[22m 9.48 KiB
@@ -45,7 +45,7 @@ Entrypoints:
 You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
 For more info visit https://webpack.js.org/guides/code-splitting/[39m[22m
 
-webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 34252 ms
+webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 20929 ms
 assets by chunk 15.7 KiB (id hint: style) 20 assets
 assets by path [1m[32membeddable/[39m[22m 29.3 KiB 5 assets
 assets by chunk 244 KiB (name: controller/index) 4 assets
@@ -54,7 +54,7 @@ assets by chunk 10.5 KiB (name: answer/index) 4 assets
 assets by chunk 8.83 KiB (name: page/index) 4 assets
 assets by chunk 8.84 KiB (name: result-table/index) 4 assets
 assets by chunk 8.17 KiB (name: result-histogram/index) 4 assets
-assets by chunk 3.15 KiB (name: pages/index) 4 assets
+assets by chunk 3.21 KiB (name: pages/index) 4 assets
 assets by chunk 2.81 KiB (name: result-score/index) 4 assets
 assets by chunk 2.68 KiB (name: group-results/index) 4 assets
 assets by path [1m[32mresults/*.php[39m[22m 9.48 KiB
@@ -89,7 +89,7 @@ Entrypoints:
 You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
 For more info visit https://webpack.js.org/guides/code-splitting/[39m[22m
 
-webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 12598 ms
+webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 18063 ms
 
 assets by path [1m[32mcontroller/[39m[22m 15.3 KiB 2 assets
 assets by path [1m[32mgroup-results/[39m[22m 2.91 KiB 2 assets
@@ -115,5 +115,5 @@ built modules 59 KiB [1m[33m[built][39m[22m
     [1m../../node_modules/charenc/charenc.js[39m[22m 850 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
     [1m../../node_modules/is-buffer/index.js[39m[22m 698 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
   [1mexternal "@wordpress/interactivity-router"[39m[22m 42 bytes [1m[33m[optional][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 4948 ms
+webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 5645 ms
 Block metadata PHP file generated at: build/blocks-manifest.php
