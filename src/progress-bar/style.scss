@@ -1,0 +1,26 @@
+.wp-block-prc-quiz-progress-bar {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	margin-block-end: 1.25rem;
+
+	&__label {
+		font-size: 0.875rem;
+		font-weight: 600;
+		line-height: 1.4;
+	}
+
+	&__track {
+		height: 0.5rem;
+		overflow: hidden;
+		border-radius: 999px;
+		background-color: #e5e7eb;
+	}
+
+	&__fill {
+		height: 100%;
+		border-radius: 999px;
+		background-color: #2b6cb0;
+		transition: width 0.25s ease;
+	}
+}

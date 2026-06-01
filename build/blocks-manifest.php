@@ -121,6 +121,7 @@ return array(
 			'typology'
 		),
 		'allowedBlocks' => array(
+			'core/group',
 			'prc-quiz/pages',
 			'prc-quiz/results',
 			'prc-quiz/group-results',
@@ -259,9 +260,6 @@ return array(
 		'title' => 'Group Results',
 		'description' => 'Results for a community group. Without this block, group creation will be disabled, it is required for group quizzes to have a separate version of the results for the community group.',
 		'category' => 'quiz',
-		'attributes' => array(
-			
-		),
 		'supports' => array(
 			'anchor' => true,
 			'html' => false,
@@ -408,6 +406,7 @@ return array(
 		'title' => 'Pages',
 		'category' => 'quiz',
 		'allowedBlocks' => array(
+			'prc-quiz/progress-bar',
 			'prc-quiz/page'
 		),
 		'attributes' => array(
@@ -452,6 +451,47 @@ return array(
 			'prc-quiz/controller'
 		),
 		'textdomain' => 'pages',
+		'editorScript' => 'file:./index.js',
+		'editorStyle' => 'file:./index.css',
+		'style' => 'file:./style-index.css',
+		'viewScriptModule' => 'file:./view.js'
+	),
+	'progress-bar' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'prc-quiz/progress-bar',
+		'version' => '1.0.0',
+		'title' => 'Quiz Progress Bar',
+		'description' => 'Displays quiz completion progress based on answered questions.',
+		'category' => 'quiz',
+		'ancestor' => array(
+			'prc-quiz/controller'
+		),
+		'supports' => array(
+			'anchor' => true,
+			'html' => false,
+			'multiple' => false,
+			'interactivity' => true,
+			'color' => array(
+				'background' => true,
+				'text' => true
+			),
+			'spacing' => array(
+				'margin' => array(
+					'top',
+					'bottom'
+				),
+				'padding' => true
+			),
+			'typography' => array(
+				'fontSize' => true,
+				'__experimentalFontFamily' => true
+			)
+		),
+		'usesContext' => array(
+			'prc-quiz/id'
+		),
+		'textdomain' => 'progress-bar',
 		'editorScript' => 'file:./index.js',
 		'editorStyle' => 'file:./index.css',
 		'style' => 'file:./style-index.css',

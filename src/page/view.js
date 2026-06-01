@@ -8,8 +8,11 @@ import {
 	withSyncEvent,
 } from '@wordpress/interactivity';
 
+const lastCurrentPageUuidByQuiz = new Map();
+
 const { state, actions } = store('prc-quiz/controller', {
 	state: {
+		suppressPageScroll: false,
 		get isPageVisible() {
 			const context = getContext();
 			const { uuid, currentPageUuid, displayType } = context;
@@ -27,9 +30,33 @@ const { state, actions } = store('prc-quiz/controller', {
 			if ('paged' !== displayType) {
 				return;
 			}
-			if (uuid === currentPageUuid) {
-				actions.runAnimation();
+			if (uuid !== currentPageUuid) {
+				return;
 			}
+			const quizKey = context.firstPageUuid;
+			const lastCurrentPageUuid =
+				lastCurrentPageUuidByQuiz.get(quizKey) ?? null;
+			const hasNavigated =
+				lastCurrentPageUuid !== null &&
+				lastCurrentPageUuid !== currentPageUuid;
+			const suppressScroll = state.suppressPageScroll;
+			if (suppressScroll) {
+				state.suppressPageScroll = false;
+			}
+			lastCurrentPageUuidByQuiz.set(quizKey, currentPageUuid);
+			if (hasNavigated && !suppressScroll) {
+				const { ref } = getElement();
+				const quizContainer = ref.closest(
+					'.wp-block-prc-quiz-controller'
+				);
+				if (quizContainer) {
+					quizContainer.scrollIntoView({
+						behavior: 'smooth',
+						block: 'start',
+					});
+				}
+			}
+			actions.runAnimation();
 		},
 		onLastPageScroll: withSyncEvent((event) => {
 			const context = getContext();

@@ -16,7 +16,7 @@ import { registerBlockBit } from '@prc/block-bits';
 
 export default function registerBlockBits() {
 	registerBlockBit('prc-quiz-builder/group-results-link', {
-		title: __('Group Results Link', 'prc-quiz-builder'),
+		title: __("View Your Group's Results", 'prc-quiz-builder'),
 		icon: link,
 	});
 }

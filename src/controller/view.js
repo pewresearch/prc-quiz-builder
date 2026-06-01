@@ -33,11 +33,11 @@ const { state, actions } = store('prc-quiz/controller', {
 		},
 		get groupResultsLinkText() {
 			const { groupId } = getContext();
-			return groupId ? "See your quiz group\'s results." : '';
+			return groupId ? "View your group's results." : '';
 		},
 		get groupResultsLinkUrl() {
 			const { groupId, quizUrl } = getContext();
-			return groupId ? `${quizUrl}group/${groupId}/results` : ``;
+			return groupId ? `${quizUrl}group/${groupId}/results/` : '';
 		},
 		get nonce() {
 			const { nonce } = getContext();

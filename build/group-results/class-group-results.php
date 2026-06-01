@@ -7,12 +7,21 @@
 
 namespace PRC\Platform\Quiz;
 
+use WP_HTML_Tag_Processor;
+
 /**
  * Group results class.
  *
  * @package PRC\Platform\Quiz
  */
 class Group_Results {
+	/**
+	 * CSS class marker for the community group results button variation.
+	 *
+	 * @var string
+	 */
+	public const GROUP_RESULTS_BUTTON_CLASS = 'prc-quiz-community-group-results-link';
+
 	/**
 	 * Cache duration.
 	 *
@@ -27,6 +36,129 @@ class Group_Results {
 	 */
 	public function __construct( $loader ) {
 		$loader->add_action( 'init', $this, 'block_init' );
+		$loader->add_filter( 'render_block_core/button', $this, 'inject_group_results_button_visibility', 20, 2 );
+	}
+
+	/**
+	 * Format the community group response count for bound paragraph content.
+	 *
+	 * @param int $count Response count.
+	 * @return string
+	 */
+	public static function format_response_count( $count ) {
+		return sprintf( '**%d** responses', (int) $count );
+	}
+
+	/**
+	 * Register community group block bindings.
+	 *
+	 * @return void
+	 */
+	public function register_group_bindings() {
+		register_block_bindings_source(
+			'prc-quiz/community-group-name',
+			array(
+				'label'              => __( 'Community Group Name', 'prc-quiz' ),
+				'get_value_callback' => function ( array $source_args, $block_instance ) {
+					unset( $source_args );
+					if ( isset( $block_instance->context['prc-quiz/group/name'] ) ) {
+						return $block_instance->context['prc-quiz/group/name'];
+					}
+					return '';
+				},
+				'uses_context'       => array( 'prc-quiz/group/name' ),
+			)
+		);
+
+		register_block_bindings_source(
+			'prc-quiz/community-group-response-count',
+			array(
+				'label'              => __( 'Community Group Response Count', 'prc-quiz' ),
+				'get_value_callback' => function ( array $source_args, $block_instance ) {
+					unset( $source_args );
+					$count = $block_instance->context['prc-quiz/group/response-count'] ?? 0;
+					return self::format_response_count( $count );
+				},
+				'uses_context'       => array( 'prc-quiz/group/response-count' ),
+			)
+		);
+
+		register_block_bindings_source(
+			'prc-quiz/community-group-results-url',
+			array(
+				'label'              => __( 'Community Group Results URL', 'prc-quiz' ),
+				'get_value_callback' => function ( array $source_args, $block_instance ) {
+					unset( $source_args );
+					return $block_instance->context['prc-quiz/group/results-url'] ?? '';
+				},
+				'uses_context'       => array( 'prc-quiz/group/results-url' ),
+			)
+		);
+	}
+
+	/**
+	 * Hide community group results buttons when no group is present.
+	 *
+	 * @hook render_block_core/button
+	 *
+	 * @param string $html  Rendered block HTML.
+	 * @param array  $block Parsed block array.
+	 * @return string Modified HTML.
+	 */
+	public function inject_group_results_button_visibility( string $html, array $block ): string {
+		$class_name = $block['attrs']['className'] ?? '';
+		if ( ! is_string( $class_name ) || ! str_contains( $class_name, self::GROUP_RESULTS_BUTTON_CLASS ) ) {
+			return $html;
+		}
+
+		$tag = new WP_HTML_Tag_Processor( $html );
+		if ( ! $tag->next_tag( 'a' ) ) {
+			return $html;
+		}
+
+		$tag->set_attribute( 'data-wp-interactive', 'prc-quiz/controller' );
+		$tag->set_attribute( 'data-wp-bind--hidden', '!state.hasGroup' );
+
+		if ( false === get_query_var( 'quizGroup', false ) ) {
+			$tag->set_attribute( 'hidden', 'true' );
+		}
+
+		return $tag->get_updated_html();
+	}
+
+	/**
+	 * Build block context values for community group bindings.
+	 *
+	 * @param int          $quiz_id  Quiz post ID.
+	 * @param string|false $group_id Group ID from the quizGroup query var.
+	 * @return array<string, mixed>
+	 */
+	public static function get_group_bindings_context( $quiz_id, $group_id ) {
+		if ( ! $quiz_id || false === $group_id ) {
+			return array();
+		}
+
+		$groups = new Groups(
+			array(
+				'group_id' => $group_id,
+				'quiz_id'  => $quiz_id,
+			)
+		);
+		$group = $groups->get_group( true );
+		if ( false === $group || ! is_array( $group ) ) {
+			return array();
+		}
+
+		$results_url = $group['results_url'] ?? '';
+		if ( empty( $results_url ) ) {
+			$results_url = $groups->generate_results_url();
+		}
+
+		return array(
+			'prc-quiz/group/name'            => $group['name'] ?? '',
+			'prc-quiz/group/response-count' => isset( $group['total'] ) ? (int) $group['total'] : 0,
+			'prc-quiz/group/results-url'      => $results_url,
+		);
 	}
 
 	/**
@@ -143,5 +275,6 @@ class Group_Results {
 				'render_callback' => array( $this, 'render_block_callback' ),
 			)
 		);
+		$this->register_group_bindings();
 	}
 }

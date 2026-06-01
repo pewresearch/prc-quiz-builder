@@ -4,15 +4,14 @@
 	"name": "prc-quiz/group-results",
 	"version": "4.0.0",
 	"title": "Group Results",
-  "description": "Results for a community group. Without this block, group creation will be disabled, it is required for group quizzes to have a separate version of the results for the community group.",
+	"description": "Results for a community group. Without this block, group creation will be disabled, it is required for group quizzes to have a separate version of the results for the community group.",
 	"category": "quiz",
-	"attributes": {},
 	"supports": {
 		"anchor": true,
 		"html": false,
 		"multiple": false,
-    "interactivity": true,
-    "animations": true,
+		"interactivity": true,
+		"animations": true,
 		"color": {
 			"background": true,
 			"text": true,
@@ -20,7 +19,7 @@
 		},
 		"spacing": {
 			"blockGap": true,
-			"margin": [ "top", "bottom" ],
+			"margin": ["top", "bottom"],
 			"padding": true
 		},
 		"typography": {
@@ -28,11 +27,15 @@
 			"__experimentalFontFamily": true
 		}
 	},
-	"parent": [ "prc-quiz/controller" ],
-	"usesContext": ["prc-quiz/type", "prc-quiz/groupsEnabled", "prc-quiz/quizId"],
+	"parent": ["prc-quiz/controller"],
+	"usesContext": [
+		"prc-quiz/type",
+		"prc-quiz/groupsEnabled",
+		"prc-quiz/quizId"
+	],
 	"textdomain": "group-results",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
-  "viewScriptModule": "file:./view.js"
+	"viewScriptModule": "file:./view.js"
 }

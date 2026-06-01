@@ -43,7 +43,7 @@ class Results {
 		\PRC\Platform\Block_Bits\register_block_bit(
 			'prc-quiz-builder/group-results-link',
 			array(
-				'label'               => __( 'Quiz: Group Results Link', 'prc-quiz-builder' ),
+				'label'               => __( 'Quiz: View Group Results Link', 'prc-quiz-builder' ),
 				'allowed_block_types' => array( 'core/paragraph', 'core/heading' ),
 				'render_strategy'     => 'iapi',
 				'iapi'                => array(
@@ -56,7 +56,7 @@ class Results {
 					// Renders as <a> so data-wp-bind--href creates a real clickable link.
 					'tag_name'  => 'a',
 				),
-				'default_text'        => __( 'view your results', 'prc-quiz-builder' ),
+				'default_text'        => __( "View your group's results.", 'prc-quiz-builder' ),
 			)
 		);
 	}

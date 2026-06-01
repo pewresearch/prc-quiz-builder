@@ -6,7 +6,6 @@
   "title": "Group Results",
   "description": "Results for a community group. Without this block, group creation will be disabled, it is required for group quizzes to have a separate version of the results for the community group.",
   "category": "quiz",
-  "attributes": {},
   "supports": {
     "anchor": true,
     "html": false,

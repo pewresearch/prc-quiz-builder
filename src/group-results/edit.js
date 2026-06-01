@@ -23,13 +23,7 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
  *
  * @return {WPElement} Element to render.
  */
-export default function Edit({
-	attributes,
-	setAttributes,
-	context,
-	clientId,
-	isSelected,
-}) {
+export default function Edit({ attributes }) {
 	const blockProps = useBlockProps();
 	// By defining a allowedBlocks attribute any block can now customize what inner blocks are allowed.
 	// This gives us a good way to ensure greater template and pattern control.

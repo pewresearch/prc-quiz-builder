@@ -11,6 +11,7 @@
     "typology"
   ],
   "allowedBlocks": [
+    "core/group",
     "prc-quiz/pages",
     "prc-quiz/results",
     "prc-quiz/group-results",

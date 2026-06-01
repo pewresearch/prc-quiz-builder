@@ -1,0 +1,41 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "prc-quiz/progress-bar",
+  "version": "1.0.0",
+  "title": "Quiz Progress Bar",
+  "description": "Displays quiz completion progress based on answered questions.",
+  "category": "quiz",
+  "ancestor": [
+    "prc-quiz/controller"
+  ],
+  "supports": {
+    "anchor": true,
+    "html": false,
+    "multiple": false,
+    "interactivity": true,
+    "color": {
+      "background": true,
+      "text": true
+    },
+    "spacing": {
+      "margin": [
+        "top",
+        "bottom"
+      ],
+      "padding": true
+    },
+    "typography": {
+      "fontSize": true,
+      "__experimentalFontFamily": true
+    }
+  },
+  "usesContext": [
+    "prc-quiz/id"
+  ],
+  "textdomain": "progress-bar",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "viewScriptModule": "file:./view.js"
+}

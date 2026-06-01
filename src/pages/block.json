@@ -6,6 +6,7 @@
 	"title": "Pages",
 	"category": "quiz",
 	"allowedBlocks": [
+		"prc-quiz/progress-bar",
 		"prc-quiz/page"
 	],
 	"attributes": {},

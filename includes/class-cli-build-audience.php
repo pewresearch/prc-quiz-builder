@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace PRC\Platform\Quiz;
 
+use PRC\Platform\CLI_Audience_Verification;
 use WP_CLI;
 use WP_CLI_Command;
 use WP_CLI\Utils;
@@ -26,10 +27,14 @@ if ( ! defined( 'WP_CLI' ) || ! WP_CLI ) {
 	return;
 }
 
+require_once dirname( __DIR__, 2 ) . '/prc-firebase/includes/trait-cli-audience-verification.php';
+
 /**
  * Builds a newsletter recipient audience from Firebase quiz group owners.
  */
 class CLI_Build_Audience extends WP_CLI_Command {
+
+	use CLI_Audience_Verification;
 
 	/**
 	 * wp_options key prefix for audience email lists.
@@ -59,35 +64,41 @@ class CLI_Build_Audience extends WP_CLI_Command {
 	 * : Persist the audience in wp_options but skip creating a newsletter draft.
 	 *
 	 * [--label=<text>]
-	 * : Human-readable label for this audience. Defaults to "<quiz title> group creators".
+	 * : Human-readable label for this audience. Defaults to "<quiz title> group creators (mode)".
+	 *
+	 * [--only-verified]
+	 * : Include only users with a verified Firebase email (default when no verification flag is passed).
+	 *
+	 * [--only-unverified]
+	 * : Include only users with an unverified Firebase email (must have an email on file).
 	 *
 	 * [--include-unverified]
-	 * : Include users whose Firebase email address is not verified. Defaults to
-	 *   excluding unverified accounts.
+	 * : Include all users with an email on file (verified and unverified). Mutually exclusive with the other verification flags.
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     # Dry-run: see how many group owners exist for quiz 5597
+	 *     # Dry-run: verified group owners for quiz 5597
 	 *     wp prc quiz build-group-owners-audience --quiz-id=5597 --dry-run
 	 *
-	 *     # Build audience and create a draft newsletter
-	 *     wp prc quiz build-group-owners-audience --quiz-id=5597
+	 *     # Build verified-only audience and create a draft newsletter
+	 *     wp prc quiz build-group-owners-audience --quiz-id=5597 --only-verified
 	 *
-	 *     # Build with a custom label, skip post creation
-	 *     wp prc quiz build-group-owners-audience --quiz-id=5597 --no-create-post --label="Political Typology group creators"
+	 *     # Unverified-only list (separate wp_options key)
+	 *     wp prc quiz build-group-owners-audience --quiz-id=5597 --only-unverified --no-create-post
 	 *
-	 *     # Include users who never verified their email
-	 *     wp prc quiz build-group-owners-audience --quiz-id=5597 --include-unverified
+	 *     # All recipients with an email (verified + unverified)
+	 *     wp prc quiz build-group-owners-audience --quiz-id=5597 --include-unverified --no-create-post
 	 *
 	 * @param array $args       Positional arguments (unused).
 	 * @param array $assoc_args Associative arguments.
 	 */
 	public function __invoke( $args, $assoc_args ) {
-		$quiz_id            = (int) Utils\get_flag_value( $assoc_args, 'quiz-id', 0 );
-		$dry_run            = (bool) Utils\get_flag_value( $assoc_args, 'dry-run', false );
-		$no_create_post     = (bool) Utils\get_flag_value( $assoc_args, 'no-create-post', false );
-		$label              = Utils\get_flag_value( $assoc_args, 'label', null );
-		$include_unverified = (bool) Utils\get_flag_value( $assoc_args, 'include-unverified', false );
+		$quiz_id        = (int) Utils\get_flag_value( $assoc_args, 'quiz-id', 0 );
+		$dry_run        = (bool) Utils\get_flag_value( $assoc_args, 'dry-run', false );
+		$no_create_post = (bool) Utils\get_flag_value( $assoc_args, 'no-create-post', false );
+		$label          = Utils\get_flag_value( $assoc_args, 'label', null );
+
+		$verification = self::resolve_verification_mode( $assoc_args );
 
 		// ── Validate quiz ─────────────────────────────────────────────────────
 		if ( $quiz_id <= 0 ) {
@@ -123,9 +134,10 @@ class CLI_Build_Audience extends WP_CLI_Command {
 
 		// ── Call the Cloud Function ───────────────────────────────────────────
 		WP_CLI::line( sprintf(
-			'Calling buildQuizGroupOwnersAudience for quiz %d ("%s")…',
+			'Calling buildQuizGroupOwnersAudience for quiz %d ("%s", verification=%s)…',
 			$quiz_id,
-			$quiz->post_title
+			$quiz->post_title,
+			$verification
 		) );
 
 		$response = wp_remote_post(
@@ -136,10 +148,12 @@ class CLI_Build_Audience extends WP_CLI_Command {
 					'Authorization' => 'Bearer ' . $id_token,
 					'Content-Type'  => 'application/json',
 				),
-				'body'    => wp_json_encode( array(
-					'quiz_id'          => $quiz_id,
-					'require_verified' => ! $include_unverified,
-				) ),
+				'body'    => wp_json_encode(
+					self::build_audience_request_body(
+						array( 'quiz_id' => $quiz_id ),
+						$verification
+					)
+				),
 			)
 		);
 
@@ -155,6 +169,11 @@ class CLI_Build_Audience extends WP_CLI_Command {
 			WP_CLI::error( "Firebase function returned an error: {$detail}" );
 		}
 
+		// Fail closed unless the function confirmed the requested cohort. This
+		// catches outdated deployments that would otherwise return a different
+		// (e.g. broader) audience than --only-unverified asked for.
+		$verification = self::assert_response_verification( $body, $verification );
+
 		$emails         = $body['emails'] ?? array();
 		$count          = (int) ( $body['count'] ?? count( $emails ) );
 		$scanned_groups = (int) ( $body['scanned_groups'] ?? 0 );
@@ -163,11 +182,12 @@ class CLI_Build_Audience extends WP_CLI_Command {
 		$built_at       = $body['built_at'] ?? current_time( 'mysql', true );
 
 		WP_CLI::line( sprintf(
-			'Scanned %s groups → %s v2 → %s unique owners → %s valid email(s).',
+			'Scanned %s groups → %s v2 → %s unique owners → %s email(s) (%s).',
 			number_format( $scanned_groups ),
 			number_format( $v2_groups ),
 			number_format( $matched_users ),
-			number_format( $count )
+			number_format( $count ),
+			$verification
 		) );
 
 		if ( $dry_run ) {
@@ -176,9 +196,13 @@ class CLI_Build_Audience extends WP_CLI_Command {
 		}
 
 		// ── Persist to wp_options ─────────────────────────────────────────────
-		$audience_key = self::AUDIENCE_OPTION_PREFIX . $quiz_id;
+		$audience_key = self::AUDIENCE_OPTION_PREFIX . $quiz_id . '_' . $verification;
 		$meta_key     = $audience_key . '_meta';
-		$final_label  = $label ?? sprintf( '%s group creators', $quiz->post_title );
+		$final_label  = $label ?? sprintf(
+			'%s group creators%s',
+			$quiz->post_title,
+			self::verification_label_suffix( $verification )
+		);
 
 		update_option( $audience_key, $emails, false );
 		update_option(
@@ -186,6 +210,7 @@ class CLI_Build_Audience extends WP_CLI_Command {
 			array(
 				'label'          => $final_label,
 				'count'          => $count,
+				'verification'   => $verification,
 				'quiz_id'        => $quiz_id,
 				'quiz_title'     => $quiz->post_title,
 				'scanned_groups' => $scanned_groups,
@@ -224,16 +249,29 @@ class CLI_Build_Audience extends WP_CLI_Command {
 			return;
 		}
 
-		$post_id = wp_insert_post( array(
-			'post_type'   => 'prc_newsletter',
-			'post_status' => 'draft',
-			'post_title'  => sprintf( 'Update for %s group creators', $quiz->post_title ),
-			'meta_input'  => array(
-				'prc_newsletter_delivery_mode'       => 'mandrill',
-				'prc_newsletter_audience_option_key' => $audience_key,
-				'prc_newsletter_subject'             => sprintf( 'Update: %s', $quiz->post_title ),
+		$mode_title = self::verification_title_fragment( $verification );
+
+		$post_id = wp_insert_post(
+			array(
+				'post_type'   => 'prc_newsletter',
+				'post_status' => 'draft',
+				'post_title'  => sprintf(
+					'Update for %s group creators%s',
+					$quiz->post_title,
+					$mode_title
+				),
+				'meta_input'  => array(
+					'prc_newsletter_delivery_mode'       => 'mandrill',
+					'prc_newsletter_audience_option_key' => $audience_key,
+					'prc_newsletter_subject'             => sprintf(
+						'Update: %s%s',
+						$quiz->post_title,
+						$mode_title
+					),
+				),
 			),
-		), true );
+			true
+		);
 
 		if ( is_wp_error( $post_id ) ) {
 			WP_CLI::warning( 'Could not create newsletter draft: ' . $post_id->get_error_message() );

@@ -16,7 +16,7 @@ const { state } = store('prc-quiz/controller', {
 			if (!groupId) {
 				return false;
 			}
-			return `${quizUrl}/group/${groupId}/results`;
+			return `${quizUrl}group/${groupId}/results/`;
 		},
 		get groupAnswers() {
 			const context = getContext();

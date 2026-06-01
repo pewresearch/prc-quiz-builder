@@ -73,7 +73,7 @@ export default function Edit({
 	clientId,
 	isSelected,
 }) {
-	const { allowedBlocks, displayType } = attributes;
+	const { allowedBlocks, displayType, groupsEnabled } = attributes;
 
 	const blockProps = useBlockProps({
 		className: clsx(className, {
@@ -124,6 +124,32 @@ export default function Edit({
 		[clientId]
 	);
 
+	const quizPermalink = useSelect((select) => {
+		const postId = select('core/editor').getCurrentPostId();
+		const record = select('core').getEntityRecord(
+			'postType',
+			'quiz',
+			postId
+		);
+		return record?.link || '';
+	}, []);
+
+	const sampleGroupId = 'sample-group-id';
+	const groupBindingContext = useMemo(() => {
+		if (!groupsEnabled) {
+			return {};
+		}
+
+		const baseUrl = quizPermalink || '/quiz/sample-quiz/';
+		const resultsUrl = `${baseUrl}group/${sampleGroupId}/results/`;
+
+		return {
+			'prc-quiz/group/name': __('Sample Community Group', 'prc-quiz'),
+			'prc-quiz/group/response-count': 42,
+			'prc-quiz/group/results-url': resultsUrl,
+		};
+	}, [groupsEnabled, quizPermalink]);
+
 	return (
 		<>
 			<Controls
@@ -135,6 +161,7 @@ export default function Edit({
 				<BlockContextProvider
 					value={{
 						'prc-quiz/uuids': existingUuids,
+						...groupBindingContext,
 					}}
 				>
 					<div {...innerBlocksProps} />

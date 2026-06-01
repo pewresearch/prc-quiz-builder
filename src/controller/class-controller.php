@@ -23,6 +23,7 @@ class Controller {
 	public function __construct( $loader ) {
 		$loader->add_action( 'init', $this, 'block_init' );
 		$loader->add_filter( 'render_block_context', $this, 'set_quiz_id_in_context', 10, 2 );
+		$loader->add_filter( 'render_block_context', $this, 'set_group_bindings_context', 10, 2 );
 		$loader->add_filter( 'render_block_core/buttons', $this, 'modify_buttons', 10, 2 );
 	}
 
@@ -42,6 +43,41 @@ class Controller {
 			$context['prc-quiz/id'] = get_the_ID();
 		}
 		return $context;
+	}
+
+	/**
+	 * Provide community group binding context to all blocks under the controller.
+	 *
+	 * @hook render_block_context
+	 *
+	 * @param array $context      Block context.
+	 * @param array $parsed_block Parsed block.
+	 * @return array
+	 */
+	public function set_group_bindings_context( $context, $parsed_block ) {
+		if ( 'prc-quiz/controller' !== ( $parsed_block['blockName'] ?? '' ) ) {
+			return $context;
+		}
+
+		$groups_enabled = $parsed_block['attrs']['groupsEnabled'] ?? false;
+		if ( ! $groups_enabled ) {
+			return $context;
+		}
+
+		$quiz_id = get_the_ID();
+		if ( ! $quiz_id ) {
+			return $context;
+		}
+
+		$group_id = get_query_var( 'quizGroup', false );
+		if ( false === $group_id ) {
+			return $context;
+		}
+
+		return array_merge(
+			$context,
+			Group_Results::get_group_bindings_context( $quiz_id, $group_id )
+		);
 	}
 
 	/**

@@ -35,11 +35,15 @@ class Pages {
 	 */
 	public function set_pages_in_context( $context, $parsed_block ) {
 		if ( 'prc-quiz/pages' === $parsed_block['blockName'] ) {
+			$page_blocks = array_values(
+				array_filter(
+					$parsed_block['innerBlocks'],
+					fn( $inner ) => 'prc-quiz/page' === $inner['blockName']
+				)
+			);
 			$context['prc-quiz/pages'] = array_map(
-				function ( $page ) {
-					return $page['attrs']['uuid'];
-				},
-				$parsed_block['innerBlocks']
+				fn( $page ) => $page['attrs']['uuid'],
+				$page_blocks
 			);
 		}
 		return $context;
@@ -55,8 +59,13 @@ class Pages {
 	 */
 	public function render_block_callback( $attributes, $content, $block ) {
 		// Find the first page block in $block->inner_blocks, and get the uuid attribute.
-		$parsed_block          = $block->parsed_block;
-		$inner_blocks          = $parsed_block['innerBlocks'];
+		$parsed_block = $block->parsed_block;
+		$inner_blocks = array_values(
+			array_filter(
+				$parsed_block['innerBlocks'],
+				fn( $inner ) => 'prc-quiz/page' === $inner['blockName']
+			)
+		);
 		$first_page_block      = $inner_blocks[0];
 		$first_page_block_uuid = $first_page_block['attrs']['uuid'];
 
@@ -70,9 +79,7 @@ class Pages {
 					'firstPageUuid'   => $first_page_block_uuid,
 					'currentPageUuid' => $first_page_block_uuid, // On first render, we set the current page uuid to the first page block uuid.
 					'pages'           => array_map(
-						function ( $page ) {
-							return $page['attrs']['uuid'];
-						},
+						fn( $page ) => $page['attrs']['uuid'],
 						$inner_blocks
 					),
 				)

@@ -15,7 +15,11 @@ const { state, actions } = store('prc-quiz/controller', {
 					if (hasQuizProgress) {
 						const { currentPageUuid, selectedAnswers } =
 							quizProgress;
-						if (currentPageUuid) {
+						if (
+							currentPageUuid &&
+							currentPageUuid !== context.currentPageUuid
+						) {
+							state.suppressPageScroll = true;
 							context.currentPageUuid = currentPageUuid;
 						}
 						if (selectedAnswers) {

@@ -70,10 +70,12 @@ class Question {
 		// Add the question to the quiz state.
 		$state = wp_interactivity_state( 'prc-quiz/controller', array() );
 		$state[ 'quiz_' . $quiz_id ]['questions'][ $question_uuid ] = array(
-			'uuid'       => $question_uuid,
-			'text'       => $attributes['question'],
-			'internalId' => $internal_id,
-			'answers'    => array(),
+			'uuid'                  => $question_uuid,
+			'text'                  => $attributes['question'],
+			'internalId'            => $internal_id,
+			'conditionalDisplay'    => array_key_exists( 'conditionalDisplay', $attributes ) ? $attributes['conditionalDisplay'] : false,
+			'conditionalAnswerUuid' => array_key_exists( 'conditionalAnswerUuid', $attributes ) ? $attributes['conditionalAnswerUuid'] : null,
+			'answers'               => array(),
 		);
 		wp_interactivity_state( 'prc-quiz/controller', $state );
 
