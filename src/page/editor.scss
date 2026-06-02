@@ -7,4 +7,8 @@
 .wp-block-prc-quiz-page.wp-block {
 	color: inherit;
 	background: inherit;
+
+	.wp-block-prc-block-mailchimp-form .wp-block-prc-block-form-submit {
+		display: none;
+	}
 }

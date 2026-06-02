@@ -43,6 +43,36 @@ class Page {
 	}
 
 	/**
+	 * Strip redirectUrl from embedded Mailchimp forms so quiz submission is not interrupted.
+	 *
+	 * @param string $block_content The block content.
+	 * @return string
+	 */
+	public function strip_embedded_form_redirect_urls( $block_content ) {
+		$tag = new WP_HTML_Tag_Processor( $block_content );
+		while ( $tag->next_tag( array( 'tag_name' => 'FORM' ) ) ) {
+			if ( 'prc-block/form' !== $tag->get_attribute( 'data-wp-interactive' ) ) {
+				continue;
+			}
+
+			$context_json = $tag->get_attribute( 'data-wp-context' );
+			if ( empty( $context_json ) ) {
+				continue;
+			}
+
+			$context = json_decode( $context_json, true );
+			if ( ! is_array( $context ) ) {
+				continue;
+			}
+
+			$context['redirectUrl'] = false;
+			$tag->set_attribute( 'data-wp-context', wp_json_encode( $context ) );
+		}
+
+		return $tag->get_updated_html();
+	}
+
+	/**
 	 * Find the dialog and remove it if it's a group quiz.
 	 *
 	 * @param string $block_content The block content.
@@ -105,6 +135,7 @@ class Page {
 			}
 		}
 		$content = $tag->get_updated_html();
+		$content = $this->strip_embedded_form_redirect_urls( $content );
 		$content = $this->find_dialog_and_remove_if_group_quiz( $content );
 		return $content;
 	}

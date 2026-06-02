@@ -163,7 +163,7 @@ const { state, actions } = store('prc-quiz/controller', {
 			actions.saveQuizProgress();
 		}),
 		onSubmitQuizClick: withSyncEvent(() => {
-			actions.submitQuiz();
+			actions.submitQuiz({ triggerMailchimp: true });
 		}),
 		onRetryPendingSubmissionClick: withSyncEvent((event) => {
 			event.preventDefault();
@@ -214,9 +214,18 @@ const { state, actions } = store('prc-quiz/controller', {
 
 		/**
 		 * Navigate the user to the results view and submit the user's results to the database.
+		 *
+		 * @param {Object}  [options]
+		 * @param {boolean} [options.triggerMailchimp] Submit embedded Mailchimp form when valid.
 		 */
-		*submitQuiz() {
+		*submitQuiz({ triggerMailchimp = false } = {}) {
 			const context = getContext();
+
+			if (context.processing) {
+				return;
+			}
+
+			const { ref } = getElement();
 			const {
 				answerThreshold,
 				displayType,
@@ -261,6 +270,59 @@ const { state, actions } = store('prc-quiz/controller', {
 				}
 				context.processing = false;
 				return; // Stop execution here.
+			}
+
+			const { currentPageUuid, pages } = context;
+			const root =
+				ref?.closest('[data-wp-interactive="prc-quiz/controller"]') ||
+				document;
+			const mailchimpFormSelector =
+				'[data-wp-interactive="prc-block/mailchimp-form"] form[data-wp-interactive="prc-block/form"]';
+			const findMailchimpFormInPage = (pageUuid) => {
+				if (!pageUuid) {
+					return null;
+				}
+				const pageEl = root.querySelector(
+					`[data-page-uuid="${pageUuid}"]`
+				);
+				return pageEl?.querySelector(mailchimpFormSelector) ?? null;
+			};
+			let formEl = findMailchimpFormInPage(currentPageUuid);
+			if (!formEl && pages?.length) {
+				formEl = findMailchimpFormInPage(pages[pages.length - 1]);
+			}
+			if (!formEl) {
+				formEl = root.querySelector(mailchimpFormSelector);
+			}
+			const emailEl = formEl?.querySelector(
+				'input[type="email"], input[name="emailAddress"], input[name="email"]'
+			);
+			const email = emailEl?.value?.trim() || '';
+			const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+			if (!isPreview && triggerMailchimp && formEl && emailValid) {
+				yield new Promise((resolve) => {
+					const finish = () => {
+						formEl.removeEventListener(
+							'prc-form/submitted',
+							onSubmitted
+						);
+						clearTimeout(timeoutId);
+						resolve();
+					};
+					const onSubmitted = (event) => {
+						if (event?.detail?.aborted) {
+							formEl.requestSubmit();
+							return;
+						}
+						finish();
+					};
+					const timeoutId = setTimeout(finish, 60000);
+					formEl.addEventListener('prc-form/submitted', onSubmitted);
+					if (emailEl && emailEl.value !== email) {
+						emailEl.value = email;
+					}
+					formEl.requestSubmit();
+				});
 			}
 
 			const requestArgs = {
@@ -340,8 +402,27 @@ const { state, actions } = store('prc-quiz/controller', {
 	},
 	callbacks: {
 		onInit: () => {
+			const { ref } = getElement();
 			const context = getContext();
 			context.processing = true;
+
+			const root =
+				ref?.closest('[data-wp-interactive="prc-quiz/controller"]') ||
+				document;
+			const embeddedForm = root.querySelector(
+				'[data-wp-interactive="prc-block/mailchimp-form"] form[data-wp-interactive="prc-block/form"]'
+			);
+			if (embeddedForm) {
+				embeddedForm.addEventListener('keydown', (event) => {
+					if (event.key !== 'Enter') {
+						return;
+					}
+					if ('TEXTAREA' === event.target?.tagName) {
+						return;
+					}
+					event.preventDefault();
+				});
+			}
 
 			// Handling for fluid display type.
 

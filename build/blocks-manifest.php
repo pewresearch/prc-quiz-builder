@@ -325,7 +325,8 @@ return array(
 			'prc-block/bylines-query',
 			'prc-block/related-query',
 			'prc-platform/public-behavior-quiz-results',
-			'prc-platform/public-behavior-quiz-dial'
+			'prc-platform/public-behavior-quiz-dial',
+			'prc-block/mailchimp-form'
 		),
 		'attributes' => array(
 			'title' => array(

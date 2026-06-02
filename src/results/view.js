@@ -94,5 +94,26 @@ const { state, actions } = store('prc-quiz/controller', {
 			}
 			actions.runAnimation();
 		},
+		/**
+		 * Copy the awarded score into any prc-block/form field named "score"
+		 * so sendSystemEmail (and similar) forms can submit it server-side.
+		 */
+		syncScoreToForm: () => {
+			const { score } = state;
+			// state.score defaults to 0 pre-submit; only sync a real result.
+			if (!score) {
+				return;
+			}
+			const formStore = store('prc-block/form');
+			const formFields = formStore?.state?.formFields;
+			if (!Array.isArray(formFields)) {
+				return;
+			}
+			formFields.forEach((field) => {
+				if ('score' === field.name && field.value !== score) {
+					field.value = score;
+				}
+			});
+		},
 	},
 });

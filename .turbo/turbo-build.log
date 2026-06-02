@@ -2,25 +2,25 @@
 > @prc/quiz-builder@4.1.0 build
 > wp-scripts build --webpack-copy-php && wp-scripts build --experimental-modules --webpack-copy-php && wp-scripts build-blocks-manifest
 
-assets by chunk 16.5 KiB (id hint: style) 22 assets
+assets by chunk 16.6 KiB (id hint: style) 22 assets
 assets by path [1m[32membeddable/[39m[22m 29.3 KiB 5 assets
 assets by chunk 245 KiB (name: controller/index) 4 assets
 assets by chunk 14.2 KiB (name: question/index) 4 assets
 assets by chunk 10.5 KiB (name: answer/index) 4 assets
-assets by chunk 8.83 KiB (name: page/index) 4 assets
+assets by chunk 9.08 KiB (name: page/index) 4 assets
 assets by chunk 8.84 KiB (name: result-table/index) 4 assets
 assets by chunk 8.17 KiB (name: result-histogram/index) 4 assets
 assets by chunk 5.08 KiB (name: group-results/index) 4 assets
 assets by chunk 3.24 KiB (name: pages/index) 4 assets
 assets by chunk 2.81 KiB (name: result-score/index) 4 assets
 assets by chunk 2.68 KiB (name: progress-bar/index) 4 assets
-assets by path [1m[32mresults/*.php[39m[22m 9.49 KiB 2 assets
+assets by path [1m[32mresults/*.php[39m[22m 9.58 KiB 2 assets
 + 22 assets
 orphan modules 4.4 MiB (javascript) 20.1 KiB (runtime) [1m[33m[orphan][39m[22m 2832 modules
 runtime modules 30.8 KiB 42 modules
-built modules 10.1 KiB (css/mini-extract) 908 KiB (javascript) [1m[33m[built][39m[22m
-  cacheable modules 10.1 KiB (css/mini-extract) 10.1 KiB (javascript)
-    modules by path [1m./src/[39m[22m 10.1 KiB 22 modules
+built modules 10.2 KiB (css/mini-extract) 908 KiB (javascript) [1m[33m[built][39m[22m
+  cacheable modules 10.2 KiB (css/mini-extract) 10.1 KiB (javascript)
+    modules by path [1m./src/[39m[22m 10.2 KiB 22 modules
     javascript modules 10.1 KiB
       modules by path [1m../../node_modules/use-sync-external-store/[39m[22m 2.15 KiB
         [1m../../node_modules/use-sync-external-store/shim/index.js[39m[22m 234 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
@@ -44,26 +44,26 @@ Entrypoints:
 You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
 For more info visit https://webpack.js.org/guides/code-splitting/[39m[22m
 
-webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 27150 ms
-assets by chunk 16.5 KiB (id hint: style) 22 assets
+webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 41537 ms
+assets by chunk 16.6 KiB (id hint: style) 22 assets
 assets by path [1m[32membeddable/[39m[22m 29.3 KiB 5 assets
 assets by chunk 245 KiB (name: controller/index) 4 assets
 assets by chunk 14.2 KiB (name: question/index) 4 assets
 assets by chunk 10.5 KiB (name: answer/index) 4 assets
-assets by chunk 8.83 KiB (name: page/index) 4 assets
+assets by chunk 9.08 KiB (name: page/index) 4 assets
 assets by chunk 8.84 KiB (name: result-table/index) 4 assets
 assets by chunk 8.17 KiB (name: result-histogram/index) 4 assets
 assets by chunk 5.08 KiB (name: group-results/index) 4 assets
 assets by chunk 3.24 KiB (name: pages/index) 4 assets
 assets by chunk 2.81 KiB (name: result-score/index) 4 assets
 assets by chunk 2.68 KiB (name: progress-bar/index) 4 assets
-assets by path [1m[32mresults/*.php[39m[22m 9.49 KiB 2 assets
+assets by path [1m[32mresults/*.php[39m[22m 9.58 KiB 2 assets
 + 22 assets
 orphan modules 4.4 MiB (javascript) 20.1 KiB (runtime) [1m[33m[orphan][39m[22m 2832 modules
 runtime modules 30.8 KiB 42 modules
-built modules 10.1 KiB (css/mini-extract) 908 KiB (javascript) [1m[33m[built][39m[22m
-  cacheable modules 10.1 KiB (css/mini-extract) 10.1 KiB (javascript)
-    modules by path [1m./src/[39m[22m 10.1 KiB 22 modules
+built modules 10.2 KiB (css/mini-extract) 908 KiB (javascript) [1m[33m[built][39m[22m
+  cacheable modules 10.2 KiB (css/mini-extract) 10.1 KiB (javascript)
+    modules by path [1m./src/[39m[22m 10.2 KiB 22 modules
     javascript modules 10.1 KiB
       modules by path [1m../../node_modules/use-sync-external-store/[39m[22m 2.15 KiB
         [1m../../node_modules/use-sync-external-store/shim/index.js[39m[22m 234 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
@@ -87,12 +87,12 @@ Entrypoints:
 You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
 For more info visit https://webpack.js.org/guides/code-splitting/[39m[22m
 
-webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 17837 ms
+webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 39226 ms
 
-assets by path [1m[32mcontroller/[39m[22m 15.3 KiB 2 assets
+assets by path [1m[32mcontroller/[39m[22m 16.5 KiB 2 assets
 assets by path [1m[32mgroup-results/[39m[22m 2.91 KiB 2 assets
 assets by path [1m[32mresult-histogram/[39m[22m 1.57 KiB 2 assets
-assets by path [1m[32mresults/[39m[22m 1.15 KiB 2 assets
+assets by path [1m[32mresults/[39m[22m 1.33 KiB 2 assets
 assets by path [1m[32mresult-table/[39m[22m 1.07 KiB 2 assets
 assets by path [1m[32mpage/[39m[22m 1.06 KiB 2 assets
 assets by path [1m[32mprogress-bar/[39m[22m 1 KiB 2 assets
@@ -101,10 +101,10 @@ assets by path [1m[32mpages/[39m[22m 549 bytes 2 assets
 assets by path [1m[32mquestion/[39m[22m 255 bytes 2 assets
 orphan modules 15.8 KiB [1m[33m[orphan][39m[22m 5 modules
 runtime modules 663 bytes 3 modules
-built modules 62.2 KiB [1m[33m[built][39m[22m
-  modules by path [1m./src/[39m[22m 51.9 KiB
+built modules 65.5 KiB [1m[33m[built][39m[22m
+  modules by path [1m./src/[39m[22m 55.2 KiB
     [1m./src/answer/view.js + 1 modules[39m[22m 1.98 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-    [1m./src/controller/view.js + 4 modules[39m[22m 27.1 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m./src/controller/view.js + 4 modules[39m[22m 29.8 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
     [1m./src/group-results/view.js + 2 modules[39m[22m 7.41 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
     [1m./src/page/view.js + 1 modules[39m[22m 2.28 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
     + 6 modules
@@ -114,5 +114,5 @@ built modules 62.2 KiB [1m[33m[built][39m[22m
     [1m../../node_modules/charenc/charenc.js[39m[22m 850 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
     [1m../../node_modules/is-buffer/index.js[39m[22m 698 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
   [1mexternal "@wordpress/interactivity-router"[39m[22m 42 bytes [1m[33m[optional][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 5286 ms
+webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 12152 ms
 Block metadata PHP file generated at: build/blocks-manifest.php

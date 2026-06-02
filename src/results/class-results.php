@@ -219,6 +219,7 @@ class Results {
 			)
 		);
 		$tag->set_attribute( 'data-wp-watch--resultsDisplay', 'callbacks.onResultsDisplay' );
+		$tag->set_attribute( 'data-wp-watch--syncScoreToForm', 'callbacks.syncScoreToForm' );
 
 		/**
 		 * This is a hack to take over core/social-links iAPI functionality.
