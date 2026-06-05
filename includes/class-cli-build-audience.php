@@ -6,7 +6,7 @@ declare(strict_types=1);
  * Calls the Firebase Cloud Function `buildQuizGroupOwnersAudience` to resolve
  * email addresses for all users who created v2 groups for a specific quiz.
  * Persists the email list in wp_options and optionally creates a draft
- * prc_newsletter post in system-email (Mandrill) delivery mode.
+ * prc_email_txn post in system-email (Mandrill) delivery mode.
  *
  * Prerequisites:
  *  - Firebase Cloud Function `buildQuizGroupOwnersAudience` deployed with IAM restricted to the platform SA.
@@ -39,7 +39,7 @@ class CLI_Build_Audience extends WP_CLI_Command {
 	/**
 	 * wp_options key prefix for audience email lists.
 	 */
-	const AUDIENCE_OPTION_PREFIX = 'prc_newsletter_audience_quiz_group_owners_';
+	const AUDIENCE_OPTION_PREFIX = 'prc_email_audience_quiz_group_owners_';
 
 	/**
 	 * Resolve email addresses for users who created v2 groups for a specific quiz
@@ -236,10 +236,10 @@ class CLI_Build_Audience extends WP_CLI_Command {
 			return;
 		}
 
-		if ( ! post_type_exists( 'prc_newsletter' ) ) {
+		if ( ! post_type_exists( 'prc_email_txn' ) ) {
 			WP_CLI::warning(
-				'The "prc_newsletter" post type is not registered. ' .
-				'Ensure prc-newsletter-builder is active. Skipping post creation.'
+				'The "prc_email_txn" post type is not registered. ' .
+				'Ensure prc-email-builder is active. Skipping post creation.'
 			);
 			WP_CLI::success( sprintf(
 				'Done. Audience option: %s  |  %s email(s)',
@@ -253,7 +253,7 @@ class CLI_Build_Audience extends WP_CLI_Command {
 
 		$post_id = wp_insert_post(
 			array(
-				'post_type'   => 'prc_newsletter',
+				'post_type'   => 'prc_email_txn',
 				'post_status' => 'draft',
 				'post_title'  => sprintf(
 					'Update for %s group creators%s',
@@ -261,9 +261,9 @@ class CLI_Build_Audience extends WP_CLI_Command {
 					$mode_title
 				),
 				'meta_input'  => array(
-					'prc_newsletter_delivery_mode'       => 'mandrill',
-					'prc_newsletter_audience_option_key' => $audience_key,
-					'prc_newsletter_subject'             => sprintf(
+					'prc_email_delivery_mode'       => 'mandrill',
+					'prc_email_audience_option_key' => $audience_key,
+					'prc_email_subject'             => sprintf(
 						'Update: %s%s',
 						$quiz->post_title,
 						$mode_title
