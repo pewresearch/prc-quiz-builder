@@ -16,6 +16,8 @@ import scoreQuiz from './scoring';
 import './progress-storage';
 import './submission-recovery';
 
+const FLUID_BREAKPOINT_PX = 782;
+
 const { state, actions } = store('prc-quiz/controller', {
 	state: {
 		currentSessionArchetypes: [],
@@ -100,10 +102,17 @@ const { state, actions } = store('prc-quiz/controller', {
 			return displayResults;
 		},
 		get displayPages() {
-			const { displayType } = getContext();
-			return 'scrollable' === displayType
-				? true
-				: !state.displayResults && !state.displayGroupResults;
+			const { displayType, configuredDisplayType } = getContext();
+			// Native scrollable quizzes always show pages (submit-as-you-go, inline results).
+			// Fluid quizzes that resolved to scrollable should hide pages when results are
+			// shown (e.g. landing on a results URL), matching paged behavior.
+			if (
+				'scrollable' === displayType &&
+				'fluid' !== configuredDisplayType
+			) {
+				return true;
+			}
+			return !state.displayResults && !state.displayGroupResults;
 		},
 		get displayGroupResults() {
 			const { displayGroupResults } = getContext();
@@ -137,12 +146,54 @@ const { state, actions } = store('prc-quiz/controller', {
 				});
 			}
 		},
+		applyDisplayType: () => {
+			const context = getContext();
+			const { ref } = getElement();
+			const root =
+				ref?.closest('[data-wp-interactive="prc-quiz/controller"]') ||
+				ref;
+			const { configuredDisplayType } = context;
+
+			let resolvedType = configuredDisplayType;
+			if ('fluid' === configuredDisplayType) {
+				resolvedType =
+					window.innerWidth < FLUID_BREAKPOINT_PX
+						? 'scrollable'
+						: 'paged';
+			}
+
+			const hideNextButtons = 'scrollable' === resolvedType;
+			context.displayType = resolvedType;
+
+			root?.querySelectorAll(
+				'.prc-quiz-next-page-button-wrapper'
+			).forEach((el) => {
+				if (hideNextButtons) {
+					el.setAttribute('hidden', 'true');
+				} else {
+					el.removeAttribute('hidden');
+				}
+			});
+		},
 		onStartQuizClick: withSyncEvent(() => {
 			const context = getContext();
-			const { pages } = context;
+			const { ref } = getElement();
+			const { pages, displayType } = context;
+			const root =
+				ref?.closest('[data-wp-interactive="prc-quiz/controller"]') ||
+				ref;
 			// Set the current page uuid to the next page uuid.
 			context.currentPageUuid = pages[1];
 			actions.saveQuizProgress();
+			if ('paged' !== displayType) {
+				const firstPage = root?.querySelector(
+					`[data-page-uuid="${pages[1]}"]`
+				);
+				firstPage?.scrollIntoView({
+					behavior: 'smooth',
+					block: 'start',
+				});
+			}
 		}),
 		onNextPageClick: withSyncEvent(() => {
 			const context = getContext();
@@ -424,32 +475,7 @@ const { state, actions } = store('prc-quiz/controller', {
 				});
 			}
 
-			// Handling for fluid display type.
-
-			if ('fluid' === context.displayType && window.innerWidth < 782) {
-				context.displayType = 'scrollable';
-				const buttonWrappers = document.querySelectorAll(
-					'.prc-quiz-next-page-button-wrapper'
-				);
-				buttonWrappers.forEach((buttonWrapper) => {
-					buttonWrapper.setAttribute('hidden', 'true');
-				});
-			}
-
-			if ('fluid' === context.displayType && window.innerWidth >= 782) {
-				context.displayType = 'paged';
-			}
-
-			// Also hide button wrappers for scrollable display type.
-
-			if ('scrollable' === context.displayType) {
-				const buttonWrappers = document.querySelectorAll(
-					'.prc-quiz-next-page-button-wrapper'
-				);
-				buttonWrappers.forEach((buttonWrapper) => {
-					buttonWrapper.setAttribute('hidden', 'true');
-				});
-			}
+			actions.applyDisplayType();
 
 			// Check if the user has a cookie for this quiz, and if so check if currentPageUuid is set, if so, set context to it.
 			setTimeout(
@@ -461,6 +487,13 @@ const { state, actions } = store('prc-quiz/controller', {
 				1500
 			);
 		},
+		onFluidViewportChange: () => {
+			const { configuredDisplayType } = getContext();
+			if ('fluid' !== configuredDisplayType) {
+				return;
+			}
+			actions.applyDisplayType();
+		},
 		/**
 		 * This runs only once, when a user has successfully crossed the answer threshold and any other readyForSubmission conditions are met.
 		 */
@@ -471,10 +504,12 @@ const { state, actions } = store('prc-quiz/controller', {
 				displayType,
 				processing,
 				submissionPending,
+				allowSubmissions,
 			} = context;
 
 			if (
 				'scrollable' !== displayType ||
+				allowSubmissions ||
 				!readyForSubmission ||
 				processing ||
 				submissionPending
@@ -484,6 +519,25 @@ const { state, actions } = store('prc-quiz/controller', {
 
 			setTimeout(
 				withScope(() => {
+					const currentContext = getContext();
+					const {
+						readyForSubmission: isReady,
+						displayType: currentDisplayType,
+						processing: isProcessing,
+						submissionPending: isPending,
+						allowSubmissions: submissionsEnabled,
+					} = currentContext;
+
+					if (
+						'scrollable' !== currentDisplayType ||
+						submissionsEnabled ||
+						!isReady ||
+						isProcessing ||
+						isPending
+					) {
+						return;
+					}
+
 					actions.submitQuiz();
 				}),
 				1200

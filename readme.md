@@ -4,7 +4,7 @@ An interactive, block-based quiz system for the PRC platform.
 
 ## Overview
 
-Quiz Builder provides a custom `quiz` post type and a suite of Gutenberg blocks backed by the WordPress Interactivity API. Authors compose quizzes in the block editor using a Controller → Pages → Page → Question → Answer hierarchy; the Controller block injects all runtime state into the Interactivity API context and coordinates submission, scoring, and results display on the frontend. The plugin supports three quiz modes (scored quiz, typology/clustering, freeform), paged and scrollable display, community group results, and iframe-embeddable views.
+Quiz Builder provides a custom `quiz` post type and a suite of Gutenberg blocks backed by the WordPress Interactivity API. Authors compose quizzes in the block editor using a Controller → Pages → Page → Question → Answer hierarchy; the Controller block injects all runtime state into the Interactivity API context and coordinates submission, scoring, and results display on the frontend. The plugin supports three quiz modes (scored quiz, typology/clustering, freeform), three display types (paged, scrollable, and fluid), community group results, and iframe-embeddable views.
 
 Firebase Realtime Database is the persistence layer for archetype (result) records and community groups. WordPress post meta tracks submission analytics.
 
@@ -19,7 +19,7 @@ The plugin bootstraps through `includes/class-plugin.php`, which loads all depen
 
 Archetype lookups are cached in the WordPress object cache (`prc_quiz_builder_archetypes` group, 1-day TTL) and backed by Firebase. Community groups are stored only in Firebase; `Groups::get_group()` reads from Firebase.
 
-The Controller block's `render_callback` is the key server/client bridge: it writes all runtime context (`quizId`, `nonce`, `quizType`, `displayType`, `groupId`, `archetype`, etc.) into `data-wp-context` and wires up all Interactivity API directives. Core/buttons blocks that carry specific CSS classes (`prc-quiz-next-page-button`, `prc-quiz-submit-button`, etc.) have `data-wp-on--click` attributes injected server-side via `WP_HTML_Tag_Processor`.
+The Controller block's `render_callback` is the key server/client bridge: it writes all runtime context (`quizId`, `nonce`, `quizType`, `displayType`, `configuredDisplayType`, `allowSubmissions`, `groupId`, `archetype`, etc.) into `data-wp-context` and wires up all Interactivity API directives. `configuredDisplayType` is an immutable copy of the author's `displayType` setting; `displayType` may be rewritten at runtime (e.g. fluid → scrollable on narrow viewports). Core/buttons blocks that carry specific CSS classes (`prc-quiz-start-button`, `prc-quiz-next-page-button`, `prc-quiz-submit-button`, etc.) have `data-wp-on--click` attributes injected server-side via `WP_HTML_Tag_Processor`.
 
 ### Key Files
 
@@ -34,6 +34,7 @@ The Controller block's `render_callback` is the key server/client bridge: it wri
 | `includes/class-loader.php`           | Hook registration queue                                                                                 |
 | `includes/inspector-sidebar-panel/`   | Block editor plugin that renders a quiz analytics sidebar panel; only enqueued on the `quiz` CPT screen |
 | `src/controller/class-controller.php` | Controller block — server render, Interactivity API context injection, button directive patching        |
+| `src/controller/view.js`              | Controller Interactivity API store — display-type resolution, submission, page visibility, navigation   |
 | `src/results/class-results.php`       | Results block server render                                                                             |
 | `src/group-results/`                  | Group results block (view script + create-group action)                                                 |
 | `src/embeddable/`                     | Embeddable block for cross-site reuse                                                                   |
@@ -56,6 +57,63 @@ The Controller block's `render_callback` is the key server/client bridge: it wri
 | Embeddable       | `prc-quiz/embeddable`       | Reuse a quiz across other posts; edits propagate to all embeds         |
 
 The block editor receives a `Quiz Builder` block category (`prc-quiz` slug) so these blocks are grouped separately from the standard library.
+
+## Display Types and Frontend Behavior
+
+The Controller block's `displayType` attribute accepts `paged`, `scrollable`, or `fluid`. Runtime behavior is implemented in `src/controller/view.js` and `src/page/view.js`.
+
+### Fluid resolution
+
+A `fluid` quiz resolves to a concrete display mode by viewport width (782px breakpoint, matching the block editor's mobile preview). Resolution runs on init and re-runs on window resize via `actions.applyDisplayType` (`data-wp-on-async-window--resize` on the Controller when `displayType` is `fluid`):
+
+| Viewport   | Resolved `displayType` | Notes                                                      |
+| ---------- | ---------------------- | ---------------------------------------------------------- |
+| `< 782px`  | `scrollable`           | Next-page button wrappers hidden within the quiz container |
+| `>= 782px` | `paged`                | Next-page button wrappers shown; one page at a time        |
+
+`configuredDisplayType` retains the original `fluid` value so client logic can distinguish a fluid quiz that resolved to scrollable from a natively scrollable quiz, and so resize handlers can re-resolve without losing the fluid configuration.
+
+### Page visibility (`displayPages`)
+
+The Pages block binds `hidden` to `!state.displayPages` (`src/pages/class-pages.php`). Visibility rules:
+
+| Configuration                   | During quiz          | Results or group-results URL |
+| ------------------------------- | -------------------- | ---------------------------- |
+| `paged`                         | Pages visible        | Pages hidden                 |
+| `fluid` → `paged` (desktop)     | Pages visible        | Pages hidden                 |
+| `scrollable` (native)           | Pages always visible | Pages always visible         |
+| `fluid` → `scrollable` (mobile) | Pages visible        | Pages hidden (matches paged) |
+
+Native scrollable quizzes keep pages visible on results URLs so inline, submit-as-you-go results can render below the questions. Fluid quizzes on mobile hide pages when landing on a results URL so users are not dropped at the top of the question stack.
+
+### Navigation buttons
+
+Quiz action buttons are `core/buttons` block variations patched with Interactivity API click handlers:
+
+| CSS class                       | Action                | Behavior                                                                                                                                  |
+| ------------------------------- | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `prc-quiz-start-button`         | `onStartQuizClick`    | Sets `currentPageUuid` to the first question page (`pages[1]`). In non-paged modes, scrolls smoothly to that page via `[data-page-uuid]`. |
+| `prc-quiz-next-page-button`     | `onNextPageClick`     | Advances to the next page; scrolls the quiz container into view (paged only).                                                             |
+| `prc-quiz-previous-page-button` | `onPreviousPageClick` | Returns to the previous page.                                                                                                             |
+| `prc-quiz-submit-button`        | `onSubmitQuizClick`   | Submits the quiz (triggers Mailchimp form when present).                                                                                  |
+| `prc-quiz-reset-button`         | `onResetQuizClick`    | Resets quiz state or navigates back to the quiz URL from results.                                                                         |
+
+### Submission behavior
+
+Submission is controlled by the `allowSubmissions` Controller attribute and the active display type:
+
+| `allowSubmissions` | Display type                          | Submit trigger                                                               |
+| ------------------ | ------------------------------------- | ---------------------------------------------------------------------------- |
+| `true`             | `paged` / `fluid` → `paged`           | Explicit Submit button on the last page                                      |
+| `true`             | `scrollable` / `fluid` → `scrollable` | Explicit Submit button on the last page (no auto-submit on answer threshold) |
+| `false`            | `scrollable` / `fluid` → `scrollable` | Auto-submits via `onScrollableSubmit` when the user meets `threshold`        |
+| `false`            | `paged`                               | Submit button still required                                                 |
+
+When submissions are enabled, scrollable and fluid-on-mobile quizzes require a `prc-quiz-submit-button` on the last page. Quizzes with submissions disabled and a native scrollable display type advance to results automatically once the answer threshold is met.
+
+### Results display scroll
+
+When results become visible, `onResultsDisplay` in `src/results/view.js` scrolls the results block into view (`scrollIntoView` with `block: 'start'`). This applies to all display types, including fluid quizzes on mobile: after submit, question pages hide and the viewport moves to the top of the results block so users are not left scrolled to the middle of the page.
 
 ## Hooks & Filters
 
@@ -123,7 +181,7 @@ Both cookies are registered with WP Consent API as `functional`, 30-day expiry.
 
 ```bash
 # From the monorepo root:
-npm run build -w @prc/quiz-builder
+npx turbo build --filter=@prc/quiz-builder
 npm run start -w @prc/quiz-builder
 ```
 
@@ -140,7 +198,7 @@ npm test -- tests/prc-quiz-builder/
 
 **Symptom**: `prc-quiz/controller` (or any quiz block) is missing from the editor or throws a "block is invalid" error.  
 **Cause**: `load_blocks()` globs `build/*/` for block directories and calls `include_block()` on each. If a compiled PHP file is missing from `build/{block-name}/class-{block-name}.php`, the error is logged but swallowed silently — the block just won't register.  
-**Fix**: Run `npm run build -w @prc/quiz-builder` and confirm PHP files exist under `build/`. Check PHP error logs for `Block missing.` entries.
+**Fix**: Run `npx turbo build --filter=@prc/quiz-builder` and confirm PHP files exist under `build/`. Check PHP error logs for `Block missing.` entries.
 
 ### Quiz submissions failing silently
 

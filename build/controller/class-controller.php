@@ -195,6 +195,9 @@ class Controller {
 
 		// This is triggered when the block is initialized into the DOM.
 		$tag->set_attribute( 'data-wp-init', 'callbacks.onInit' );
+		if ( 'fluid' === $attributes['displayType'] ) {
+			$tag->set_attribute( 'data-wp-on-async-window--resize', 'callbacks.onFluidViewportChange' );
+		}
 		// Apply a class to the block if it is processing. Mainly used to show/hide the loading spinner.
 		$tag->set_attribute( 'data-wp-class--is-processing', 'context.processing' );
 		// Update's the user's submission data as they answer questions.

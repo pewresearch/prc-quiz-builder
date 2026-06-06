@@ -80,18 +80,12 @@ const { state, actions } = store('prc-quiz/controller', {
 	callbacks: {
 		*onResultsDisplay() {
 			const context = getContext();
-			const { displayResults, displayType, configuredDisplayType } =
-				context;
+			const { displayResults } = context;
 			if (!displayResults) {
 				return;
 			}
 			const { ref } = getElement();
-			const skipScrollToResults =
-				configuredDisplayType === 'fluid' &&
-				displayType === 'scrollable';
-			if (!skipScrollToResults) {
-				ref.scrollIntoView({ behavior: 'smooth', block: 'start' });
-			}
+			ref.scrollIntoView({ behavior: 'smooth', block: 'start' });
 			actions.runAnimation();
 		},
 		/**
