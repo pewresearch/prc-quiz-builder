@@ -131,8 +131,6 @@ class Controller {
 
 		// This is a flag to determine if the quiz has support for community groups.
 		$groups_enabled = $attributes['groupsEnabled'];
-		// Create a nonce for the quiz.
-		$nonce = wp_create_nonce( 'prc_quiz_nonce--' . $post_id );
 
 		// This is a flag to exeplicitly display the results if the user is entering through a link.
 		$show_results = get_query_var( 'quizShowResults', false );
@@ -161,7 +159,6 @@ class Controller {
 			'data-wp-context',
 			wp_json_encode(
 				array(
-					'nonce'                  => $nonce,
 					'quizTitle'              => get_the_title(),
 					'quizId'                 => $post_id,
 					'quizType'               => $attributes['type'],

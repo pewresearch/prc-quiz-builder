@@ -66,7 +66,7 @@ const { state } = store('prc-quiz/controller', {
 		 * @return {Promise<object>} - The create group response.
 		 */
 		createGroup: async (formFields) => {
-			const { nonce, quizId } = state;
+			const { quizId } = state;
 			const { groupAnswers, groupClusters } = state;
 			const ownerId = await store(
 				'prc-user-accounts/content-gate'
@@ -91,8 +91,7 @@ const { state } = store('prc-quiz/controller', {
 					ownerId,
 					formFields,
 					groupAnswers,
-					groupClusters,
-					nonce
+					groupClusters
 				);
 			} catch (error) {
 				throw error;
@@ -112,7 +111,7 @@ const { state } = store('prc-quiz/controller', {
 		 * @return {Promise<object>} - The create group response.
 		 */
 		createGroupFromResults: async (formFields) => {
-			const { nonce, quizId } = state;
+			const { quizId } = state;
 			const { groupAnswers, groupClusters } = state;
 			const context = getContext();
 			const { userScore } = context;
@@ -154,7 +153,6 @@ const { state } = store('prc-quiz/controller', {
 					formFields,
 					groupAnswers,
 					groupClusters,
-					nonce,
 					ownerSubmission,
 					ownerScore
 				);

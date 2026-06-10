@@ -19,7 +19,7 @@ The plugin bootstraps through `includes/class-plugin.php`, which loads all depen
 
 Archetype lookups are cached in the WordPress object cache (`prc_quiz_builder_archetypes` group, 1-day TTL) and backed by Firebase. Community groups are stored only in Firebase; `Groups::get_group()` reads from Firebase.
 
-The Controller block's `render_callback` is the key server/client bridge: it writes all runtime context (`quizId`, `nonce`, `quizType`, `displayType`, `configuredDisplayType`, `allowSubmissions`, `groupId`, `archetype`, etc.) into `data-wp-context` and wires up all Interactivity API directives. `configuredDisplayType` is an immutable copy of the author's `displayType` setting; `displayType` may be rewritten at runtime (e.g. fluid → scrollable on narrow viewports). Core/buttons blocks that carry specific CSS classes (`prc-quiz-start-button`, `prc-quiz-next-page-button`, `prc-quiz-submit-button`, etc.) have `data-wp-on--click` attributes injected server-side via `WP_HTML_Tag_Processor`.
+The Controller block's `render_callback` is the key server/client bridge: it writes all runtime context (`quizId`, `quizType`, `displayType`, `configuredDisplayType`, `allowSubmissions`, `groupId`, `archetype`, etc.) into `data-wp-context` and wires up all Interactivity API directives. `configuredDisplayType` is an immutable copy of the author's `displayType` setting; `displayType` may be rewritten at runtime (e.g. fluid → scrollable on narrow viewports). Core/buttons blocks that carry specific CSS classes (`prc-quiz-start-button`, `prc-quiz-next-page-button`, `prc-quiz-submit-button`, etc.) have `data-wp-on--click` attributes injected server-side via `WP_HTML_Tag_Processor`.
 
 ### Key Files
 
@@ -44,7 +44,7 @@ The Controller block's `render_callback` is the key server/client bridge: it wri
 
 | Block            | Namespace                   | Role                                                                   |
 | ---------------- | --------------------------- | ---------------------------------------------------------------------- |
-| Controller       | `prc-quiz/controller`       | Root block; owns all Interactivity API state, nonce, submission flow   |
+| Controller       | `prc-quiz/controller`       | Root block; owns all Interactivity API state and submission flow       |
 | Pages            | `prc-quiz/pages`            | Wrapper for a multi-page quiz                                          |
 | Page             | `prc-quiz/page`             | A single page; contains questions and arbitrary content                |
 | Question         | `prc-quiz/question`         | Single-choice, multiple-choice, or thermometer; supports randomization |
@@ -133,14 +133,14 @@ When results become visible, `onResultsDisplay` in `src/results/view.js` scrolls
 
 ## REST API
 
-All endpoints are registered through the platform's `prc_api_endpoints` filter. Every public endpoint validates a nonce of the form `prc_quiz_nonce--{id}`.
+All endpoints are registered through the platform's `prc_api_endpoints` filter. Public write endpoints validate the quiz post (exists, `quiz` post type, published) and apply per-IP rate limiting on submit.
 
-| Method | Route                   | Auth             | Description                                                                                                  |
-| ------ | ----------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------ |
-| `POST` | `quiz/submit`           | Nonce            | Records a submission; creates or increments the archetype in Firebase; updates group if `groupId` is present |
-| `POST` | `quiz/create-group`     | Nonce            | Creates a community group in Firebase; returns `{ group_id, group_url }`                                     |
-| `GET`  | `quiz/get-group`        | Nonce            | Returns full group data including typology clusters, answer tallies, and result/group URLs                   |
-| `POST` | `quiz/purge-archetypes` | `manage_options` | Admin-only; wipes all archetypes for a quiz from Firebase                                                    |
+| Method | Route                   | Auth                         | Description                                                                                                  |
+| ------ | ----------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `POST` | `quiz/submit`           | Rate limit + quiz validation | Records a submission; creates or increments the archetype in Firebase; updates group if `groupId` is present |
+| `POST` | `quiz/create-group`     | Quiz validation              | Creates a community group in Firebase; returns `{ group_id, group_url }`                                     |
+| `GET`  | `quiz/get-group`        | Public                       | Returns full group data including typology clusters, answer tallies, and result/group URLs                   |
+| `POST` | `quiz/purge-archetypes` | `manage_options`             | Admin-only; wipes all archetypes for a quiz from Firebase                                                    |
 
 The `quiz` REST resource also exposes a `_submissions` field containing the `_report` post meta (requires `edit_posts` capability).
 
@@ -202,9 +202,9 @@ npm test -- tests/prc-quiz-builder/
 
 ### Quiz submissions failing silently
 
-**Symptom**: Users complete a quiz but results don't persist; the submit endpoint returns a 403 or generic error.  
-**Cause**: Either the nonce is stale (format `prc_quiz_nonce--{quiz_id}`) or `Rest_API::$rest_disabled` has been flipped to `true` (emergency kill switch in `class-rest-api.php`).  
-**Fix**: Verify the nonce is generated fresh on each page load in the Controller's `render_block_callback`. If the kill switch is active, set `$rest_disabled = false` and redeploy.
+**Symptom**: Users complete a quiz but results don't persist; the submit endpoint returns a 403, 404, 429, or generic error.  
+**Cause**: `Rest_API::$rest_disabled` may be flipped to `true` (emergency kill switch in `class-rest-api.php`), the quiz post may be unpublished or missing, or the per-IP rate limit (100 submissions per quiz per minute) may be exceeded.  
+**Fix**: If the kill switch is active, set `$rest_disabled = false` and redeploy. Confirm the quiz post is published. For 429 responses, wait and retry or investigate abusive traffic.
 
 ### Inspector sidebar panel not loading
 

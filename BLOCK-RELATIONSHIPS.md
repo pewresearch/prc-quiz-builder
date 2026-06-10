@@ -219,13 +219,13 @@ GET /prc-api/v3/quiz/get/
 
 POST /prc-api/v3/quiz/submit/
 ├── Purpose: Submit completed quiz for scoring
-├── Parameters: quizId, nonce, groupId (optional)
+├── Parameters: quizId, groupId (optional)
 ├── Body: { answers: ['uuid1', 'uuid2', ...] }
 └── Response: { hash: 'result-hash', time: execution-time }
 
 POST /prc-api/v3/quiz/create-group/
 ├── Purpose: Create group quiz for collaboration
-├── Parameters: quizId, nonce
+├── Parameters: quizId
 └── Body: { name: 'group-name', owner: { id: user-id } }
 
 GET /prc-api/v3/quiz/get-group/

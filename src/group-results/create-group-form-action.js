@@ -12,7 +12,6 @@ export default async function createGroupFormAction(
 	formFields,
 	answers,
 	clusters,
-	nonce,
 	ownerSubmission = null,
 	ownerScore = null
 ) {
@@ -23,12 +22,6 @@ export default async function createGroupFormAction(
 		const groupName = formFields.find(
 			(field) => field.name === 'groupName'
 		)?.value;
-		if (!nonce) {
-			return reject({
-				message: 'Nonce is required',
-				status: 'error',
-			});
-		}
 		if (!groupName) {
 			return reject({
 				message: 'Group name is required',
@@ -71,7 +64,6 @@ export default async function createGroupFormAction(
 		// Create the group.
 		apiFetch({
 			path: addQueryArgs('prc-api/v3/quiz/create-group', {
-				nonce,
 				quizId,
 			}),
 			method: 'POST',

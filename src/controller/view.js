@@ -41,10 +41,6 @@ const { state, actions } = store('prc-quiz/controller', {
 			const { groupId, quizUrl } = getContext();
 			return groupId ? `${quizUrl}group/${groupId}/results/` : '';
 		},
-		get nonce() {
-			const { nonce } = getContext();
-			return nonce;
-		},
 		get quizData() {
 			const { quizId } = getContext();
 			return state[`quiz_${quizId}`];
@@ -282,7 +278,6 @@ const { state, actions } = store('prc-quiz/controller', {
 				displayType,
 				userScore,
 				quizId,
-				nonce,
 				groupsEnabled,
 				groupId,
 				quizUrl,
@@ -378,7 +373,6 @@ const { state, actions } = store('prc-quiz/controller', {
 
 			const requestArgs = {
 				quizId,
-				nonce,
 			};
 			if (groupsEnabled && groupId) {
 				requestArgs.groupId = groupId;

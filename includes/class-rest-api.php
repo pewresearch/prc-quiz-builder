@@ -42,22 +42,6 @@ class Rest_API {
 	}
 
 	/**
-	 * Verify a quiz nonce.
-	 *
-	 * @param string $quiz_id The quiz id.
-	 * @param string $key The key.
-	 * @param string $nonce The nonce.
-	 * @return bool|WP_Error
-	 */
-	public function verify_nonce( $quiz_id, $key, $nonce ) {
-		if ( wp_verify_nonce( $nonce, $key . $quiz_id ) ) {
-			return true;
-		} else {
-			return new \WP_Error( 'invalid_nonce', 'ERROR: verify_nonce/403. Unauthorized access, NONCE invalid.', array( 'status' => 403 ) );
-		}
-	}
-
-	/**
 	 * Validate a quiz post ID.
 	 *
 	 * @param mixed $param The REST parameter value.
@@ -65,6 +49,25 @@ class Rest_API {
 	 */
 	private function is_valid_quiz_id( $param ) {
 		return is_numeric( $param ) && 0 < absint( $param );
+	}
+
+	/**
+	 * Ensure a quiz post exists, is the quiz post type, and is published.
+	 *
+	 * @param int $quiz_id The quiz id.
+	 * @return true|WP_Error
+	 */
+	private function validate_quiz_post( int $quiz_id ) {
+		$post = get_post( $quiz_id );
+		if ( ! $post || Plugin::$post_type !== $post->post_type || 'publish' !== $post->post_status ) {
+			return new \WP_Error(
+				'quiz_not_found',
+				'ERROR: quiz/404. Quiz not found.',
+				array( 'status' => 404 )
+			);
+		}
+
+		return true;
 	}
 
 	/**
@@ -85,11 +88,6 @@ class Rest_API {
 							return $this->is_valid_quiz_id( $param );
 						},
 					),
-					'nonce'  => array(
-						'validate_callback' => function ( $param ) {
-							return is_string( $param );
-						},
-					),
 				),
 				'permission_callback' => function () {
 					return true;
@@ -104,11 +102,6 @@ class Rest_API {
 				'callback'            => array( $this, 'restfully_get_quiz_group' ),
 				'args'                => array(
 					'groupId' => array(
-						'validate_callback' => function ( $param ) {
-							return is_string( $param );
-						},
-					),
-					'nonce'   => array(
 						'validate_callback' => function ( $param ) {
 							return is_string( $param );
 						},
@@ -132,11 +125,6 @@ class Rest_API {
 						},
 					),
 					'groupId' => array(
-						'validate_callback' => function ( $param ) {
-							return is_string( $param );
-						},
-					),
-					'nonce'   => array(
 						'validate_callback' => function ( $param ) {
 							return is_string( $param );
 						},
@@ -362,12 +350,11 @@ class Rest_API {
 	 * @return string|false
 	 */
 	public function restfully_create_group( WP_REST_Request $request ) {
-		$quiz_id     = absint( $request->get_param( 'quizId' ) );
-		$nonce_param = $request->get_param( 'nonce' );
-		$nonce       = $this->verify_nonce( $quiz_id, 'prc_quiz_nonce--', $nonce_param );
+		$quiz_id = absint( $request->get_param( 'quizId' ) );
+		$valid   = $this->validate_quiz_post( $quiz_id );
 
-		if ( true !== $nonce ) {
-			return $nonce;
+		if ( true !== $valid ) {
+			return $valid;
 		}
 
 		$data = json_decode( $request->get_body(), true );
@@ -421,11 +408,11 @@ class Rest_API {
 				'ERROR: quiz_submit/403. QUIZ_ID: ' . $quiz_id . '. Quiz submissions are currently disabled. Your submission has been saved locally, please wait and try again at a later time.'
 			);
 		}
-		$nonce_param = $request->get_param( 'nonce' );
-		$nonce       = $this->verify_nonce( $quiz_id, 'prc_quiz_nonce--', $nonce_param );
 
-		if ( true !== $nonce ) {
-			return $nonce;
+		$valid = $this->validate_quiz_post( $quiz_id );
+
+		if ( true !== $valid ) {
+			return $valid;
 		}
 
 		$user_data = json_decode( $request->get_body(), true );
@@ -584,13 +571,7 @@ class Rest_API {
 	 */
 	public function restfully_get_quiz_group( WP_REST_Request $request ) {
 		$group_id = $request->get_param( 'groupId' );
-		$nonce    = $this->verify_nonce( $group_id, 'prc_quiz_nonce--', $request->get_param( 'nonce' ) );
-
-		if ( true !== $nonce ) {
-			return $nonce;
-		}
-
-		$group = $this->get_group( $group_id );
+		$group    = $this->get_group( $group_id );
 
 		return rest_ensure_response( $group );
 	}
