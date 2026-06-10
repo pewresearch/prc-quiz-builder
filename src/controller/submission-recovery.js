@@ -1,7 +1,7 @@
 /**
  * WordPress Dependencies
  */
-import { store, getContext } from '@wordpress/interactivity';
+import { store, getContext, withScope } from '@wordpress/interactivity';
 
 const { wp, localStorage } = window;
 const { apiFetch } = wp;
@@ -10,6 +10,24 @@ const PENDING_SUBMISSION_STORAGE_PREFIX =
 	'prc-quiz-builder__pending-submission';
 const SUBMISSION_RECOVERY_MESSAGE =
 	'We could not save your quiz results yet. Your answers are saved in this browser. Please try saving again in a moment.';
+const SILENT_RETRY_BASE_DELAY_MS = 60000;
+const SILENT_RETRY_JITTER_MS = 10000;
+const scheduledSilentRetryKeys = new Set();
+
+const showSubmissionRecoveryBanner = (context, pendingSubmission) => {
+	context.submissionPending = true;
+	context.pendingSubmissionHash = pendingSubmission.hash;
+	context.submissionErrorMessage = SUBMISSION_RECOVERY_MESSAGE;
+};
+
+const isDefinedScore = (score) => score !== undefined && score !== null;
+
+const hasClientRenderedScore = (context, newScore) => {
+	if (isDefinedScore(newScore)) {
+		return true;
+	}
+	return isDefinedScore(context.userScore?.score);
+};
 
 const getPendingSubmissionStorageKey = (quizId, hash = '') => {
 	return `${PENDING_SUBMISSION_STORAGE_PREFIX}:${quizId}${hash ? `:${hash}` : ''}`;
@@ -135,9 +153,111 @@ const { state, actions } = store('prc-quiz/controller', {
 			if (!pendingSubmission || context.displayResults) {
 				return;
 			}
-			context.submissionPending = true;
-			context.pendingSubmissionHash = pendingSubmission.hash;
-			context.submissionErrorMessage = SUBMISSION_RECOVERY_MESSAGE;
+			showSubmissionRecoveryBanner(context, pendingSubmission);
+			actions.scheduleSilentRetry(pendingSubmission);
+		},
+		handleRateLimitedSubmission: (
+			pendingSubmission,
+			newScore = null,
+			context = getContext()
+		) => {
+			if (isDefinedScore(newScore)) {
+				context.userScore = {
+					...context.userScore,
+					score: newScore,
+				};
+			}
+			context.displayResults = true;
+			context.processing = false;
+			context.readyForSubmission = false;
+			context.submissionPending = false;
+			context.submissionErrorMessage = '';
+
+			if (
+				!state.currentSessionArchetypes.includes(pendingSubmission.hash)
+			) {
+				state.currentSessionArchetypes.push(pendingSubmission.hash);
+			}
+
+			actions.scheduleSilentRetry(pendingSubmission);
+		},
+		scheduleSilentRetry: (pendingSubmission) => {
+			const storageKey = getPendingSubmissionStorageKey(
+				pendingSubmission.quizId,
+				pendingSubmission.hash
+			);
+			if (scheduledSilentRetryKeys.has(storageKey)) {
+				return;
+			}
+			scheduledSilentRetryKeys.add(storageKey);
+
+			const jitter = Math.floor(Math.random() * SILENT_RETRY_JITTER_MS);
+			setTimeout(
+				withScope(() => {
+					const currentSubmission = readPendingSubmission(
+						pendingSubmission.quizId,
+						pendingSubmission.hash
+					);
+					if (currentSubmission) {
+						actions.silentlyRetryPendingSubmission(
+							currentSubmission
+						);
+						return;
+					}
+					scheduledSilentRetryKeys.delete(storageKey);
+				}),
+				SILENT_RETRY_BASE_DELAY_MS + jitter
+			);
+		},
+		silentlyRetryPendingSubmission: async (pendingSubmission) => {
+			const storageKey = getPendingSubmissionStorageKey(
+				pendingSubmission.quizId,
+				pendingSubmission.hash
+			);
+			const nextPendingSubmission = {
+				...pendingSubmission,
+				attempts: (pendingSubmission.attempts || 0) + 1,
+				updatedAt: Date.now(),
+			};
+			writePendingSubmission(nextPendingSubmission);
+
+			try {
+				await apiFetch({
+					path: '/prc-api/v3/quiz/submit',
+					method: 'POST',
+					data: {
+						...nextPendingSubmission.requestArgs,
+						...nextPendingSubmission.requestBody,
+					},
+					parse: false,
+				});
+
+				scheduledSilentRetryKeys.delete(storageKey);
+				actions.clearPendingSubmission(nextPendingSubmission);
+				actions.clearCookie();
+				if (
+					!state.currentSessionArchetypes.includes(
+						nextPendingSubmission.hash
+					)
+				) {
+					state.currentSessionArchetypes.push(
+						nextPendingSubmission.hash
+					);
+				}
+			} catch (error) {
+				const failedSubmission = {
+					...nextPendingSubmission,
+					lastError: {
+						code: error?.code || '',
+						message: error?.message || SUBMISSION_RECOVERY_MESSAGE,
+						status: error?.status || error?.data?.status || null,
+					},
+					updatedAt: Date.now(),
+				};
+				writePendingSubmission(failedSubmission);
+				scheduledSilentRetryKeys.delete(storageKey);
+				showSubmissionRecoveryBanner(getContext(), failedSubmission);
+			}
 		},
 		handleSubmissionError: (
 			error,
@@ -154,9 +274,7 @@ const { state, actions } = store('prc-quiz/controller', {
 				updatedAt: Date.now(),
 			};
 			writePendingSubmission(failedSubmission);
-			context.submissionPending = true;
-			context.pendingSubmissionHash = failedSubmission.hash;
-			context.submissionErrorMessage = SUBMISSION_RECOVERY_MESSAGE;
+			showSubmissionRecoveryBanner(context, failedSubmission);
 			context.displayResults = false;
 			context.processing = false;
 			context.readyForSubmission = false;
@@ -181,10 +299,10 @@ const { state, actions } = store('prc-quiz/controller', {
 						...nextPendingSubmission.requestArgs,
 						...nextPendingSubmission.requestBody,
 					},
+					parse: false,
 				});
 
-				const router = await import('@wordpress/interactivity-router');
-				if (newScore) {
+				if (isDefinedScore(newScore)) {
 					context.userScore = {
 						...context.userScore,
 						score: newScore,
@@ -204,8 +322,28 @@ const { state, actions } = store('prc-quiz/controller', {
 						nextPendingSubmission.hash
 					);
 				}
-				router.actions.navigate(nextPendingSubmission.destinationUrl);
+
+				if (hasClientRenderedScore(context, newScore)) {
+					const router =
+						await import('@wordpress/interactivity-router');
+					router.actions.navigate(
+						nextPendingSubmission.destinationUrl
+					);
+				} else {
+					window.location.assign(
+						nextPendingSubmission.destinationUrl
+					);
+				}
 			} catch (error) {
+				const status = error?.status || error?.data?.status || null;
+				if (429 === status) {
+					actions.handleRateLimitedSubmission(
+						nextPendingSubmission,
+						newScore,
+						context
+					);
+					return;
+				}
 				actions.handleSubmissionError(
 					error,
 					nextPendingSubmission,

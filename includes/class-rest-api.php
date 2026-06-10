@@ -498,16 +498,20 @@ class Rest_API {
 		}
 
 		try {
-			// Per-IP rate limiting: 10 submissions per quiz per minute (fixed window).
+			// Per-IP rate limiting: 100 submissions per quiz per minute (fixed window).
 			// wp_cache_add only sets when key is absent, establishing the window TTL once.
 			// wp_cache_incr atomically increments without resetting the TTL.
-			$client_ip    = filter_input( INPUT_SERVER, 'REMOTE_ADDR', FILTER_VALIDATE_IP );
-			$client_ip    = false === $client_ip || null === $client_ip ? 'unknown' : $client_ip;
+			$client_ip = function_exists( '\\PRC\\Platform\\get_client_ip' )
+				? \PRC\Platform\get_client_ip()
+				: '';
+			if ( '' === $client_ip ) {
+				$client_ip = 'unknown';
+			}
 			$throttle_key = 'prc_quiz_submit_' . md5( $client_ip . '_' . $quiz_id );
 			wp_cache_add( $throttle_key, 0, 'prc_quiz_throttle', MINUTE_IN_SECONDS );
 			$recent_count = wp_cache_incr( $throttle_key, 1, 'prc_quiz_throttle' );
 
-			if ( $recent_count > 10 ) {
+			if ( $recent_count > 100 ) {
 				return new \WP_Error(
 					'rate_limited',
 					'Too many submissions. Please try again later.',
