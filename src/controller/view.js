@@ -16,6 +16,7 @@ import scoreQuiz from './scoring';
 import { scrollToElement } from './scroll-utils';
 import './progress-storage';
 import './submission-recovery';
+import './share';
 
 const FLUID_BREAKPOINT_PX = 782;
 
@@ -274,7 +275,6 @@ const { state, actions } = store('prc-quiz/controller', {
 				return;
 			}
 
-			const { ref } = getElement();
 			const {
 				answerThreshold,
 				displayType,
@@ -321,6 +321,7 @@ const { state, actions } = store('prc-quiz/controller', {
 			}
 
 			const { currentPageUuid, pages } = context;
+			const { ref } = getElement();
 			const root =
 				ref?.closest('.wp-block-prc-quiz-controller') || document;
 			const mailchimpFormSelector =

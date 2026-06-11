@@ -16,6 +16,20 @@ use WP_Block_Parser_Block, WP_Error, WP_HTML_Tag_Processor;
  */
 class Controller {
 	/**
+	 * CSS class marker for the share quiz button variation.
+	 *
+	 * @var string
+	 */
+	public const SHARE_QUIZ_BUTTON_CLASS = 'prc-quiz-share-quiz-button';
+
+	/**
+	 * CSS class marker for the share results button variation.
+	 *
+	 * @var string
+	 */
+	public const SHARE_RESULTS_BUTTON_CLASS = 'prc-quiz-share-results-button';
+
+	/**
 	 * Constructor.
 	 *
 	 * @param object $loader The loader.
@@ -25,6 +39,7 @@ class Controller {
 		$loader->add_filter( 'render_block_context', $this, 'set_quiz_id_in_context', 10, 2 );
 		$loader->add_filter( 'render_block_context', $this, 'set_group_bindings_context', 10, 2 );
 		$loader->add_filter( 'render_block_core/buttons', $this, 'modify_buttons', 10, 2 );
+		$loader->add_filter( 'render_block_core/button', $this, 'modify_share_buttons', 10, 2 );
 	}
 
 	/**
@@ -113,6 +128,87 @@ class Controller {
 	}
 
 	/**
+	 * Wire share buttons (by class marker) to the quiz controller share actions.
+	 *
+	 * @hook render_block_core/button
+	 *
+	 * @param string $block_content Rendered block HTML.
+	 * @param array  $block         Parsed block array.
+	 * @return string Modified HTML.
+	 */
+	public function modify_share_buttons( $block_content, $block ) {
+		$class_name = $block['attrs']['className'] ?? '';
+		if ( ! is_string( $class_name ) ) {
+			return $block_content;
+		}
+
+		$is_share_quiz    = str_contains( $class_name, self::SHARE_QUIZ_BUTTON_CLASS );
+		$is_share_results = str_contains( $class_name, self::SHARE_RESULTS_BUTTON_CLASS );
+		if ( ! $is_share_quiz && ! $is_share_results ) {
+			return $block_content;
+		}
+
+		$tag = new WP_HTML_Tag_Processor( $block_content );
+		while ( $tag->next_tag() ) {
+			if ( ! in_array( $tag->get_tag(), array( 'A', 'BUTTON' ), true ) ) {
+				continue;
+			}
+			$tag->set_attribute(
+				'data-wp-on--click',
+				$is_share_quiz ? 'actions.onShareQuizClick' : 'actions.onShareResultsClick'
+			);
+			break;
+		}
+		return $tag->get_updated_html();
+	}
+
+	/**
+	 * Build share metadata for a quiz, sourced from prc-schema-seo social metadata when available.
+	 *
+	 * @param int $post_id The quiz post ID.
+	 * @return array{title: string, text: string, url: string}
+	 */
+	public function get_share_data( $post_id ) {
+		$share_data = array(
+			'title' => get_the_title( $post_id ),
+			'text'  => '',
+			'url'   => get_permalink( $post_id ),
+		);
+
+		if ( class_exists( '\PRC\Platform\Schema_SEO\Metadata' ) ) {
+			$metadata = new \PRC\Platform\Schema_SEO\Metadata( null );
+			$seo_data = $metadata->get_seo_data( $post_id );
+			$seo_data = $metadata->resolve_for_display( $seo_data, $post_id );
+
+			$share_data['title'] = ! empty( $seo_data['og_title'] ) ? $seo_data['og_title'] : $share_data['title'];
+			$share_data['text']  = ! empty( $seo_data['og_description'] ) ? $seo_data['og_description'] : $share_data['text'];
+			$share_data['url']   = ! empty( $seo_data['canonical_url'] ) ? $seo_data['canonical_url'] : $share_data['url'];
+		}
+
+		return $share_data;
+	}
+
+	/**
+	 * Register the share quiz URL block bindings source.
+	 *
+	 * @return void
+	 */
+	public function register_share_bindings() {
+		register_block_bindings_source(
+			'prc-quiz/share-quiz-url',
+			array(
+				'label'              => __( 'Quiz Share URL', 'prc-quiz' ),
+				'get_value_callback' => function ( array $source_args, $block_instance ) {
+					unset( $source_args );
+					$quiz_id = $block_instance->context['prc-quiz/id'] ?? get_the_ID();
+					return $quiz_id ? get_permalink( $quiz_id ) : '';
+				},
+				'uses_context'       => array( 'prc-quiz/id' ),
+			)
+		);
+	}
+
+	/**
 	 * Render quiz controller block.
 	 *
 	 * @param array  $attributes The attributes.
@@ -186,6 +282,7 @@ class Controller {
 					'allowSubmissions'       => $allow_submissions,
 					'isPreview'              => is_preview(),
 					'shareText'              => 'I scored %score% on the "%title%" quiz',
+					'shareData'              => $this->get_share_data( $post_id ), // Social share metadata sourced from prc-schema-seo.
 				)
 			)
 		);
@@ -232,5 +329,6 @@ class Controller {
 				'render_callback' => array( $this, 'render_block_callback' ),
 			)
 		);
+		$this->register_share_bindings();
 	}
 }
