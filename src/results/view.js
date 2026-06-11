@@ -11,6 +11,7 @@ import {
 /**
  * Internal Dependencies
  */
+import { scrollToElement } from '../controller/scroll-utils';
 
 const { state, actions } = store('prc-quiz/controller', {
 	state: {
@@ -78,14 +79,23 @@ const { state, actions } = store('prc-quiz/controller', {
 		}),
 	},
 	callbacks: {
-		*onResultsDisplay() {
+		onResultsInit: () => {
+			const context = getContext();
+			if (!context.displayResults) {
+				return;
+			}
+			const { ref } = getElement();
+			scrollToElement(ref);
+			actions.runAnimation();
+		},
+		onResultsDisplay: () => {
 			const context = getContext();
 			const { displayResults } = context;
 			if (!displayResults) {
 				return;
 			}
 			const { ref } = getElement();
-			ref.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			scrollToElement(ref);
 			actions.runAnimation();
 		},
 		/**

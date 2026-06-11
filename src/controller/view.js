@@ -13,6 +13,7 @@ import {
  * Internal Dependencies
  */
 import scoreQuiz from './scoring';
+import { scrollToElement } from './scroll-utils';
 import './progress-storage';
 import './submission-recovery';
 
@@ -145,9 +146,7 @@ const { state, actions } = store('prc-quiz/controller', {
 		applyDisplayType: () => {
 			const context = getContext();
 			const { ref } = getElement();
-			const root =
-				ref?.closest('[data-wp-interactive="prc-quiz/controller"]') ||
-				ref;
+			const root = ref?.closest('.wp-block-prc-quiz-controller') || ref;
 			const { configuredDisplayType } = context;
 
 			let resolvedType = configuredDisplayType;
@@ -174,21 +173,24 @@ const { state, actions } = store('prc-quiz/controller', {
 		onStartQuizClick: withSyncEvent(() => {
 			const context = getContext();
 			const { ref } = getElement();
-			const { pages, displayType } = context;
-			const root =
-				ref?.closest('[data-wp-interactive="prc-quiz/controller"]') ||
-				ref;
+			const { pages, displayType, configuredDisplayType } = context;
+			const root = ref?.closest('.wp-block-prc-quiz-controller') || ref;
+			let resolvedDisplayType = displayType;
+
+			if ('fluid' === configuredDisplayType) {
+				resolvedDisplayType =
+					window.innerWidth < FLUID_BREAKPOINT_PX
+						? 'scrollable'
+						: 'paged';
+			}
 			// Set the current page uuid to the next page uuid.
 			context.currentPageUuid = pages[1];
 			actions.saveQuizProgress();
-			if ('paged' !== displayType) {
+			if ('paged' !== resolvedDisplayType) {
 				const firstPage = root?.querySelector(
 					`[data-page-uuid="${pages[1]}"]`
 				);
-				firstPage?.scrollIntoView({
-					behavior: 'smooth',
-					block: 'start',
-				});
+				scrollToElement(firstPage);
 			}
 		}),
 		onNextPageClick: withSyncEvent(() => {
@@ -320,8 +322,7 @@ const { state, actions } = store('prc-quiz/controller', {
 
 			const { currentPageUuid, pages } = context;
 			const root =
-				ref?.closest('[data-wp-interactive="prc-quiz/controller"]') ||
-				document;
+				ref?.closest('.wp-block-prc-quiz-controller') || document;
 			const mailchimpFormSelector =
 				'[data-wp-interactive="prc-block/mailchimp-form"] form[data-wp-interactive="prc-block/form"]';
 			const findMailchimpFormInPage = (pageUuid) => {
@@ -452,8 +453,7 @@ const { state, actions } = store('prc-quiz/controller', {
 			context.processing = true;
 
 			const root =
-				ref?.closest('[data-wp-interactive="prc-quiz/controller"]') ||
-				document;
+				ref?.closest('.wp-block-prc-quiz-controller') || document;
 			const embeddedForm = root.querySelector(
 				'[data-wp-interactive="prc-block/mailchimp-form"] form[data-wp-interactive="prc-block/form"]'
 			);

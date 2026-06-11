@@ -218,6 +218,7 @@ class Results {
 				)
 			)
 		);
+		$tag->set_attribute( 'data-wp-init', 'callbacks.onResultsInit' );
 		$tag->set_attribute( 'data-wp-watch--resultsDisplay', 'callbacks.onResultsDisplay' );
 		$tag->set_attribute( 'data-wp-watch--syncScoreToForm', 'callbacks.syncScoreToForm' );
 

@@ -8,6 +8,8 @@ import {
 	withSyncEvent,
 } from '@wordpress/interactivity';
 
+import { scrollToElement } from '../controller/scroll-utils';
+
 const lastCurrentPageUuidByQuiz = new Map();
 
 const { state, actions } = store('prc-quiz/controller', {
@@ -49,12 +51,7 @@ const { state, actions } = store('prc-quiz/controller', {
 				const quizContainer = ref.closest(
 					'.wp-block-prc-quiz-controller'
 				);
-				if (quizContainer) {
-					quizContainer.scrollIntoView({
-						behavior: 'smooth',
-						block: 'start',
-					});
-				}
+				scrollToElement(quizContainer);
 			}
 			actions.runAnimation();
 		},
