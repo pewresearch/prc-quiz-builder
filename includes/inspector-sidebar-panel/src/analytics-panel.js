@@ -4,26 +4,54 @@ import { PanelBody, BaseControl, SelectControl } from '@wordpress/components';
 
 import './analytics-panel.scss';
 
+const ANALYTICS_POLL_INTERVAL_MS = 5 * 60 * 1000;
+
+async function fetchQuizAnalytics(postId) {
+	const response = await apiFetch({
+		path: `/wp/v2/quiz/${postId}?_fields=_submissions`,
+		method: 'GET',
+	});
+
+	return {
+		success: true,
+		...response._submissions,
+	};
+}
+
 // Custom hook for fetching quiz analytics
 function useQuizAnalytics(postId) {
 	const [analytics, setAnalytics] = useState(null);
 
 	useEffect(() => {
-		if (!postId) return;
+		if (!postId) {
+			return undefined;
+		}
 
-		apiFetch({
-			path: `/wp/v2/quiz/${postId}?_fields=_submissions`,
-			method: 'GET',
-		})
-			.then((response) => {
-				setAnalytics({
-					success: true,
-					...response._submissions,
+		let isMounted = true;
+
+		const loadAnalytics = () => {
+			fetchQuizAnalytics(postId)
+				.then((data) => {
+					if (isMounted) {
+						setAnalytics(data);
+					}
+				})
+				.catch((error) => {
+					console.error({ error });
 				});
-			})
-			.catch((error) => {
-				console.error({ error });
-			});
+		};
+
+		loadAnalytics();
+
+		const pollIntervalId = window.setInterval(
+			loadAnalytics,
+			ANALYTICS_POLL_INTERVAL_MS
+		);
+
+		return () => {
+			isMounted = false;
+			window.clearInterval(pollIntervalId);
+		};
 	}, [postId]);
 
 	return analytics;

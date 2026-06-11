@@ -555,6 +555,8 @@ class Rest_API {
 				$this->mark_submission_processed( $quiz_id, $submission_id, $response_data );
 			}
 
+			do_action( 'prc_quiz_log_submission', $quiz_id );
+
 			return rest_ensure_response( $response_data );
 		} finally {
 			if ( null !== $submission_id ) {

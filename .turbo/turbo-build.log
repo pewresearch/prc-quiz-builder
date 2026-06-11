@@ -49,7 +49,7 @@ Entrypoints:
 You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
 For more info visit https://webpack.js.org/guides/code-splitting/[39m[22m
 
-webpack 5.106.2 compiled with [1m[33m3 warnings[39m[22m in 16312 ms
+webpack 5.106.2 compiled with [1m[33m3 warnings[39m[22m in 10422 ms
 assets by chunk 16.6 KiB (id hint: style) 22 assets
 assets by path [1m[32membeddable/[39m[22m 29.3 KiB 5 assets
 assets by chunk 246 KiB (name: controller/index) 4 assets
@@ -97,7 +97,7 @@ Entrypoints:
 You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
 For more info visit https://webpack.js.org/guides/code-splitting/[39m[22m
 
-webpack 5.106.2 compiled with [1m[33m3 warnings[39m[22m in 10556 ms
+webpack 5.106.2 compiled with [1m[33m3 warnings[39m[22m in 10798 ms
 
 assets by path [1m[32mcontroller/[39m[22m 19.5 KiB 2 assets
 assets by path [1m[32mgroup-results/[39m[22m 2.82 KiB 2 assets
@@ -124,5 +124,5 @@ built modules 77 KiB [1m[33m[built][39m[22m
     [1m../../node_modules/charenc/charenc.js[39m[22m 850 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
     [1m../../node_modules/is-buffer/index.js[39m[22m 698 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
   [1mexternal "@wordpress/interactivity-router"[39m[22m 42 bytes [1m[33m[optional][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 3431 ms
+webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 3576 ms
 Block metadata PHP file generated at: build/blocks-manifest.php
