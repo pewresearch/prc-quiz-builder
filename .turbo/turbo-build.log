@@ -1,9 +1,9 @@
 
-> @prc/quiz-builder@4.1.0 build
+> @prc/quiz-builder@4.0.0 build
 > wp-scripts build --webpack-copy-php && wp-scripts build --experimental-modules --webpack-copy-php && wp-scripts build-blocks-manifest
 
 assets by chunk 16.6 KiB (id hint: style) 22 assets
-assets by path [1m[32membeddable/[39m[22m 29.3 KiB 5 assets
+assets by path [1m[32membeddable/[39m[22m 29.2 KiB 5 assets
 assets by chunk 246 KiB (name: controller/index) 4 assets
 assets by chunk 14.2 KiB (name: question/index) 4 assets
 assets by chunk 10.5 KiB (name: answer/index) 4 assets
@@ -16,7 +16,7 @@ assets by chunk 2.81 KiB (name: result-score/index) 4 assets
 assets by chunk 2.68 KiB (name: progress-bar/index) 4 assets
 assets by path [1m[32mresults/*.php[39m[22m 9.64 KiB 2 assets
 + 22 assets
-orphan modules 4.4 MiB (javascript) 20.1 KiB (runtime) [1m[33m[orphan][39m[22m 2833 modules
+orphan modules 4.38 MiB (javascript) 20.1 KiB (runtime) [1m[33m[orphan][39m[22m 2824 modules
 runtime modules 30.8 KiB 42 modules
 built modules 10.2 KiB (css/mini-extract) 911 KiB (javascript) [1m[33m[built][39m[22m
   cacheable modules 10.2 KiB (css/mini-extract) 10.1 KiB (javascript)
@@ -49,9 +49,9 @@ Entrypoints:
 You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
 For more info visit https://webpack.js.org/guides/code-splitting/[39m[22m
 
-webpack 5.106.2 compiled with [1m[33m3 warnings[39m[22m in 10422 ms
+webpack 5.106.2 compiled with [1m[33m3 warnings[39m[22m in 14593 ms
 assets by chunk 16.6 KiB (id hint: style) 22 assets
-assets by path [1m[32membeddable/[39m[22m 29.3 KiB 5 assets
+assets by path [1m[32membeddable/[39m[22m 29.2 KiB 5 assets
 assets by chunk 246 KiB (name: controller/index) 4 assets
 assets by chunk 14.2 KiB (name: question/index) 4 assets
 assets by chunk 10.5 KiB (name: answer/index) 4 assets
@@ -64,7 +64,7 @@ assets by chunk 2.81 KiB (name: result-score/index) 4 assets
 assets by chunk 2.68 KiB (name: progress-bar/index) 4 assets
 assets by path [1m[32mresults/*.php[39m[22m 9.64 KiB 2 assets
 + 22 assets
-orphan modules 4.4 MiB (javascript) 20.1 KiB (runtime) [1m[33m[orphan][39m[22m 2833 modules
+orphan modules 4.38 MiB (javascript) 20.1 KiB (runtime) [1m[33m[orphan][39m[22m 2824 modules
 runtime modules 30.8 KiB 42 modules
 built modules 10.2 KiB (css/mini-extract) 911 KiB (javascript) [1m[33m[built][39m[22m
   cacheable modules 10.2 KiB (css/mini-extract) 10.1 KiB (javascript)
@@ -97,7 +97,7 @@ Entrypoints:
 You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
 For more info visit https://webpack.js.org/guides/code-splitting/[39m[22m
 
-webpack 5.106.2 compiled with [1m[33m3 warnings[39m[22m in 10798 ms
+webpack 5.106.2 compiled with [1m[33m3 warnings[39m[22m in 11702 ms
 
 assets by path [1m[32mcontroller/[39m[22m 19.5 KiB 2 assets
 assets by path [1m[32mgroup-results/[39m[22m 2.82 KiB 2 assets
@@ -124,5 +124,5 @@ built modules 77 KiB [1m[33m[built][39m[22m
     [1m../../node_modules/charenc/charenc.js[39m[22m 850 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
     [1m../../node_modules/is-buffer/index.js[39m[22m 698 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
   [1mexternal "@wordpress/interactivity-router"[39m[22m 42 bytes [1m[33m[optional][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 3576 ms
+webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 4017 ms
 Block metadata PHP file generated at: build/blocks-manifest.php
