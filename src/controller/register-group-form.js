@@ -9,6 +9,21 @@ import { registerBlockVariation } from '@wordpress/blocks';
  */
 import icon from '../group-results/icon';
 
+const groupUrlCopyField = [
+	'prc-block/form-input-text',
+	{
+		type: 'url',
+		label: 'Share this link',
+		displayLabel: true,
+		responseKey: 'group_url',
+		copyToClipboard: true,
+		metadata: { name: 'groupUrl' },
+	},
+	[],
+];
+
+const groupMessageInnerBlocks = [['core/paragraph', {}, []], groupUrlCopyField];
+
 /**
  * Shared inner blocks structure reused by both dialog variations.
  *
@@ -96,7 +111,7 @@ function buildDialogInnerBlocks(formAction) {
 						['prc-block/form-captcha', {}, []],
 					],
 				],
-				['prc-block/form-message', {}, [['core/paragraph', {}, []]]],
+				['prc-block/form-message', {}, groupMessageInnerBlocks],
 			],
 		],
 	];
@@ -171,7 +186,10 @@ export default function registerGroupForm() {
 				[
 					'prc-block/form-message',
 					{},
-					[['core/paragraph', { content: 'Group Created!' }]],
+					[
+						['core/paragraph', { content: 'Group Created!' }],
+						groupUrlCopyField,
+					],
 				],
 			],
 		},
@@ -196,7 +214,10 @@ export default function registerGroupForm() {
 				[
 					'prc-block/form-message',
 					{},
-					[['core/paragraph', { content: 'Group Created!' }]],
+					[
+						['core/paragraph', { content: 'Group Created!' }],
+						groupUrlCopyField,
+					],
 				],
 			],
 		},

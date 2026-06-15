@@ -32,7 +32,11 @@
 <!-- wp:prc-block/form-message -->
 <div><!-- wp:paragraph -->
 <p>{{message}}</p>
-<!-- /wp:paragraph --></div>
+<!-- /wp:paragraph -->
+
+<!-- wp:prc-block/form-input-text {"type":"url","label":"Share this link","displayLabel":true,"responseKey":"group_url","copyToClipboard":true,"metadata":{"name":"groupUrl"}} -->
+<div class="wp-block-prc-block-form-input-text"><label>Share this link</label><input name="groupUrl" type="url" class=""/></div>
+<!-- /wp:prc-block/form-input-text --></div>
 <!-- /wp:prc-block/form-message --></form>
 <!-- /wp:prc-block/form --></div>
 <!-- /wp:group -->

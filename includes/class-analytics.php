@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Analytics class.
  *
@@ -6,6 +7,8 @@
  */
 
 namespace PRC\Platform\Quiz;
+
+use WP_Error;
 
 /**
  * Analytics class.
@@ -96,7 +99,94 @@ class Analytics {
 	 */
 	public function restfully_get_submission_analytics( $object ) {
 		$post_id = (int) $object['id'];
-		return get_post_meta( $post_id, '_report', true );
+		return self::get_report_data( $post_id );
+	}
+
+	/**
+	 * Get normalized quiz report data from post meta.
+	 *
+	 * @param int $quiz_id Quiz post ID.
+	 * @return array
+	 */
+	public static function get_report_data( int $quiz_id ): array {
+		$data = get_post_meta( $quiz_id, '_report', true );
+
+		if ( ! is_array( $data ) ) {
+			$data = array();
+		}
+
+		if ( ! array_key_exists( 'first_24_hours', $data ) ) {
+			$data['first_24_hours'] = 0;
+		}
+		if ( ! array_key_exists( 'first_week', $data ) ) {
+			$data['first_week'] = 0;
+		}
+		if ( ! array_key_exists( 'total', $data ) ) {
+			$data['total'] = 0;
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Persist quiz report data to post meta.
+	 *
+	 * @param int   $quiz_id Quiz post ID.
+	 * @param array $data    Report data.
+	 */
+	public static function save_report_data( int $quiz_id, array $data ): void {
+		update_post_meta( $quiz_id, '_report', $data );
+	}
+
+	/**
+	 * Sum archetype hit counts from Firebase for a quiz.
+	 *
+	 * @param int $quiz_id Quiz post ID.
+	 * @return int|WP_Error
+	 */
+	public static function sum_archetype_hits( int $quiz_id ) {
+		if ( ! class_exists( '\PRC\Platform\Firebase' ) ) {
+			return new WP_Error(
+				'firebase_not_available',
+				'Firebase integration is not available.',
+				array( 'status' => 500 )
+			);
+		}
+
+		$firebase = new \PRC\Platform\Firebase();
+
+		if ( null === $firebase->db ) {
+			return new WP_Error(
+				'firebase_not_configured',
+				'Firebase database is not configured.',
+				array( 'status' => 500 )
+			);
+		}
+
+		try {
+			$archetypes = $firebase->db
+				->getReference( 'quiz/' . $quiz_id . '/archetypes' )
+				->getValue();
+
+			if ( empty( $archetypes ) || ! is_array( $archetypes ) ) {
+				return 0;
+			}
+
+			$total_hits = 0;
+			foreach ( $archetypes as $archetype ) {
+				if ( is_array( $archetype ) && isset( $archetype['hits'] ) ) {
+					$total_hits += (int) $archetype['hits'];
+				}
+			}
+
+			return $total_hits;
+		} catch ( \Exception $e ) {
+			return new WP_Error(
+				'firebase_error',
+				'Failed to sum archetype hits from Firebase: ' . $e->getMessage(),
+				array( 'status' => 500 )
+			);
+		}
 	}
 
 	/**
@@ -114,15 +204,7 @@ class Analytics {
 
 		$quiz_pub_date = get_the_date( 'Y-m-d', $quiz_id );
 
-		$data = get_post_meta( $quiz_id, '_report', true );
-
-		if ( ! $data ) {
-			$data = array(
-				'first_24_hours' => 0,
-				'first_week'     => 0,
-				'total'          => 0,
-			);
-		}
+		$data = self::get_report_data( $quiz_id );
 
 		// If the quiz was published within the last 24 hours, increment the first_24_hours counter.
 		if ( $quiz_pub_date >= $date ) {
@@ -144,7 +226,7 @@ class Analytics {
 
 		++$data['total'];
 
-		update_post_meta( $quiz_id, '_report', $data );
+		self::save_report_data( $quiz_id, $data );
 	}
 
 	// @TODO: Rest endpoint integration into prc-analytics to offer up and endpoint for Ash to get quiz analytics. We should funnel Ash functionality to prc-analytics whenever possible so these endpoints are stable and consistent.

@@ -31,6 +31,8 @@ The Controller block's `render_callback` is the key server/client bridge: it wri
 | `includes/class-groups.php`           | Firebase CRUD for community groups                                                                      |
 | `includes/class-rest-api.php`         | REST endpoint registration and handlers; contains the `$rest_disabled` kill switch                      |
 | `includes/class-analytics.php`        | `_report` post meta schema and submission counter; exposes `_submissions` REST field                    |
+| `includes/class-cli-report.php`       | WP-CLI `wp prc quiz report` — ad hoc read/update of `_report` meta                                      |
+| `includes/class-cli-build-audience.php` | WP-CLI `wp prc quiz build-group-owners-audience` — newsletter audience from group owners              |
 | `includes/class-loader.php`           | Hook registration queue                                                                                 |
 | `includes/inspector-sidebar-panel/`   | Block editor plugin that renders a quiz analytics sidebar panel; only enqueued on the `quiz` CPT screen |
 | `src/controller/class-controller.php` | Controller block — server render, Interactivity API context injection, button directive patching        |
@@ -143,6 +145,32 @@ All endpoints are registered through the platform's `prc_api_endpoints` filter. 
 | `POST` | `quiz/purge-archetypes` | `manage_options`             | Admin-only; wipes all archetypes for a quiz from Firebase                                                    |
 
 The `quiz` REST resource also exposes a `_submissions` field containing the `_report` post meta (requires `edit_posts` capability).
+
+## WP-CLI
+
+Requires `manage_options`. All mutation subcommands support `--dry-run`.
+
+| Subcommand | Description |
+| ---------- | ----------- |
+| `wp prc quiz report get` | Print current `_report` for a quiz (`--format=table\|json`) |
+| `wp prc quiz report set` | Set absolute month and/or `total` counts |
+| `wp prc quiz report add` | Add a delta to month and/or `total` counts |
+| `wp prc quiz report sync-firebase` | Sum Firebase archetype `hits` and apply to month + `total` (`--mode=delta\|set`, default `delta`) |
+
+```bash
+# Inspect report
+wp prc quiz report get --quiz-id=313764
+
+# Backfill from Firebase (delta mode adds firebase_hits - current_total)
+wp prc quiz report sync-firebase --quiz-id=313764 --year=2026 --month=06 --dry-run
+wp prc quiz report sync-firebase --quiz-id=313764 --year=2026 --month=06
+
+# Manual correction
+wp prc quiz report add --quiz-id=313764 --year=2026 --month=06 --month-count=500 --total=500
+wp prc quiz report set --quiz-id=313764 --year=2026 --month=06 --month-count=125653 --total=125653
+```
+
+`sync-firebase` loads the full `quiz/{id}/archetypes` node; large quizzes may be slow. `first_24_hours` and `first_week` are not modified by these commands.
 
 ## URL Patterns
 
