@@ -4,7 +4,7 @@
 
 assets by chunk 16.6 KiB (id hint: style) 22 assets
 assets by path [1m[32membeddable/[39m[22m 29.3 KiB 5 assets
-assets by chunk 246 KiB (name: controller/index) 4 assets
+assets by chunk 140 KiB (name: controller/index) 4 assets
 assets by chunk 14.2 KiB (name: question/index) 4 assets
 assets by chunk 10.5 KiB (name: answer/index) 4 assets
 assets by chunk 9.08 KiB (name: page/index) 4 assets
@@ -16,43 +16,20 @@ assets by chunk 2.81 KiB (name: result-score/index) 4 assets
 assets by chunk 2.68 KiB (name: progress-bar/index) 4 assets
 assets by path [1m[32mresults/*.php[39m[22m 9.64 KiB 2 assets
 + 22 assets
-orphan modules 4.4 MiB (javascript) 20.1 KiB (runtime) [1m[33m[orphan][39m[22m 2833 modules
+orphan modules 1.46 MiB (javascript) 20.1 KiB (runtime) [1m[33m[orphan][39m[22m 1304 modules
 runtime modules 30.8 KiB 42 modules
-built modules 10.2 KiB (css/mini-extract) 911 KiB (javascript) [1m[33m[built][39m[22m
-  cacheable modules 10.2 KiB (css/mini-extract) 10.1 KiB (javascript)
+built modules 10.2 KiB (css/mini-extract) 560 KiB (javascript) [1m[33m[built][39m[22m
+  cacheable modules 10.2 KiB (css/mini-extract) 8.22 KiB (javascript)
     modules by path [1m./src/[39m[22m 10.2 KiB 22 modules
-    javascript modules 10.1 KiB
-      modules by path [1m../../node_modules/use-sync-external-store/[39m[22m 2.15 KiB
-        [1m../../node_modules/use-sync-external-store/shim/index.js[39m[22m 234 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-        [1m../../node_modules/use-sync-external-store/cjs/use-sync-external-store-shim...(truncated)[39m[22m 1.92 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    javascript modules 8.22 KiB
       [1m../../node_modules/remove-accents/index.js[39m[22m 6.07 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-      [1m../../node_modules/fast-deep-equal/es6/index.js[39m[22m 1.89 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+      [1m../../node_modules/use-sync-external-store/shim/index.js[39m[22m 234 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+      [1m../../node_modules/use-sync-external-store/cjs/use-sync-external-store-shim...(truncated)[39m[22m 1.92 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
   + 13 modules
-
-[1m[33mWARNING[39m[22m in [1masset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
-This can impact web performance.
-Assets: 
-  controller/index.js (246 KiB)[39m[22m
-
-[1m[33mWARNING[39m[22m in [1mentrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
-Entrypoints:
-  controller/index (250 KiB)
-      controller/style-index.css
-      controller/style-index-rtl.css
-      controller/index.css
-      controller/index.js
-      controller/index-rtl.css
-      controller/index.asset.php
-[39m[22m
-
-[1m[33mWARNING[39m[22m in [1mwebpack performance recommendations: 
-You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
-For more info visit https://webpack.js.org/guides/code-splitting/[39m[22m
-
-webpack 5.106.2 compiled with [1m[33m3 warnings[39m[22m in 69399 ms
+webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 46020 ms
 assets by chunk 16.6 KiB (id hint: style) 22 assets
 assets by path [1m[32membeddable/[39m[22m 29.3 KiB 5 assets
-assets by chunk 246 KiB (name: controller/index) 4 assets
+assets by chunk 140 KiB (name: controller/index) 4 assets
 assets by chunk 14.2 KiB (name: question/index) 4 assets
 assets by chunk 10.5 KiB (name: answer/index) 4 assets
 assets by chunk 9.08 KiB (name: page/index) 4 assets
@@ -64,40 +41,17 @@ assets by chunk 2.81 KiB (name: result-score/index) 4 assets
 assets by chunk 2.68 KiB (name: progress-bar/index) 4 assets
 assets by path [1m[32mresults/*.php[39m[22m 9.64 KiB 2 assets
 + 22 assets
-orphan modules 4.4 MiB (javascript) 20.1 KiB (runtime) [1m[33m[orphan][39m[22m 2833 modules
+orphan modules 1.46 MiB (javascript) 20.1 KiB (runtime) [1m[33m[orphan][39m[22m 1304 modules
 runtime modules 30.8 KiB 42 modules
-built modules 10.2 KiB (css/mini-extract) 911 KiB (javascript) [1m[33m[built][39m[22m
-  cacheable modules 10.2 KiB (css/mini-extract) 10.1 KiB (javascript)
+built modules 10.2 KiB (css/mini-extract) 560 KiB (javascript) [1m[33m[built][39m[22m
+  cacheable modules 10.2 KiB (css/mini-extract) 8.22 KiB (javascript)
     modules by path [1m./src/[39m[22m 10.2 KiB 22 modules
-    javascript modules 10.1 KiB
-      modules by path [1m../../node_modules/use-sync-external-store/[39m[22m 2.15 KiB
-        [1m../../node_modules/use-sync-external-store/shim/index.js[39m[22m 234 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-        [1m../../node_modules/use-sync-external-store/cjs/use-sync-external-store-shim...(truncated)[39m[22m 1.92 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    javascript modules 8.22 KiB
       [1m../../node_modules/remove-accents/index.js[39m[22m 6.07 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-      [1m../../node_modules/fast-deep-equal/es6/index.js[39m[22m 1.89 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+      [1m../../node_modules/use-sync-external-store/shim/index.js[39m[22m 234 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+      [1m../../node_modules/use-sync-external-store/cjs/use-sync-external-store-shim...(truncated)[39m[22m 1.92 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
   + 13 modules
-
-[1m[33mWARNING[39m[22m in [1masset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
-This can impact web performance.
-Assets: 
-  controller/index.js (246 KiB)[39m[22m
-
-[1m[33mWARNING[39m[22m in [1mentrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
-Entrypoints:
-  controller/index (250 KiB)
-      controller/style-index.css
-      controller/style-index-rtl.css
-      controller/index.css
-      controller/index.js
-      controller/index-rtl.css
-      controller/index.asset.php
-[39m[22m
-
-[1m[33mWARNING[39m[22m in [1mwebpack performance recommendations: 
-You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
-For more info visit https://webpack.js.org/guides/code-splitting/[39m[22m
-
-webpack 5.106.2 compiled with [1m[33m3 warnings[39m[22m in 30407 ms
+webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 35209 ms
 
 assets by path [1m[32mcontroller/[39m[22m 19.5 KiB 2 assets
 assets by path [1m[32mgroup-results/[39m[22m 2.82 KiB 2 assets
@@ -124,5 +78,5 @@ built modules 77 KiB [1m[33m[built][39m[22m
     [1m../../node_modules/charenc/charenc.js[39m[22m 850 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
     [1m../../node_modules/is-buffer/index.js[39m[22m 698 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
   [1mexternal "@wordpress/interactivity-router"[39m[22m 42 bytes [1m[33m[optional][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 10737 ms
+webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 17357 ms
 Block metadata PHP file generated at: build/blocks-manifest.php

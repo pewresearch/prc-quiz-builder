@@ -325,4 +325,66 @@ class Groups {
 
 		return true;
 	}
+
+	/**
+	 * Fetch and normalize all community groups for a quiz from Firebase.
+	 *
+	 * @param int $quiz_id Quiz post ID.
+	 * @return array|WP_Error List of editor-safe group rows, or error.
+	 */
+	public static function get_all_for_quiz( int $quiz_id ) {
+		if ( ! class_exists( '\PRC\Platform\Firebase' ) ) {
+			return new WP_Error(
+				'firebase_not_available',
+				'Firebase integration is not available.',
+				array( 'status' => 500 )
+			);
+		}
+
+		$firebase = new \PRC\Platform\Firebase();
+
+		if ( null === $firebase->db ) {
+			return new WP_Error(
+				'firebase_not_configured',
+				'Firebase database is not configured.',
+				array( 'status' => 500 )
+			);
+		}
+
+		try {
+			$groups = $firebase->db
+				->getReference( 'quiz/' . $quiz_id . '/groups' )
+				->getValue();
+
+			if ( empty( $groups ) || ! is_array( $groups ) ) {
+				return array();
+			}
+
+			$permalink = get_permalink( $quiz_id );
+			$normalized = array();
+
+			foreach ( $groups as $group_id => $group_data ) {
+				if ( ! is_array( $group_data ) ) {
+					continue;
+				}
+
+				$normalized[] = array(
+					'id'           => (string) $group_id,
+					'name'         => (string) ( $group_data['name'] ?? '' ),
+					'total'        => (int) ( $group_data['total'] ?? 0 ),
+					'created'      => (string) ( $group_data['created'] ?? '' ),
+					'last_updated' => (string) ( $group_data['last_updated'] ?? '' ),
+					'results_url'  => wp_sprintf( '%sgroup/%s/results/', $permalink, $group_id ),
+				);
+			}
+
+			return $normalized;
+		} catch ( \Exception $e ) {
+			return new WP_Error(
+				'firebase_error',
+				'Failed to retrieve quiz groups from Firebase: ' . $e->getMessage(),
+				array( 'status' => 500 )
+			);
+		}
+	}
 }

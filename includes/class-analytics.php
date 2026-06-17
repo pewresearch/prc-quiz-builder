@@ -89,6 +89,15 @@ class Analytics {
 				'schema'       => null,
 			)
 		);
+
+		register_rest_field(
+			'quiz',
+			'_group_analytics',
+			array(
+				'get_callback' => array( $this, 'restfully_get_group_analytics' ),
+				'schema'       => null,
+			)
+		);
 	}
 
 	/**
@@ -100,6 +109,79 @@ class Analytics {
 	public function restfully_get_submission_analytics( $object ) {
 		$post_id = (int) $object['id'];
 		return self::get_report_data( $post_id );
+	}
+
+	/**
+	 * Get group analytics for the editor panel.
+	 *
+	 * @param array $object REST object.
+	 * @return array|WP_Error
+	 */
+	public function restfully_get_group_analytics( $object ) {
+		$post_id = (int) $object['id'];
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return new WP_Error(
+				'rest_forbidden',
+				'You are not allowed to view group analytics for this quiz.',
+				array( 'status' => 403 )
+			);
+		}
+
+		return self::get_group_analytics( $post_id );
+	}
+
+	/**
+	 * Object cache group for group analytics payloads.
+	 */
+	private const GROUP_ANALYTICS_CACHE_GROUP = 'prc_quiz_group_analytics';
+
+	/**
+	 * Object cache TTL for group analytics (5 minutes).
+	 */
+	private const GROUP_ANALYTICS_CACHE_TTL = 300;
+
+	/**
+	 * Get aggregate community group analytics for a quiz.
+	 *
+	 * @param int $quiz_id Quiz post ID.
+	 * @return array|WP_Error
+	 */
+	public static function get_group_analytics( int $quiz_id ) {
+		$cache_key = 'quiz_' . $quiz_id;
+		$cached    = wp_cache_get( $cache_key, self::GROUP_ANALYTICS_CACHE_GROUP );
+
+		if ( false !== $cached && is_array( $cached ) ) {
+			return $cached;
+		}
+
+		$groups = Groups::get_all_for_quiz( $quiz_id );
+
+		if ( is_wp_error( $groups ) ) {
+			return $groups;
+		}
+
+		$total_submissions = 0;
+		foreach ( $groups as $group ) {
+			$total_submissions += (int) ( $group['total'] ?? 0 );
+		}
+
+		usort(
+			$groups,
+			static function ( $a, $b ) {
+				return ( $b['total'] ?? 0 ) <=> ( $a['total'] ?? 0 );
+			}
+		);
+
+		$payload = array(
+			'total_groups'      => count( $groups ),
+			'total_submissions' => $total_submissions,
+			'groups'            => $groups,
+		);
+
+		wp_cache_set( $cache_key, $payload, self::GROUP_ANALYTICS_CACHE_GROUP, self::GROUP_ANALYTICS_CACHE_TTL );
+
+		return $payload;
 	}
 
 	/**

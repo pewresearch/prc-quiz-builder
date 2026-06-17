@@ -25,6 +25,7 @@
 		font-size: 1.125rem;
 		font-weight: 600;
 		color: var(--wp-admin-theme-color-darker-10, #006ba1);
+		cursor: help;
 	}
 }
 
@@ -70,6 +71,7 @@
 	font-size: 1.25rem;
 	font-weight: 600;
 	color: var(--wp-admin-theme-color-darker-10, #006ba1);
+	cursor: help;
 }
 
 @media (max-width: 600px) {
@@ -125,4 +127,22 @@
 	.value {
 		color: #fff;
 	}
+}
+
+.quiz-group-analytics-panel__help {
+	color: #646970;
+	font-size: 13px;
+	margin: 0 0 0.5rem;
+}
+
+.quiz-group-analytics-panel__error {
+	color: #b32d2e;
+	font-size: 13px;
+	margin: 0 0 0.75rem;
+}
+
+.quiz-group-analytics-panel__open-button {
+	margin-top: 0.5rem;
+	width: 100%;
+	justify-content: center;
 }

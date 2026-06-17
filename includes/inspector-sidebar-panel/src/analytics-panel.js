@@ -1,10 +1,23 @@
 import { useMemo, useState, useEffect } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
-import { PanelBody, BaseControl, SelectControl } from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
+import {
+	PanelBody,
+	BaseControl,
+	SelectControl,
+	Tooltip,
+	Button,
+} from '@wordpress/components';
+import { __, sprintf } from '@wordpress/i18n';
+
+import {
+	ANALYTICS_POLL_INTERVAL_MS,
+	findGroupsEnabled,
+	formatCompactNumber,
+} from './analytics-utils';
+import GroupAnalyticsModal from './group-analytics-modal';
 
 import './analytics-panel.scss';
-
-const ANALYTICS_POLL_INTERVAL_MS = 5 * 60 * 1000;
 
 async function fetchQuizAnalytics(postId) {
 	const response = await apiFetch({
@@ -18,9 +31,18 @@ async function fetchQuizAnalytics(postId) {
 	};
 }
 
-// Custom hook for fetching quiz analytics
-function useQuizAnalytics(postId) {
-	const [analytics, setAnalytics] = useState(null);
+async function fetchGroupAnalytics(postId) {
+	const response = await apiFetch({
+		path: `/wp/v2/quiz/${postId}?_fields=_group_analytics`,
+		method: 'GET',
+	});
+
+	return response._group_analytics;
+}
+
+function usePollAnalytics(postId, fetcher) {
+	const [data, setData] = useState(null);
+	const [error, setError] = useState('');
 
 	useEffect(() => {
 		if (!postId) {
@@ -30,14 +52,25 @@ function useQuizAnalytics(postId) {
 		let isMounted = true;
 
 		const loadAnalytics = () => {
-			fetchQuizAnalytics(postId)
-				.then((data) => {
+			fetcher(postId)
+				.then((nextData) => {
 					if (isMounted) {
-						setAnalytics(data);
+						setData(nextData);
+						setError('');
 					}
 				})
-				.catch((error) => {
-					console.error({ error });
+				.catch((fetchError) => {
+					if (isMounted) {
+						setError(
+							fetchError?.message ||
+								__(
+									'Unable to load analytics data.',
+									'prc-quiz-builder'
+								)
+						);
+					}
+					// eslint-disable-next-line no-console
+					console.error({ fetchError });
 				});
 		};
 
@@ -52,9 +85,17 @@ function useQuizAnalytics(postId) {
 			isMounted = false;
 			window.clearInterval(pollIntervalId);
 		};
-	}, [postId]);
+	}, [postId, fetcher]);
 
-	return analytics;
+	return { data, error };
+}
+
+function useQuizAnalytics(postId) {
+	return usePollAnalytics(postId, fetchQuizAnalytics);
+}
+
+function useGroupAnalytics(postId) {
+	return usePollAnalytics(postId, fetchGroupAnalytics);
 }
 
 function CalendarChart({
@@ -94,9 +135,27 @@ function CalendarChart({
 					data-month={months[index]}
 					data-heat={getHeatLevel(value)}
 				>
-					<span className="value">{value}</span>
+					<Tooltip text={value.toLocaleString()}>
+						<span className="value" tabIndex={0}>
+							{formatCompactNumber(value)}
+						</span>
+					</Tooltip>
 				</div>
 			))}
+		</div>
+	);
+}
+
+function SummaryStat({ label, value }) {
+	const numericValue = value || 0;
+	return (
+		<div className="summary-stat">
+			<span className="stat-label">{label}</span>
+			<Tooltip text={numericValue.toLocaleString()}>
+				<span className="stat-value" tabIndex={0}>
+					{formatCompactNumber(numericValue)}
+				</span>
+			</Tooltip>
 		</div>
 	);
 }
@@ -104,24 +163,108 @@ function CalendarChart({
 function SummaryStats({ first24Hours, firstWeek, total }) {
 	return (
 		<div className="analytics-summary">
-			<div className="summary-stat">
-				<span className="stat-label">First 24 Hours</span>
-				<span className="stat-value">{first24Hours || 0}</span>
-			</div>
-			<div className="summary-stat">
-				<span className="stat-label">First Week</span>
-				<span className="stat-value">{firstWeek || 0}</span>
-			</div>
-			<div className="summary-stat">
-				<span className="stat-label">Total</span>
-				<span className="stat-value">{total || 0}</span>
-			</div>
+			<SummaryStat label="First 24 Hours" value={first24Hours} />
+			<SummaryStat label="First Week" value={firstWeek} />
+			<SummaryStat label="Total" value={total} />
 		</div>
 	);
 }
 
+function GroupSummaryStats({ totalGroups, totalSubmissions }) {
+	return (
+		<div className="analytics-summary">
+			<SummaryStat
+				label={__('Total Groups', 'prc-quiz-builder')}
+				value={totalGroups}
+			/>
+			<SummaryStat
+				label={__('Group Submissions', 'prc-quiz-builder')}
+				value={totalSubmissions}
+			/>
+		</div>
+	);
+}
+
+function GroupAnalyticsPanelEnabled({ postId }) {
+	const { data: groupAnalytics, error } = useGroupAnalytics(postId);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	if (!groupAnalytics && !error) {
+		return (
+			<PanelBody title={__('Group Analytics', 'prc-quiz-builder')}>
+				<p>{__('Loading group analytics…', 'prc-quiz-builder')}</p>
+			</PanelBody>
+		);
+	}
+
+	const totalGroups = groupAnalytics?.total_groups ?? 0;
+	const totalSubmissions = groupAnalytics?.total_submissions ?? 0;
+
+	return (
+		<PanelBody title={__('Group Analytics', 'prc-quiz-builder')}>
+			{error && (
+				<p className="quiz-group-analytics-panel__error">{error}</p>
+			)}
+			<GroupSummaryStats
+				totalGroups={totalGroups}
+				totalSubmissions={totalSubmissions}
+			/>
+			{totalGroups > 0 ? (
+				<Button
+					variant="secondary"
+					onClick={() => setIsModalOpen(true)}
+					className="quiz-group-analytics-panel__open-button"
+				>
+					{sprintf(
+						/* translators: %d: number of community groups */
+						__('View all groups (%d)', 'prc-quiz-builder'),
+						totalGroups
+					)}
+				</Button>
+			) : (
+				<p className="quiz-group-analytics-panel__help">
+					{__(
+						'No community groups have been created for this quiz yet.',
+						'prc-quiz-builder'
+					)}
+				</p>
+			)}
+			{isModalOpen && (
+				<GroupAnalyticsModal
+					onClose={() => setIsModalOpen(false)}
+					groupAnalytics={groupAnalytics}
+					isLoading={!groupAnalytics}
+					error={error}
+				/>
+			)}
+		</PanelBody>
+	);
+}
+
+function GroupAnalyticsPanel({ postId }) {
+	const groupsEnabled = useSelect((select) => {
+		const blocks = select('core/block-editor').getBlocks();
+		return findGroupsEnabled(blocks);
+	}, []);
+
+	if (!groupsEnabled) {
+		return (
+			<PanelBody title={__('Group Analytics', 'prc-quiz-builder')}>
+				<p className="quiz-group-analytics-panel__help">
+					{__(
+						'Enable community groups on the Quiz Controller block to see group analytics.',
+						'prc-quiz-builder'
+					)}
+				</p>
+			</PanelBody>
+		);
+	}
+
+	return <GroupAnalyticsPanelEnabled postId={postId} />;
+}
+
 export default function AnalyticsPanel({ postId }) {
-	const quizAnalytics = useQuizAnalytics(postId);
+	const { data: quizAnalytics } = useQuizAnalytics(postId);
 
 	const currentYear = new Date().getFullYear();
 
@@ -164,39 +307,45 @@ export default function AnalyticsPanel({ postId }) {
 
 	if (!quizAnalytics) {
 		return (
-			<PanelBody title="Quiz Analytics">
-				<p>Loading analytics data...</p>
-			</PanelBody>
+			<>
+				<PanelBody title="Quiz Analytics">
+					<p>Loading analytics data...</p>
+				</PanelBody>
+				<GroupAnalyticsPanel postId={postId} />
+			</>
 		);
 	}
 
 	return (
-		<PanelBody title="Quiz Analytics">
-			<SummaryStats
-				first24Hours={quizAnalytics.first_24_hours}
-				firstWeek={quizAnalytics.first_week}
-				total={quizAnalytics.total}
-			/>
+		<>
+			<PanelBody title="Quiz Analytics">
+				<SummaryStats
+					first24Hours={quizAnalytics.first_24_hours}
+					firstWeek={quizAnalytics.first_week}
+					total={quizAnalytics.total}
+				/>
 
-			{years.length > 0 && (
-				<>
-					<SelectControl
-						label="Select Year"
-						value={selectedYear}
-						options={years.map((year) => ({
-							label: year,
-							value: parseInt(year),
-						}))}
-						onChange={setSelectedYear}
-					/>
-					<BaseControl
-						id="quiz-analytics-monthly"
-						help={`Monthly Total: ${total}`}
-					>
-						<CalendarChart values={data} />
-					</BaseControl>
-				</>
-			)}
-		</PanelBody>
+				{years.length > 0 && (
+					<>
+						<SelectControl
+							label="Select Year"
+							value={selectedYear}
+							options={years.map((year) => ({
+								label: year,
+								value: parseInt(year),
+							}))}
+							onChange={setSelectedYear}
+						/>
+						<BaseControl
+							id="quiz-analytics-monthly"
+							help={`Monthly Total: ${formatCompactNumber(total)}`}
+						>
+							<CalendarChart values={data} />
+						</BaseControl>
+					</>
+				)}
+			</PanelBody>
+			<GroupAnalyticsPanel postId={postId} />
+		</>
 	);
 }
