@@ -25,27 +25,6 @@ class Question {
 	}
 
 	/**
-	 * Register the question binding.
-	 *
-	 * @return void
-	 */
-	public function register_question_binding() {
-		register_block_bindings_source(
-			'prc-quiz/question',
-			array(
-				'label'              => __( 'Quiz Question', 'prc-quiz' ),
-				'get_value_callback' => function ( array $source_args, $block_instance ) {
-					if ( isset( $block_instance->context['prc-quiz/question/text'] ) ) {
-						return $block_instance->context['prc-quiz/question/text'];
-					}
-					return '';
-				},
-				'uses_context'       => array( 'prc-quiz/question/text', 'prc-quiz/question/uuid' ),
-			)
-		);
-	}
-
-	/**
 	 * Render block callback.
 	 *
 	 * @param array  $attributes The block attributes.
@@ -125,6 +104,5 @@ class Question {
 				'render_callback' => array( $this, 'render_block_callback' ),
 			)
 		);
-		$this->register_question_binding();
 	}
 }

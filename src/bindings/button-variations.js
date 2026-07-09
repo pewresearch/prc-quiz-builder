@@ -1,9 +1,5 @@
-import {
-	registerBlockBindingsSource,
-	registerBlockVariation,
-} from '@wordpress/blocks';
+import { registerBlockVariation } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
-import { store as blockEditorStore } from '@wordpress/block-editor';
 
 export default function registerButtonVariations() {
 	registerBlockVariation('core/buttons', {

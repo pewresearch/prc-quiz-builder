@@ -4,7 +4,7 @@
   "name": "prc-quiz/results",
   "version": "4.0",
   "title": "Results",
-  "category": "quiz",
+  "category": "prc-quiz",
   "attributes": {},
   "supports": {
     "anchor": true,

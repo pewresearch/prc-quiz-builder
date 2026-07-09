@@ -5,98 +5,89 @@
 	"version": "4.0",
 	"title": "Page",
 	"description": "A page contains at least one question but may contain more. You can add aditional multimedia options here such as images, videos, or charts.",
-	"category": "quiz",
+	"category": "prc-quiz",
 	"allowedBlocks": [
-	  "prc-quiz/question",
-	  "core/block",
-	  "core/pattern",
-	  "core/image",
-	  "core/video",
-	  "videopress/video",
-	  "core/group",
-	  "core/paragraph",
-	  "core/list",
-	  "core/heading",
-	  "core/buttons",
-	  "core/post-title",
-	  "prc-block/animation",
-	  "prc-block/dialog",
-	  "prc-block/bylines-display",
-	  "prc-block/bylines-query",
-	  "prc-block/related-query",
-	  "prc-platform/public-behavior-quiz-results",
-	  "prc-platform/public-behavior-quiz-dial",
-	  "prc-block/mailchimp-form"
+		"prc-quiz/question",
+		"core/block",
+		"core/pattern",
+		"core/image",
+		"core/video",
+		"videopress/video",
+		"core/group",
+		"core/paragraph",
+		"core/list",
+		"core/heading",
+		"core/buttons",
+		"core/post-title",
+		"prc-block/animation",
+		"prc-block/dialog",
+		"prc-block/bylines-display",
+		"prc-block/bylines-query",
+		"prc-block/related-query",
+		"prc-platform/public-behavior-quiz-results",
+		"prc-platform/public-behavior-quiz-dial",
+		"prc-block/form"
 	],
 	"attributes": {
-	  "title": {
-		"type": "string"
-	  },
-	  "uuid": {
-		"type": "string"
-	  }
+		"title": {
+			"type": "string"
+		},
+		"uuid": {
+			"type": "string"
+		}
 	},
 	"supports": {
-	  "anchor": true,
-	  "html": false,
-	  "interactivity": true,
-	  "animations": true,
-	  "listView": true,
-	  "color": {
-		"background": true,
-		"text": true,
-		"link": true
-	  },
-	  "align": [
-		"wide",
-		"full"
-	  ],
-	  "layout": {
-		"default": {
-		  "type": "flex",
-		  "orientation": "vertical",
-		  "verticalAlignment": "center",
-		  "justifyContent": "stretch"
+		"anchor": true,
+		"html": false,
+		"interactivity": true,
+		"animations": true,
+		"listView": true,
+		"color": {
+			"background": true,
+			"text": true,
+			"link": true
 		},
-		"allowSwitching": true,
-		"allowInheriting": true,
-		"allowVerticalAlignment": true,
-		"allowJustification": true,
-		"allowOrientation": true,
-		"allowSizingOnChildren": true
-	  },
-	  "spacing": {
-		"blockGap": true,
-		"margin": [
-		  "top",
-		  "bottom"
-		],
-		"padding": true
-	  },
-	  "typography": {
-		"fontSize": true,
-		"__experimentalFontFamily": true
-	  }
+		"align": ["wide", "full"],
+		"layout": {
+			"default": {
+				"type": "flex",
+				"orientation": "vertical",
+				"verticalAlignment": "center",
+				"justifyContent": "stretch"
+			},
+			"allowSwitching": true,
+			"allowInheriting": true,
+			"allowVerticalAlignment": true,
+			"allowJustification": true,
+			"allowOrientation": true,
+			"allowSizingOnChildren": true
+		},
+		"spacing": {
+			"blockGap": true,
+			"margin": ["top", "bottom"],
+			"padding": true
+		},
+		"typography": {
+			"fontSize": true,
+			"__experimentalFontFamily": true
+		}
 	},
-	"parent": [
-	  "prc-quiz/pages"
-	],
+	"parent": ["prc-quiz/pages"],
 	"usesContext": [
-	  "prc-quiz/groupsEnabled",
-	  "prc-quiz/type",
-	  "prc-quiz/display-type",
-	  "prc-quiz/pages",
-	  "prc-quiz/uuids"
+		"prc-quiz/groupsEnabled",
+		"prc-quiz/type",
+		"prc-quiz/display-type",
+		"prc-quiz/pages",
+		"prc-quiz/uuids"
 	],
 	"providesContext": {
-	  "prc-quiz/page/title": "title",
-	  "prc-quiz/page/introductionNote": "introductionNote",
-	  "prc-quiz/page/uuid": "uuid"
+		"prc-quiz/page/title": "title",
+		"prc-quiz/page/introductionNote": "introductionNote",
+		"prc-quiz/page/uuid": "uuid"
 	},
 	"textdomain": "page",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
 	"viewScriptModule": "file:./view.js"
-  }
-  
+}

@@ -1,14 +1,11 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "name": "prc-quiz/embeddable",
+  "name": "prc-quiz/synced-quiz",
   "version": "4.0",
-  "title": "Quiz",
+  "title": "Synced Quiz",
   "description": "Create, save, and sync quizzes to reuse across the site. Update the quiz, and the changes apply everywhere it's used.",
-  "category": "quiz",
-  "allowedBlocks": [
-    "prc-quiz/controller"
-  ],
+  "category": "prc-quiz",
   "keywords": [
     "quiz",
     "typology"
@@ -21,16 +18,11 @@
   "supports": {
     "anchor": true,
     "html": false,
-    "align": [
-      "full",
-      "wide",
-      "center"
-    ]
+    "align": true
   },
   "providesContext": {
     "prc-quiz/isEmbedded": "ref"
   },
-  "textdomain": "prc-quiz-embeddable",
-  "editorScript": "file:./index.js",
-  "render": "file:./render.php"
+  "textdomain": "prc-quiz-synced-quiz",
+  "editorScript": "file:./index.js"
 }

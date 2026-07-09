@@ -4,26 +4,30 @@
 	"name": "prc-quiz/results",
 	"version": "4.0",
 	"title": "Results",
-	"category": "quiz",
+	"category": "prc-quiz",
 	"attributes": {},
 	"supports": {
 		"anchor": true,
 		"html": false,
 		"multiple": false,
-    "interactivity": true,
-    "animations": true,
-    "align": ["wide", "full", "center"],
+		"interactivity": true,
+		"animations": true,
+		"align": [
+			"wide",
+			"full",
+			"center"
+		],
 		"color": {
 			"background": true,
 			"text": true,
 			"link": true,
-      "button": true
+			"button": true
 		},
 		"layout": {
 			"default": {
 				"type": "constrained"
 			},
-      "allowSwitching": true,
+			"allowSwitching": true,
 			"allowInheriting": true,
 			"allowVerticalAlignment": true,
 			"allowJustification": true,
@@ -32,7 +36,10 @@
 		},
 		"spacing": {
 			"blockGap": true,
-			"margin": [ "top", "bottom" ],
+			"margin": [
+				"top",
+				"bottom"
+			],
 			"padding": true
 		},
 		"typography": {
@@ -40,11 +47,16 @@
 			"__experimentalFontFamily": true
 		}
 	},
-	"parent" : ["prc-quiz/controller"],
-	"usesContext": ["prc-quiz/type", "prc-quiz/id"],
+	"parent": [
+		"prc-quiz/controller"
+	],
+	"usesContext": [
+		"prc-quiz/type",
+		"prc-quiz/id"
+	],
 	"textdomain": "results",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
-  "viewScriptModule": "file:./view.js"
+	"viewScriptModule": "file:./view.js"
 }

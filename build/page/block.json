@@ -5,7 +5,7 @@
   "version": "4.0",
   "title": "Page",
   "description": "A page contains at least one question but may contain more. You can add aditional multimedia options here such as images, videos, or charts.",
-  "category": "quiz",
+  "category": "prc-quiz",
   "allowedBlocks": [
     "prc-quiz/question",
     "core/block",
@@ -26,7 +26,7 @@
     "prc-block/related-query",
     "prc-platform/public-behavior-quiz-results",
     "prc-platform/public-behavior-quiz-dial",
-    "prc-block/mailchimp-form"
+    "prc-block/form"
   ],
   "attributes": {
     "title": {

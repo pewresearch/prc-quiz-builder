@@ -32,7 +32,6 @@ import save from './save';
 import icon from './icon';
 import variations from './variations';
 import registerGroupForm from './register-group-form';
-import registerShareButtonVariations from './share-button-variations';
 import metadata from './block.json';
 
 const { name } = metadata;
@@ -46,4 +45,3 @@ const settings = {
 
 registerBlockType(name, { ...metadata, ...settings });
 registerGroupForm();
-registerShareButtonVariations();

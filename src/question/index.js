@@ -22,7 +22,6 @@ import edit from './edit';
 import save from './save';
 import icon from './icon';
 import variations from './variations';
-import registerQuestionBinding from './question-binding';
 
 import metadata from './block.json';
 
@@ -34,7 +33,5 @@ const settings = {
 	save,
 	variations,
 };
-
-registerQuestionBinding();
 
 registerBlockType(name, { ...metadata, ...settings });

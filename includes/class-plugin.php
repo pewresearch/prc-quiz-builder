@@ -77,19 +77,8 @@ class Plugin {
 
 		$this->load_dependencies();
 		$this->define_dependencies();
+		$this->define_patterns();
 		$this->init_blocks();
-
-		// Add a Quiz Builder Category to the Block Editor.
-		add_filter(
-			'block_categories_all',
-			function ( $categories ) {
-				$categories[] = array(
-					'slug'  => 'prc-quiz',
-					'title' => 'Quiz Builder',
-				);
-				return $categories;
-			}
-		);
 	}
 
 	/**
@@ -118,6 +107,9 @@ class Plugin {
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-cli-build-audience.php';
 		// 7. WP-CLI: ad hoc quiz report (_report meta) read/update.
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-cli-report.php';
+		require_once plugin_dir_path( __DIR__ ) . '/includes/class-quiz-binding-resolver.php';
+		require_once plugin_dir_path( __DIR__ ) . '/includes/class-quiz-bindings.php';
+		require_once plugin_dir_path( __DIR__ ) . '/includes/class-block-supports.php';
 
 		// Load block files.
 		$this->load_blocks();
@@ -132,10 +124,41 @@ class Plugin {
 	/**
 	 * Define the dependencies for the plugin.
 	 */
+	/**
+	 * Register block patterns from the plugin patterns directory.
+	 */
+	private function define_patterns() {
+		$this->loader->add_action( 'plugins_loaded', $this, 'register_patterns', 5 );
+	}
+
+	/**
+	 * Load binding companion patterns via the platform pattern loader.
+	 *
+	 * @hook plugins_loaded
+	 */
+	public function register_patterns(): void {
+		if ( ! function_exists( '\PRC\Platform\Core\Patterns\register_plugin_patterns' ) ) {
+			return;
+		}
+
+		\PRC\Platform\Core\Patterns\register_plugin_patterns(
+			'prc-quiz-builder',
+			PRC_QUIZ_DIR . '/patterns',
+			array(
+				'category_label' => __( 'Quiz Builder', 'prc-quiz' ),
+				'text_domain'    => 'prc-quiz',
+			)
+		);
+	}
+
+	/**
+	 * Define the dependencies for the plugin.
+	 */
 	private function define_dependencies() {
 		new Analytics( $this->get_loader() );
 		new Rest_API( $this->get_loader() );
 		new Inspector_Sidebar_Panel( $this->get_loader() );
+		new Block_Supports( $this->get_loader() );
 
 		// Priority 5 ensures the quiz post type (and its declared supports like
 		// `prc-publication-listing`) is registered before any other plugin runs
@@ -180,7 +203,11 @@ class Plugin {
 	private function load_blocks() {
 		$block_files = glob( PRC_QUIZ_DIR . '/build/*', GLOB_ONLYDIR );
 		foreach ( $block_files as $block ) {
-			$block  = basename( $block );
+			$block = basename( $block );
+			// Editor-only script entry; no PHP block class.
+			if ( 'bindings' === $block ) {
+				continue;
+			}
 			$loaded = $this->include_block( $block );
 			if ( is_wp_error( $loaded ) ) {
 				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
@@ -207,8 +234,9 @@ class Plugin {
 	 * @since    3.5.0
 	 */
 	private function init_blocks() {
-		// Embeddable quiz.
-		new Embeddable( $this->get_loader() );
+		// Synced quiz (embeddable by ref).
+		new Synced_Quiz( $this->get_loader() );
+		new Quiz_Bindings( $this->get_loader() );
 		// Core Quiz application blocks.
 		new Controller( $this->get_loader() );
 		new Answer( $this->get_loader() );
@@ -462,6 +490,12 @@ class Plugin {
 		);
 
 		register_post_type( self::$post_type, $args );
+
+		// Opt the quiz CPT into the Presence API so the synced-quiz block can
+		// detect when someone else has the quiz open and gate polling on it.
+		if ( function_exists( 'wp_presence_post_room' ) ) {
+			add_post_type_support( self::$post_type, 'presence' );
+		}
 	}
 
 	/**

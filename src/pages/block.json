@@ -4,7 +4,7 @@
 	"name": "prc-quiz/pages",
 	"version": "4.0",
 	"title": "Pages",
-	"category": "quiz",
+	"category": "prc-quiz",
 	"allowedBlocks": [
 		"prc-quiz/progress-bar",
 		"prc-quiz/page"

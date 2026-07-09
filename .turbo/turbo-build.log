@@ -1,57 +1,59 @@
 
-> @prc/quiz-builder@4.1.0 build
+> @prc/quiz-builder@4.2.0 build
 > wp-scripts build --webpack-copy-php && wp-scripts build --experimental-modules --webpack-copy-php && wp-scripts build-blocks-manifest
 
 assets by chunk 16.6 KiB (id hint: style) 22 assets
-assets by path embeddable/ 29.3 KiB 5 assets
-assets by chunk 140 KiB (name: controller/index) 4 assets
-assets by chunk 14.2 KiB (name: question/index) 4 assets
-assets by chunk 10.5 KiB (name: answer/index) 4 assets
-assets by chunk 9.08 KiB (name: page/index) 4 assets
+assets by chunk 136 KiB (name: controller/index) 4 assets
+assets by chunk 13.3 KiB (name: question/index) 4 assets
+assets by chunk 9.54 KiB (name: answer/index) 4 assets
 assets by chunk 8.84 KiB (name: result-table/index) 4 assets
-assets by chunk 8.17 KiB (name: result-histogram/index) 4 assets
-assets by chunk 5.08 KiB (name: group-results/index) 4 assets
+assets by path synced-quiz/ 9.91 KiB 4 assets
+assets by chunk 8.18 KiB (name: result-histogram/index) 4 assets
+assets by chunk 4.53 KiB (name: page/index) 4 assets
 assets by chunk 3.24 KiB (name: pages/index) 4 assets
-assets by chunk 2.81 KiB (name: result-score/index) 4 assets
+assets by chunk 2.82 KiB (name: result-score/index) 4 assets
 assets by chunk 2.68 KiB (name: progress-bar/index) 4 assets
+assets by chunk 2.6 KiB (name: group-results/index) 4 assets
+assets by path bindings/ 9.92 KiB 3 assets
 assets by path results/*.php 9.64 KiB 2 assets
 + 22 assets
-orphan modules 1.46 MiB (javascript) 20.1 KiB (runtime) [orphan] 1304 modules
+orphan modules 1.38 MiB (javascript) 20.1 KiB (runtime) [orphan] 1275 modules
 runtime modules 30.8 KiB 42 modules
-built modules 10.2 KiB (css/mini-extract) 560 KiB (javascript) [built]
+built modules 10.2 KiB (css/mini-extract) 491 KiB (javascript) [built]
   cacheable modules 10.2 KiB (css/mini-extract) 8.22 KiB (javascript)
     modules by path ./src/ 10.2 KiB 22 modules
     javascript modules 8.22 KiB
       ../../node_modules/remove-accents/index.js 6.07 KiB [built] [code generated]
       ../../node_modules/use-sync-external-store/shim/index.js 234 bytes [built] [code generated]
       ../../node_modules/use-sync-external-store/cjs/use-sync-external-store-shim...(truncated) 1.92 KiB [built] [code generated]
-  + 13 modules
-webpack 5.106.2 compiled successfully in 10079 ms
+  + 14 modules
+webpack 5.106.2 compiled successfully in 11712 ms
 assets by chunk 16.6 KiB (id hint: style) 22 assets
-assets by path embeddable/ 29.3 KiB 5 assets
-assets by chunk 140 KiB (name: controller/index) 4 assets
-assets by chunk 14.2 KiB (name: question/index) 4 assets
-assets by chunk 10.5 KiB (name: answer/index) 4 assets
-assets by chunk 9.08 KiB (name: page/index) 4 assets
+assets by chunk 136 KiB (name: controller/index) 4 assets
+assets by chunk 13.3 KiB (name: question/index) 4 assets
+assets by chunk 9.54 KiB (name: answer/index) 4 assets
 assets by chunk 8.84 KiB (name: result-table/index) 4 assets
-assets by chunk 8.17 KiB (name: result-histogram/index) 4 assets
-assets by chunk 5.08 KiB (name: group-results/index) 4 assets
+assets by path synced-quiz/ 9.91 KiB 4 assets
+assets by chunk 8.18 KiB (name: result-histogram/index) 4 assets
+assets by chunk 4.53 KiB (name: page/index) 4 assets
 assets by chunk 3.24 KiB (name: pages/index) 4 assets
-assets by chunk 2.81 KiB (name: result-score/index) 4 assets
+assets by chunk 2.82 KiB (name: result-score/index) 4 assets
 assets by chunk 2.68 KiB (name: progress-bar/index) 4 assets
+assets by chunk 2.6 KiB (name: group-results/index) 4 assets
+assets by path bindings/ 9.92 KiB 3 assets
 assets by path results/*.php 9.64 KiB 2 assets
 + 22 assets
-orphan modules 1.46 MiB (javascript) 20.1 KiB (runtime) [orphan] 1304 modules
+orphan modules 1.38 MiB (javascript) 20.1 KiB (runtime) [orphan] 1275 modules
 runtime modules 30.8 KiB 42 modules
-built modules 10.2 KiB (css/mini-extract) 560 KiB (javascript) [built]
+built modules 10.2 KiB (css/mini-extract) 491 KiB (javascript) [built]
   cacheable modules 10.2 KiB (css/mini-extract) 8.22 KiB (javascript)
     modules by path ./src/ 10.2 KiB 22 modules
     javascript modules 8.22 KiB
       ../../node_modules/remove-accents/index.js 6.07 KiB [built] [code generated]
       ../../node_modules/use-sync-external-store/shim/index.js 234 bytes [built] [code generated]
       ../../node_modules/use-sync-external-store/cjs/use-sync-external-store-shim...(truncated) 1.92 KiB [built] [code generated]
-  + 13 modules
-webpack 5.106.2 compiled successfully in 6676 ms
+  + 14 modules
+webpack 5.106.2 compiled successfully in 4716 ms
 
 assets by path controller/ 19.5 KiB 2 assets
 assets by path group-results/ 2.82 KiB 2 assets
@@ -78,5 +80,5 @@ built modules 77 KiB [built]
     ../../node_modules/charenc/charenc.js 850 bytes [built] [code generated]
     ../../node_modules/is-buffer/index.js 698 bytes [built] [code generated]
   external "@wordpress/interactivity-router" 42 bytes [optional] [built] [code generated]
-webpack 5.106.2 compiled successfully in 3102 ms
+webpack 5.106.2 compiled successfully in 2261 ms
 Block metadata PHP file generated at: build/blocks-manifest.php

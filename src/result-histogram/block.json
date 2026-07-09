@@ -4,7 +4,7 @@
 	"name": "prc-quiz/result-histogram",
 	"version": "4.0",
 	"title": "Result Histogram",
-	"category": "quiz",
+	"category": "prc-quiz",
 	"description": "Histogram representing distribution of scores.",
 	"attributes": {
 		"message": {
@@ -53,7 +53,10 @@
 		"alignWide": true,
 		"spacing": {
 			"blockGap": true,
-			"margin": ["top", "bottom"],
+			"margin": [
+				"top",
+				"bottom"
+			],
 			"padding": true
 		},
 		"typography": {
@@ -61,8 +64,13 @@
 			"__experimentalFontFamily": true
 		}
 	},
-	"ancestor": ["prc-quiz/results"],
-	"usesContext": ["prc-quiz/id", "prc-quiz/type"],
+	"ancestor": [
+		"prc-quiz/results"
+	],
+	"usesContext": [
+		"prc-quiz/id",
+		"prc-quiz/type"
+	],
 	"textdomain": "result-histogram",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",

@@ -5,7 +5,7 @@
   "version": "4.0",
   "title": "Question",
   "description": "A question contains a set of answers, and other visual blocks. Choose from single, multiple choice, or thermometer question types.",
-  "category": "quiz",
+  "category": "prc-quiz",
   "allowedBlocks": [
     "prc-quiz/answer",
     "core/group",

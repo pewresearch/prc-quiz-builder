@@ -1,0 +1,8 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "prc-quiz/editor-bindings",
+	"version": "1.0.0",
+	"title": "Quiz Editor Bindings",
+	"editorScript": "file:./index.js"
+}

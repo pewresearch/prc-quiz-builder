@@ -21,4 +21,4 @@ built modules 338 KiB (javascript) 32.2 KiB (css/mini-extract) [built]
   modules by path ./src/*.scss 32.2 KiB
     css ../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./src/analytics-panel.scss 2.28 KiB [built] [code generated]
     css ../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./src/group-analytics-modal.scss 29.9 KiB [built] [code generated]
-webpack 5.106.2 compiled successfully in 8151 ms
+webpack 5.106.2 compiled successfully in 10880 ms

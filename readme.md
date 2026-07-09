@@ -23,24 +23,26 @@ The Controller block's `render_callback` is the key server/client bridge: it wri
 
 ### Key Files
 
-| Path                                  | Purpose                                                                                                 |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `prc-quiz-builder.php`                | Plugin entry point; defines `PRC_QUIZ_FILE`, `PRC_QUIZ_DIR`, `PRC_QUIZ_VERSION` constants               |
-| `includes/class-plugin.php`           | Core orchestrator — loads deps, registers CPT, rewrite rules, query vars, cookies, and all blocks       |
-| `includes/class-archetypes.php`       | Firebase CRUD for archetype (result hash) records; object-cache layer                                   |
-| `includes/class-groups.php`           | Firebase CRUD for community groups                                                                      |
-| `includes/class-rest-api.php`         | REST endpoint registration and handlers; contains the `$rest_disabled` kill switch                      |
-| `includes/class-analytics.php`        | `_report` post meta schema and submission counter; exposes `_submissions` REST field                    |
-| `includes/class-cli-report.php`       | WP-CLI `wp prc quiz report` — ad hoc read/update of `_report` meta                                      |
-| `includes/class-cli-build-audience.php` | WP-CLI `wp prc quiz build-group-owners-audience` — newsletter audience from group owners              |
-| `includes/class-loader.php`           | Hook registration queue                                                                                 |
-| `includes/inspector-sidebar-panel/`   | Block editor plugin that renders a quiz analytics sidebar panel; only enqueued on the `quiz` CPT screen |
-| `src/controller/class-controller.php` | Controller block — server render, Interactivity API context injection, button directive patching        |
-| `src/controller/view.js`              | Controller Interactivity API store — display-type resolution, submission, page visibility, navigation   |
-| `src/results/class-results.php`       | Results block server render                                                                             |
-| `src/group-results/`                  | Group results block (view script + create-group action)                                                 |
-| `src/embeddable/`                     | Embeddable block for cross-site reuse                                                                   |
-| `build/`                              | Compiled JS/CSS/asset manifests for all blocks                                                          |
+| Path                                    | Purpose                                                                                                  |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `prc-quiz-builder.php`                  | Plugin entry point; defines `PRC_QUIZ_FILE`, `PRC_QUIZ_DIR`, `PRC_QUIZ_VERSION` constants                |
+| `includes/class-plugin.php`             | Core orchestrator — loads deps, registers CPT, rewrite rules, query vars, cookies, and all blocks        |
+| `includes/class-archetypes.php`         | Firebase CRUD for archetype (result hash) records; object-cache layer                                    |
+| `includes/class-groups.php`             | Firebase CRUD for community groups                                                                       |
+| `includes/class-rest-api.php`           | REST endpoint registration and handlers; contains the `$rest_disabled` kill switch                       |
+| `includes/class-analytics.php`          | `_report` post meta schema and submission counter; exposes `_submissions` REST field                     |
+| `includes/class-cli-report.php`         | WP-CLI `wp prc quiz report` — ad hoc read/update of `_report` meta                                       |
+| `includes/class-cli-build-audience.php` | WP-CLI `wp prc quiz build-group-owners-audience` — newsletter audience from group owners                 |
+| `includes/class-loader.php`             | Hook registration queue                                                                                  |
+| `includes/class-block-supports.php`     | CPT-scoped inserter filtering (`allowed_block_types_all`), Quiz Builder category, editor-support enqueue |
+| `includes/editor-support/`              | Unregisters quiz core block variations outside the `quiz` CPT editor                                     |
+| `includes/inspector-sidebar-panel/`     | Block editor plugin that renders a quiz analytics sidebar panel; only enqueued on the `quiz` CPT screen  |
+| `src/controller/class-controller.php`   | Controller block — server render, Interactivity API context injection, button directive patching         |
+| `src/controller/view.js`                | Controller Interactivity API store — display-type resolution, submission, page visibility, navigation    |
+| `src/results/class-results.php`         | Results block server render                                                                              |
+| `src/group-results/`                    | Group results block (view script + create-group action)                                                  |
+| `src/embeddable/`                       | Embeddable block for cross-site reuse                                                                    |
+| `build/`                                | Compiled JS/CSS/asset manifests for all blocks                                                           |
 
 ## Blocks
 
@@ -58,7 +60,7 @@ The Controller block's `render_callback` is the key server/client bridge: it wri
 | Group Results    | `prc-quiz/group-results`    | Community group aggregate results; required to enable group creation   |
 | Embeddable       | `prc-quiz/embeddable`       | Reuse a quiz across other posts; edits propagate to all embeds         |
 
-The block editor receives a `Quiz Builder` block category (`prc-quiz` slug) so these blocks are grouped separately from the standard library.
+Quiz blocks appear in the block inserter only when editing the `quiz` post type, grouped under the **Quiz Builder** category (`prc-quiz` slug). The **Quiz** embeddable block (`prc-quiz/embeddable`) remains available on other post types for synced cross-post reuse.
 
 ## Display Types and Frontend Behavior
 
@@ -121,7 +123,8 @@ When results become visible, `onResultsDisplay` in `src/results/view.js` scrolls
 
 | Hook                                | Type   | Description                                                                                                |
 | ----------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------- |
-| `block_categories_all`              | filter | Appends the `prc-quiz` block category                                                                      |
+| `allowed_block_types_all`           | filter | Hides `prc-quiz/*` blocks outside the `quiz` CPT editor (except `prc-quiz/embeddable`)                     |
+| `block_categories_all`              | filter | Appends the `prc-quiz` block category on the `quiz` CPT editor only                                        |
 | `prc_api_endpoints`                 | filter | Registers `quiz/create-group`, `quiz/get-group`, `quiz/submit`, and `quiz/purge-archetypes` REST routes    |
 | `init`                              | action | Registers all quiz URL patterns (results, group, embed) via `add_rewrite_rule`                             |
 | `query_vars`                        | filter | Registers `quizArchetype`, `quizGroup`, `quizGroupDomain`, `quizShowResults`, `quizShareQuiz`, `quizEmbed` |
@@ -131,7 +134,7 @@ When results become visible, `onResultsDisplay` in `src/results/view.js` scrolls
 | `render_block_context`              | filter | Injects `prc-quiz/id` into block context for `prc-quiz/controller` on singular quiz pages                  |
 | `render_block_core/buttons`         | filter | Patches Interactivity API `data-wp-on--click` onto quiz action buttons by CSS class                        |
 | `prc_quiz_log_submission`           | action | Fired on quiz submit; consumed internally by `Analytics` to increment `_report` post meta                  |
-| `enqueue_block_editor_assets`       | action | Enqueues the inspector sidebar panel assets (quiz CPT only)                                                |
+| `enqueue_block_editor_assets`       | action | Enqueues editor-support outside the quiz CPT and the inspector sidebar panel on quiz CPT only              |
 
 ## REST API
 
@@ -150,11 +153,11 @@ The `quiz` REST resource also exposes a `_submissions` field containing the `_re
 
 Requires `manage_options`. All mutation subcommands support `--dry-run`.
 
-| Subcommand | Description |
-| ---------- | ----------- |
-| `wp prc quiz report get` | Print current `_report` for a quiz (`--format=table\|json`) |
-| `wp prc quiz report set` | Set absolute month and/or `total` counts |
-| `wp prc quiz report add` | Add a delta to month and/or `total` counts |
+| Subcommand                         | Description                                                                                       |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `wp prc quiz report get`           | Print current `_report` for a quiz (`--format=table\|json`)                                       |
+| `wp prc quiz report set`           | Set absolute month and/or `total` counts                                                          |
+| `wp prc quiz report add`           | Add a delta to month and/or `total` counts                                                        |
 | `wp prc quiz report sync-firebase` | Sum Firebase archetype `hits` and apply to month + `total` (`--mode=delta\|set`, default `delta`) |
 
 ```bash
@@ -213,10 +216,10 @@ npx turbo build --filter=@prc/quiz-builder
 npm run start -w @prc/quiz-builder
 ```
 
-To run Playwright tests (from the monorepo root — wp-env, Playground, and Playwright are all centralized at root):
+To run Playwright tests (from the monorepo root — VIP dev-env and Playwright are all centralized at root):
 
 ```bash
-npm run env:start
+npm run vip:start
 npm test -- tests/prc-quiz-builder/
 ```
 

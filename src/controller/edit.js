@@ -124,14 +124,17 @@ export default function Edit({
 		[clientId]
 	);
 
-	const quizPermalink = useSelect((select) => {
+	const { quizId, quizPermalink } = useSelect((select) => {
 		const postId = select('core/editor').getCurrentPostId();
 		const record = select('core').getEntityRecord(
 			'postType',
 			'quiz',
 			postId
 		);
-		return record?.link || '';
+		return {
+			quizId: postId,
+			quizPermalink: record?.link || '',
+		};
 	}, []);
 
 	const sampleGroupId = 'sample-group-id';
@@ -160,6 +163,7 @@ export default function Edit({
 			<div {...innerBlocksProps}>
 				<BlockContextProvider
 					value={{
+						'prc-quiz/id': quizId,
 						'prc-quiz/uuids': existingUuids,
 						...groupBindingContext,
 					}}

@@ -22,7 +22,6 @@ import edit from './edit';
 import save from './save';
 import variations from './variations';
 import icon from './icon';
-import registerAnswerBinding from './answer-binding';
 import { initDeprecation } from './deprecation';
 
 import metadata from './block.json';
@@ -42,7 +41,5 @@ const settings = {
 	deprecated,
 	icon,
 };
-
-registerAnswerBinding();
 
 registerBlockType(name, { ...metadata, ...settings });

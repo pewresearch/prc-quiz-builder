@@ -4,15 +4,15 @@
 	"name": "prc-quiz/result-score",
 	"version": "4.0",
 	"title": "Results Score",
-	"category": "quiz",
+	"category": "prc-quiz",
 	"description": "Your score from this quiz.",
 	"attributes": {
 		"numberOfQuestions": {
 			"type": "string"
 		},
-    "questionsToCheck": {
-      "type": "array"
-    }
+		"questionsToCheck": {
+			"type": "array"
+		}
 	},
 	"supports": {
 		"anchor": true,
@@ -23,7 +23,10 @@
 			"text": true
 		},
 		"spacing": {
-			"margin": [ "top", "bottom" ],
+			"margin": [
+				"top",
+				"bottom"
+			],
 			"padding": true
 		},
 		"typography": {
@@ -31,8 +34,12 @@
 			"__experimentalFontFamily": true
 		}
 	},
-	"parent": [ "prc-quiz/results" ],
-	"usesContext": [ "prc-quiz/results/score" ],
+	"parent": [
+		"prc-quiz/results"
+	],
+	"usesContext": [
+		"prc-quiz/results/score"
+	],
 	"textdomain": "result-score",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",

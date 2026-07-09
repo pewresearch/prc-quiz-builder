@@ -4,7 +4,7 @@
   "name": "prc-quiz/result-score",
   "version": "4.0",
   "title": "Results Score",
-  "category": "quiz",
+  "category": "prc-quiz",
   "description": "Your score from this quiz.",
   "attributes": {
     "numberOfQuestions": {

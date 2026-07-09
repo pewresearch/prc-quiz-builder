@@ -189,26 +189,6 @@ class Controller {
 	}
 
 	/**
-	 * Register the share quiz URL block bindings source.
-	 *
-	 * @return void
-	 */
-	public function register_share_bindings() {
-		register_block_bindings_source(
-			'prc-quiz/share-quiz-url',
-			array(
-				'label'              => __( 'Quiz Share URL', 'prc-quiz' ),
-				'get_value_callback' => function ( array $source_args, $block_instance ) {
-					unset( $source_args );
-					$quiz_id = $block_instance->context['prc-quiz/id'] ?? get_the_ID();
-					return $quiz_id ? get_permalink( $quiz_id ) : '';
-				},
-				'uses_context'       => array( 'prc-quiz/id' ),
-			)
-		);
-	}
-
-	/**
 	 * Render quiz controller block.
 	 *
 	 * @param array  $attributes The attributes.
@@ -329,6 +309,5 @@ class Controller {
 				'render_callback' => array( $this, 'render_block_callback' ),
 			)
 		);
-		$this->register_share_bindings();
 	}
 }

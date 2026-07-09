@@ -8,7 +8,7 @@ return array(
 		'version' => '4.0',
 		'title' => 'Answer',
 		'description' => 'An answer choice for a question.',
-		'category' => 'quiz',
+		'category' => 'prc-quiz',
 		'allowedBlocks' => array(
 			'core/paragraph',
 			'core/heading',
@@ -108,6 +108,14 @@ return array(
 		'style' => 'file:./style-index.css',
 		'viewScriptModule' => 'file:./view.js'
 	),
+	'bindings' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'prc-quiz/editor-bindings',
+		'version' => '1.0.0',
+		'title' => 'Quiz Editor Bindings',
+		'editorScript' => 'file:./index.js'
+	),
 	'controller' => array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
@@ -115,7 +123,7 @@ return array(
 		'version' => '4.0.0',
 		'title' => 'Quiz Controller',
 		'description' => 'This block controls all aspects of a quiz.',
-		'category' => 'quiz',
+		'category' => 'prc-quiz',
 		'keywords' => array(
 			'quiz',
 			'typology'
@@ -216,42 +224,6 @@ return array(
 		'viewStyle' => 'file:./view/style-index.css',
 		'viewScriptModule' => 'file:./view.js'
 	),
-	'embeddable' => array(
-		'$schema' => 'https://schemas.wp.org/trunk/block.json',
-		'apiVersion' => 3,
-		'name' => 'prc-quiz/embeddable',
-		'version' => '4.0',
-		'title' => 'Quiz',
-		'description' => 'Create, save, and sync quizzes to reuse across the site. Update the quiz, and the changes apply everywhere it\'s used.',
-		'category' => 'quiz',
-		'allowedBlocks' => array(
-			'prc-quiz/controller'
-		),
-		'keywords' => array(
-			'quiz',
-			'typology'
-		),
-		'attributes' => array(
-			'ref' => array(
-				'type' => 'number'
-			)
-		),
-		'supports' => array(
-			'anchor' => true,
-			'html' => false,
-			'align' => array(
-				'full',
-				'wide',
-				'center'
-			)
-		),
-		'providesContext' => array(
-			'prc-quiz/isEmbedded' => 'ref'
-		),
-		'textdomain' => 'prc-quiz-embeddable',
-		'editorScript' => 'file:./index.js',
-		'render' => 'file:./render.php'
-	),
 	'group-results' => array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
@@ -259,7 +231,7 @@ return array(
 		'version' => '4.0.0',
 		'title' => 'Group Results',
 		'description' => 'Results for a community group. Without this block, group creation will be disabled, it is required for group quizzes to have a separate version of the results for the community group.',
-		'category' => 'quiz',
+		'category' => 'prc-quiz',
 		'supports' => array(
 			'anchor' => true,
 			'html' => false,
@@ -305,7 +277,7 @@ return array(
 		'version' => '4.0',
 		'title' => 'Page',
 		'description' => 'A page contains at least one question but may contain more. You can add aditional multimedia options here such as images, videos, or charts.',
-		'category' => 'quiz',
+		'category' => 'prc-quiz',
 		'allowedBlocks' => array(
 			'prc-quiz/question',
 			'core/block',
@@ -326,7 +298,7 @@ return array(
 			'prc-block/related-query',
 			'prc-platform/public-behavior-quiz-results',
 			'prc-platform/public-behavior-quiz-dial',
-			'prc-block/mailchimp-form'
+			'prc-block/form'
 		),
 		'attributes' => array(
 			'title' => array(
@@ -405,7 +377,7 @@ return array(
 		'name' => 'prc-quiz/pages',
 		'version' => '4.0',
 		'title' => 'Pages',
-		'category' => 'quiz',
+		'category' => 'prc-quiz',
 		'allowedBlocks' => array(
 			'prc-quiz/progress-bar',
 			'prc-quiz/page'
@@ -464,7 +436,7 @@ return array(
 		'version' => '1.0.0',
 		'title' => 'Quiz Progress Bar',
 		'description' => 'Displays quiz completion progress based on answered questions.',
-		'category' => 'quiz',
+		'category' => 'prc-quiz',
 		'ancestor' => array(
 			'prc-quiz/controller'
 		),
@@ -505,7 +477,7 @@ return array(
 		'version' => '4.0',
 		'title' => 'Question',
 		'description' => 'A question contains a set of answers, and other visual blocks. Choose from single, multiple choice, or thermometer question types.',
-		'category' => 'quiz',
+		'category' => 'prc-quiz',
 		'allowedBlocks' => array(
 			'prc-quiz/answer',
 			'core/group',
@@ -616,7 +588,7 @@ return array(
 		'name' => 'prc-quiz/result-histogram',
 		'version' => '4.0',
 		'title' => 'Result Histogram',
-		'category' => 'quiz',
+		'category' => 'prc-quiz',
 		'description' => 'Histogram representing distribution of scores.',
 		'attributes' => array(
 			'message' => array(
@@ -695,7 +667,7 @@ return array(
 		'name' => 'prc-quiz/result-score',
 		'version' => '4.0',
 		'title' => 'Results Score',
-		'category' => 'quiz',
+		'category' => 'prc-quiz',
 		'description' => 'Your score from this quiz.',
 		'attributes' => array(
 			'numberOfQuestions' => array(
@@ -742,7 +714,7 @@ return array(
 		'name' => 'prc-quiz/result-table',
 		'version' => '4.0.1',
 		'title' => 'Result Table',
-		'category' => 'quiz',
+		'category' => 'prc-quiz',
 		'keywords' => array(
 			'table',
 			'results',
@@ -810,7 +782,7 @@ return array(
 		'name' => 'prc-quiz/results',
 		'version' => '4.0',
 		'title' => 'Results',
-		'category' => 'quiz',
+		'category' => 'prc-quiz',
 		'attributes' => array(
 			
 		),
@@ -867,5 +839,33 @@ return array(
 		'editorStyle' => 'file:./index.css',
 		'style' => 'file:./style-index.css',
 		'viewScriptModule' => 'file:./view.js'
+	),
+	'synced-quiz' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'prc-quiz/synced-quiz',
+		'version' => '4.0',
+		'title' => 'Synced Quiz',
+		'description' => 'Create, save, and sync quizzes to reuse across the site. Update the quiz, and the changes apply everywhere it\'s used.',
+		'category' => 'prc-quiz',
+		'keywords' => array(
+			'quiz',
+			'typology'
+		),
+		'attributes' => array(
+			'ref' => array(
+				'type' => 'number'
+			)
+		),
+		'supports' => array(
+			'anchor' => true,
+			'html' => false,
+			'align' => true
+		),
+		'providesContext' => array(
+			'prc-quiz/isEmbedded' => 'ref'
+		),
+		'textdomain' => 'prc-quiz-synced-quiz',
+		'editorScript' => 'file:./index.js'
 	)
 );

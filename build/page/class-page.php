@@ -25,24 +25,6 @@ class Page {
 	}
 
 	/**
-	 * Register the page binding.
-	 *
-	 * @return void
-	 */
-	public function register_page_binding() {
-		register_block_bindings_source(
-			'prc-quiz/page-title',
-			array(
-				'label'              => __( 'Quiz Page', 'prc-quiz' ),
-				'get_value_callback' => function ( array $source_args, $block_instance ) {
-					return $block_instance->context['prc-quiz/page/title'];
-				},
-				'uses_context'       => array( 'prc-quiz/page/title', 'prc-quiz/page/uuid' ),
-			)
-		);
-	}
-
-	/**
 	 * Strip redirectUrl from embedded Mailchimp forms so quiz submission is not interrupted.
 	 *
 	 * @param string $block_content The block content.
@@ -154,6 +136,5 @@ class Page {
 				'render_callback' => array( $this, 'render_block_callback' ),
 			)
 		);
-		$this->register_page_binding();
 	}
 }

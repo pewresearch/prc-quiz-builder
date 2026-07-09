@@ -4,7 +4,7 @@
   "name": "prc-quiz/result-histogram",
   "version": "4.0",
   "title": "Result Histogram",
-  "category": "quiz",
+  "category": "prc-quiz",
   "description": "Histogram representing distribution of scores.",
   "attributes": {
     "message": {

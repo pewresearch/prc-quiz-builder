@@ -4,7 +4,7 @@
   "name": "prc-quiz/result-table",
   "version": "4.0.1",
   "title": "Result Table",
-  "category": "quiz",
+  "category": "prc-quiz",
   "keywords": [
     "table",
     "results",

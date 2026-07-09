@@ -91,31 +91,6 @@ class Answer {
 		return $content;
 	}
 
-	/**
-	 * Register the answer binding.
-	 *
-	 * @return void
-	 */
-	public function register_answer_binding() {
-		register_block_bindings_source(
-			'prc-quiz/answer',
-			array(
-				'label'              => __( 'Quiz Answer', 'prc-quiz' ),
-				'get_value_callback' => function ( array $source_args, $block_instance ) {
-					return $block_instance->context['prc-quiz/answer/text'];
-				},
-				'uses_context'       => array( 'prc-quiz/answer/text', 'prc-quiz/answer/uuid' ),
-			)
-		);
-	}
-
-	/**
-	 * Registers the block using the metadata loaded from the `block.json` file.
-	 * Behind the scenes, it registers also all assets so they can be enqueued
-	 * through the block editor in the corresponding context.
-	 *
-	 * @see https://developer.wordpress.org/reference/functions/register_block_type/
-	 */
 	public function block_init() {
 		register_block_type_from_metadata(
 			PRC_QUIZ_DIR . '/build/answer',
@@ -123,6 +98,5 @@ class Answer {
 				'render_callback' => array( $this, 'render_block_callback' ),
 			)
 		);
-		$this->register_answer_binding();
 	}
 }

@@ -50,53 +50,6 @@ class Group_Results {
 	}
 
 	/**
-	 * Register community group block bindings.
-	 *
-	 * @return void
-	 */
-	public function register_group_bindings() {
-		register_block_bindings_source(
-			'prc-quiz/community-group-name',
-			array(
-				'label'              => __( 'Community Group Name', 'prc-quiz' ),
-				'get_value_callback' => function ( array $source_args, $block_instance ) {
-					unset( $source_args );
-					if ( isset( $block_instance->context['prc-quiz/group/name'] ) ) {
-						return $block_instance->context['prc-quiz/group/name'];
-					}
-					return '';
-				},
-				'uses_context'       => array( 'prc-quiz/group/name' ),
-			)
-		);
-
-		register_block_bindings_source(
-			'prc-quiz/community-group-response-count',
-			array(
-				'label'              => __( 'Community Group Response Count', 'prc-quiz' ),
-				'get_value_callback' => function ( array $source_args, $block_instance ) {
-					unset( $source_args );
-					$count = $block_instance->context['prc-quiz/group/response-count'] ?? 0;
-					return self::format_response_count( $count );
-				},
-				'uses_context'       => array( 'prc-quiz/group/response-count' ),
-			)
-		);
-
-		register_block_bindings_source(
-			'prc-quiz/community-group-results-url',
-			array(
-				'label'              => __( 'Community Group Results URL', 'prc-quiz' ),
-				'get_value_callback' => function ( array $source_args, $block_instance ) {
-					unset( $source_args );
-					return $block_instance->context['prc-quiz/group/results-url'] ?? '';
-				},
-				'uses_context'       => array( 'prc-quiz/group/results-url' ),
-			)
-		);
-	}
-
-	/**
 	 * Hide community group results buttons when no group is present.
 	 *
 	 * @hook render_block_core/button
@@ -275,6 +228,5 @@ class Group_Results {
 				'render_callback' => array( $this, 'render_block_callback' ),
 			)
 		);
-		$this->register_group_bindings();
 	}
 }

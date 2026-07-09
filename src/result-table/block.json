@@ -4,8 +4,13 @@
 	"name": "prc-quiz/result-table",
 	"version": "4.0.1",
 	"title": "Result Table",
-	"category": "quiz",
-	"keywords": ["table", "results", "results table", "quiz table"],
+	"category": "prc-quiz",
+	"keywords": [
+		"table",
+		"results",
+		"results table",
+		"quiz table"
+	],
 	"attributes": {
 		"rowBackgroundColor": {
 			"type": "string"
@@ -24,9 +29,15 @@
 		"anchor": true,
 		"html": false,
 		"interactivity": true,
-		"align": ["wide", "full"],
+		"align": [
+			"wide",
+			"full"
+		],
 		"spacing": {
-			"margin": ["top", "bottom"],
+			"margin": [
+				"top",
+				"bottom"
+			],
 			"padding": true
 		},
 		"typography": {
@@ -43,8 +54,12 @@
 			}
 		}
 	},
-	"parent": ["prc-quiz/results"],
-	"usesContext": ["prc-quiz/demo-break-labels"],
+	"parent": [
+		"prc-quiz/results"
+	],
+	"usesContext": [
+		"prc-quiz/demo-break-labels"
+	],
 	"textdomain": "result-table",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",

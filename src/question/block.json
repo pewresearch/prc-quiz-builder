@@ -5,14 +5,14 @@
 	"version": "4.0",
 	"title": "Question",
 	"description": "A question contains a set of answers, and other visual blocks. Choose from single, multiple choice, or thermometer question types.",
-	"category": "quiz",
+	"category": "prc-quiz",
 	"allowedBlocks": [
 		"prc-quiz/answer",
 		"core/group",
 		"core/paragraph",
 		"core/heading",
-    "core/image",
-    "core/list",
+		"core/image",
+		"core/list",
 		"core/video",
 		"videopress/video"
 	],
@@ -30,7 +30,11 @@
 		"type": {
 			"type": "string",
 			"default": "single",
-      "enum": ["single", "multiple", "thermometer"]
+			"enum": [
+				"single",
+				"multiple",
+				"thermometer"
+			]
 		},
 		"conditionalDisplay": {
 			"type": "boolean",
@@ -39,34 +43,34 @@
 		"conditionalAnswerUuid": {
 			"type": "string"
 		},
-		"thermometerValues" : {
+		"thermometerValues": {
 			"type": "string"
 		},
-		"demoBreakValues" : {
+		"demoBreakValues": {
 			"type": "string"
 		},
 		"uuid": {
 			"type": "string"
-		}	
+		}
 	},
 	"supports": {
 		"anchor": true,
 		"html": false,
-    "interactivity": true,
+		"interactivity": true,
 		"color": {
 			"background": true,
 			"text": true,
 			"link": true,
 			"button": true
 		},
-    "layout": {
+		"layout": {
 			"default": {
 				"type": "flex",
 				"orientation": "vertical",
 				"verticalAlignment": "center",
-        "justifyContent": "stretch"
+				"justifyContent": "stretch"
 			},
-      "allowSwitching": true,
+			"allowSwitching": true,
 			"allowInheriting": true,
 			"allowVerticalAlignment": true,
 			"allowJustification": true,
@@ -75,7 +79,10 @@
 		},
 		"spacing": {
 			"blockGap": true,
-			"margin": [ "top", "bottom" ],
+			"margin": [
+				"top",
+				"bottom"
+			],
 			"padding": true
 		},
 		"typography": {
@@ -83,16 +90,23 @@
 			"__experimentalFontFamily": true
 		}
 	},
-	"parent" : ["prc-quiz/page"],
+	"parent": [
+		"prc-quiz/page"
+	],
 	"providesContext": {
 		"prc-quiz/question/type": "type",
 		"prc-quiz/question/uuid": "uuid",
 		"prc-quiz/question/text": "question"
 	},
-	"usesContext": ["prc-quiz/id", "prc-quiz/type", "prc-quiz/demo-break-labels", "prc-quiz/uuids"],
+	"usesContext": [
+		"prc-quiz/id",
+		"prc-quiz/type",
+		"prc-quiz/demo-break-labels",
+		"prc-quiz/uuids"
+	],
 	"textdomain": "question",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
-  "viewScriptModule": "file:./view.js"
+	"viewScriptModule": "file:./view.js"
 }
