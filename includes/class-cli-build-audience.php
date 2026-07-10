@@ -10,7 +10,7 @@ declare(strict_types=1);
  *
  * Prerequisites:
  *  - Firebase Cloud Function `buildQuizGroupOwnersAudience` deployed with IAM restricted to the platform SA.
- *  - firebase-service-account-*.json in WPCOM_VIP_PRIVATE_DIR.
+ *  - firebase-service-account.json in WPCOM_VIP_PRIVATE_DIR.
  *  - prc_platform_firebase_audiences_endpoints filter returning the function URL map.
  *
  * @package PRC\Platform\Quiz
