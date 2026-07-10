@@ -1,5 +1,5 @@
 
-> @prc/quiz-builder@4.2.0 build
+> @prc/quiz-builder@4.1.0 build
 > wp-scripts build --webpack-copy-php && wp-scripts build --experimental-modules --webpack-copy-php && wp-scripts build-blocks-manifest
 
 assets by chunk 16.6 KiB (id hint: style) 22 assets
@@ -27,7 +27,7 @@ built modules 10.2 KiB (css/mini-extract) 491 KiB (javascript) [built]
       ../../node_modules/use-sync-external-store/shim/index.js 234 bytes [built] [code generated]
       ../../node_modules/use-sync-external-store/cjs/use-sync-external-store-shim...(truncated) 1.92 KiB [built] [code generated]
   + 14 modules
-webpack 5.106.2 compiled successfully in 11712 ms
+webpack 5.106.2 compiled successfully in 2571 ms
 assets by chunk 16.6 KiB (id hint: style) 22 assets
 assets by chunk 136 KiB (name: controller/index) 4 assets
 assets by chunk 13.3 KiB (name: question/index) 4 assets
@@ -53,7 +53,7 @@ built modules 10.2 KiB (css/mini-extract) 491 KiB (javascript) [built]
       ../../node_modules/use-sync-external-store/shim/index.js 234 bytes [built] [code generated]
       ../../node_modules/use-sync-external-store/cjs/use-sync-external-store-shim...(truncated) 1.92 KiB [built] [code generated]
   + 14 modules
-webpack 5.106.2 compiled successfully in 4716 ms
+webpack 5.106.2 compiled successfully in 2964 ms
 
 assets by path controller/ 19.5 KiB 2 assets
 assets by path group-results/ 2.82 KiB 2 assets
@@ -80,5 +80,5 @@ built modules 77 KiB [built]
     ../../node_modules/charenc/charenc.js 850 bytes [built] [code generated]
     ../../node_modules/is-buffer/index.js 698 bytes [built] [code generated]
   external "@wordpress/interactivity-router" 42 bytes [optional] [built] [code generated]
-webpack 5.106.2 compiled successfully in 2261 ms
+webpack 5.106.2 compiled successfully in 1319 ms
 Block metadata PHP file generated at: build/blocks-manifest.php
