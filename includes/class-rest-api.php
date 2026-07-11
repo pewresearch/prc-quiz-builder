@@ -194,6 +194,10 @@ class Rest_API {
 			$answers,
 		);
 
+		if ( is_wp_error( $new_group_id ) ) {
+			return $new_group_id;
+		}
+
 		$group_url = $groups->generate_group_url();
 
 		return array(
@@ -220,6 +224,10 @@ class Rest_API {
 		);
 
 		$existing_group = $groups->get_group();
+
+		if ( is_wp_error( $existing_group ) ) {
+			return $existing_group;
+		}
 
 		if ( false === $existing_group ) {
 			return new WP_Error(
@@ -516,6 +524,17 @@ class Rest_API {
 				)
 			);
 
+			$firebase_available = $archetypes->is_available();
+
+			// Group quizzes require Firebase to update shared tallies — hard-fail when unavailable.
+			if ( $is_group && ! $firebase_available ) {
+				return new \WP_Error(
+					'group-submission-error',
+					'Group results could not be saved because the results service is temporarily unavailable. Please try again in a few minutes.',
+					array( 'status' => 503 )
+				);
+			}
+
 			// If the quiz is a group quiz, we need to update the group results.
 			if ( $is_group ) {
 				$group_cluster = is_string( $score ) ? $score : $archetype_hash;
@@ -532,6 +551,25 @@ class Rest_API {
 				}
 			}
 
+			$end_time = microtime( true );
+			// Get the end time in seconds with microseconds.
+			$execution_time = ( $end_time - $start_time ) / 60;
+			$response_data  = array(
+				'hash' => $archetype_hash,
+				'time' => $execution_time,
+			);
+
+			// Normal quizzes can still show in-session results without Firebase persistence.
+			if ( ! $firebase_available ) {
+				$response_data['persisted'] = false;
+
+				if ( null !== $submission_id ) {
+					$this->mark_submission_processed( $quiz_id, $submission_id, $response_data );
+				}
+
+				return rest_ensure_response( $response_data );
+			}
+
 			// If there isn't an archetype yet create one, otherwise just update the hits counter.
 			if ( false === $archetypes->get_archetype() ) {
 				$success = $archetypes->create_archetype( $submission, $score );
@@ -543,13 +581,7 @@ class Rest_API {
 				return new \WP_Error( 'quiz-submission-error', 'ERROR: quiz_submit/500. ' . $success->get_error_message(), array( 'status' => 500 ) );
 			}
 
-			$end_time = microtime( true );
-			// Get the end time in seconds with microseconds.
-			$execution_time = ( $end_time - $start_time ) / 60;
-			$response_data  = array(
-				'hash' => $archetype_hash,
-				'time' => $execution_time,
-			);
+			$response_data['persisted'] = true;
 
 			if ( null !== $submission_id ) {
 				$this->mark_submission_processed( $quiz_id, $submission_id, $response_data );
@@ -606,6 +638,9 @@ class Rest_API {
 			)
 		);
 		$group  = $groups->get_group();
+		if ( is_wp_error( $group ) ) {
+			return $group;
+		}
 		if ( ! $group ) {
 			return new \WP_Error( 'group_not_found', 'ERROR: group_get/404. GROUP_ID: ' . $group_id . '. Group not found, please check the url you were given by your group administrator.', array( 'status' => 404 ) );
 		}
@@ -664,6 +699,10 @@ class Rest_API {
 			)
 		);
 		$purge_result = $archetypes->purge_archetypes();
+
+		if ( is_wp_error( $purge_result ) ) {
+			return $purge_result;
+		}
 
 		return rest_ensure_response(
 			array(

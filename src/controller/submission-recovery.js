@@ -10,14 +10,20 @@ const PENDING_SUBMISSION_STORAGE_PREFIX =
 	'prc-quiz-builder__pending-submission';
 const SUBMISSION_RECOVERY_MESSAGE =
 	'We could not save your quiz results yet. Your answers are saved in this browser. Please try saving again in a moment.';
+const GROUP_SUBMISSION_RECOVERY_MESSAGE =
+	'Group results could not be saved — try again. Your answers are saved in this browser.';
 const SILENT_RETRY_BASE_DELAY_MS = 60000;
 const SILENT_RETRY_JITTER_MS = 10000;
 const scheduledSilentRetryKeys = new Set();
 
-const showSubmissionRecoveryBanner = (context, pendingSubmission) => {
+const showSubmissionRecoveryBanner = (
+	context,
+	pendingSubmission,
+	message = SUBMISSION_RECOVERY_MESSAGE
+) => {
 	context.submissionPending = true;
 	context.pendingSubmissionHash = pendingSubmission.hash;
-	context.submissionErrorMessage = SUBMISSION_RECOVERY_MESSAGE;
+	context.submissionErrorMessage = message;
 };
 
 const isDefinedScore = (score) => score !== undefined && score !== null;
@@ -27,6 +33,22 @@ const hasClientRenderedScore = (context, newScore) => {
 		return true;
 	}
 	return isDefinedScore(context.userScore?.score);
+};
+
+const isGroupSubmission = (pendingSubmission) => {
+	return Boolean(pendingSubmission?.requestArgs?.groupId);
+};
+
+const isGroupSubmissionError = (error, pendingSubmission) => {
+	if (isGroupSubmission(pendingSubmission)) {
+		return true;
+	}
+	const code = error?.code || '';
+	return [
+		'group-submission-error',
+		'firebase_not_configured',
+		'firebase_error',
+	].includes(code);
 };
 
 const getPendingSubmissionStorageKey = (quizId, hash = '') => {
@@ -119,6 +141,17 @@ const writePendingSubmission = (pendingSubmission) => {
 	}
 };
 
+const parseSubmitResponse = async (response) => {
+	if (!response || typeof response.json !== 'function') {
+		return {};
+	}
+	try {
+		return await response.json();
+	} catch (error) {
+		return {};
+	}
+};
+
 const { state, actions } = store('prc-quiz/controller', {
 	actions: {
 		createPendingSubmission: (submission) => {
@@ -153,7 +186,36 @@ const { state, actions } = store('prc-quiz/controller', {
 			if (!pendingSubmission || context.displayResults) {
 				return;
 			}
-			showSubmissionRecoveryBanner(context, pendingSubmission);
+			const message = isGroupSubmission(pendingSubmission)
+				? GROUP_SUBMISSION_RECOVERY_MESSAGE
+				: SUBMISSION_RECOVERY_MESSAGE;
+			showSubmissionRecoveryBanner(context, pendingSubmission, message);
+			actions.scheduleSilentRetry(pendingSubmission);
+		},
+		handleUnpersistedSubmission: (
+			pendingSubmission,
+			newScore = null,
+			context = getContext()
+		) => {
+			if (isDefinedScore(newScore)) {
+				context.userScore = {
+					...context.userScore,
+					score: newScore,
+				};
+			}
+			context.displayResults = true;
+			context.processing = false;
+			context.readyForSubmission = false;
+			context.submissionPending = false;
+			context.submissionErrorMessage = '';
+
+			if (
+				!state.currentSessionArchetypes.includes(pendingSubmission.hash)
+			) {
+				state.currentSessionArchetypes.push(pendingSubmission.hash);
+			}
+
+			// Keep pending for a silent retry so a later Firebase recovery can persist.
 			actions.scheduleSilentRetry(pendingSubmission);
 		},
 		handleRateLimitedSubmission: (
@@ -222,7 +284,7 @@ const { state, actions } = store('prc-quiz/controller', {
 			writePendingSubmission(nextPendingSubmission);
 
 			try {
-				await apiFetch({
+				const response = await apiFetch({
 					path: '/prc-api/v3/quiz/submit',
 					method: 'POST',
 					data: {
@@ -231,6 +293,14 @@ const { state, actions } = store('prc-quiz/controller', {
 					},
 					parse: false,
 				});
+				const data = await parseSubmitResponse(response);
+
+				// Soft success without persistence — keep pending and retry later.
+				if (false === data?.persisted) {
+					scheduledSilentRetryKeys.delete(storageKey);
+					actions.scheduleSilentRetry(nextPendingSubmission);
+					return;
+				}
 
 				scheduledSilentRetryKeys.delete(storageKey);
 				actions.clearPendingSubmission(nextPendingSubmission);
@@ -256,7 +326,14 @@ const { state, actions } = store('prc-quiz/controller', {
 				};
 				writePendingSubmission(failedSubmission);
 				scheduledSilentRetryKeys.delete(storageKey);
-				showSubmissionRecoveryBanner(getContext(), failedSubmission);
+				const message = isGroupSubmissionError(error, failedSubmission)
+					? GROUP_SUBMISSION_RECOVERY_MESSAGE
+					: SUBMISSION_RECOVERY_MESSAGE;
+				showSubmissionRecoveryBanner(
+					getContext(),
+					failedSubmission,
+					message
+				);
 			}
 		},
 		handleSubmissionError: (
@@ -274,7 +351,10 @@ const { state, actions } = store('prc-quiz/controller', {
 				updatedAt: Date.now(),
 			};
 			writePendingSubmission(failedSubmission);
-			showSubmissionRecoveryBanner(context, failedSubmission);
+			const message = isGroupSubmissionError(error, failedSubmission)
+				? GROUP_SUBMISSION_RECOVERY_MESSAGE
+				: SUBMISSION_RECOVERY_MESSAGE;
+			showSubmissionRecoveryBanner(context, failedSubmission, message);
 			context.displayResults = false;
 			context.processing = false;
 			context.readyForSubmission = false;
@@ -292,7 +372,7 @@ const { state, actions } = store('prc-quiz/controller', {
 			writePendingSubmission(nextPendingSubmission);
 
 			try {
-				await apiFetch({
+				const response = await apiFetch({
 					path: '/prc-api/v3/quiz/submit',
 					method: 'POST',
 					data: {
@@ -301,6 +381,17 @@ const { state, actions } = store('prc-quiz/controller', {
 					},
 					parse: false,
 				});
+				const data = await parseSubmitResponse(response);
+
+				// Firebase unavailable: show same-session results, skip /results/ navigation.
+				if (false === data?.persisted) {
+					actions.handleUnpersistedSubmission(
+						nextPendingSubmission,
+						newScore,
+						context
+					);
+					return;
+				}
 
 				if (isDefinedScore(newScore)) {
 					context.userScore = {
@@ -337,6 +428,15 @@ const { state, actions } = store('prc-quiz/controller', {
 			} catch (error) {
 				const status = error?.status || error?.data?.status || null;
 				if (429 === status) {
+					// Group quizzes must not reveal results until the group write succeeds.
+					if (isGroupSubmission(nextPendingSubmission)) {
+						actions.handleSubmissionError(
+							error,
+							nextPendingSubmission,
+							context
+						);
+						return;
+					}
 					actions.handleRateLimitedSubmission(
 						nextPendingSubmission,
 						newScore,

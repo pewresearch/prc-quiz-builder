@@ -77,9 +77,37 @@ class Archetypes {
 	}
 
 	/**
+	 * Whether Firebase Realtime Database is available for archetype operations.
+	 *
+	 * @return bool
+	 */
+	public function is_available() {
+		return null !== $this->db;
+	}
+
+	/**
+	 * WP_Error returned when Firebase is not configured.
+	 *
+	 * @return WP_Error
+	 */
+	protected function firebase_unavailable_error() {
+		return new WP_Error(
+			'firebase_not_configured',
+			'Firebase database is not configured.',
+			array( 'status' => 503 )
+		);
+	}
+
+	/**
 	 * Setup the quiz entry.
+	 *
+	 * @return array|WP_Error
 	 */
 	public function setup_quiz_entry() {
+		if ( ! $this->is_available() ) {
+			return $this->firebase_unavailable_error();
+		}
+
 		$quiz_id = $this->quiz_id;
 		// Check if the quiz exists in the db, if not, lets set it up.
 		$quiz_entry = $this->db->getReference( 'quiz/' . $quiz_id )->getValue();
@@ -94,8 +122,14 @@ class Archetypes {
 
 	/**
 	 * Purge the archetypes.
+	 *
+	 * @return mixed|WP_Error
 	 */
 	public function purge_archetypes() {
+		if ( ! $this->is_available() ) {
+			return $this->firebase_unavailable_error();
+		}
+
 		return $this->db->getReference( 'quiz/' . $this->quiz_id . '/archetypes' )->set( null );
 	}
 
@@ -133,6 +167,10 @@ class Archetypes {
 	 * @return array|object|false
 	 */
 	public function get_archetype( $return_as_array = false, $force_refresh = false ) {
+		if ( ! $this->is_available() ) {
+			return false;
+		}
+
 		$cache_key = $this->get_cache_key();
 		$cache     = wp_cache_get( $cache_key, 'prc_quiz_builder_archetypes' );
 		if ( false !== $cache && false === $force_refresh ) {
@@ -163,6 +201,9 @@ class Archetypes {
 		$submission = null,
 		$score = null,
 	) {
+		if ( ! $this->is_available() ) {
+			return $this->firebase_unavailable_error();
+		}
 		if ( empty( $submission ) ) {
 			return new WP_Error( 'no-submission', 'No submission provided.' );
 		}
@@ -184,9 +225,13 @@ class Archetypes {
 	 * Log an archetype hit.
 	 * These requests bypass the cache.
 	 *
-	 * @return array|WP_Error
+	 * @return array|object|WP_Error
 	 */
 	public function log_archetype_hit() {
+		if ( ! $this->is_available() ) {
+			return $this->firebase_unavailable_error();
+		}
+
 		$existing_archetype = $this->get_archetype( false, true );
 		if ( empty( $existing_archetype ) ) {
 			return new WP_Error( 'no-archetype', 'No archetype found.' );

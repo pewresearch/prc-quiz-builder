@@ -134,13 +134,39 @@ class Groups {
 	}
 
 	/**
+	 * Whether Firebase Realtime Database is available for group operations.
+	 *
+	 * @return bool
+	 */
+	public function is_available() {
+		return null !== $this->db;
+	}
+
+	/**
+	 * WP_Error returned when Firebase is not configured.
+	 *
+	 * @return WP_Error
+	 */
+	protected function firebase_unavailable_error() {
+		return new WP_Error(
+			'firebase_not_configured',
+			'Firebase database is not configured.',
+			array( 'status' => 503 )
+		);
+	}
+
+	/**
 	 * Get the group.
 	 * If the group does not exist, return false.
 	 *
 	 * @param bool $return_as_array Whether to return the group as an array or an object.
-	 * @return array|object|false
+	 * @return array|object|false|WP_Error
 	 */
 	public function get_group( $return_as_array = false ) {
+		if ( ! $this->is_available() ) {
+			return $this->firebase_unavailable_error();
+		}
+
 		$existing_group = $this->db->getReference( 'quiz/' . $this->quiz_id . '/groups/' . $this->group_id )->getValue();
 		if ( empty( $existing_group ) ) {
 			return false;
@@ -171,6 +197,9 @@ class Groups {
 		$clusters = array(),
 		$answers = array(),
 	) {
+		if ( ! $this->is_available() ) {
+			return $this->firebase_unavailable_error();
+		}
 		if ( empty( $clusters ) ) {
 			return new WP_Error( 'no-clusters', 'No clusters provided.' );
 		}
@@ -183,7 +212,11 @@ class Groups {
 
 		// Check if group exists...
 		$duplicate_name_exists = false;
-		if ( false !== $this->get_group() ) {
+		$existing_group        = $this->get_group();
+		if ( is_wp_error( $existing_group ) ) {
+			return $existing_group;
+		}
+		if ( false !== $existing_group ) {
 			$duplicate_name_exists = true;
 			// We'll generate a new group id if the group already exists, in the event someone makes an identical group name.
 			$this->group_id = $this->generate_group_id( $created_timestamp );
@@ -269,6 +302,9 @@ class Groups {
 	 * @return true|WP_Error
 	 */
 	public function update_group( $submission, $score ) {
+		if ( ! $this->is_available() ) {
+			return $this->firebase_unavailable_error();
+		}
 		if ( ! is_array( $submission ) ) {
 			return new WP_Error( 'invalid_submission', 'Submission must be an array.', array( 'status' => 400 ) );
 		}

@@ -1,5 +1,5 @@
 
-> @prc/quiz-builder@4.1.0 build
+> @prc/quiz-builder@4.1.1 build
 > wp-scripts build --webpack-copy-php && wp-scripts build --experimental-modules --webpack-copy-php && wp-scripts build-blocks-manifest
 
 assets by chunk 16.6 KiB (id hint: style) 22 assets
@@ -7,78 +7,78 @@ assets by chunk 136 KiB (name: controller/index) 4 assets
 assets by chunk 13.3 KiB (name: question/index) 4 assets
 assets by chunk 9.54 KiB (name: answer/index) 4 assets
 assets by chunk 8.84 KiB (name: result-table/index) 4 assets
-assets by path synced-quiz/ 9.91 KiB 4 assets
+assets by path [1m[32msynced-quiz/[39m[22m 9.91 KiB 4 assets
 assets by chunk 8.18 KiB (name: result-histogram/index) 4 assets
 assets by chunk 4.53 KiB (name: page/index) 4 assets
 assets by chunk 3.24 KiB (name: pages/index) 4 assets
 assets by chunk 2.82 KiB (name: result-score/index) 4 assets
 assets by chunk 2.68 KiB (name: progress-bar/index) 4 assets
 assets by chunk 2.6 KiB (name: group-results/index) 4 assets
-assets by path bindings/ 9.92 KiB 3 assets
-assets by path results/*.php 9.64 KiB 2 assets
+assets by path [1m[32mbindings/[39m[22m 9.92 KiB 3 assets
+assets by path [1m[32mresults/*.php[39m[22m 9.64 KiB 2 assets
 + 22 assets
-orphan modules 1.38 MiB (javascript) 20.1 KiB (runtime) [orphan] 1275 modules
+orphan modules 1.38 MiB (javascript) 20.1 KiB (runtime) [1m[33m[orphan][39m[22m 1275 modules
 runtime modules 30.8 KiB 42 modules
-built modules 10.2 KiB (css/mini-extract) 491 KiB (javascript) [built]
+built modules 10.2 KiB (css/mini-extract) 491 KiB (javascript) [1m[33m[built][39m[22m
   cacheable modules 10.2 KiB (css/mini-extract) 8.22 KiB (javascript)
-    modules by path ./src/ 10.2 KiB 22 modules
+    modules by path [1m./src/[39m[22m 10.2 KiB 22 modules
     javascript modules 8.22 KiB
-      ../../node_modules/remove-accents/index.js 6.07 KiB [built] [code generated]
-      ../../node_modules/use-sync-external-store/shim/index.js 234 bytes [built] [code generated]
-      ../../node_modules/use-sync-external-store/cjs/use-sync-external-store-shim...(truncated) 1.92 KiB [built] [code generated]
+      [1m../../node_modules/remove-accents/index.js[39m[22m 6.07 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+      [1m../../node_modules/use-sync-external-store/shim/index.js[39m[22m 234 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+      [1m../../node_modules/use-sync-external-store/cjs/use-sync-external-store-shim...(truncated)[39m[22m 1.92 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
   + 14 modules
-webpack 5.106.2 compiled successfully in 2571 ms
+webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 7796 ms
 assets by chunk 16.6 KiB (id hint: style) 22 assets
 assets by chunk 136 KiB (name: controller/index) 4 assets
 assets by chunk 13.3 KiB (name: question/index) 4 assets
 assets by chunk 9.54 KiB (name: answer/index) 4 assets
 assets by chunk 8.84 KiB (name: result-table/index) 4 assets
-assets by path synced-quiz/ 9.91 KiB 4 assets
+assets by path [1m[32msynced-quiz/[39m[22m 9.91 KiB 4 assets
 assets by chunk 8.18 KiB (name: result-histogram/index) 4 assets
 assets by chunk 4.53 KiB (name: page/index) 4 assets
 assets by chunk 3.24 KiB (name: pages/index) 4 assets
 assets by chunk 2.82 KiB (name: result-score/index) 4 assets
 assets by chunk 2.68 KiB (name: progress-bar/index) 4 assets
 assets by chunk 2.6 KiB (name: group-results/index) 4 assets
-assets by path bindings/ 9.92 KiB 3 assets
-assets by path results/*.php 9.64 KiB 2 assets
+assets by path [1m[32mbindings/[39m[22m 9.92 KiB 3 assets
+assets by path [1m[32mresults/*.php[39m[22m 9.64 KiB 2 assets
 + 22 assets
-orphan modules 1.38 MiB (javascript) 20.1 KiB (runtime) [orphan] 1275 modules
+orphan modules 1.38 MiB (javascript) 20.1 KiB (runtime) [1m[33m[orphan][39m[22m 1275 modules
 runtime modules 30.8 KiB 42 modules
-built modules 10.2 KiB (css/mini-extract) 491 KiB (javascript) [built]
+built modules 10.2 KiB (css/mini-extract) 491 KiB (javascript) [1m[33m[built][39m[22m
   cacheable modules 10.2 KiB (css/mini-extract) 8.22 KiB (javascript)
-    modules by path ./src/ 10.2 KiB 22 modules
+    modules by path [1m./src/[39m[22m 10.2 KiB 22 modules
     javascript modules 8.22 KiB
-      ../../node_modules/remove-accents/index.js 6.07 KiB [built] [code generated]
-      ../../node_modules/use-sync-external-store/shim/index.js 234 bytes [built] [code generated]
-      ../../node_modules/use-sync-external-store/cjs/use-sync-external-store-shim...(truncated) 1.92 KiB [built] [code generated]
+      [1m../../node_modules/remove-accents/index.js[39m[22m 6.07 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+      [1m../../node_modules/use-sync-external-store/shim/index.js[39m[22m 234 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+      [1m../../node_modules/use-sync-external-store/cjs/use-sync-external-store-shim...(truncated)[39m[22m 1.92 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
   + 14 modules
-webpack 5.106.2 compiled successfully in 2964 ms
+webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 8271 ms
 
-assets by path controller/ 19.5 KiB 2 assets
-assets by path group-results/ 2.82 KiB 2 assets
-assets by path results/ 1.7 KiB 2 assets
-assets by path result-histogram/ 1.57 KiB 2 assets
-assets by path page/ 1.4 KiB 2 assets
-assets by path result-table/ 1.07 KiB 2 assets
-assets by path progress-bar/ 1 KiB 2 assets
-assets by path answer/ 707 bytes 2 assets
-assets by path pages/ 549 bytes 2 assets
-assets by path question/ 255 bytes 2 assets
-orphan modules 23.7 KiB [orphan] 7 modules
+assets by path [1m[32mcontroller/[39m[22m 20.4 KiB 2 assets
+assets by path [1m[32mgroup-results/[39m[22m 2.82 KiB 2 assets
+assets by path [1m[32mresults/[39m[22m 1.7 KiB 2 assets
+assets by path [1m[32mresult-histogram/[39m[22m 1.57 KiB 2 assets
+assets by path [1m[32mpage/[39m[22m 1.4 KiB 2 assets
+assets by path [1m[32mresult-table/[39m[22m 1.07 KiB 2 assets
+assets by path [1m[32mprogress-bar/[39m[22m 1 KiB 2 assets
+assets by path [1m[32manswer/[39m[22m 707 bytes 2 assets
+assets by path [1m[32mpages/[39m[22m 549 bytes 2 assets
+assets by path [1m[32mquestion/[39m[22m 255 bytes 2 assets
+orphan modules 26.4 KiB [1m[33m[orphan][39m[22m 7 modules
 runtime modules 663 bytes 3 modules
-built modules 77 KiB [built]
-  modules by path ./src/ 66.7 KiB
-    ./src/answer/view.js + 1 modules 1.98 KiB [not cacheable] [built] [code generated]
-    ./src/controller/view.js + 6 modules 39.2 KiB [not cacheable] [built] [code generated]
-    ./src/group-results/view.js + 2 modules 7.23 KiB [not cacheable] [built] [code generated]
-    ./src/page/view.js + 2 modules 3.35 KiB [not cacheable] [built] [code generated]
+built modules 79.8 KiB [1m[33m[built][39m[22m
+  modules by path [1m./src/[39m[22m 69.5 KiB
+    [1m./src/answer/view.js + 1 modules[39m[22m 1.98 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m./src/controller/view.js + 6 modules[39m[22m 42 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m./src/group-results/view.js + 2 modules[39m[22m 7.23 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m./src/page/view.js + 2 modules[39m[22m 3.35 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
     + 6 modules
   cacheable modules 10.3 KiB
-    ../../node_modules/md5/md5.js 5.89 KiB [built] [code generated]
-    ../../node_modules/crypt/crypt.js 2.9 KiB [built] [code generated]
-    ../../node_modules/charenc/charenc.js 850 bytes [built] [code generated]
-    ../../node_modules/is-buffer/index.js 698 bytes [built] [code generated]
-  external "@wordpress/interactivity-router" 42 bytes [optional] [built] [code generated]
-webpack 5.106.2 compiled successfully in 1319 ms
+    [1m../../node_modules/md5/md5.js[39m[22m 5.89 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m../../node_modules/crypt/crypt.js[39m[22m 2.9 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m../../node_modules/charenc/charenc.js[39m[22m 850 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m../../node_modules/is-buffer/index.js[39m[22m 698 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  [1mexternal "@wordpress/interactivity-router"[39m[22m 42 bytes [1m[33m[optional][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 3492 ms
 Block metadata PHP file generated at: build/blocks-manifest.php
