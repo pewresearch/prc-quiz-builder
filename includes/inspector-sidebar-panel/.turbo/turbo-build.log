@@ -3,10 +3,10 @@
 > wp-scripts build --webpack-copy-php
 
 assets by path *.css 64.4 KiB
-  asset index-rtl.css 32.2 KiB [compared for emit] (name: index)
-  asset index.css 32.2 KiB [compared for emit] (name: index)
-asset index.js 128 KiB [compared for emit] [minimized] (name: index)
-asset index.asset.php 316 bytes [compared for emit] (name: index)
+  asset index-rtl.css 32.2 KiB [emitted] (name: index)
+  asset index.css 32.2 KiB [emitted] (name: index)
+asset index.js 128 KiB [emitted] [minimized] (name: index)
+asset index.asset.php 316 bytes [emitted] (name: index)
 Entrypoint index 193 KiB = index.css 32.2 KiB index.js 128 KiB index-rtl.css 32.2 KiB index.asset.php 316 bytes
 orphan modules 1.26 MiB (javascript) 1.83 KiB (runtime) [orphan] 1077 modules
 runtime modules 2.06 KiB 5 modules
@@ -21,4 +21,4 @@ built modules 338 KiB (javascript) 32.2 KiB (css/mini-extract) [built]
   modules by path ./src/*.scss 32.2 KiB
     css ../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./src/analytics-panel.scss 2.28 KiB [built] [code generated]
     css ../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./src/group-analytics-modal.scss 29.9 KiB [built] [code generated]
-webpack 5.106.2 compiled successfully in 10880 ms
+webpack 5.106.2 compiled successfully in 10210 ms

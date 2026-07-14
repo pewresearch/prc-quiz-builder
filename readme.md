@@ -143,7 +143,7 @@ All endpoints are registered through the platform's `prc_api_endpoints` filter. 
 | Method | Route                   | Auth                         | Description                                                                                                  |
 | ------ | ----------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | `POST` | `quiz/submit`           | Rate limit + quiz validation | Records a submission; creates or increments the archetype in Firebase; updates group if `groupId` is present |
-| `POST` | `quiz/create-group`     | Quiz validation              | Creates a community group in Firebase; returns `{ group_id, group_url }`                                     |
+| `POST` | `quiz/create-group`     | Firebase ID token (`X-PRC-User-Token`) | Creates a community group in Firebase; **owner is always the verified token's `sub` claim** — any `ownerId` in the request body is ignored; returns `{ group_id, group_url }` |
 | `GET`  | `quiz/get-group`        | Public                       | Returns full group data including typology clusters, answer tallies, and result/group URLs                   |
 | `POST` | `quiz/purge-archetypes` | `manage_options`             | Admin-only; wipes all archetypes for a quiz from Firebase                                                    |
 
@@ -223,6 +223,23 @@ npm run vip:start
 npm test -- tests/prc-quiz-builder/
 ```
 
+## Firebase availability
+
+Archetype persistence and community groups require Firebase Realtime Database. `Archetypes::is_available()` and `Groups` guard all writes when `prc-firebase` is not configured or the service account is missing.
+
+### Submit behavior when Firebase is down
+
+| Quiz type | `quiz/submit` behavior |
+| --- | --- |
+| **Normal** (no `groupId`) | Returns `{ hash, time, persisted: false }` with HTTP 200 — in-session results still work; archetype hits are not stored |
+| **Group** (`groupId` present) | Returns HTTP 503 — shared group tallies cannot be updated without Firebase |
+
+Group creation (`quiz/create-group`) returns HTTP 503 when Firebase Auth is unavailable.
+
+### Local Firebase setup
+
+Service account generation is documented in [`docs/DEPENDENCY_AUTH.md`](../../docs/DEPENDENCY_AUTH.md) (`npm run gen:firebase-sa`). `prc-firebase` reads `WPCOM_VIP_PRIVATE_DIR/firebase-service-account.json`.
+
 ## Troubleshooting
 
 ### Blocks not appearing after a build
@@ -236,6 +253,12 @@ npm test -- tests/prc-quiz-builder/
 **Symptom**: Users complete a quiz but results don't persist; the submit endpoint returns a 403, 404, 429, or generic error.  
 **Cause**: `Rest_API::$rest_disabled` may be flipped to `true` (emergency kill switch in `class-rest-api.php`), the quiz post may be unpublished or missing, or the per-IP rate limit (100 submissions per quiz per minute) may be exceeded.  
 **Fix**: If the kill switch is active, set `$rest_disabled = false` and redeploy. Confirm the quiz post is published. For 429 responses, wait and retry or investigate abusive traffic.
+
+### Group quizzes fail with 503
+
+**Symptom**: Group submit or create-group returns "results service is temporarily unavailable."  
+**Cause**: Firebase Realtime Database or Auth is not configured (`private/firebase-service-account.json` missing locally, or deploy injection skipped).  
+**Fix**: Run `npm run gen:firebase-sa` locally; confirm `prc-firebase` loads the service account on the target environment. Normal (non-group) quizzes may still return in-session results with `persisted: false`.
 
 ### Inspector sidebar panel not loading
 

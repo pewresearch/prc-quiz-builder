@@ -27,7 +27,7 @@ built modules 10.2 KiB (css/mini-extract) 491 KiB (javascript) [1m[33m[built]
       [1m../../node_modules/use-sync-external-store/shim/index.js[39m[22m 234 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
       [1m../../node_modules/use-sync-external-store/cjs/use-sync-external-store-shim...(truncated)[39m[22m 1.92 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
   + 14 modules
-webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 7796 ms
+webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 28440 ms
 assets by chunk 16.6 KiB (id hint: style) 22 assets
 assets by chunk 136 KiB (name: controller/index) 4 assets
 assets by chunk 13.3 KiB (name: question/index) 4 assets
@@ -53,10 +53,10 @@ built modules 10.2 KiB (css/mini-extract) 491 KiB (javascript) [1m[33m[built]
       [1m../../node_modules/use-sync-external-store/shim/index.js[39m[22m 234 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
       [1m../../node_modules/use-sync-external-store/cjs/use-sync-external-store-shim...(truncated)[39m[22m 1.92 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
   + 14 modules
-webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 8271 ms
+webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 26627 ms
 
 assets by path [1m[32mcontroller/[39m[22m 20.4 KiB 2 assets
-assets by path [1m[32mgroup-results/[39m[22m 2.82 KiB 2 assets
+assets by path [1m[32mgroup-results/[39m[22m 2.94 KiB 2 assets
 assets by path [1m[32mresults/[39m[22m 1.7 KiB 2 assets
 assets by path [1m[32mresult-histogram/[39m[22m 1.57 KiB 2 assets
 assets by path [1m[32mpage/[39m[22m 1.4 KiB 2 assets
@@ -65,13 +65,13 @@ assets by path [1m[32mprogress-bar/[39m[22m 1 KiB 2 assets
 assets by path [1m[32manswer/[39m[22m 707 bytes 2 assets
 assets by path [1m[32mpages/[39m[22m 549 bytes 2 assets
 assets by path [1m[32mquestion/[39m[22m 255 bytes 2 assets
-orphan modules 26.4 KiB [1m[33m[orphan][39m[22m 7 modules
+orphan modules 26.7 KiB [1m[33m[orphan][39m[22m 7 modules
 runtime modules 663 bytes 3 modules
-built modules 79.8 KiB [1m[33m[built][39m[22m
-  modules by path [1m./src/[39m[22m 69.5 KiB
+built modules 80.1 KiB [1m[33m[built][39m[22m
+  modules by path [1m./src/[39m[22m 69.7 KiB
     [1m./src/answer/view.js + 1 modules[39m[22m 1.98 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
     [1m./src/controller/view.js + 6 modules[39m[22m 42 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-    [1m./src/group-results/view.js + 2 modules[39m[22m 7.23 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m./src/group-results/view.js + 2 modules[39m[22m 7.5 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
     [1m./src/page/view.js + 2 modules[39m[22m 3.35 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
     + 6 modules
   cacheable modules 10.3 KiB
@@ -80,5 +80,5 @@ built modules 79.8 KiB [1m[33m[built][39m[22m
     [1m../../node_modules/charenc/charenc.js[39m[22m 850 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
     [1m../../node_modules/is-buffer/index.js[39m[22m 698 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
   [1mexternal "@wordpress/interactivity-router"[39m[22m 42 bytes [1m[33m[optional][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 3492 ms
+webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 11672 ms
 Block metadata PHP file generated at: build/blocks-manifest.php

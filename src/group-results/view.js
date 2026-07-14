@@ -68,9 +68,9 @@ const { state } = store('prc-quiz/controller', {
 		createGroup: async (formFields) => {
 			const { quizId } = state;
 			const { groupAnswers, groupClusters } = state;
-			const ownerId = await store(
+			const headers = store(
 				'prc-user-accounts/content-gate'
-			).actions.getUserIdFromCookie();
+			).actions.getUserHeaders();
 			if (
 				!Object.keys(groupAnswers).length ||
 				!Object.keys(groupClusters).length
@@ -79,8 +79,8 @@ const { state } = store('prc-quiz/controller', {
 					'Answers and clusters are required to create a group.'
 				);
 			}
-			if (!ownerId) {
-				throw new Error('Owner ID is required to create a group.');
+			if (!headers) {
+				throw new Error('You must be logged in to create a group.');
 			}
 			if (!quizId) {
 				throw new Error('Quiz ID is required to create a group.');
@@ -88,7 +88,7 @@ const { state } = store('prc-quiz/controller', {
 			try {
 				return await createGroupFormAction(
 					quizId,
-					ownerId,
+					headers,
 					formFields,
 					groupAnswers,
 					groupClusters
@@ -116,12 +116,12 @@ const { state } = store('prc-quiz/controller', {
 			const context = getContext();
 			const { userScore } = context;
 
-			const ownerId = await store(
+			const headers = store(
 				'prc-user-accounts/content-gate'
-			).actions.getUserIdFromCookie();
+			).actions.getUserHeaders();
 
-			if (!ownerId) {
-				throw new Error('Owner ID is required to create a group.');
+			if (!headers) {
+				throw new Error('You must be logged in to create a group.');
 			}
 			if (!quizId) {
 				throw new Error('Quiz ID is required to create a group.');
@@ -149,7 +149,7 @@ const { state } = store('prc-quiz/controller', {
 			try {
 				return await createGroupFormAction(
 					quizId,
-					ownerId,
+					headers,
 					formFields,
 					groupAnswers,
 					groupClusters,

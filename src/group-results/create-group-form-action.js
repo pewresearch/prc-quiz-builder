@@ -8,7 +8,7 @@ const {
 
 export default async function createGroupFormAction(
 	quizId,
-	ownerId,
+	headers,
 	formFields,
 	answers,
 	clusters,
@@ -28,9 +28,9 @@ export default async function createGroupFormAction(
 				status: 'error',
 			});
 		}
-		if (!ownerId) {
+		if (!headers) {
 			return reject({
-				message: 'Owner ID is required',
+				message: 'You must be logged in to create a group.',
 				status: 'error',
 			});
 		}
@@ -43,7 +43,6 @@ export default async function createGroupFormAction(
 
 		const postData = {
 			groupName,
-			ownerId,
 			answers,
 			clusters,
 		};
@@ -61,12 +60,14 @@ export default async function createGroupFormAction(
 			postData.ownerScore = ownerScore;
 		}
 
-		// Create the group.
+		// Create the group. Owner identity is derived server-side from the
+		// verified Firebase token in X-PRC-User-Token.
 		apiFetch({
 			path: addQueryArgs('prc-api/v3/quiz/create-group', {
 				quizId,
 			}),
 			method: 'POST',
+			headers,
 			data: postData,
 		})
 			.then((group) => {
@@ -82,6 +83,12 @@ export default async function createGroupFormAction(
 				if ('rest_invalid_param' === errorCode) {
 					errorMessage =
 						'Invalid group name. Please check your group name and try again.';
+				} else if (
+					'missing_token' === errorCode ||
+					'invalid_token' === errorCode
+				) {
+					errorMessage =
+						'You must be logged in to create a group. Please sign in and try again.';
 				}
 				return reject({
 					message: errorMessage,

@@ -89,9 +89,7 @@ class Rest_API {
 						},
 					),
 				),
-				'permission_callback' => function () {
-					return true;
-				},
+				'permission_callback' => array( $this, 'check_token_header' ),
 			)
 		);
 		register_rest_route(
@@ -153,6 +151,24 @@ class Rest_API {
 				},
 			)
 		);
+	}
+
+	/**
+	 * Permission callback — ensures the X-PRC-User-Token header is present.
+	 *
+	 * @param WP_REST_Request $request The incoming request.
+	 * @return bool|WP_Error
+	 */
+	public function check_token_header( WP_REST_Request $request ) {
+		$token = $request->get_header( 'X-PRC-User-Token' );
+		if ( empty( $token ) ) {
+			return new WP_Error(
+				'missing_token',
+				'ERROR: group_create/401. X-PRC-User-Token header is required.',
+				array( 'status' => 401 )
+			);
+		}
+		return true;
 	}
 
 	/**
@@ -365,12 +381,41 @@ class Rest_API {
 			return $valid;
 		}
 
+		$token    = $request->get_header( 'X-PRC-User-Token' );
+		$firebase = new \PRC\Platform\Firebase();
+
+		if ( ! $firebase->auth ) {
+			return new \WP_Error(
+				'firebase_unavailable',
+				'ERROR: group_create/503. Firebase is not configured.',
+				array( 'status' => 503 )
+			);
+		}
+
+		try {
+			$verified_token = $firebase->auth->verifyIdToken( $token );
+			$owner_id       = $verified_token->claims()->get( 'sub' );
+		} catch ( \Exception $e ) {
+			return new \WP_Error(
+				'invalid_token',
+				'ERROR: group_create/401. Invalid authentication token.',
+				array( 'status' => 401 )
+			);
+		}
+
+		if ( empty( $owner_id ) ) {
+			return new \WP_Error(
+				'invalid_token',
+				'ERROR: group_create/401. Invalid authentication token.',
+				array( 'status' => 401 )
+			);
+		}
+
 		$data = json_decode( $request->get_body(), true );
 		if ( empty( $data ) ) {
 			return new \WP_Error( 'invalid_data', 'ERROR: group_create/400. Invalid data.', array( 'status' => 400 ) );
 		}
 		$group_name = $data['groupName'];
-		$owner_id   = $data['ownerId'];
 		$answers    = $data['answers'];
 		$clusters   = $data['clusters'];
 
