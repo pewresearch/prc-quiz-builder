@@ -101,6 +101,8 @@ class Plugin {
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-rest-api.php';
 		// 4. Initialize analytics class.
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-analytics.php';
+		// 4b. WP Abilities API analytics ability.
+		require_once plugin_dir_path( __DIR__ ) . '/includes/class-ability.php';
 		// 5. Initialize the inspector sidebar panel.
 		require_once plugin_dir_path( __DIR__ ) . '/includes/inspector-sidebar-panel/class-inspector-sidebar-panel.php';
 		// 6. WP-CLI: build newsletter audience from quiz group owners.
@@ -156,6 +158,7 @@ class Plugin {
 	 */
 	private function define_dependencies() {
 		new Analytics( $this->get_loader() );
+		new Ability( $this->get_loader() );
 		new Rest_API( $this->get_loader() );
 		new Inspector_Sidebar_Panel( $this->get_loader() );
 		new Block_Supports( $this->get_loader() );
@@ -612,42 +615,8 @@ class Plugin {
 			return $content . $style;
 		}
 
-		$is_entity_iframe = get_query_var( 'prc_entity_iframe' )
-			|| ( isset( $_GET['prc_entity_iframe'] ) && '1' === sanitize_text_field( wp_unslash( $_GET['prc_entity_iframe'] ) ) );
-
-		if ( $is_entity_iframe ) {
-			$style .= '<style>
-				#prc-iframe-title {
-					display: none;
-				}
-			</style>';
-		}
-
-		$assets_dir = WP_CONTENT_URL . '/images/logos/';
-		ob_start();
-		?>
-		<div id="prc-iframe-title">
-			<h1 style=""><img src="<?php echo esc_url( $assets_dir . 'primary.svg' ); ?>" alt="Pew Research Center Logo" style="width: 300px; margin-right: 10px;"><span><?php the_title(); ?></span></h1>
-		</div>
-		<style>
-			#prc-iframe-title {
-				margin-bottom: 20px;
-			}
-			#prc-iframe-title h1 {
-				display: flex;
-				align-items: center;
-			}
-			@media screen and (max-width: 640px) {
-				#prc-iframe-title h1 {
-					align-items: flex-start;
-					flex-direction: column;
-				}
-			}
-		</style>
-		<?php echo $style; ?>
-		<?php
-		$quiz_title = ob_get_clean();
-		return '<div style="max-width: 640px;">' . $quiz_title . $content . '</div>';
+		// Theme template parts own branded chrome; keep quiz layout constraint only.
+		return '<div style="max-width: 640px;">' . $content . $style . '</div>';
 	}
 
 	/**

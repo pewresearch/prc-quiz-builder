@@ -31,6 +31,7 @@ The Controller block's `render_callback` is the key server/client bridge: it wri
 | `includes/class-groups.php`             | Firebase CRUD for community groups                                                                       |
 | `includes/class-rest-api.php`           | REST endpoint registration and handlers; contains the `$rest_disabled` kill switch                       |
 | `includes/class-analytics.php`          | `_report` post meta schema and submission counter; exposes `_submissions` REST field                     |
+| `includes/class-ability.php`            | WP Abilities API `prc-quiz-builder/get-analytics` tool (submissions + groups; MCP + REST)                |
 | `includes/class-cli-report.php`         | WP-CLI `wp prc quiz report` — ad hoc read/update of `_report` meta                                       |
 | `includes/class-cli-build-audience.php` | WP-CLI `wp prc quiz build-group-owners-audience` — newsletter audience from group owners                 |
 | `includes/class-loader.php`             | Hook registration queue                                                                                  |
@@ -148,6 +149,12 @@ All endpoints are registered through the platform's `prc_api_endpoints` filter. 
 | `POST` | `quiz/purge-archetypes` | `manage_options`             | Admin-only; wipes all archetypes for a quiz from Firebase                                                    |
 
 The `quiz` REST resource also exposes a `_submissions` field containing the `_report` post meta (requires `edit_posts` capability).
+
+## WP Abilities API
+
+| Ability ID | Input | Description |
+| --- | --- | --- |
+| `prc-quiz-builder/get-analytics` | `post_id` (integer, required) | Returns `{ post_id, title, submissions, groups }` — submission report from `_report` meta plus community group analytics. Requires `edit_post` on that quiz. If Firebase is unavailable, `groups` includes an `error` field while `submissions` still returns. Exposed via REST and MCP. |
 
 ## WP-CLI
 
