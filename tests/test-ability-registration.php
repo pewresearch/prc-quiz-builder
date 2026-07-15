@@ -8,6 +8,16 @@
 
 declare(strict_types=1);
 
+namespace PRC\Platform\AI\Utils {
+	function site_id_input_schema_property(): array {
+		return array(
+			'type'        => 'integer',
+			'description' => 'Multisite blog ID to run against. Defaults to the content site (20).',
+			'minimum'     => 1,
+		);
+	}
+}
+
 namespace {
 
 	$GLOBALS['__failed']                = 0;
@@ -81,6 +91,10 @@ namespace {
 	assert_true(
 		true === ( $meta['annotations']['readonly'] ?? false ),
 		"{$name} is readonly"
+	);
+	assert_true(
+		isset( $GLOBALS['__registered'][ $name ]['input_schema']['properties']['site_id'] ),
+		"{$name} includes site_id schema"
 	);
 
 	$category_hooks = array_filter(

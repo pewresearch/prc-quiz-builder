@@ -1,5 +1,5 @@
 
-> @prc/quiz-builder@4.1.1 build
+> @prc/quiz-builder@4.2.0 build
 > wp-scripts build --webpack-copy-php && wp-scripts build --experimental-modules --webpack-copy-php && wp-scripts build-blocks-manifest
 
 assets by chunk 16.6 KiB (id hint: style) 22 assets
@@ -27,7 +27,7 @@ built modules 10.2 KiB (css/mini-extract) 491 KiB (javascript) [1m[33m[built]
       [1m../../node_modules/use-sync-external-store/shim/index.js[39m[22m 234 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
       [1m../../node_modules/use-sync-external-store/cjs/use-sync-external-store-shim...(truncated)[39m[22m 1.92 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
   + 14 modules
-webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 8681 ms
+webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 43366 ms
 assets by chunk 16.6 KiB (id hint: style) 22 assets
 assets by chunk 136 KiB (name: controller/index) 4 assets
 assets by chunk 13.3 KiB (name: question/index) 4 assets
@@ -53,7 +53,7 @@ built modules 10.2 KiB (css/mini-extract) 491 KiB (javascript) [1m[33m[built]
       [1m../../node_modules/use-sync-external-store/shim/index.js[39m[22m 234 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
       [1m../../node_modules/use-sync-external-store/cjs/use-sync-external-store-shim...(truncated)[39m[22m 1.92 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
   + 14 modules
-webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 6819 ms
+webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 26488 ms
 
 assets by path [1m[32mcontroller/[39m[22m 20.4 KiB 2 assets
 assets by path [1m[32mgroup-results/[39m[22m 2.94 KiB 2 assets
@@ -80,5 +80,5 @@ built modules 80.1 KiB [1m[33m[built][39m[22m
     [1m../../node_modules/charenc/charenc.js[39m[22m 850 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
     [1m../../node_modules/is-buffer/index.js[39m[22m 698 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
   [1mexternal "@wordpress/interactivity-router"[39m[22m 42 bytes [1m[33m[optional][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 3172 ms
+webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 12602 ms
 Block metadata PHP file generated at: build/blocks-manifest.php
