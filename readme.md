@@ -31,6 +31,7 @@ The Controller block's `render_callback` is the key server/client bridge: it wri
 | `includes/class-groups.php`             | Firebase CRUD for community groups                                                                       |
 | `includes/class-rest-api.php`           | REST endpoint registration and handlers; contains the `$rest_disabled` kill switch                       |
 | `includes/class-analytics.php`          | `_report` post meta schema and submission counter; exposes `_submissions` REST field                     |
+| `includes/class-ability-categories.php`  | Registers the `quiz` WP Abilities category for MCP discovery                                                     |
 | `includes/class-ability.php`            | WP Abilities API `prc-quiz-builder/get-analytics` tool (submissions + groups; MCP + REST)                |
 | `includes/class-cli-report.php`         | WP-CLI `wp prc quiz report` — ad hoc read/update of `_report` meta                                       |
 | `includes/class-cli-build-audience.php` | WP-CLI `wp prc quiz build-group-owners-audience` — newsletter audience from group owners                 |

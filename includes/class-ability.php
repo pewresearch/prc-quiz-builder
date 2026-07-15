@@ -47,7 +47,7 @@ class Ability {
 			array(
 				'label'               => __( 'Get quiz analytics', 'prc-quiz' ),
 				'description'         => __( 'Returns submission analytics and community group analytics for a quiz post ID.', 'prc-quiz' ),
-				'category'            => 'data-analysis',
+				'category'            => Ability_Categories::CATEGORY,
 				'input_schema'        => array(
 					'type'                 => 'object',
 					'required'             => array( 'post_id' ),
@@ -72,14 +72,12 @@ class Ability {
 							'description' => 'Quiz title.',
 						),
 						'submissions' => array(
-							'type'                 => 'object',
-							'description'          => 'Submission report from _report meta (total, first_24_hours, first_week, yearly monthly counts).',
-							'additionalProperties' => true,
+							'type'        => 'object',
+							'description' => 'Submission report from _report meta (total, first_24_hours, first_week, yearly monthly counts).',
 						),
 						'groups'      => array(
-							'type'                 => 'object',
-							'description'          => 'Community group analytics, or an error object if Firebase is unavailable.',
-							'additionalProperties' => true,
+							'type'        => 'object',
+							'description' => 'Community group analytics, or an error object if Firebase is unavailable.',
 						),
 					),
 				),

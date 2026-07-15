@@ -101,7 +101,8 @@ class Plugin {
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-rest-api.php';
 		// 4. Initialize analytics class.
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-analytics.php';
-		// 4b. WP Abilities API analytics ability.
+		// 4b. WP Abilities API category + analytics ability.
+		require_once plugin_dir_path( __DIR__ ) . '/includes/class-ability-categories.php';
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-ability.php';
 		// 5. Initialize the inspector sidebar panel.
 		require_once plugin_dir_path( __DIR__ ) . '/includes/inspector-sidebar-panel/class-inspector-sidebar-panel.php';
@@ -158,6 +159,7 @@ class Plugin {
 	 */
 	private function define_dependencies() {
 		new Analytics( $this->get_loader() );
+		new Ability_Categories( $this->get_loader() );
 		new Ability( $this->get_loader() );
 		new Rest_API( $this->get_loader() );
 		new Inspector_Sidebar_Panel( $this->get_loader() );
