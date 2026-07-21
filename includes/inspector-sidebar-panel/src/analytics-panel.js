@@ -100,8 +100,9 @@ function useGroupAnalytics(postId) {
 
 function CalendarChart({
 	values = [30, 60, 90, 60, 100, 50, 45, 20, 70, 80, 90, 40],
+	labels,
 }) {
-	const months = [
+	const months = labels || [
 		'Jan',
 		'Feb',
 		'Mar',
@@ -130,7 +131,7 @@ function CalendarChart({
 		<div className="calendar-chart">
 			{values.map((value, index) => (
 				<div
-					key={index}
+					key={months[index] || index}
 					className="calendar-chart-item"
 					data-month={months[index]}
 					data-heat={getHeatLevel(value)}
@@ -263,6 +264,21 @@ function GroupAnalyticsPanel({ postId }) {
 	return <GroupAnalyticsPanelEnabled postId={postId} />;
 }
 
+const MONTH_LABELS = [
+	'Jan',
+	'Feb',
+	'Mar',
+	'Apr',
+	'May',
+	'Jun',
+	'Jul',
+	'Aug',
+	'Sep',
+	'Oct',
+	'Nov',
+	'Dec',
+];
+
 export default function AnalyticsPanel({ postId }) {
 	const { data: quizAnalytics } = useQuizAnalytics(postId);
 
@@ -277,6 +293,7 @@ export default function AnalyticsPanel({ postId }) {
 	}, [quizAnalytics]);
 
 	const [selectedYear, setSelectedYear] = useState(currentYear);
+	const [selectedMonth, setSelectedMonth] = useState('');
 
 	// Update selectedYear when data loads
 	useEffect(() => {
@@ -301,9 +318,44 @@ export default function AnalyticsPanel({ postId }) {
 		return sortedData.map((key) => monthlyData[key]);
 	}, [quizAnalytics, selectedYear]);
 
+	const dayData = useMemo(() => {
+		if (!quizAnalytics || !selectedYear || !selectedMonth) return [];
+		const yearData = quizAnalytics[selectedYear] || {};
+		const days = yearData._days?.[selectedMonth] || {};
+		const daysInMonth = new Date(
+			Number(selectedYear),
+			Number(selectedMonth),
+			0
+		).getDate();
+		const values = [];
+		for (let d = 1; d <= daysInMonth; d++) {
+			const dayKey = String(d).padStart(2, '0');
+			values.push(Number(days[dayKey] || days[String(d)] || 0));
+		}
+		return values;
+	}, [quizAnalytics, selectedYear, selectedMonth]);
+
+	const dayLabels = useMemo(() => {
+		return dayData.map((_, i) => String(i + 1).padStart(2, '0'));
+	}, [dayData]);
+
 	const total = useMemo(() => {
 		return data.reduce((acc, curr) => acc + curr, 0);
 	}, [data]);
+
+	const dayTotal = useMemo(() => {
+		return dayData.reduce((acc, curr) => acc + curr, 0);
+	}, [dayData]);
+
+	const monthOptions = useMemo(() => {
+		return [
+			{ label: __('All months', 'prc-quiz-builder'), value: '' },
+			...MONTH_LABELS.map((label, index) => ({
+				label,
+				value: String(index + 1).padStart(2, '0'),
+			})),
+		];
+	}, []);
 
 	if (!quizAnalytics) {
 		return (
@@ -334,14 +386,53 @@ export default function AnalyticsPanel({ postId }) {
 								label: year,
 								value: parseInt(year),
 							}))}
-							onChange={setSelectedYear}
+							onChange={(value) => {
+								setSelectedYear(value);
+								setSelectedMonth('');
+							}}
 						/>
-						<BaseControl
-							id="quiz-analytics-monthly"
-							help={`Monthly Total: ${formatCompactNumber(total)}`}
-						>
-							<CalendarChart values={data} />
-						</BaseControl>
+						<SelectControl
+							label={__('Select Month', 'prc-quiz-builder')}
+							value={selectedMonth}
+							options={monthOptions}
+							onChange={setSelectedMonth}
+						/>
+						{!selectedMonth && (
+							<BaseControl
+								id="quiz-analytics-monthly"
+								help={`Monthly Total: ${formatCompactNumber(total)}`}
+							>
+								<CalendarChart values={data} />
+							</BaseControl>
+						)}
+						{selectedMonth && (
+							<BaseControl
+								id="quiz-analytics-daily"
+								help={sprintf(
+									/* translators: 1: month label 2: day total */
+									__(
+										'Daily total for %1$s: %2$s',
+										'prc-quiz-builder'
+									),
+									MONTH_LABELS[Number(selectedMonth) - 1],
+									formatCompactNumber(dayTotal)
+								)}
+							>
+								{dayTotal === 0 ? (
+									<p>
+										{__(
+											'No daily submission data for this month yet.',
+											'prc-quiz-builder'
+										)}
+									</p>
+								) : (
+									<CalendarChart
+										values={dayData}
+										labels={dayLabels}
+									/>
+								)}
+							</BaseControl>
+						)}
 					</>
 				)}
 			</PanelBody>

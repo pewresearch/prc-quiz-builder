@@ -145,7 +145,6 @@ export default function registerResultsPointsDisplayFilter() {
 									{resultsDisplayMode === 'exact' && (
 										<RangeControl
 											__nextHasNoMarginBottom
-											__next40pxDefaultSize
 											label="Exact Points"
 											help="Block will display only when the quiz score equals this exact value."
 											value={resultsExactPoints}
@@ -179,7 +178,6 @@ export default function registerResultsPointsDisplayFilter() {
 										<>
 											<RangeControl
 												__nextHasNoMarginBottom
-												__next40pxDefaultSize
 												label="Minimum Points"
 												help="The minimum score required to display this block."
 												value={resultsMinPoints}
@@ -194,7 +192,6 @@ export default function registerResultsPointsDisplayFilter() {
 											/>
 											<RangeControl
 												__nextHasNoMarginBottom
-												__next40pxDefaultSize
 												label="Maximum Points"
 												help="The maximum score to display this block."
 												value={resultsMaxPoints}
@@ -231,7 +228,6 @@ export default function registerResultsPointsDisplayFilter() {
 											/>
 											<RangeControl
 												__nextHasNoMarginBottom
-												__next40pxDefaultSize
 												label="Threshold Points"
 												help={`Block will display when score is ${resultsThresholdDirection} this value.`}
 												value={resultsThresholdPoints}

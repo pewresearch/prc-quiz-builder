@@ -149,7 +149,6 @@ export default function CreateNewQuizModal(props) {
 			renderFields={({ disabled, title, extras, setExtras }) => (
 				<VStack spacing={4} style={{ marginTop: '16px' }}>
 					<SelectControl
-						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 						label={__('Variation', 'prc-quiz-synced-quiz')}
 						value={extras?.variation || ''}

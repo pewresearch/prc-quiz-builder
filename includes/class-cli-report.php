@@ -76,9 +76,30 @@ class CLI_Report extends WP_CLI_Command {
 			if ( ! preg_match( '/^\d{4}$/', (string) $key ) || ! is_array( $value ) ) {
 				continue;
 			}
-			ksort( $value );
-			foreach ( $value as $month => $count ) {
+			$months = $value;
+			$days   = array();
+			if ( isset( $months['_days'] ) && is_array( $months['_days'] ) ) {
+				$days = $months['_days'];
+				unset( $months['_days'] );
+			}
+			ksort( $months );
+			foreach ( $months as $month => $count ) {
+				if ( ! preg_match( '/^\d{2}$/', (string) $month ) ) {
+					continue;
+				}
 				$rows[] = array( $key . '.' . $month, (string) $count );
+			}
+			foreach ( $days as $month => $day_counts ) {
+				if ( ! is_array( $day_counts ) ) {
+					continue;
+				}
+				ksort( $day_counts );
+				foreach ( $day_counts as $day => $count ) {
+					$rows[] = array(
+						$key . '.' . $month . '.' . str_pad( (string) $day, 2, '0', STR_PAD_LEFT ),
+						(string) $count,
+					);
+				}
 			}
 		}
 
@@ -97,10 +118,13 @@ class CLI_Report extends WP_CLI_Command {
 	 * : Target year. Required when setting a month count.
 	 *
 	 * [--month=<MM>]
-	 * : Target month (01-12). Required when setting a month count.
+	 * : Target month (01-12). Required when setting a month or day count.
+	 *
+	 * [--day=<DD>]
+	 * : Target day (01-31). When set with --month-count, updates the day bucket instead of the month total.
 	 *
 	 * [--month-count=<int>]
-	 * : Absolute count for the target month.
+	 * : Absolute count for the target month (or day when --day is set).
 	 *
 	 * [--total=<int>]
 	 * : Absolute all-time total.
@@ -111,6 +135,7 @@ class CLI_Report extends WP_CLI_Command {
 	 * ## EXAMPLES
 	 *
 	 *     wp prc quiz report set --quiz-id=313764 --year=2026 --month=06 --month-count=125653 --total=125653 --dry-run
+	 *     wp prc quiz report set --quiz-id=313764 --year=2026 --month=06 --day=15 --month-count=42
 	 *
 	 * @param array $args       Positional arguments (unused).
 	 * @param array $assoc_args Associative arguments.
@@ -122,6 +147,7 @@ class CLI_Report extends WP_CLI_Command {
 		$dry_run     = (bool) Utils\get_flag_value( $assoc_args, 'dry-run', false );
 		$month_count = Utils\get_flag_value( $assoc_args, 'month-count', null );
 		$total       = Utils\get_flag_value( $assoc_args, 'total', null );
+		$day         = Utils\get_flag_value( $assoc_args, 'day', null );
 
 		if ( null === $month_count && null === $total ) {
 			WP_CLI::error( 'Provide at least one of --month-count or --total.' );
@@ -136,7 +162,21 @@ class CLI_Report extends WP_CLI_Command {
 			if ( ! isset( $data[ $year ] ) || ! is_array( $data[ $year ] ) ) {
 				$data[ $year ] = array();
 			}
-			$data[ $year ][ $month ] = $value;
+			if ( null !== $day ) {
+				$day = self::normalize_day( (string) $day );
+				if ( null === $day ) {
+					WP_CLI::error( '--day must be between 01 and 31.' );
+				}
+				if ( ! isset( $data[ $year ]['_days'] ) || ! is_array( $data[ $year ]['_days'] ) ) {
+					$data[ $year ]['_days'] = array();
+				}
+				if ( ! isset( $data[ $year ]['_days'][ $month ] ) || ! is_array( $data[ $year ]['_days'][ $month ] ) ) {
+					$data[ $year ]['_days'][ $month ] = array();
+				}
+				$data[ $year ]['_days'][ $month ][ $day ] = $value;
+			} else {
+				$data[ $year ][ $month ] = $value;
+			}
 		}
 
 		if ( null !== $total ) {
@@ -158,10 +198,13 @@ class CLI_Report extends WP_CLI_Command {
 	 * : Target year. Required when adjusting a month count.
 	 *
 	 * [--month=<MM>]
-	 * : Target month (01-12). Required when adjusting a month count.
+	 * : Target month (01-12). Required when adjusting a month or day count.
+	 *
+	 * [--day=<DD>]
+	 * : Target day (01-31). When set with --month-count, adjusts the day bucket instead of the month total.
 	 *
 	 * [--month-count=<int>]
-	 * : Delta to add to the target month.
+	 * : Delta to add to the target month (or day when --day is set).
 	 *
 	 * [--total=<int>]
 	 * : Delta to add to the all-time total.
@@ -172,6 +215,7 @@ class CLI_Report extends WP_CLI_Command {
 	 * ## EXAMPLES
 	 *
 	 *     wp prc quiz report add --quiz-id=313764 --year=2026 --month=06 --month-count=500 --total=500 --dry-run
+	 *     wp prc quiz report add --quiz-id=313764 --year=2026 --month=06 --day=15 --month-count=10
 	 *
 	 * @param array $args       Positional arguments (unused).
 	 * @param array $assoc_args Associative arguments.
@@ -183,6 +227,7 @@ class CLI_Report extends WP_CLI_Command {
 		$dry_run     = (bool) Utils\get_flag_value( $assoc_args, 'dry-run', false );
 		$month_count = Utils\get_flag_value( $assoc_args, 'month-count', null );
 		$total       = Utils\get_flag_value( $assoc_args, 'total', null );
+		$day         = Utils\get_flag_value( $assoc_args, 'day', null );
 
 		if ( null === $month_count && null === $total ) {
 			WP_CLI::error( 'Provide at least one of --month-count or --total.' );
@@ -197,8 +242,23 @@ class CLI_Report extends WP_CLI_Command {
 			if ( ! isset( $data[ $year ] ) || ! is_array( $data[ $year ] ) ) {
 				$data[ $year ] = array();
 			}
-			$current = (int) ( $data[ $year ][ $month ] ?? 0 );
-			$data[ $year ][ $month ] = $current + $delta;
+			if ( null !== $day ) {
+				$day = self::normalize_day( (string) $day );
+				if ( null === $day ) {
+					WP_CLI::error( '--day must be between 01 and 31.' );
+				}
+				if ( ! isset( $data[ $year ]['_days'] ) || ! is_array( $data[ $year ]['_days'] ) ) {
+					$data[ $year ]['_days'] = array();
+				}
+				if ( ! isset( $data[ $year ]['_days'][ $month ] ) || ! is_array( $data[ $year ]['_days'][ $month ] ) ) {
+					$data[ $year ]['_days'][ $month ] = array();
+				}
+				$current = (int) ( $data[ $year ]['_days'][ $month ][ $day ] ?? 0 );
+				$data[ $year ]['_days'][ $month ][ $day ] = $current + $delta;
+			} else {
+				$current = (int) ( $data[ $year ][ $month ] ?? 0 );
+				$data[ $year ][ $month ] = $current + $delta;
+			}
 		}
 
 		if ( null !== $total ) {
@@ -374,6 +434,23 @@ class CLI_Report extends WP_CLI_Command {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Normalize a day value to zero-padded 01-31.
+	 *
+	 * @param string $day Raw day input.
+	 * @return string|null
+	 */
+	private static function normalize_day( string $day ): ?string {
+		if ( ! preg_match( '/^\d{1,2}$/', $day ) ) {
+			return null;
+		}
+		$day_int = (int) $day;
+		if ( $day_int < 1 || $day_int > 31 ) {
+			return null;
+		}
+		return str_pad( (string) $day_int, 2, '0', STR_PAD_LEFT );
 	}
 
 	/**

@@ -209,7 +209,6 @@ export default function QuizQuickEditModal({ clientId, onClose }) {
 							min={0}
 							max={100}
 							hideHTMLArrows
-							__next40pxDefaultSize={false}
 							label={__('Points', 'prc-quiz')}
 							hideLabelFromVision
 						/>

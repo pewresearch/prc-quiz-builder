@@ -16,6 +16,13 @@ use WP_Error;
 class Analytics {
 
 	/**
+	 * Site-local date (Y-m-d) when day-level submission logging begins.
+	 *
+	 * Midnight on July 31 → first day keys written on 2026-08-01.
+	 */
+	public const DAY_LOGGING_START_DATE = '2026-08-01';
+
+	/**
 	 * Constructor.
 	 *
 	 * @param object $loader The loader.
@@ -26,6 +33,15 @@ class Analytics {
 			$loader->add_action( 'rest_api_init', $this, 'register_rest_fields' );
 			$loader->add_action( 'prc_quiz_log_submission', $this, 'log_quiz_submission' );
 		}
+	}
+
+	/**
+	 * Whether day-level submission logging is enabled for the current site-local day.
+	 *
+	 * @return bool
+	 */
+	public static function is_day_logging_enabled(): bool {
+		return wp_date( 'Y-m-d' ) >= self::DAY_LOGGING_START_DATE;
 	}
 
 	/**
@@ -277,12 +293,10 @@ class Analytics {
 	 * @param int $quiz_id The quiz id.
 	 */
 	public function log_quiz_submission( $quiz_id ) {
-		// Get todays date.
-		$date = gmdate( 'Y-m-d' );
-		// Get todays month.
-		$month = gmdate( 'm' );
-		// Get todays year.
-		$year = gmdate( 'Y' );
+		$date  = wp_date( 'Y-m-d' );
+		$month = wp_date( 'm' );
+		$year  = wp_date( 'Y' );
+		$day   = wp_date( 'd' );
 
 		$quiz_pub_date = get_the_date( 'Y-m-d', $quiz_id );
 
@@ -293,7 +307,7 @@ class Analytics {
 			++$data['first_24_hours'];
 		}
 		// If the quiz was published within the last week, increment the first_week counter.
-		if ( $quiz_pub_date >= gmdate( 'Y-m-d', strtotime( '-1 week' ) ) ) {
+		if ( $quiz_pub_date >= wp_date( 'Y-m-d', strtotime( '-1 week' ) ) ) {
 			++$data['first_week'];
 		}
 
@@ -304,6 +318,19 @@ class Analytics {
 			$data[ $year ][ $month ] = 1;
 		} else {
 			++$data[ $year ][ $month ];
+		}
+
+		if ( self::is_day_logging_enabled() ) {
+			if ( ! isset( $data[ $year ]['_days'] ) || ! is_array( $data[ $year ]['_days'] ) ) {
+				$data[ $year ]['_days'] = array();
+			}
+			if ( ! isset( $data[ $year ]['_days'][ $month ] ) || ! is_array( $data[ $year ]['_days'][ $month ] ) ) {
+				$data[ $year ]['_days'][ $month ] = array();
+			}
+			if ( ! array_key_exists( $day, $data[ $year ]['_days'][ $month ] ) ) {
+				$data[ $year ]['_days'][ $month ][ $day ] = 0;
+			}
+			++$data[ $year ]['_days'][ $month ][ $day ];
 		}
 
 		++$data['total'];

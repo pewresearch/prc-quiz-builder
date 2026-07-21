@@ -164,6 +164,8 @@ Requires `manage_options`. All mutation subcommands support `--dry-run`.
 | Subcommand                         | Description                                                                                       |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------- |
 | `wp prc quiz report get`           | Print current `_report` for a quiz (`--format=table\|json`)                                       |
+| `wp prc quiz report set`           | Set absolute month or day counts (`--year`, `--month`, optional `--day`, `--month-count`, `--total`) |
+| `wp prc quiz report add`           | Add a delta to month or day counts (same flags as `set`)                                         |
 | `wp prc quiz report set`           | Set absolute month and/or `total` counts                                                          |
 | `wp prc quiz report add`           | Add a delta to month and/or `total` counts                                                        |
 | `wp prc quiz report sync-firebase` | Sum Firebase archetype `hits` and apply to month + `total` (`--mode=delta\|set`, default `delta`) |
@@ -204,7 +206,7 @@ Research-team-prefixed variants (e.g. `/politics/quiz/{slug}/...`) follow the sa
 | Firebase        | `quiz/{quiz_id}/archetypes/{hash}`   | `{ score, submission, hits }`                                           |
 | Firebase        | `quiz/{quiz_id}/groups/{group_id}`   | Group metadata, cluster tallies, answer tallies, total                  |
 | Firebase        | `users/{owner_id}/groups/{group_id}` | Group index per user                                                    |
-| WP post meta    | `_report`                            | Submission counts: first 24 hrs, first week, total, by year/month       |
+| WP post meta    | `_report`                            | Submission counts: first 24 hrs, first week, total, by year/month, and (from 2026-08-01) day buckets under `_days` |
 | WP object cache | MD5 of `{quiz_id, hash}`             | Cached archetype lookup; group `prc_quiz_builder_archetypes`; TTL 1 day |
 
 ## Cookies

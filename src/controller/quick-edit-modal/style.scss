@@ -32,6 +32,11 @@
 .quiz-quick-edit__points-input {
 	max-width: 64px;
 
+	.components-input-control__container,
+	.components-input-control__input {
+		min-height: 32px;
+	}
+
 	.components-input-control__input {
 		text-align: center;
 		font-variant-numeric: tabular-nums;
