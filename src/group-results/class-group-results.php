@@ -23,13 +23,6 @@ class Group_Results {
 	public const GROUP_RESULTS_BUTTON_CLASS = 'prc-quiz-community-group-results-link';
 
 	/**
-	 * Cache duration.
-	 *
-	 * @var int
-	 */
-	private $cache_duration = 10;
-
-	/**
 	 * Constructor.
 	 *
 	 * @param object $loader The loader.
@@ -91,19 +84,19 @@ class Group_Results {
 			return array();
 		}
 
-		$groups = new Groups(
-			array(
-				'group_id' => $group_id,
-				'quiz_id'  => $quiz_id,
-			)
-		);
-		$group = $groups->get_group( true );
-		if ( false === $group || ! is_array( $group ) ) {
+		$group = self::get_cached_group_data( $group_id, $quiz_id );
+		if ( false === $group || is_wp_error( $group ) || ! is_array( $group ) ) {
 			return array();
 		}
 
 		$results_url = $group['results_url'] ?? '';
 		if ( empty( $results_url ) ) {
+			$groups = new Groups(
+				array(
+					'group_id' => $group_id,
+					'quiz_id'  => $quiz_id,
+				)
+			);
 			$results_url = $groups->generate_results_url();
 		}
 
@@ -115,20 +108,39 @@ class Group_Results {
 	}
 
 	/**
+	 * Get community group data via the shared object-cache read-through.
+	 *
+	 * Bindings and group-results rendering share this path so a group-results
+	 * page performs at most one Firebase group read per cold cache.
+	 *
+	 * @param string $group_id The group ID.
+	 * @param int    $quiz_id  The quiz ID.
+	 * @return array|false|\WP_Error
+	 */
+	public static function get_cached_group_data( $group_id, $quiz_id ) {
+		return Object_Cache::get_group_data(
+			(string) $group_id,
+			static function () use ( $group_id, $quiz_id ) {
+				$groups = new Groups(
+					array(
+						'group_id' => $group_id,
+						'quiz_id'  => $quiz_id,
+					)
+				);
+				return $groups->get_group( true );
+			}
+		);
+	}
+
+	/**
 	 * Get the group data from the groups api.
 	 *
 	 * @param int $group_id The group ID.
 	 * @param int $quiz_id The quiz ID.
-	 * @return array The group data.
+	 * @return array|false|\WP_Error The group data.
 	 */
 	public function get_group_data( $group_id, $quiz_id ) {
-		$groups = new Groups(
-			array(
-				'group_id' => $group_id,
-				'quiz_id'  => $quiz_id,
-			)
-		);
-		return $groups->get_group( true );
+		return self::get_cached_group_data( $group_id, $quiz_id );
 	}
 
 	/**
@@ -172,17 +184,12 @@ class Group_Results {
 			return;
 		}
 
-		// Set up group data.
+		// Set up group data (shared cache with bindings context).
 		$group = false;
-		// If the group ID is not found, we can not display the group results.
 		if ( false !== $group_id ) {
-			$cached_data = wp_cache_get( $group_id, 'prc_quiz_group_data' );
-			if ( false === $cached_data ) {
-				$group  = $this->get_group_data( $group_id, $quiz_id );
-				$expiry = $this->cache_duration * MINUTE_IN_SECONDS;
-				wp_cache_set( $group_id, $group, 'prc_quiz_group_data', $expiry );
-			} else {
-				$group = $cached_data;
+			$group = self::get_cached_group_data( $group_id, $quiz_id );
+			if ( is_wp_error( $group ) || ! is_array( $group ) ) {
+				$group = false;
 			}
 		}
 
@@ -204,7 +211,7 @@ class Group_Results {
 		} else {
 			$message = "<div class='prc-quiz__group-results-info'><p><strong>Group results update every %s minutes.</strong> If you don't see recent results, please wait and refresh the page.</p></div>";
 
-			$content = wp_sprintf( $message, $this->cache_duration ) . $content;
+			$content = wp_sprintf( $message, Object_Cache::GROUP_DATA_TTL_MINUTES ) . $content;
 		}
 
 		return wp_sprintf(

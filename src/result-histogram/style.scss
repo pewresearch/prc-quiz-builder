@@ -8,7 +8,16 @@
 .wp-block-prc-quiz-result-histogram {
 	color: inherit;
 	background: inherit;
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+
 	#bar-chart {
+		width: 100%;
+		max-width: 100%;
+		box-sizing: border-box;
 		div {
 			margin-left: auto;
 			margin-right: auto;
@@ -36,25 +45,32 @@
 	#bar-chart .bars {
 		display: grid;
 		grid-auto-flow: column;
-		grid-auto-columns: 1fr;
+		grid-auto-columns: minmax(12px, 1fr);
 		align-items: end;
-		gap: 24px;
+		gap: clamp(4px, 2vw, 24px);
 		max-width: 900px;
+		width: 100%;
 		margin: 0 auto;
-		height: 300px;
+		height: var(--histogram-height, 300px);
+		box-sizing: border-box;
+		padding: 0 0.5em 1.5em;
 	}
 	#bar-chart .bar {
 		position: relative;
-		background: #000;
+		background-color: var(--wp--preset--color--oatmeal, #c8b8a0);
 		color: #fff;
-		min-height: 10px;
+		min-height: 4px;
+		min-width: 8px;
 		transition: height 0.2s ease-in-out;
 		align-self: end;
-		padding: 0.25em 0.5em;
+		padding: 0.25em 0;
+		justify-self: center;
+		box-sizing: border-box;
 	}
 	#bar-chart .bar.is-highlighted {
-		background: var(--wp--preset--color--mustard, #e0b500);
+		background-color: var(--wp--preset--color--mustard, #e0b500);
 		outline: 2px solid #000;
+		color: #000;
 	}
 	#bar-chart .bar__label {
 		position: absolute;
@@ -64,6 +80,11 @@
 		text-align: center;
 		font-weight: 600;
 		font-size: 0.75em;
+
+		&.is-outside {
+			top: -22px;
+			color: #000;
+		}
 	}
 	#bar-chart .bar__x {
 		display: block;
@@ -79,5 +100,20 @@
 		margin-top: 30px;
 		font-size: 0.75em;
 		color: #666;
+	}
+}
+
+@media (max-width: 600px) {
+	.wp-block-prc-quiz-result-histogram {
+		#bar-chart .bars {
+			gap: 4px;
+			padding-bottom: 1.75em;
+		}
+		#bar-chart .bar__label {
+			font-size: 0.65em;
+		}
+		#bar-chart .bar__x {
+			font-size: 0.7em;
+		}
 	}
 }

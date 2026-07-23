@@ -148,16 +148,6 @@ class Analytics {
 	}
 
 	/**
-	 * Object cache group for group analytics payloads.
-	 */
-	private const GROUP_ANALYTICS_CACHE_GROUP = 'prc_quiz_group_analytics';
-
-	/**
-	 * Object cache TTL for group analytics (5 minutes).
-	 */
-	private const GROUP_ANALYTICS_CACHE_TTL = 300;
-
-	/**
 	 * Get aggregate community group analytics for a quiz.
 	 *
 	 * @param int $quiz_id Quiz post ID.
@@ -165,7 +155,7 @@ class Analytics {
 	 */
 	public static function get_group_analytics( int $quiz_id ) {
 		$cache_key = 'quiz_' . $quiz_id;
-		$cached    = wp_cache_get( $cache_key, self::GROUP_ANALYTICS_CACHE_GROUP );
+		$cached    = wp_cache_get( $cache_key, Object_Cache::GROUP_ANALYTICS_GROUP );
 
 		if ( false !== $cached && is_array( $cached ) ) {
 			return $cached;
@@ -195,7 +185,7 @@ class Analytics {
 			'groups'            => $groups,
 		);
 
-		wp_cache_set( $cache_key, $payload, self::GROUP_ANALYTICS_CACHE_GROUP, self::GROUP_ANALYTICS_CACHE_TTL );
+		wp_cache_set( $cache_key, $payload, Object_Cache::GROUP_ANALYTICS_GROUP, Object_Cache::GROUP_ANALYTICS_TTL );
 
 		return $payload;
 	}

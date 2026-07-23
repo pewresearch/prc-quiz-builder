@@ -2,9 +2,9 @@
 > @prc-quiz/shared-components@0.1.0 build
 > wp-scripts build src/index.js --output-path=build
 
-asset index.js 25.8 KiB [compared for emit] [minimized] (name: index)
-asset index.asset.php 184 bytes [compared for emit] (name: index)
+asset index.js 25.8 KiB [emitted] [minimized] (name: index)
+asset index.asset.php 184 bytes [emitted] (name: index)
 Entrypoint index 26 KiB = index.js 25.8 KiB index.asset.php 184 bytes
 orphan modules 94.7 KiB [orphan] 40 modules
 ./src/index.js + 32 modules 75.8 KiB [not cacheable] [built] [code generated]
-webpack 5.106.2 compiled successfully in 3197 ms
+webpack 5.106.2 compiled successfully in 2522 ms

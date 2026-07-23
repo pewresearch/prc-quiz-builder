@@ -172,6 +172,57 @@ class Rest_API {
 	}
 
 	/**
+	 * Extract a Turnstile captcha token from a create-group request body.
+	 *
+	 * @param array $data Decoded JSON body.
+	 */
+	protected function get_captcha_token_from_request_data( array $data ): string {
+		$token = isset( $data['captchaToken'] ) ? (string) $data['captchaToken'] : '';
+		if ( '' !== $token ) {
+			return $token;
+		}
+
+		if (
+			isset( $data['fields'] ) &&
+			is_array( $data['fields'] ) &&
+			function_exists( '\\PRC\\Platform\\find_captcha_token_in_form_fields' )
+		) {
+			return \PRC\Platform\find_captcha_token_in_form_fields( $data['fields'] );
+		}
+
+		return '';
+	}
+
+	/**
+	 * Verify a Turnstile captcha token for group-create requests.
+	 *
+	 * Off-platform (missing helper) or unconfigured Turnstile secrets allow
+	 * continuation — matching the shared platform contract.
+	 *
+	 * @param string $token Client-supplied captcha token.
+	 * @return true|WP_Error
+	 */
+	protected function verify_group_create_captcha( string $token ) {
+		if ( ! function_exists( '\\PRC\\Platform\\verify_captcha' ) ) {
+			return true;
+		}
+
+		$remote_ip = function_exists( '\\PRC\\Platform\\get_client_ip' )
+			? \PRC\Platform\get_client_ip()
+			: '';
+
+		if ( ! \PRC\Platform\verify_captcha( $token, '' !== $remote_ip ? $remote_ip : null ) ) {
+			return new WP_Error(
+				'captcha_failed',
+				'ERROR: group_create/403. Captcha verification failed.',
+				array( 'status' => 403 )
+			);
+		}
+
+		return true;
+	}
+
+	/**
 	 * Create a group.
 	 *
 	 * @param string $group_name The group name.
@@ -213,6 +264,9 @@ class Rest_API {
 		if ( is_wp_error( $new_group_id ) ) {
 			return $new_group_id;
 		}
+
+		// Clear any short-lived missing sentinel so early URL visitors recover.
+		Object_Cache::invalidate_group_data( (string) $new_group_id );
 
 		$group_url = $groups->generate_group_url();
 
@@ -267,7 +321,7 @@ class Rest_API {
 			);
 		}
 
-		wp_cache_delete( $group_id, 'prc_quiz_group_data' );
+		Object_Cache::invalidate_group_data( (string) $group_id );
 
 		return true;
 	}
@@ -304,7 +358,7 @@ class Rest_API {
 	protected function acquire_submission_processing_lock( $quiz_id, $submission_id ) {
 		$cache_key = $this->get_submission_processing_key( $quiz_id, $submission_id );
 
-		return wp_cache_add( $cache_key, time(), 'prc_quiz_submissions', MINUTE_IN_SECONDS );
+		return wp_cache_add( $cache_key, time(), Object_Cache::SUBMISSIONS_GROUP, MINUTE_IN_SECONDS );
 	}
 
 	/**
@@ -316,7 +370,7 @@ class Rest_API {
 	protected function release_submission_processing_lock( $quiz_id, $submission_id ) {
 		$cache_key = $this->get_submission_processing_key( $quiz_id, $submission_id );
 
-		wp_cache_delete( $cache_key, 'prc_quiz_submissions' );
+		wp_cache_delete( $cache_key, Object_Cache::SUBMISSIONS_GROUP );
 	}
 
 	/**
@@ -328,7 +382,7 @@ class Rest_API {
 	 */
 	protected function get_processed_submission( $quiz_id, $submission_id ) {
 		$cache_key = $this->get_submission_idempotency_key( $quiz_id, $submission_id );
-		$processed = wp_cache_get( $cache_key, 'prc_quiz_submissions' );
+		$processed = wp_cache_get( $cache_key, Object_Cache::SUBMISSIONS_GROUP );
 
 		if ( false !== $processed ) {
 			return $processed;
@@ -337,7 +391,7 @@ class Rest_API {
 		$processed = get_transient( $cache_key );
 
 		if ( false !== $processed ) {
-			wp_cache_set( $cache_key, $processed, 'prc_quiz_submissions', DAY_IN_SECONDS );
+			wp_cache_set( $cache_key, $processed, Object_Cache::SUBMISSIONS_GROUP, DAY_IN_SECONDS );
 		}
 
 		return $processed;
@@ -353,7 +407,7 @@ class Rest_API {
 	protected function mark_submission_processed( $quiz_id, $submission_id, $data ) {
 		$cache_key = $this->get_submission_idempotency_key( $quiz_id, $submission_id );
 
-		wp_cache_set( $cache_key, $data, 'prc_quiz_submissions', DAY_IN_SECONDS );
+		wp_cache_set( $cache_key, $data, Object_Cache::SUBMISSIONS_GROUP, DAY_IN_SECONDS );
 		set_transient( $cache_key, $data, DAY_IN_SECONDS );
 	}
 
@@ -379,6 +433,18 @@ class Rest_API {
 
 		if ( true !== $valid ) {
 			return $valid;
+		}
+
+		$data = json_decode( $request->get_body(), true );
+		if ( empty( $data ) || ! is_array( $data ) ) {
+			return new \WP_Error( 'invalid_data', 'ERROR: group_create/400. Invalid data.', array( 'status' => 400 ) );
+		}
+
+		$captcha_check = $this->verify_group_create_captcha(
+			$this->get_captcha_token_from_request_data( $data )
+		);
+		if ( is_wp_error( $captcha_check ) ) {
+			return $captcha_check;
 		}
 
 		$token    = $request->get_header( 'X-PRC-User-Token' );
@@ -411,10 +477,6 @@ class Rest_API {
 			);
 		}
 
-		$data = json_decode( $request->get_body(), true );
-		if ( empty( $data ) ) {
-			return new \WP_Error( 'invalid_data', 'ERROR: group_create/400. Invalid data.', array( 'status' => 400 ) );
-		}
 		$group_name = $data['groupName'];
 		$answers    = $data['answers'];
 		$clusters   = $data['clusters'];
@@ -539,24 +601,28 @@ class Rest_API {
 
 		try {
 			// Per-IP rate limiting: 100 submissions per quiz per minute (fixed window).
-			// wp_cache_add only sets when key is absent, establishing the window TTL once.
-			// wp_cache_incr atomically increments without resetting the TTL.
-			$client_ip = function_exists( '\\PRC\\Platform\\get_client_ip' )
-				? \PRC\Platform\get_client_ip()
-				: '';
-			if ( '' === $client_ip ) {
-				$client_ip = 'unknown';
-			}
-			$throttle_key = 'prc_quiz_submit_' . md5( $client_ip . '_' . $quiz_id );
-			wp_cache_add( $throttle_key, 0, 'prc_quiz_throttle', MINUTE_IN_SECONDS );
-			$recent_count = wp_cache_incr( $throttle_key, 1, 'prc_quiz_throttle' );
-
-			if ( $recent_count > 100 ) {
-				return new \WP_Error(
-					'rate_limited',
-					'Too many submissions. Please try again later.',
-					array( 'status' => 429 )
-				);
+			// Runs after idempotent replay / lock acquisition so replays do not
+			// consume throttle slots. Fail open when the platform helper is absent.
+			if ( function_exists( '\\PRC\\Platform\\rate_limit_hit' ) ) {
+				$client_ip = function_exists( '\\PRC\\Platform\\get_client_ip' )
+					? \PRC\Platform\get_client_ip()
+					: '';
+				if ( '' === $client_ip ) {
+					$client_ip = 'unknown';
+				}
+				$throttle_key = 'prc_quiz_submit_' . md5( $client_ip . '_' . $quiz_id );
+				if ( \PRC\Platform\rate_limit_hit(
+					$throttle_key,
+					Object_Cache::THROTTLE_LIMIT,
+					Object_Cache::THROTTLE_WINDOW,
+					Object_Cache::THROTTLE_GROUP
+				) ) {
+					return new \WP_Error(
+						'rate_limited',
+						'Too many submissions. Please try again later.',
+						array( 'status' => 429 )
+					);
+				}
 			}
 
 			$group_id = $request->get_param( 'groupId' );

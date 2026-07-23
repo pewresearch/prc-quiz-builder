@@ -11,3 +11,6 @@
 
 /node_modules/
 /artifacts/
+
+# vendor/ is committed for standalone installs (populated by platform ship CI).
+!vendor/

@@ -17,6 +17,7 @@
   "supports": {
     "anchor": true,
     "html": false,
+    "interactivity": true,
     "multiple": false,
     "color": {
       "background": true,

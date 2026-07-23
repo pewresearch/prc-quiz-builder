@@ -13,17 +13,25 @@ import {
 	TextareaControl,
 	PanelBody,
 	TextControl,
+	ToggleControl,
 } from '@wordpress/components';
+
+const DEFAULT_COMPARISON =
+	'You scored better than {betterThan} of the public, below {lowerThan} of the public and the same as {sameAs}.';
 
 export default function Controls({ attributes, setAttributes, colors }) {
 	const {
 		message,
 		height,
-		barLabelPosition,
 		barLabelCutoff,
 		barWidth,
-		yAxisDomain,
 		xAxisLabel,
+		showScoreSummary = true,
+		comparisonText = DEFAULT_COMPARISON,
+		topPerformerText = '',
+		lowerPerformerText = '',
+		topPerformerThreshold = 75,
+		lowerPerformerThreshold = 25,
 	} = attributes;
 	const { barColor, setBarColor, isHighlightedColor, setIsHighlightedColor } =
 		colors;
@@ -31,6 +39,74 @@ export default function Controls({ attributes, setAttributes, colors }) {
 		<>
 			<InspectorControls>
 				<PanelBody title={__('Histogram Settings')}>
+					<ToggleControl
+						label={__('Show score summary above chart', 'prc-quiz')}
+						help={__(
+							'Turn off to avoid duplicating the Result Score block.',
+							'prc-quiz'
+						)}
+						checked={!!showScoreSummary}
+						onChange={(val) =>
+							setAttributes({ showScoreSummary: val })
+						}
+					/>
+					<TextareaControl
+						label={__('Comparison sentence', 'prc-quiz')}
+						help={__(
+							'Use {betterThan}, {lowerThan}, and {sameAs} placeholders.',
+							'prc-quiz'
+						)}
+						value={comparisonText}
+						onChange={(val) =>
+							setAttributes({ comparisonText: val })
+						}
+					/>
+					<TextareaControl
+						label={__(
+							'Top performer sentence (optional)',
+							'prc-quiz'
+						)}
+						help={__(
+							'Shown when betterThan is at or above the top threshold.',
+							'prc-quiz'
+						)}
+						value={topPerformerText}
+						onChange={(val) =>
+							setAttributes({ topPerformerText: val })
+						}
+					/>
+					<RangeControl
+						label={__('Top performer threshold (%)', 'prc-quiz')}
+						value={topPerformerThreshold}
+						onChange={(val) =>
+							setAttributes({ topPerformerThreshold: val })
+						}
+						min={50}
+						max={100}
+					/>
+					<TextareaControl
+						label={__(
+							'Lower performer sentence (optional)',
+							'prc-quiz'
+						)}
+						help={__(
+							'Shown when betterThan is at or below the lower threshold.',
+							'prc-quiz'
+						)}
+						value={lowerPerformerText}
+						onChange={(val) =>
+							setAttributes({ lowerPerformerText: val })
+						}
+					/>
+					<RangeControl
+						label={__('Lower performer threshold (%)', 'prc-quiz')}
+						value={lowerPerformerThreshold}
+						onChange={(val) =>
+							setAttributes({ lowerPerformerThreshold: val })
+						}
+						min={0}
+						max={50}
+					/>
 					<TextareaControl
 						label="Score Message"
 						help={__(
@@ -61,36 +137,18 @@ export default function Controls({ attributes, setAttributes, colors }) {
 						min={10}
 						max={40}
 					/>
-					{/* <RangeControl
-						label="Bar Label Position"
-						help={__('Vertical position of bar label')}
-						value={barLabelPosition}
-						onChange={(newPosition) => {
-							setAttributes({ barLabelPosition: newPosition });
-						}}
-						min={-20}
-						max={30}
-					/>
 					<NumberControl
 						label="Bar Label Cut Off"
 						help={__('Number at which to show label outside bar')}
 						value={barLabelCutoff}
 						onChange={(newCutOff) => {
-							setAttributes({ barLabelCutoff: newCutOff });
+							setAttributes({
+								barLabelCutoff: Number(newCutOff) || 0,
+							});
 						}}
 						min={0}
 						max={100}
-					/> */}
-					{/* <RangeControl
-						label="Y Axis Domain"
-						help={__('Set domain close to highest bar value')}
-						value={yAxisDomain}
-						onChange={(newDomain) => {
-							setAttributes({ yAxisDomain: newDomain });
-						}}
-						min={0}
-						max={100}
-					/> */}
+					/>
 					<TextControl
 						label="X Axis Label"
 						value={xAxisLabel}
@@ -105,7 +163,7 @@ export default function Controls({ attributes, setAttributes, colors }) {
 					__experimentalHasMultipleOrigins
 					__experimentalIsRenderedInSidebar
 					title={__('Colors')}
-					disableCustomColors
+					disableCustomColors={false}
 					colorSettings={[
 						{
 							value: barColor.color,

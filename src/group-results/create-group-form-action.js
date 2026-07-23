@@ -41,10 +41,18 @@ export default async function createGroupFormAction(
 			});
 		}
 
+		const captchaToken =
+			formFields.find(
+				(field) =>
+					field.type === 'captchaToken' ||
+					field.name === 'captchaToken'
+			)?.value || '';
+
 		const postData = {
 			groupName,
 			answers,
 			clusters,
+			captchaToken,
 		};
 
 		// When creating a group from the results page, include the owner's
@@ -89,6 +97,9 @@ export default async function createGroupFormAction(
 				) {
 					errorMessage =
 						'You must be logged in to create a group. Please sign in and try again.';
+				} else if ('captcha_failed' === errorCode) {
+					errorMessage =
+						'Captcha verification failed. Please try again.';
 				}
 				return reject({
 					message: errorMessage,

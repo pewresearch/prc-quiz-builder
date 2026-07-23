@@ -6,9 +6,35 @@
  */
 
 .wp-block-prc-quiz-result-table {
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
+
+	.prc-quiz-result-table__scroll {
+		width: 100%;
+		max-width: 100%;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	table {
+		width: max-content;
+		min-width: 100%;
+		border-collapse: collapse;
+	}
+
 	.prc-quiz-result-table__icon {
-		span:hidden {
-			display: none;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--prc-quiz-result-table-icon-color, currentColor);
+
+		svg {
+			fill: currentColor;
+		}
+
+		&[hidden] {
+			display: none !important;
 		}
 	}
 
@@ -16,6 +42,18 @@
 		td {
 			padding: 0.5em 1em;
 			border-bottom: 1px dotted #ccc;
+			vertical-align: top;
+		}
+	}
+}
+
+@media (max-width: 600px) {
+	.wp-block-prc-quiz-result-table {
+		.prc-quiz-result-table__row {
+			td {
+				padding: 0.4em 0.6em;
+				font-size: 0.95em;
+			}
 		}
 	}
 }

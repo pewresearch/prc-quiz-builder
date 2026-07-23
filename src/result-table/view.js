@@ -3,17 +3,76 @@
  */
 import { store, getContext, getElement } from '@wordpress/interactivity';
 
+const ELEMENT_NODE = 1;
+
+/**
+ * Allow a small set of rich-text tags in question copy for results display.
+ * Strips everything else before injecting via the watch callback.
+ *
+ * @param {string} html Raw question HTML.
+ * @return {string} Sanitized HTML.
+ */
+const sanitizeQuestionHtml = (html) => {
+	if (typeof html !== 'string' || !html) {
+		return '';
+	}
+	if (typeof document === 'undefined') {
+		return html;
+	}
+	const template = document.createElement('template');
+	template.innerHTML = html;
+	const allowed = new Set([
+		'STRONG',
+		'B',
+		'EM',
+		'I',
+		'A',
+		'BR',
+		'SPAN',
+		'SUP',
+		'SUB',
+	]);
+	const walk = (node) => {
+		[...node.childNodes].forEach((child) => {
+			if (child.nodeType === ELEMENT_NODE) {
+				if (!allowed.has(child.tagName)) {
+					while (child.firstChild) {
+						node.insertBefore(child.firstChild, child);
+					}
+					node.removeChild(child);
+					return;
+				}
+				[...child.attributes].forEach((attr) => {
+					const name = attr.name.toLowerCase();
+					if (
+						name.startsWith('on') ||
+						(name === 'href' &&
+							!/^(https?:|mailto:|#)/i.test(attr.value))
+					) {
+						child.removeAttribute(attr.name);
+					} else if (name !== 'href' && name !== 'class') {
+						child.removeAttribute(attr.name);
+					}
+				});
+				walk(child);
+			}
+		});
+	};
+	walk(template.content);
+	return template.innerHTML;
+};
+
 const { state } = store('prc-quiz/controller', {
 	state: {
 		get demoBreakHeaders() {
 			const context = getContext();
-			const { quizId, demoBreakLabels } = context;
+			const { quizId } = context;
 			const quizData = state[`quiz_${quizId}`];
-			
+
 			if (!quizData || !quizData.demoBreakLabels) {
 				return [];
 			}
-			
+
 			return quizData.demoBreakLabels;
 		},
 		get resultsTableRows() {
@@ -22,7 +81,7 @@ const { state } = store('prc-quiz/controller', {
 			}
 			const context = getContext();
 			const { quizId, userScore } = context;
-			const { score, userSubmission } = userScore;
+			const { userSubmission } = userScore;
 			const quizData = state[`quiz_${quizId}`];
 			const { questions } = quizData;
 
@@ -30,7 +89,12 @@ const { state } = store('prc-quiz/controller', {
 			const questionsArray = Object.values(questions);
 
 			return questionsArray.map((question) => {
-				const { uuid, text, answers, demoBreakValues } = question;
+				const {
+					uuid: questionUuid,
+					text,
+					answers,
+					demoBreakValues,
+				} = question;
 
 				// Convert answers object to array if it's also an object
 				const answersArray = Array.isArray(answers)
@@ -96,20 +160,38 @@ const { state } = store('prc-quiz/controller', {
 					return (
 						correctUuids.length === selectedUuids.length &&
 						correctUuids.every(
-							(uuid, index) => uuid === selectedUuids[index]
+							(correctUuid, index) =>
+								correctUuid === selectedUuids[index]
 						)
 					);
 				};
 
 				return {
-					uuid,
+					uuid: questionUuid,
 					correct: isCorrect(),
-					question: text,
+					question: sanitizeQuestionHtml(text),
 					selectedAnswer: formatSelectedAnswers(),
 					correctAnswer: formatCorrectAnswers(),
 					demoBreakValues: demoBreakValues || [],
 				};
 			});
+		},
+	},
+	callbacks: {
+		/**
+		 * Render sanitized question HTML into the results-table cell.
+		 * Interactivity API has no data-wp-html directive; use a watch instead.
+		 */
+		renderQuestionHtml() {
+			const { ref } = getElement();
+			if (!ref) {
+				return;
+			}
+			const context = getContext();
+			const html = context?.row?.question ?? '';
+			if (ref.innerHTML !== html) {
+				ref.innerHTML = html;
+			}
 		},
 	},
 });

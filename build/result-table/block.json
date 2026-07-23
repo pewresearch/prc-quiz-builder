@@ -23,6 +23,14 @@
     },
     "altRowTextColor": {
       "type": "string"
+    },
+    "iconSize": {
+      "type": "number",
+      "default": 1
+    },
+    "iconColor": {
+      "type": "string",
+      "default": "ui-black"
     }
   },
   "supports": {

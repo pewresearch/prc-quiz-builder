@@ -93,6 +93,8 @@ class Plugin {
 	private function load_dependencies() {
 		// Load plugin loading class.
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-loader.php';
+		// Shared object-cache group/TTL constants (used by archetypes, groups, REST, analytics).
+		require_once plugin_dir_path( __DIR__ ) . '/includes/class-object-cache.php';
 		// 1. Initialize Archetypes system.
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-archetypes.php';
 		// 2. Initialize Groups system.

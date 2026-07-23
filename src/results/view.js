@@ -20,6 +20,27 @@ const { state, actions } = store('prc-quiz/controller', {
 			const { userScore } = context;
 			return userScore?.score || 0;
 		},
+		/**
+		 * Total questions for the result-score denominator.
+		 * Prefers the saved block attribute; falls back to quiz question count.
+		 */
+		get numberOfQuestionsTotal() {
+			const context = getContext();
+			const fromAttr = String(context?.numberOfQuestions ?? '').trim();
+			if (fromAttr && fromAttr !== 'N/A') {
+				return fromAttr;
+			}
+			const { quizId } = context;
+			const quizData = quizId ? state[`quiz_${quizId}`] : null;
+			const questions = quizData?.questions;
+			if (questions && typeof questions === 'object') {
+				const count = Object.keys(questions).length;
+				if (count > 0) {
+					return String(count);
+				}
+			}
+			return '0';
+		},
 		get displayResultInnerBlockScore() {
 			return state.score;
 		},

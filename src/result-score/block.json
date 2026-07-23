@@ -17,16 +17,14 @@
 	"supports": {
 		"anchor": true,
 		"html": false,
+		"interactivity": true,
 		"multiple": false,
 		"color": {
 			"background": true,
 			"text": true
 		},
 		"spacing": {
-			"margin": [
-				"top",
-				"bottom"
-			],
+			"margin": ["top", "bottom"],
 			"padding": true
 		},
 		"typography": {
@@ -34,12 +32,8 @@
 			"__experimentalFontFamily": true
 		}
 	},
-	"parent": [
-		"prc-quiz/results"
-	],
-	"usesContext": [
-		"prc-quiz/results/score"
-	],
+	"parent": ["prc-quiz/results"],
+	"usesContext": ["prc-quiz/results/score"],
 	"textdomain": "result-score",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",

@@ -230,7 +230,7 @@ To run Playwright tests (from the monorepo root — VIP dev-env and Playwright a
 
 ```bash
 npm run vip:start
-npm test -- tests/prc-quiz-builder/
+npm test -- tests/prc-quiz-builder/e2e/
 ```
 
 ## Firebase availability

@@ -1,3 +1,12 @@
 .wp-block-prc-quiz-results {
-    position: relative;
+	position: relative;
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
+	overflow-x: clip;
+
+	> * {
+		max-width: 100%;
+		box-sizing: border-box;
+	}
 }

@@ -586,7 +586,7 @@ return array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
 		'name' => 'prc-quiz/result-histogram',
-		'version' => '4.0',
+		'version' => '4.1',
 		'title' => 'Result Histogram',
 		'category' => 'prc-quiz',
 		'description' => 'Histogram representing distribution of scores.',
@@ -626,7 +626,32 @@ return array(
 				'default' => 50
 			),
 			'xAxisLabel' => array(
-				'type' => 'string'
+				'type' => 'string',
+				'default' => 'Score'
+			),
+			'showScoreSummary' => array(
+				'type' => 'boolean',
+				'default' => true
+			),
+			'comparisonText' => array(
+				'type' => 'string',
+				'default' => 'You scored better than {betterThan} of the public, below {lowerThan} of the public and the same as {sameAs}.'
+			),
+			'topPerformerText' => array(
+				'type' => 'string',
+				'default' => ''
+			),
+			'lowerPerformerText' => array(
+				'type' => 'string',
+				'default' => ''
+			),
+			'topPerformerThreshold' => array(
+				'type' => 'number',
+				'default' => 75
+			),
+			'lowerPerformerThreshold' => array(
+				'type' => 'number',
+				'default' => 25
 			)
 		),
 		'supports' => array(
@@ -680,6 +705,7 @@ return array(
 		'supports' => array(
 			'anchor' => true,
 			'html' => false,
+			'interactivity' => true,
 			'multiple' => false,
 			'color' => array(
 				'background' => true,
@@ -733,6 +759,14 @@ return array(
 			),
 			'altRowTextColor' => array(
 				'type' => 'string'
+			),
+			'iconSize' => array(
+				'type' => 'number',
+				'default' => 1
+			),
+			'iconColor' => array(
+				'type' => 'string',
+				'default' => 'ui-black'
 			)
 		),
 		'supports' => array(

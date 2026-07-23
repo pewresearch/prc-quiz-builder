@@ -14,6 +14,16 @@ use WP_Error;
  */
 class Archetypes {
 	/**
+	 * Post meta key for the per-quiz archetype object-cache generation.
+	 *
+	 * Bumped on purge so existing positive cache entries become unreachable
+	 * without enumerating Firebase children or flushing the cache group.
+	 *
+	 * @var string
+	 */
+	public const CACHE_GENERATION_META_KEY = '_prc_quiz_archetypes_cache_gen';
+
+	/**
 	 * The valid hash regex.
 	 *
 	 * @var string
@@ -123,6 +133,11 @@ class Archetypes {
 	/**
 	 * Purge the archetypes.
 	 *
+	 * Firebase clear remains a single `set( null )`. Object-cache invalidation
+	 * is O(1): bump the per-quiz generation so prior positive keys (which
+	 * include the old generation) miss. Avoids downloading/deleting N hashes
+	 * and avoids a broad cache-group flush.
+	 *
 	 * @return mixed|WP_Error
 	 */
 	public function purge_archetypes() {
@@ -130,7 +145,31 @@ class Archetypes {
 			return $this->firebase_unavailable_error();
 		}
 
+		$this->bump_cache_generation();
+
 		return $this->db->getReference( 'quiz/' . $this->quiz_id . '/archetypes' )->set( null );
+	}
+
+	/**
+	 * Current archetype object-cache generation for a quiz.
+	 *
+	 * @param mixed $quiz_id Quiz post ID.
+	 * @return int
+	 */
+	public static function get_cache_generation( $quiz_id ): int {
+		$gen = get_post_meta( (int) $quiz_id, self::CACHE_GENERATION_META_KEY, true );
+		return is_numeric( $gen ) ? (int) $gen : 0;
+	}
+
+	/**
+	 * Bump the per-quiz archetype cache generation (logical invalidation).
+	 *
+	 * @return int New generation value.
+	 */
+	public function bump_cache_generation(): int {
+		$next = self::get_cache_generation( $this->quiz_id ) + 1;
+		update_post_meta( (int) $this->quiz_id, self::CACHE_GENERATION_META_KEY, $next );
+		return $next;
 	}
 
 	/**
@@ -143,19 +182,34 @@ class Archetypes {
 	}
 
 	/**
+	 * Build an archetype object-cache key for a quiz + hash pair.
+	 *
+	 * Includes the per-quiz generation so a purge can invalidate all prior
+	 * positive entries without enumerating them.
+	 *
+	 * @param mixed  $quiz_id Quiz post ID.
+	 * @param string $hash    Archetype hash.
+	 * @return string
+	 */
+	public static function build_cache_key( $quiz_id, string $hash ): string {
+		return md5(
+			wp_json_encode(
+				array(
+					'quiz_id' => $quiz_id,
+					'hash'    => $hash,
+					'gen'     => self::get_cache_generation( $quiz_id ),
+				)
+			)
+		);
+	}
+
+	/**
 	 * Get the cache key.
 	 *
 	 * @return string
 	 */
 	public function get_cache_key() {
-		return md5(
-			wp_json_encode(
-				array(
-					'quiz_id' => $this->quiz_id,
-					'hash'    => $this->hash,
-				)
-			)
-		);
+		return self::build_cache_key( $this->quiz_id, (string) $this->hash );
 	}
 
 	/**
@@ -172,7 +226,7 @@ class Archetypes {
 		}
 
 		$cache_key = $this->get_cache_key();
-		$cache     = wp_cache_get( $cache_key, 'prc_quiz_builder_archetypes' );
+		$cache     = wp_cache_get( $cache_key, Object_Cache::ARCHETYPES_GROUP );
 		if ( false !== $cache && false === $force_refresh ) {
 			return false === $return_as_array ? (object) $cache : $cache;
 		}
@@ -184,7 +238,7 @@ class Archetypes {
 		}
 
 		if ( false === $force_refresh ) {
-			wp_cache_set( $cache_key, $existing_archetype, 'prc_quiz_builder_archetypes', 1 * DAY_IN_SECONDS );
+			wp_cache_set( $cache_key, $existing_archetype, Object_Cache::ARCHETYPES_GROUP, Object_Cache::ARCHETYPES_TTL );
 		}
 
 		return false === $return_as_array ? (object) $existing_archetype : $existing_archetype;
@@ -217,7 +271,7 @@ class Archetypes {
 			'hits'       => 1,
 		);
 		$this->db->getReference( $this->archetype_ref() )->set( $new_archetype );
-		wp_cache_delete( $this->get_cache_key(), 'prc_quiz_builder_archetypes' );
+		wp_cache_delete( $this->get_cache_key(), Object_Cache::ARCHETYPES_GROUP );
 		return $new_archetype;
 	}
 

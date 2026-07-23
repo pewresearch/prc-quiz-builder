@@ -5,8 +5,7 @@
 /**
  * WordPress Dependencies
  */
-import { __ } from '@wordpress/i18n';
-import { Fragment, useEffect } from '@wordpress/element';
+import { useEffect } from '@wordpress/element';
 import {
 	useBlockProps,
 	useInnerBlocksProps,
@@ -18,6 +17,9 @@ import { useSelect } from '@wordpress/data';
  * Internal Dependencies
  */
 import Controls from './controls';
+
+const DEFAULT_COMPARISON =
+	'You scored better than {betterThan} of the public, below {lowerThan} of the public and the same as {sameAs}.';
 
 // Simple editor-only histogram preview (no external chart lib)
 function HistogramPreview({ attributes, barColor, isHighlightedColor }) {
@@ -43,6 +45,16 @@ function HistogramPreview({ attributes, barColor, isHighlightedColor }) {
 		bins = [];
 	}
 
+	// Pad contiguous 0..max for preview parity with frontend.
+	if (bins.length) {
+		const byX = new Map(bins.map((b) => [b.x, b.y]));
+		const maxX = Math.max(...bins.map((b) => b.x));
+		bins = [];
+		for (let x = 0; x <= maxX; x += 1) {
+			bins.push({ x, y: byX.has(x) ? byX.get(x) : 0 });
+		}
+	}
+
 	const maxY = Math.max(1, ...bins.map((b) => b.y));
 	const guessed = bins.length
 		? bins.reduce((m, b) => (b.y > m.y ? b : m), bins[0]).x
@@ -54,10 +66,15 @@ function HistogramPreview({ attributes, barColor, isHighlightedColor }) {
 				{bins.map((b) => {
 					const heightPct = (b.y / maxY) * 100;
 					const isHighlighted = guessed !== null && b.x === guessed;
-					const label = b.y < 1 ? '<1%' : `${Math.round(b.y)}%`;
+					let label = `${Math.round(b.y)}%`;
+					if (b.y <= 0) {
+						label = '';
+					} else if (b.y < 1) {
+						label = '<1%';
+					}
 					const backgroundColor = isHighlighted
 						? isHighlightedColor?.color || '#e0b500'
-						: barColor?.color || '#000';
+						: barColor?.color || '#c8b8a0';
 					const labelStyle = {};
 					if (b.y <= barLabelCutoff) {
 						labelStyle.top = '-22px';
@@ -68,7 +85,7 @@ function HistogramPreview({ attributes, barColor, isHighlightedColor }) {
 							key={b.x}
 							className={`bar${isHighlighted ? ' is-highlighted' : ''}`}
 							style={{
-								height: `${heightPct}%`,
+								height: `${Math.max(heightPct, b.y > 0 ? 4 : 2)}%`,
 								backgroundColor,
 								width: `${barWidth}px`,
 							}}
@@ -137,23 +154,19 @@ const TABLE_TEMPLATE = [
  *
  * @param {Object}   props                       Properties passed to the function.
  * @param {Object}   props.attributes            Available block attributes.
- * @param            props.context
- * @param            props.clientId
- * @param            props.isSelected
- * @param            props.barColor
- * @param            props.setBarColor
- * @param            props.isHighlightedColor
- * @param            props.setIsHighlightedColor
+ * @param {string}   props.clientId              Block client ID.
+ * @param {Object}   props.barColor              Bar color object from withColors.
+ * @param {Function} props.setBarColor           Bar color setter.
+ * @param {Object}   props.isHighlightedColor    Highlight color object from withColors.
+ * @param {Function} props.setIsHighlightedColor Highlight color setter.
  * @param {Function} props.setAttributes         Function that updates individual attributes.
  *
- * @return {WPElement} Element to render.
+ * @return {Element} Element to render.
  */
 function Edit({
 	attributes,
 	setAttributes,
-	context,
 	clientId,
-	isSelected,
 	barColor,
 	setBarColor,
 	isHighlightedColor,
@@ -162,15 +175,20 @@ function Edit({
 	const {
 		message,
 		histogramData,
+		showScoreSummary = true,
+		comparisonText = DEFAULT_COMPARISON,
 	} = attributes;
 
 	const blockProps = useBlockProps();
 
-	const innerBlocksProps = useInnerBlocksProps(blockProps, {
-		template: TABLE_TEMPLATE,
-		templateLock: 'all',
-		allowedBlocks: ['prc-block/table'],
-	});
+	const innerBlocksProps = useInnerBlocksProps(
+		{ className: 'histogram-data-table-wrapper' },
+		{
+			template: TABLE_TEMPLATE,
+			templateLock: 'all',
+			allowedBlocks: ['prc-block/table'],
+		}
+	);
 
 	const tableBlock = useSelect(
 		(select) =>
@@ -195,6 +213,11 @@ function Edit({
 		}
 	}, [tableBlock]);
 
+	const previewComparison = String(comparisonText || DEFAULT_COMPARISON)
+		.replace('{betterThan}', 'x%')
+		.replace('{lowerThan}', 'y%')
+		.replace('{sameAs}', 'z%');
+
 	return (
 		<>
 			<Controls
@@ -215,13 +238,12 @@ function Edit({
 				<div {...innerBlocksProps} />
 
 				<div id="score">
-					<h2>
-						You answered <span>X</span> questions correctly
-					</h2>
-					<h3>
-						You scored better than x% of the public, below y% of the
-						public and the same as z% of the public.
-					</h3>
+					{showScoreSummary && (
+						<h2>
+							You answered <span>X</span> questions correctly
+						</h2>
+					)}
+					<h3>{previewComparison}</h3>
 				</div>
 				<div id="bar-chart">
 					<HistogramPreview

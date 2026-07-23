@@ -25,25 +25,25 @@ import TableDemoBreaks from './table-demo-breaks';
  *
  * @param {Object}   props                          Properties passed to the function.
  * @param {Object}   props.attributes               Available block attributes.
- * @param {Object}   props.context
- * @param {string}   props.clientId
- * @param {boolean}  props.isSelected
- * @param {Object}   props.rowBackgroundColor
- * @param {Function} props.setRowBackgroundColor
- * @param {Object}   props.altRowBackgroundColor
- * @param {Function} props.setAltRowBackgroundColor
- * @param {Object}   props.rowTextColor
- * @param {Function} props.setRowTextColor
- * @param {Object}   props.altRowTextColor
- * @param {Function} props.setAltRowTextColor
+ * @param {string}   props.clientId                 Block client ID.
+ * @param {boolean}  props.isSelected               Whether the block is selected.
+ * @param {Object}   props.rowBackgroundColor       Row background color from withColors.
+ * @param {Function} props.setRowBackgroundColor    Row background color setter.
+ * @param {Object}   props.altRowBackgroundColor    Alt row background color from withColors.
+ * @param {Function} props.setAltRowBackgroundColor Alt row background color setter.
+ * @param {Object}   props.rowTextColor             Row text color from withColors.
+ * @param {Function} props.setRowTextColor          Row text color setter.
+ * @param {Object}   props.altRowTextColor          Alt row text color from withColors.
+ * @param {Function} props.setAltRowTextColor       Alt row text color setter.
+ * @param {Object}   props.iconColor                Icon color from withColors.
+ * @param {Function} props.setIconColor             Icon color setter.
  * @param {Function} props.setAttributes            Function that updates individual attributes.
  *
- * @return {WPElement} Element to render.
+ * @return {Element} Element to render.
  */
 function Edit({
 	attributes,
 	setAttributes,
-	context,
 	clientId,
 	isSelected,
 	rowBackgroundColor,
@@ -54,6 +54,8 @@ function Edit({
 	setRowTextColor,
 	altRowTextColor,
 	setAltRowTextColor,
+	iconColor,
+	setIconColor,
 }) {
 	const blockProps = useBlockProps();
 	const { data, loading } = useQuizDataModel(clientId);
@@ -73,7 +75,13 @@ function Edit({
 
 	return (
 		<>
-			<Controls colors={colors} />
+			<Controls
+				attributes={attributes}
+				setAttributes={setAttributes}
+				colors={colors}
+				iconColor={iconColor}
+				setIconColor={setIconColor}
+			/>
 			<div {...blockProps}>
 				{loading && (
 					<div>
@@ -108,5 +116,6 @@ export default withColors(
 	{ rowBackgroundColor: 'color' },
 	{ altRowBackgroundColor: 'color' },
 	{ rowTextColor: 'color' },
-	{ altRowTextColor: 'color' }
+	{ altRowTextColor: 'color' },
+	{ iconColor: 'color' }
 )(Edit);
