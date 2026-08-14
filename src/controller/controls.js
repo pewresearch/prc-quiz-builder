@@ -33,6 +33,7 @@ import { table } from '@wordpress/icons';
 // eslint-disable-next-line import/no-relative-packages
 import { JSONSortableList } from '@prc/quiz-components';
 import QuizQuickEditModal from './quick-edit-modal';
+import ScoreBucketsControl from './score-buckets-control';
 
 function Controls({ attributes, setAttributes, clientId }) {
 	const {
@@ -41,6 +42,12 @@ function Controls({ attributes, setAttributes, clientId }) {
 		threshold,
 		displayType,
 		allowSubmissions,
+		liveFeedback,
+		correctOutcomeLabel,
+		incorrectOutcomeLabel,
+		unsureOutcomeLabel,
+		scoreBuckets,
+		type: quizType,
 	} = attributes;
 
 	const { postId } = useSelect((select) => ({
@@ -143,6 +150,65 @@ function Controls({ attributes, setAttributes, clientId }) {
 						max={15}
 						type="number"
 					/>
+					{'quiz' === quizType && (
+						<>
+							<ToggleControl
+								label={__('Live Feedback', 'prc-quiz')}
+								help={__(
+									'Immediately show whether an answer is correct or incorrect. Once selected, the answer cannot be changed.',
+									'prc-quiz'
+								)}
+								checked={!!liveFeedback}
+								onChange={() => {
+									setAttributes({
+										liveFeedback: !liveFeedback,
+									});
+								}}
+							/>
+							<TextControl
+								label={__('Correct outcome label', 'prc-quiz')}
+								help={__(
+									'Default text for the Correct / Incorrect bit when the answer is correct. Individual bits can override this.',
+									'prc-quiz'
+								)}
+								value={correctOutcomeLabel ?? 'Correct'}
+								onChange={(value) => {
+									setAttributes({
+										correctOutcomeLabel: value,
+									});
+								}}
+							/>
+							<TextControl
+								label={__(
+									'Incorrect outcome label',
+									'prc-quiz'
+								)}
+								help={__(
+									'Default text for the Correct / Incorrect bit when the answer is incorrect. Individual bits can override this.',
+									'prc-quiz'
+								)}
+								value={incorrectOutcomeLabel ?? 'Incorrect'}
+								onChange={(value) => {
+									setAttributes({
+										incorrectOutcomeLabel: value,
+									});
+								}}
+							/>
+							<TextControl
+								label={__('Not sure outcome label', 'prc-quiz')}
+								help={__(
+									'Default text for the Correct / Incorrect bit when the answer is Not sure. Individual bits can override this.',
+									'prc-quiz'
+								)}
+								value={unsureOutcomeLabel ?? 'Not sure'}
+								onChange={(value) => {
+									setAttributes({
+										unsureOutcomeLabel: value,
+									});
+								}}
+							/>
+						</>
+					)}
 				</PanelBody>
 				<PanelBody title={__('Community Groups')} initialOpen={false}>
 					<BaseControl
@@ -192,6 +258,14 @@ function Controls({ attributes, setAttributes, clientId }) {
 							setAttributes({
 								demoBreakLabels: JSON.stringify(values),
 							});
+						}}
+					/>
+				</PanelBody>
+				<PanelBody title={__('Score Buckets')} initialOpen={false}>
+					<ScoreBucketsControl
+						value={scoreBuckets}
+						onChange={(next) => {
+							setAttributes({ scoreBuckets: next });
 						}}
 					/>
 				</PanelBody>

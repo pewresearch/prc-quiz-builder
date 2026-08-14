@@ -108,13 +108,17 @@ class Plugin {
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-ability.php';
 		// 5. Initialize the inspector sidebar panel.
 		require_once plugin_dir_path( __DIR__ ) . '/includes/inspector-sidebar-panel/class-inspector-sidebar-panel.php';
-		// 6. WP-CLI: build newsletter audience from quiz group owners.
+		// 6. Audience service (shared by CLI + REST).
+		require_once plugin_dir_path( __DIR__ ) . '/includes/class-audience-service.php';
+		// 6b. WP-CLI: build newsletter audience from quiz group owners.
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-cli-build-audience.php';
 		// 7. WP-CLI: ad hoc quiz report (_report meta) read/update.
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-cli-report.php';
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-quiz-binding-resolver.php';
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-quiz-bindings.php';
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-block-supports.php';
+		// 8. Quizzes DataViews list screen (replaces the classic list table).
+		require_once plugin_dir_path( __DIR__ ) . '/includes/class-quiz-list.php';
 
 		// Load block files.
 		$this->load_blocks();
@@ -166,6 +170,7 @@ class Plugin {
 		new Rest_API( $this->get_loader() );
 		new Inspector_Sidebar_Panel( $this->get_loader() );
 		new Block_Supports( $this->get_loader() );
+		new Quiz_List( $this->get_loader() );
 
 		// Priority 5 ensures the quiz post type (and its declared supports like
 		// `prc-publication-listing`) is registered before any other plugin runs

@@ -27,7 +27,7 @@
 			"default": 0
 		},
 		"correct": {
-			"type": "boolean"
+			"type": ["boolean", "null"]
 		},
 		"uuid": {
 			"type": "string"
@@ -40,9 +40,7 @@
 			"type": "string"
 		}
 	},
-	"parent": [
-		"prc-quiz/question"
-	],
+	"parent": ["prc-quiz/question"],
 	"supports": {
 		"anchor": false,
 		"html": false,
@@ -75,10 +73,7 @@
 			"allowSizingOnChildren": true
 		},
 		"spacing": {
-			"margin": [
-				"top",
-				"bottom"
-			],
+			"margin": ["top", "bottom"],
 			"padding": true
 		},
 		"typography": {

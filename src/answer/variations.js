@@ -45,10 +45,21 @@ export default [
 		title: __('Correct Answer'),
 		description: __('A correct answer.'),
 		icon: <Icon variant="correct" />,
-		attributes: { correct: false },
+		attributes: { correct: true },
 		scope: [],
 		isActive: (blockAttributes) =>
 			true === blockAttributes.correct &&
+			!blockAttributes.conditionalDisplay,
+	},
+	{
+		name: 'answer-not-sure',
+		title: __('Not Sure'),
+		description: __('A neutral "Not sure" answer choice.'),
+		icon: <Icon variant="notSure" />,
+		attributes: { correct: null },
+		scope: [],
+		isActive: (blockAttributes) =>
+			null === blockAttributes.correct &&
 			!blockAttributes.conditionalDisplay,
 	},
 	{
@@ -56,7 +67,7 @@ export default [
 		title: __('Incorrect Answer'),
 		description: __('An incorrect answer'),
 		icon: <Icon variant="incorrect" />,
-		attributes: { correct: true },
+		attributes: { correct: false },
 		scope: [],
 		isActive: (blockAttributes) =>
 			false === blockAttributes.correct &&
@@ -86,6 +97,19 @@ export default [
 		scope: [],
 		isActive: (blockAttributes) =>
 			true === blockAttributes.correct &&
+			blockAttributes.conditionalDisplay,
+	},
+	{
+		name: 'conditional-answer-not-sure',
+		title: __('Not Sure'),
+		description: __(
+			'A neutral "Not sure" answer. It is only shown if a previous question is answered with a specific answer.'
+		),
+		icon: <Icon variant="conditionalNotSure" />,
+		attributes: { correct: null, conditionalDisplay: true },
+		scope: [],
+		isActive: (blockAttributes) =>
+			null === blockAttributes.correct &&
 			blockAttributes.conditionalDisplay,
 	},
 	{

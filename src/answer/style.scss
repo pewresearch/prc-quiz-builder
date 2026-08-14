@@ -41,6 +41,20 @@
 		border-color: black !important;
 	}
 
+	&.is-not-sure {
+		border-style: dashed;
+	}
+
+	&.is-feedback-correct {
+		border-color: #1a7f37 !important;
+		border-width: 2px;
+	}
+
+	&.is-feedback-incorrect {
+		border-color: #c5221f !important;
+		border-width: 2px;
+	}
+
 	// Dark mode support for logged-in users
 	@media (prefers-color-scheme: dark) {
 		background: #2a2a2a;
@@ -65,6 +79,18 @@
 
 		&.is-correct {
 			border-color: #f0f0f0 !important;
+		}
+
+		&.is-not-sure {
+			border-style: dashed;
+		}
+
+		&.is-feedback-correct {
+			border-color: #3fb950 !important;
+		}
+
+		&.is-feedback-incorrect {
+			border-color: #f85149 !important;
 		}
 	}
 

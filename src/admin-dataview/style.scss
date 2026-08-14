@@ -1,0 +1,20 @@
+@import "../../includes/shared-components/src/quiz-analytics/quiz-analytics";
+@import "../../includes/shared-components/src/quiz-analytics/group-analytics-modal";
+
+.prc-quiz-library-stats-modal {
+	&__section {
+		margin-bottom: 24px;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		h3 {
+			margin: 0 0 12px;
+		}
+	}
+
+	.analytics-summary {
+		margin-bottom: 1rem;
+	}
+}

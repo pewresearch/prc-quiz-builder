@@ -28,13 +28,14 @@ import Controls from './controls';
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
  *
- * @param {Object}   props               Properties passed to the function.
- * @param {Object}   props.attributes    Available block attributes.
- * @param {Function} props.setAttributes Function that updates individual attributes.
- * @param {Object}   props.context       Block context from parent blocks.
- * @param {string}   props.clientId      Block client ID.
+ * @param {Object}   props                            Properties passed to the function.
+ * @param {Object}   props.attributes                 Available block attributes.
+ * @param {Function} props.setAttributes              Function that updates individual attributes.
+ * @param {Object}   props.context                    Block context from parent blocks.
+ * @param {string}   props.clientId                   Block client ID.
+ * @param {string}   props.__unstableLayoutClassNames Layout class names from the block editor.
  *
- * @return {WPElement} Element to render.
+ * @return {Element} Element to render.
  */
 // eslint-disable-next-line max-lines-per-function
 export default function Edit({
@@ -44,7 +45,7 @@ export default function Edit({
 	clientId,
 	__unstableLayoutClassNames: layoutClassNames,
 }) {
-	const { question, type, uuid, conditionalDisplay } = attributes;
+	const { type, uuid } = attributes;
 
 	const quizType = context['prc-quiz/type'];
 	const existingUuids = context['prc-quiz/uuids'] || [];
@@ -55,20 +56,12 @@ export default function Edit({
 	const hasSelectedInnerBlock = useHasSelectedInnerBlock(clientId);
 
 	// Check if there are any existing blocks
-	const { hasBlocks, answerBlocks } = useSelect(
+	const { hasBlocks } = useSelect(
 		(select) => {
-			const { getBlocks, getClientIdsOfDescendants, getBlock } =
-				select('core/block-editor');
+			const { getBlocks } = select('core/block-editor');
 			const blocks = getBlocks(clientId);
-			const answerBlocks = getClientIdsOfDescendants(clientId).filter(
-				(id) => {
-					const block = getBlock(id);
-					return block?.name === 'prc-quiz/answer';
-				}
-			);
 			return {
 				hasBlocks: blocks && blocks.length > 0,
-				answerBlocks,
 			};
 		},
 		[clientId]
@@ -76,10 +69,10 @@ export default function Edit({
 
 	const isThermometer = 'thermometer' === type;
 
-	// eslint-disable-next-line max-len
-	// If the quiz type is not freeform then we want to set the default answer block attributes to be correct: false, this will ensure the answer block is in the true|false correct state instead of "undefined" as expected with a freeform quiz.
-	const DEFAULT_ANSWER_BLOCK_ATTRS =
-		'freeform' !== quizType ? { correct: false } : {};
+	const defaultAnswerBlockAttrs = useMemo(
+		() => ('freeform' !== quizType ? { correct: false } : {}),
+		[quizType]
+	);
 
 	const DEFAULT_TEMPLATE = useMemo(() => {
 		return [
@@ -99,7 +92,7 @@ export default function Edit({
 			],
 			[
 				'prc-quiz/answer',
-				DEFAULT_ANSWER_BLOCK_ATTRS,
+				defaultAnswerBlockAttrs,
 				[
 					[
 						'core/paragraph',
@@ -116,7 +109,7 @@ export default function Edit({
 				],
 			],
 		];
-	}, [DEFAULT_ANSWER_BLOCK_ATTRS]);
+	}, [defaultAnswerBlockAttrs]);
 
 	// eslint-disable-next-line max-len
 	const innerBlocksProps = useInnerBlocksProps(blockProps, {
@@ -128,7 +121,7 @@ export default function Edit({
 				: undefined,
 		__experimentalDefaultBlock: {
 			name: 'prc-quiz/answer',
-			attributes: DEFAULT_ANSWER_BLOCK_ATTRS,
+			attributes: defaultAnswerBlockAttrs,
 			innerBlocks: [
 				[
 					'core/paragraph',
@@ -174,7 +167,6 @@ export default function Edit({
 			<Controls
 				attributes={attributes}
 				setAttributes={setAttributes}
-				clientId={clientId}
 				context={context}
 			/>
 			<div {...innerBlocksProps} />

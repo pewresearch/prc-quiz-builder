@@ -14,16 +14,17 @@ import { getContext } from '@wordpress/interactivity';
  * @returns {Array} The correct answers.
  */
 export function getCorrectAnswers(answers) {
-	return Object.values(answers).filter((answer) => answer.correct);
+	return Object.values(answers).filter((answer) => true === answer.correct);
 }
 
 /**
  * Get the incorrect answers from the flattened answers.
+ * Null ("Not sure") answers are neither correct nor incorrect.
  * @param {Object} answers - All possible answers for the quiz.
  * @returns {Array} The incorrect answers.
  */
 export function getIncorrectAnswers(answers) {
-	return Object.values(answers).filter((answer) => !answer.correct);
+	return Object.values(answers).filter((answer) => false === answer.correct);
 }
 
 /**
@@ -114,10 +115,10 @@ export default function scoreQuiz(userSubmission, answers, questions) {
 		userSubmission,
 		resultsData: {
 			correctAnswersGiven: userSubmission.filter(
-				(answerUuid) => answers[answerUuid].correct
+				(answerUuid) => true === answers[answerUuid]?.correct
 			),
 			incorrectAnswersGiven: userSubmission.filter(
-				(answerUuid) => !answers[answerUuid].correct
+				(answerUuid) => false === answers[answerUuid]?.correct
 			),
 			questionPointsMatrix,
 			answerPointsMatrix,

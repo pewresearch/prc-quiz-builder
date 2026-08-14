@@ -1,3 +1,5 @@
+export { MONTH_LABELS } from '@prc/components';
+
 export const ANALYTICS_POLL_INTERVAL_MS = 5 * 60 * 1000;
 
 // Condense large counts (e.g. 193983 -> "193k"). Truncates rather than rounds

@@ -1,0 +1,1 @@
+<?php return array('dependencies' => array('prc-quiz-shared-components', 'react-jsx-runtime', 'wp-components', 'wp-element', 'wp-hooks', 'wp-i18n', 'wp-primitives'), 'version' => '22d4d943b3a492dfa3f8');

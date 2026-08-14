@@ -4,6 +4,11 @@
 import { store, getContext } from '@wordpress/interactivity';
 
 /**
+ * Internal Dependencies
+ */
+import { getQuestionOutcome } from '../controller/question-outcome';
+
+/**
  * Whether a gated question is currently reachable, mirroring the conditional
  * display rules in controller/view.js.
  *
@@ -29,6 +34,23 @@ function isQuestionActive(question, selectedAnswers, allQuestions) {
 		selectedAnswersArray.includes(conditionalAnswerUuid) ||
 		selectedAnswersArray.includes(uuid)
 	);
+}
+
+function outcomeMark(outcome) {
+	if (outcome === 'correct') {
+		return '✓';
+	}
+	if (outcome === 'incorrect') {
+		return '✗';
+	}
+	if (outcome === 'answered') {
+		return '';
+	}
+	return '?';
+}
+
+function outcomeLabel(outcome, labels) {
+	return labels?.[outcome] || labels?.unanswered || outcome;
 }
 
 const { state } = store('prc-quiz/controller', {
@@ -64,6 +86,38 @@ const { state } = store('prc-quiz/controller', {
 		get progressLabel() {
 			const { answeredQuestions, totalQuestions } = state;
 			return `${answeredQuestions} of ${totalQuestions} answered`;
+		},
+		/**
+		 * Per-question steps for the circles variation.
+		 *
+		 * Knowledge quizzes (`quizType === 'quiz'`) show correct/incorrect/unsure
+		 * marks. Other quiz types only show answered vs unanswered.
+		 *
+		 * @return {Array<{uuid: string, outcome: string, label: string, mark: string, isCorrect: boolean, isIncorrect: boolean, isUnsure: boolean, isUnanswered: boolean}>} Step descriptors for each active question.
+		 */
+		get progressSteps() {
+			const { selectedAnswers, quizType } = getContext();
+			const isKnowledgeQuiz = quizType === 'quiz';
+			const labels = state.progressStepLabels || {};
+			return state.activeQuestions.map((question) => {
+				const selected = selectedAnswers[question.uuid] || [];
+				let outcome = 'unanswered';
+				if (isKnowledgeQuiz) {
+					outcome = getQuestionOutcome(question, selected);
+				} else if (selected.length > 0) {
+					outcome = 'answered';
+				}
+				return {
+					uuid: question.uuid,
+					outcome,
+					label: outcomeLabel(outcome, labels),
+					mark: outcomeMark(outcome),
+					isCorrect: outcome === 'correct',
+					isIncorrect: outcome === 'incorrect',
+					isUnsure: outcome === 'unsure',
+					isUnanswered: outcome === 'unanswered',
+				};
+			});
 		},
 	},
 });

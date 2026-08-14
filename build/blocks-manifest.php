@@ -30,7 +30,10 @@ return array(
 				'default' => 0
 			),
 			'correct' => array(
-				'type' => 'boolean'
+				'type' => array(
+					'boolean',
+					'null'
+				)
 			),
 			'uuid' => array(
 				'type' => 'string'
@@ -172,6 +175,26 @@ return array(
 			'threshold' => array(
 				'type' => 'number',
 				'default' => 4
+			),
+			'liveFeedback' => array(
+				'type' => 'boolean',
+				'default' => false
+			),
+			'correctOutcomeLabel' => array(
+				'type' => 'string',
+				'default' => 'Correct'
+			),
+			'incorrectOutcomeLabel' => array(
+				'type' => 'string',
+				'default' => 'Incorrect'
+			),
+			'unsureOutcomeLabel' => array(
+				'type' => 'string',
+				'default' => 'Not sure'
+			),
+			'scoreBuckets' => array(
+				'type' => 'string',
+				'default' => '[]'
 			)
 		),
 		'providesContext' => array(
@@ -180,7 +203,9 @@ return array(
 			'prc-quiz/demo-break-labels' => 'demoBreakLabels',
 			'prc-quiz/threshold' => 'threshold',
 			'prc-quiz/groupsEnabled' => 'groupsEnabled',
-			'prc-quiz/allowSubmissions' => 'allowSubmissions'
+			'prc-quiz/allowSubmissions' => 'allowSubmissions',
+			'prc-quiz/liveFeedback' => 'liveFeedback',
+			'prc-quiz/score-buckets' => 'scoreBuckets'
 		),
 		'usesContext' => array(
 			'prc-quiz/isEmbedded'

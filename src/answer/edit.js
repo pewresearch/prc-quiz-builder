@@ -60,18 +60,18 @@ export default function Edit({
 	const { updateBlockAttributes } = useDispatch(blockEditorStore);
 
 	/**
-	 * Handle toggling the correct state for this answer.
+	 * Set the correct state for this answer (true | null | false).
 	 * For single-choice questions, ensures only one answer can be correct.
+	 *
+	 * @param {boolean|null} newCorrectState
 	 */
-	const handleToggleCorrect = () => {
+	const handleSetCorrect = (newCorrectState) => {
 		if ('freeform' === quizType) {
 			return;
 		}
-		const newCorrectState = !correct;
 
 		// For single-choice questions, set all other answers to false first
 		if (questionType === 'single' && newCorrectState === true) {
-			// Find all other answer blocks in the same question
 			const {
 				getBlockParentsByBlockName,
 				getClientIdsOfDescendants,
@@ -96,23 +96,29 @@ export default function Edit({
 					}
 				);
 
-				// Set all other answers to false
+				// Demote only currently Correct answers; preserve Not sure (null).
 				otherAnswerClientIds.forEach((id) => {
-					updateBlockAttributes(id, { correct: false, points: 0 });
+					const block = getBlock(id);
+					if (true === block?.attributes?.correct) {
+						updateBlockAttributes(id, {
+							correct: false,
+							points: 0,
+						});
+					}
 				});
 			}
 		}
 
-		// Set this answer's correct state
 		setAttributes({
 			correct: newCorrectState,
-			points: newCorrectState ? 1 : 0,
+			points: true === newCorrectState ? 1 : 0,
 		});
 	};
 
 	const blockProps = useBlockProps({
 		className: clsx(className, layoutClassNames, {
-			'is-correct': correct,
+			'is-correct': true === correct,
+			'is-not-sure': null === correct,
 		}),
 	});
 
@@ -200,12 +206,12 @@ export default function Edit({
 				clientId={clientId}
 				context={context}
 				setAttributes={setAttributes}
-				handleToggleCorrect={handleToggleCorrect}
+				handleSetCorrect={handleSetCorrect}
 			/>
 			<CorrectToolbar
 				context={context}
 				correct={correct}
-				onToggle={handleToggleCorrect}
+				onChange={handleSetCorrect}
 			/>
 			<div {...innerBlocksProps}>{innerBlocksProps.children}</div>
 		</>

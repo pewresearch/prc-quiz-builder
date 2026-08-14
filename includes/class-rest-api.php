@@ -151,6 +151,203 @@ class Rest_API {
 				},
 			)
 		);
+		register_rest_route(
+			'prc-api/v3',
+			'quiz/library',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'restfully_get_quiz_library' ),
+				'args'                => array(
+					'page'           => array(
+						'type'    => 'integer',
+						'default' => 1,
+					),
+					'per_page'       => array(
+						'type'    => 'integer',
+						'default' => 20,
+					),
+					'search'         => array(
+						'type'              => 'string',
+						'default'           => '',
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+					'status'         => array(
+						'type'              => 'string',
+						'default'           => 'publish,draft,pending,private',
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+					'orderby'        => array(
+						'type'    => 'string',
+						'default' => 'date',
+						'enum'    => array( 'date', 'modified', 'title', 'submissions', 'questions' ),
+					),
+					'order'          => array(
+						'type'    => 'string',
+						'default' => 'desc',
+						'enum'    => array( 'asc', 'desc', 'ASC', 'DESC' ),
+					),
+					'quiz_type'      => array(
+						'type'              => 'string',
+						'default'           => '',
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+					'display_type'   => array(
+						'type'              => 'string',
+						'default'           => '',
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+					'research_team'  => array(
+						'type'              => 'string',
+						'default'           => '',
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+					'groups_enabled' => array(
+						'type'              => 'string',
+						'default'           => '',
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+				),
+				'permission_callback' => function () {
+					return current_user_can( Quiz_List::get_capability() );
+				},
+			)
+		);
+		register_rest_route(
+			'prc-api/v3',
+			'quiz/audiences',
+			array(
+				array(
+					'methods'             => 'GET',
+					'callback'            => array( $this, 'restfully_list_audiences' ),
+					'args'                => array(
+						'quiz_id' => array(
+							'required' => true,
+							'type'     => 'integer',
+						),
+					),
+					'permission_callback' => array( $this, 'can_edit_quiz_from_request' ),
+				),
+				array(
+					'methods'             => 'DELETE',
+					'callback'            => array( $this, 'restfully_delete_audience' ),
+					'args'                => array(
+						'quiz_id'      => array(
+							'required' => true,
+							'type'     => 'integer',
+						),
+						'verification' => array(
+							'required' => false,
+							'type'     => 'string',
+						),
+						'key'          => array(
+							'required' => false,
+							'type'     => 'string',
+						),
+					),
+					'permission_callback' => array( $this, 'can_edit_quiz_from_request' ),
+				),
+			)
+		);
+		register_rest_route(
+			'prc-api/v3',
+			'quiz/build-audience',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'restfully_build_audience' ),
+				'args'                => array(
+					'quiz_id'      => array(
+						'required' => true,
+						'type'     => 'integer',
+					),
+					'verification' => array(
+						'required' => false,
+						'type'     => 'string',
+						'default'  => 'verified',
+					),
+				),
+				'permission_callback' => array( $this, 'can_edit_quiz_from_request' ),
+			)
+		);
+	}
+
+	/**
+	 * Whether the current user can edit the quiz named in the request.
+	 *
+	 * @param WP_REST_Request $request Request.
+	 * @return bool
+	 */
+	public function can_edit_quiz_from_request( WP_REST_Request $request ): bool {
+		$quiz_id = (int) $request->get_param( 'quiz_id' );
+		return $quiz_id > 0 && current_user_can( 'edit_post', $quiz_id );
+	}
+
+	/**
+	 * GET quiz/audiences
+	 *
+	 * @param WP_REST_Request $request Request.
+	 * @return \WP_REST_Response|WP_Error
+	 */
+	public function restfully_list_audiences( WP_REST_Request $request ) {
+		$quiz_id = (int) $request->get_param( 'quiz_id' );
+		$post    = get_post( $quiz_id );
+		if ( ! $post || Plugin::$post_type !== $post->post_type ) {
+			return new WP_Error(
+				'invalid_quiz',
+				'Quiz not found.',
+				array( 'status' => 404 )
+			);
+		}
+
+		return rest_ensure_response( Audience_Service::list_for_quiz( $quiz_id ) );
+	}
+
+	/**
+	 * POST quiz/build-audience
+	 *
+	 * @param WP_REST_Request $request Request.
+	 * @return \WP_REST_Response|WP_Error
+	 */
+	public function restfully_build_audience( WP_REST_Request $request ) {
+		$quiz_id      = (int) $request->get_param( 'quiz_id' );
+		$verification = (string) ( $request->get_param( 'verification' ) ?: 'verified' );
+
+		$result = Audience_Service::build( $quiz_id, $verification );
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		return rest_ensure_response( $result );
+	}
+
+	/**
+	 * DELETE quiz/audiences
+	 *
+	 * @param WP_REST_Request $request Request.
+	 * @return \WP_REST_Response|WP_Error
+	 */
+	public function restfully_delete_audience( WP_REST_Request $request ) {
+		$quiz_id      = (int) $request->get_param( 'quiz_id' );
+		$verification = $request->get_param( 'verification' );
+		$key          = $request->get_param( 'key' );
+
+		if ( empty( $verification ) && empty( $key ) ) {
+			return new WP_Error(
+				'missing_audience_identity',
+				'Provide verification or key.',
+				array( 'status' => 400 )
+			);
+		}
+
+		$result = Audience_Service::delete(
+			$quiz_id,
+			is_string( $verification ) ? $verification : null,
+			is_string( $key ) ? $key : null
+		);
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		return rest_ensure_response( $result );
 	}
 
 	/**
@@ -682,7 +879,11 @@ class Rest_API {
 			}
 
 			// If there isn't an archetype yet create one, otherwise just update the hits counter.
-			if ( false === $archetypes->get_archetype() ) {
+			// WP_Error from get means RTDB failed — do not create (would wipe hits if a later write succeeds).
+			$existing_archetype = $archetypes->get_archetype();
+			if ( is_wp_error( $existing_archetype ) ) {
+				$success = $existing_archetype;
+			} elseif ( false === $existing_archetype ) {
 				$success = $archetypes->create_archetype( $submission, $score );
 			} else {
 				$success = $archetypes->log_archetype_hit();
@@ -820,6 +1021,206 @@ class Rest_API {
 				'message'      => 'Archetypes purged successfully for quiz: ' . $quiz_id,
 				'purge_result' => $purge_result,
 			)
+		);
+	}
+
+	/**
+	 * List quizzes for the DataViews admin screen.
+	 *
+	 * @param WP_REST_Request $request The incoming request.
+	 * @return \WP_REST_Response
+	 */
+	public function restfully_get_quiz_library( WP_REST_Request $request ) {
+		$per_page = max( 1, min( 100, (int) $request->get_param( 'per_page' ) ) );
+		$page     = max( 1, (int) $request->get_param( 'page' ) );
+
+		$statuses = array_values(
+			array_filter(
+				array_map( 'sanitize_key', explode( ',', (string) $request->get_param( 'status' ) ) )
+			)
+		);
+		if ( empty( $statuses ) ) {
+			$statuses = array( 'publish', 'draft', 'pending', 'private' );
+		}
+
+		$query_args = array(
+			'post_type'              => Plugin::$post_type,
+			'post_status'            => $statuses,
+			'perm'                   => 'editable',
+			'posts_per_page'         => $per_page,
+			'paged'                  => $page,
+			's'                      => (string) $request->get_param( 'search' ),
+			'no_found_rows'          => false,
+			'ignore_sticky_posts'    => true,
+			'update_post_meta_cache' => true,
+			'update_post_term_cache' => true,
+		);
+
+		$order   = 'asc' === strtolower( (string) $request->get_param( 'order' ) ) ? 'ASC' : 'DESC';
+		$orderby = (string) $request->get_param( 'orderby' );
+
+		switch ( $orderby ) {
+			case 'submissions':
+				$query_args['orderby']  = 'meta_value_num';
+				$query_args['meta_key'] = Analytics::META_SUBMISSIONS_TOTAL; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+				break;
+			case 'questions':
+				$query_args['orderby']  = 'meta_value_num';
+				$query_args['meta_key'] = Quiz_List::META_QUESTION_COUNT; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+				break;
+			case 'title':
+			case 'modified':
+				$query_args['orderby'] = $orderby;
+				break;
+			default:
+				$query_args['orderby'] = 'date';
+				break;
+		}
+		$query_args['order'] = $order;
+
+		$meta_query = $this->build_library_meta_query( $request );
+		if ( ! empty( $meta_query ) ) {
+			$query_args['meta_query'] = $meta_query; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+		}
+
+		// Sorting or filtering on mirrored meta keys would hide quizzes whose
+		// meta has not been written yet.
+		if ( isset( $query_args['meta_key'] ) || ! empty( $meta_query ) ) {
+			Quiz_List::run_backfill_batch();
+		}
+
+		$research_team = (string) $request->get_param( 'research_team' );
+		if ( '' !== $research_team && taxonomy_exists( 'research-teams' ) ) {
+			$slugs = array_values(
+				array_filter( array_map( 'sanitize_title', explode( ',', $research_team ) ) )
+			);
+			if ( ! empty( $slugs ) ) {
+				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+				$query_args['tax_query'] = array(
+					array(
+						'taxonomy' => 'research-teams',
+						'field'    => 'slug',
+						'terms'    => $slugs,
+					),
+				);
+			}
+		}
+
+		$query = new \WP_Query( $query_args );
+
+		$rows = array_map(
+			array( $this, 'shape_library_row' ),
+			$query->posts
+		);
+
+		$response = rest_ensure_response( $rows );
+		$response->header( 'X-WP-Total', (string) (int) $query->found_posts );
+		$response->header( 'X-WP-TotalPages', (string) (int) $query->max_num_pages );
+
+		return $response;
+	}
+
+	/**
+	 * Build the meta_query for the library list filters.
+	 *
+	 * @param WP_REST_Request $request The incoming request.
+	 * @return array
+	 */
+	private function build_library_meta_query( WP_REST_Request $request ): array {
+		$meta_query = array();
+
+		$quiz_type = array_values(
+			array_filter( array_map( 'sanitize_key', explode( ',', (string) $request->get_param( 'quiz_type' ) ) ) )
+		);
+		if ( ! empty( $quiz_type ) ) {
+			$meta_query[] = array(
+				'key'     => Quiz_List::META_TYPE,
+				'value'   => $quiz_type,
+				'compare' => 'IN',
+			);
+		}
+
+		$display_type = array_values(
+			array_filter( array_map( 'sanitize_key', explode( ',', (string) $request->get_param( 'display_type' ) ) ) )
+		);
+		if ( ! empty( $display_type ) ) {
+			$meta_query[] = array(
+				'key'     => Quiz_List::META_DISPLAY_TYPE,
+				'value'   => $display_type,
+				'compare' => 'IN',
+			);
+		}
+
+		$groups_enabled = (string) $request->get_param( 'groups_enabled' );
+		if ( '' !== $groups_enabled ) {
+			$meta_query[] = array(
+				'key'     => Quiz_List::META_GROUPS_ENABLED,
+				'value'   => in_array( $groups_enabled, array( '1', 'true' ), true ) ? '1' : '0',
+				'compare' => '=',
+			);
+		}
+
+		return $meta_query;
+	}
+
+	/**
+	 * Shape a quiz post into a library row for the DataViews UI.
+	 *
+	 * Falls back to parsing block markup when the list meta has not been synced
+	 * yet, and stores the result so later requests read it from meta.
+	 *
+	 * @param \WP_Post $post The quiz post.
+	 * @return array
+	 */
+	private function shape_library_row( \WP_Post $post ): array {
+		$type = (string) get_post_meta( $post->ID, Quiz_List::META_TYPE, true );
+
+		if ( '' === $type ) {
+			$parsed = Quiz_List::parse_list_meta( (string) $post->post_content );
+			Quiz_List::store_list_meta( $post->ID, $parsed );
+			$type           = $parsed['type'];
+			$display_type   = $parsed['display_type'];
+			$groups_enabled = (bool) $parsed['groups_enabled'];
+			$question_count = (int) $parsed['question_count'];
+		} else {
+			$display_type   = (string) get_post_meta( $post->ID, Quiz_List::META_DISPLAY_TYPE, true );
+			$groups_enabled = (bool) get_post_meta( $post->ID, Quiz_List::META_GROUPS_ENABLED, true );
+			$question_count = (int) get_post_meta( $post->ID, Quiz_List::META_QUESTION_COUNT, true );
+		}
+
+		$report = Analytics::get_report_data( $post->ID );
+
+		$research_teams = array();
+		if ( taxonomy_exists( 'research-teams' ) ) {
+			$terms = get_the_terms( $post, 'research-teams' );
+			if ( is_array( $terms ) ) {
+				$research_teams = array_map(
+					static fn( \WP_Term $term ) => array(
+						'slug'  => $term->slug,
+						'label' => $term->name,
+					),
+					$terms
+				);
+			}
+		}
+
+		return array(
+			'id'             => (int) $post->ID,
+			'title'          => get_the_title( $post ),
+			'status'         => $post->post_status,
+			'date'           => mysql2date( 'c', $post->post_date, false ),
+			'modified'       => mysql2date( 'c', $post->post_modified, false ),
+			'edit_url'       => (string) get_edit_post_link( $post->ID, 'raw' ),
+			'view_url'       => (string) get_permalink( $post->ID ),
+			'author'         => (string) get_the_author_meta( 'display_name', $post->post_author ),
+			'quiz_type'      => $type,
+			'display_type'   => $display_type,
+			'groups_enabled' => $groups_enabled,
+			'question_count' => $question_count,
+			'submissions'    => (int) ( $report['total'] ?? 0 ),
+			'first_24_hours' => (int) ( $report['first_24_hours'] ?? 0 ),
+			'first_week'     => (int) ( $report['first_week'] ?? 0 ),
+			'research_teams' => $research_teams,
 		);
 	}
 }

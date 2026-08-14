@@ -54,6 +54,26 @@
     "threshold": {
       "type": "number",
       "default": 4
+    },
+    "liveFeedback": {
+      "type": "boolean",
+      "default": false
+    },
+    "correctOutcomeLabel": {
+      "type": "string",
+      "default": "Correct"
+    },
+    "incorrectOutcomeLabel": {
+      "type": "string",
+      "default": "Incorrect"
+    },
+    "unsureOutcomeLabel": {
+      "type": "string",
+      "default": "Not sure"
+    },
+    "scoreBuckets": {
+      "type": "string",
+      "default": "[]"
     }
   },
   "providesContext": {
@@ -62,7 +82,9 @@
     "prc-quiz/demo-break-labels": "demoBreakLabels",
     "prc-quiz/threshold": "threshold",
     "prc-quiz/groupsEnabled": "groupsEnabled",
-    "prc-quiz/allowSubmissions": "allowSubmissions"
+    "prc-quiz/allowSubmissions": "allowSubmissions",
+    "prc-quiz/liveFeedback": "liveFeedback",
+    "prc-quiz/score-buckets": "scoreBuckets"
   },
   "usesContext": [
     "prc-quiz/isEmbedded"

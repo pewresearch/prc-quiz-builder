@@ -44,12 +44,19 @@ class Answer {
 			return '';
 		}
 
+		// Preserve null ("Not sure") — (bool) null would collapse to false.
+		// Missing correct (unset default variation) is also neutral, not incorrect.
+		$correct = null;
+		if ( array_key_exists( 'correct', $attributes ) && null !== $attributes['correct'] ) {
+			$correct = (bool) $attributes['correct'];
+		}
+
 		// Add the answer to the question's answers array in quiz state.
 		$state = wp_interactivity_state( 'prc-quiz/controller', array() );
 		$state[ 'quiz_' . $quiz_id ]['questions'][ $question_uuid ]['answers'][ $attributes['uuid'] ] = array(
 			'uuid'                  => $attributes['uuid'],
 			'text'                  => wp_strip_all_tags( $attributes['answer'] ),
-			'correct'               => array_key_exists( 'correct', $attributes ) ? (bool) $attributes['correct'] : false,
+			'correct'               => $correct,
 			'points'                => array_key_exists( 'points', $attributes ) ? $attributes['points'] : 0,
 			'resultsLabel'          => array_key_exists( 'resultsLabel', $attributes ) ? $attributes['resultsLabel'] : null,
 			'conditional'           => array_key_exists( 'conditionalDisplay', $attributes ) ? $attributes['conditionalDisplay'] : false,
@@ -77,6 +84,9 @@ class Answer {
 		);
 		$tag->set_attribute( 'data-wp-on--click', 'actions.onAnswerClick' );
 		$tag->set_attribute( 'data-wp-class--is-active', 'state.isAnswerSelected' );
+		$tag->set_attribute( 'data-wp-class--is-feedback-correct', 'state.isFeedbackCorrect' );
+		$tag->set_attribute( 'data-wp-class--is-feedback-incorrect', 'state.isFeedbackIncorrect' );
+		$tag->set_attribute( 'data-wp-bind--disabled', 'state.isAnswerDisabled' );
 		if ( array_key_exists( 'conditionalDisplay', $attributes ) && $attributes['conditionalDisplay'] ) {
 			$tag->add_class( 'is-conditional' );
 			$tag->set_attribute( 'data-wp-bind--hidden', '!state.isConditionalAnswerSelected' );

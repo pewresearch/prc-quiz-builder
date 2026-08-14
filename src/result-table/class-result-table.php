@@ -66,10 +66,10 @@ class Result_Table {
 						<template data-wp-each--row="state.resultsTableRows">
 							<tr data-wp-key="context.row.uuid" class="prc-quiz-result-table__row">
 								<td>
-									<span class="prc-quiz-result-table__icon" style="<?php echo esc_attr( $icon_style ); ?>" data-wp-bind--hidden="!context.row.correct">
+									<span class="prc-quiz-result-table__icon" style="<?php echo esc_attr( $icon_style ); ?>" data-wp-bind--hidden="!context.row.showCorrectIcon">
 										<?php echo \PRC\Platform\Icons\render( 'light', 'check', $icon_size ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Icons::render escapes href; wp_kses_post strips <use>. ?>
 									</span>
-									<span class="prc-quiz-result-table__icon" style="<?php echo esc_attr( $icon_style ); ?>" data-wp-bind--hidden="context.row.correct">
+									<span class="prc-quiz-result-table__icon" style="<?php echo esc_attr( $icon_style ); ?>" data-wp-bind--hidden="!context.row.showIncorrectIcon">
 										<?php echo \PRC\Platform\Icons\render( 'light', 'xmark', $icon_size ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Icons::render escapes href; wp_kses_post strips <use>. ?>
 									</span>
 								</td>
@@ -122,10 +122,10 @@ class Result_Table {
 						<template data-wp-each--row="state.resultsTableRows">
 							<tr class="prc-quiz-result-table__row" data-wp-key="context.row.uuid">
 								<td>
-									<span class="prc-quiz-result-table__icon" style="<?php echo esc_attr( $icon_style ); ?>" data-wp-bind--hidden="!context.row.correct">
+									<span class="prc-quiz-result-table__icon" style="<?php echo esc_attr( $icon_style ); ?>" data-wp-bind--hidden="!context.row.showCorrectIcon">
 										<?php echo \PRC\Platform\Icons\render( 'light', 'check', $icon_size ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Icons::render escapes href; wp_kses_post strips <use>. ?>
 									</span>
-									<span class="prc-quiz-result-table__icon" style="<?php echo esc_attr( $icon_style ); ?>" data-wp-bind--hidden="context.row.correct">
+									<span class="prc-quiz-result-table__icon" style="<?php echo esc_attr( $icon_style ); ?>" data-wp-bind--hidden="!context.row.showIncorrectIcon">
 										<?php echo \PRC\Platform\Icons\render( 'light', 'xmark', $icon_size ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Icons::render escapes href; wp_kses_post strips <use>. ?>
 									</span>
 								</td>

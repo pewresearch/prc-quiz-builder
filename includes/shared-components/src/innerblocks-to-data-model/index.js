@@ -1,13 +1,21 @@
 /**
- * External Dependencies
- */
-
-/**
  * WordPress Dependencies
  */
-import { useState, useEffect } from '@wordpress/element';
+import { useMemo, useRef } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import { store as blockEditorStore } from '@wordpress/block-editor';
+
+const EMPTY_MODEL = {
+	demoBreakLabels: [],
+	questions: [],
+};
+
+function modelSignature(data) {
+	return JSON.stringify({
+		demoBreakLabels: data.demoBreakLabels,
+		questions: data.questions,
+	});
+}
 
 function structureData(controllerBlock) {
 	const dataToReturn = {
@@ -109,36 +117,43 @@ function structureData(controllerBlock) {
 }
 
 export default function useQuizDataModel(clientId) {
-	const [loading, setLoading] = useState(true);
-	const [quizDataModel, setQuizDataModel] = useState([]);
-
-	const { controllerBlock } = useSelect(
+	const controllerBlock = useSelect(
 		(select) => {
 			const { getBlock, getBlockParentsByBlockName } =
 				select(blockEditorStore);
-			let controllerBlockClientId = clientId;
-			if ('prc-quiz/controller' !== getBlock(clientId).name) {
-				controllerBlockClientId = getBlockParentsByBlockName(clientId, [
-					'prc-quiz/controller',
-				]).pop();
+			const current = getBlock(clientId);
+			if (!current) {
+				return null;
 			}
-			return {
-				controllerBlock: getBlock(controllerBlockClientId),
-			};
+			if ('prc-quiz/controller' === current.name) {
+				return current;
+			}
+			const controllerBlockClientId = getBlockParentsByBlockName(
+				clientId,
+				['prc-quiz/controller']
+			).pop();
+			return controllerBlockClientId
+				? getBlock(controllerBlockClientId)
+				: null;
 		},
 		[clientId]
 	);
 
-	useEffect(() => {
-		const newData = structureData(controllerBlock);
-		if (newData.questions.length > 0) {
-			setQuizDataModel(newData);
-			setLoading(false);
+	const data = useMemo(() => {
+		if (!controllerBlock) {
+			return EMPTY_MODEL;
 		}
+		return structureData(controllerBlock);
 	}, [controllerBlock]);
 
+	const previous = useRef(null);
+	const signature = modelSignature(data);
+	if (!previous.current || previous.current.signature !== signature) {
+		previous.current = { data, signature };
+	}
+
 	return {
-		loading,
-		data: quizDataModel,
+		loading: !controllerBlock,
+		data: previous.current.data,
 	};
 }

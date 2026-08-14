@@ -57,21 +57,17 @@ const TEMPLATE = [
  *
  * @param {Object}   props               Properties passed to the function.
  * @param {string}   props.className     Class name.
- * @param {Object}   props.context       Context.
  * @param {string}   props.clientId      Block client ID.
- * @param {boolean}  props.isSelected    Whether the block is selected.
  * @param {Object}   props.attributes    Available block attributes.
  * @param {Function} props.setAttributes Function that updates individual attributes.
  *
- * @return {WPElement} Element to render.
+ * @return {Element} Element to render.
  */
 export default function Edit({
 	attributes,
 	setAttributes,
 	className,
-	context,
 	clientId,
-	isSelected,
 }) {
 	const { allowedBlocks, displayType, groupsEnabled } = attributes;
 
@@ -113,13 +109,16 @@ export default function Edit({
 				);
 
 			// Create object with uuid as key and clientId as value, filtering out blocks without uuids
-			return relevantBlocks.reduce((acc, { block, clientId }) => {
-				const uuid = block.attributes.uuid;
-				if (uuid) {
-					acc[uuid] = clientId;
-				}
-				return acc;
-			}, {});
+			return relevantBlocks.reduce(
+				(acc, { block, clientId: blockClientId }) => {
+					const uuid = block.attributes.uuid;
+					if (uuid) {
+						acc[uuid] = blockClientId;
+					}
+					return acc;
+				},
+				{}
+			);
 		},
 		[clientId]
 	);
@@ -153,6 +152,15 @@ export default function Edit({
 		};
 	}, [groupsEnabled, quizPermalink]);
 
+	const blockContextValue = useMemo(
+		() => ({
+			'prc-quiz/id': quizId,
+			'prc-quiz/uuids': existingUuids,
+			...groupBindingContext,
+		}),
+		[quizId, existingUuids, groupBindingContext]
+	);
+
 	return (
 		<>
 			<Controls
@@ -161,13 +169,7 @@ export default function Edit({
 				clientId={clientId}
 			/>
 			<div {...innerBlocksProps}>
-				<BlockContextProvider
-					value={{
-						'prc-quiz/id': quizId,
-						'prc-quiz/uuids': existingUuids,
-						...groupBindingContext,
-					}}
-				>
+				<BlockContextProvider value={blockContextValue}>
 					<div {...innerBlocksProps} />
 				</BlockContextProvider>
 			</div>

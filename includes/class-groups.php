@@ -167,7 +167,15 @@ class Groups {
 			return $this->firebase_unavailable_error();
 		}
 
-		$existing_group = $this->db->getReference( 'quiz/' . $this->quiz_id . '/groups/' . $this->group_id )->getValue();
+		try {
+			$existing_group = $this->db->getReference( 'quiz/' . $this->quiz_id . '/groups/' . $this->group_id )->getValue();
+		} catch ( \Kreait\Firebase\Exception\DatabaseException $e ) {
+			return new WP_Error(
+				'firebase_error',
+				'Group lookup failed.',
+				array( 'status' => 503 )
+			);
+		}
 		if ( empty( $existing_group ) ) {
 			return false;
 		}
@@ -224,31 +232,39 @@ class Groups {
 
 		$group_name = $duplicate_name_exists ? $this->group_name . ' (' . $created_pretty . ')' : $this->group_name;
 
-		// Create the group in the quiz groups database.
-		$this->db->getReference( 'quiz/' . $this->quiz_id . '/groups/' . $this->group_id )->set(
-			array(
-				'name'            => $group_name,
-				'quiz_id'         => (int) $this->quiz_id,
-				'created'         => $created_timestamp,
-				'last_updated'    => $created_timestamp,
-				'owner'           => $this->owner_id,
-				'clusters'        => $clusters, // This is an array of all the clusters with values set to 0 initially. We will increment these values as the group is updated.
-				'typology_groups' => $clusters, // This is the legacy field for the typology groups or "clusters" for the quiz.
-				'answers'         => $answers, // This is an array of all the answer uuid's given with values set to 0 initially. We will increment these values as the group is updated.
-				'total'           => 0, // This is the total number of responses posted to the group.
-			)
-		);
+		try {
+			// Create the group in the quiz groups database.
+			$this->db->getReference( 'quiz/' . $this->quiz_id . '/groups/' . $this->group_id )->set(
+				array(
+					'name'            => $group_name,
+					'quiz_id'         => (int) $this->quiz_id,
+					'created'         => $created_timestamp,
+					'last_updated'    => $created_timestamp,
+					'owner'           => $this->owner_id,
+					'clusters'        => $clusters, // This is an array of all the clusters with values set to 0 initially. We will increment these values as the group is updated.
+					'typology_groups' => $clusters, // This is the legacy field for the typology groups or "clusters" for the quiz.
+					'answers'         => $answers, // This is an array of all the answer uuid's given with values set to 0 initially. We will increment these values as the group is updated.
+					'total'           => 0, // This is the total number of responses posted to the group.
+				)
+			);
 
-		// Store record of group on the users database.
-		$this->db->getReference( 'users/' . $this->owner_id . '/groups/' . $this->group_id )->set(
-			array(
-				'created'   => $created_timestamp,
-				'quiz_id'   => (int) $this->quiz_id,
-				'quiz_slug' => $this->quiz_slug,
-				'name'      => $group_name,
-				'version'   => self::$groups_version,
-			)
-		);
+			// Store record of group on the users database.
+			$this->db->getReference( 'users/' . $this->owner_id . '/groups/' . $this->group_id )->set(
+				array(
+					'created'   => $created_timestamp,
+					'quiz_id'   => (int) $this->quiz_id,
+					'quiz_slug' => $this->quiz_slug,
+					'name'      => $group_name,
+					'version'   => self::$groups_version,
+				)
+			);
+		} catch ( \Kreait\Firebase\Exception\DatabaseException $e ) {
+			return new WP_Error(
+				'firebase_error',
+				'Group creation failed.',
+				array( 'status' => 503 )
+			);
+		}
 
 		return $this->group_id;
 	}
@@ -355,7 +371,7 @@ class Groups {
 			return new WP_Error(
 				'firebase_error',
 				'Group update failed.',
-				array( 'status' => 500 )
+				array( 'status' => 503 )
 			);
 		}
 

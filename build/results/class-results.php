@@ -26,6 +26,8 @@ class Results {
 		$loader->add_action( 'init', $this, 'block_init' );
 		$loader->add_action( 'init', $this, 'define_block_bits', 11 );
 		$loader->add_filter( 'render_block', $this, 'handle_results_display_logic', 10, 2 );
+		$loader->add_filter( 'render_block_core/paragraph', $this, 'stamp_question_outcome_host', 110, 2 );
+		$loader->add_filter( 'render_block_core/heading', $this, 'stamp_question_outcome_host', 110, 2 );
 	}
 
 	/**
@@ -44,6 +46,7 @@ class Results {
 			'prc-quiz-builder/group-results-link',
 			array(
 				'label'               => __( 'Quiz: View Group Results Link', 'prc-quiz-builder' ),
+				'category'            => 'Quiz',
 				'allowed_block_types' => array( 'core/paragraph', 'core/heading' ),
 				'render_strategy'     => 'iapi',
 				'iapi'                => array(
@@ -59,6 +62,122 @@ class Results {
 				'default_text'        => __( "View your group's results.", 'prc-quiz-builder' ),
 			)
 		);
+
+		\PRC\Platform\Block_Bits\register_block_bit(
+			'prc-quiz-builder/question-outcome-label',
+			array(
+				'label'               => __( 'Quiz: Correct / Incorrect', 'prc-quiz-builder' ),
+				'category'            => 'Quiz',
+				'allowed_block_types' => array( 'core/paragraph', 'core/heading' ),
+				'attributes'          => array(
+					'correctLabel'   => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'incorrectLabel' => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'unsureLabel'    => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+				),
+				'render_strategy'     => 'callback',
+				'render_callback'     => array( $this, 'render_question_outcome_label_bit' ),
+				'default_text'        => __( 'Correct', 'prc-quiz-builder' ),
+			)
+		);
+
+		\PRC\Platform\Block_Bits\register_block_bit(
+			'prc-quiz-builder/matching-score-bucket',
+			array(
+				'label'               => __( 'Quiz: Matching Score Bucket', 'prc-quiz-builder' ),
+				'category'            => 'Quiz',
+				'allowed_block_types' => array( 'core/paragraph', 'core/heading' ),
+				'render_strategy'     => 'iapi',
+				'iapi'                => array(
+					'namespace' => 'prc-quiz/controller',
+					'text'      => 'state.matchedScoreBucketLabel',
+					'bind'      => array(
+						'hidden' => 'state.isMatchedScoreBucketLabelHidden',
+					),
+				),
+				'default_text'        => __( 'your score group', 'prc-quiz-builder' ),
+			)
+		);
+	}
+
+	/**
+	 * Render the question-outcome-label bit with optional per-bit label overrides.
+	 *
+	 * Empty override attributes inherit quiz-wide outcomeLabels from the
+	 * controller context. Only non-empty overrides are stamped onto the bit's
+	 * data-wp-context so they do not clobber parent defaults.
+	 *
+	 * @param array $attributes Sanitized attribute map (camelCase keys).
+	 * @return string
+	 */
+	public function render_question_outcome_label_bit( array $attributes ): string {
+		$overrides = array();
+		foreach ( array( 'correctLabel', 'incorrectLabel', 'unsureLabel' ) as $key ) {
+			$value = isset( $attributes[ $key ] ) ? trim( (string) $attributes[ $key ] ) : '';
+			if ( '' !== $value ) {
+				$overrides[ $key ] = $value;
+			}
+		}
+
+		$fallback = __( 'Correct', 'prc-quiz-builder' );
+		$tag      = new WP_HTML_Tag_Processor(
+			'<span class="prc-block-bit" data-prc-block-bit="prc-quiz-builder/question-outcome-label">' . esc_html( $fallback ) . '</span>'
+		);
+		$tag->next_tag();
+		$tag->set_attribute( 'data-wp-interactive', 'prc-quiz/controller' );
+		$tag->set_attribute( 'data-wp-text', 'state.questionOutcomeLabel' );
+		$tag->set_attribute( 'data-wp-bind--hidden', '!state.questionOutcomeLabel' );
+
+		// Persist overrides as data-* attrs. The view getter reads them via
+		// getElement().dataset — more reliable than same-element data-wp-context
+		// for derived state on this nested interactive span.
+		foreach ( $overrides as $key => $value ) {
+			$tag->set_attribute( 'data-' . strtolower( (string) preg_replace( '/([a-z0-9])([A-Z])/', '$1-$2', $key ) ), $value );
+		}
+
+		return $tag->get_updated_html();
+	}
+
+	/**
+	 * Stamp host paragraph/heading classes so outcome feedback stays hidden
+	 * until the user has a selection for the active question.
+	 *
+	 * Runs after the block-bits walker (priority 110) so the rendered bit
+	 * marker is already present in the HTML.
+	 *
+	 * @hook render_block_core/paragraph
+	 * @hook render_block_core/heading
+	 *
+	 * @param string $block_content The block content.
+	 * @param array  $block         The block data.
+	 * @return string
+	 */
+	public function stamp_question_outcome_host( $block_content, $block ) {
+		unset( $block );
+		if ( ! is_string( $block_content ) || ! str_contains( $block_content, 'prc-quiz-builder/question-outcome-label' ) ) {
+			return $block_content;
+		}
+
+		$tag = new WP_HTML_Tag_Processor( $block_content );
+		if ( ! $tag->next_tag() ) {
+			return $block_content;
+		}
+
+		$tag->add_class( 'has-prc-quiz-question-outcome' );
+		// Stamp awaiting-selection up front so CSS hides the host before hydration.
+		$tag->add_class( 'is-awaiting-selection' );
+		$tag->set_attribute( 'data-wp-interactive', 'prc-quiz/controller' );
+		$tag->set_attribute( 'data-wp-class--is-awaiting-selection', 'state.isQuestionOutcomeLabelHidden' );
+
+		return $tag->get_updated_html();
 	}
 
 	/**
@@ -111,6 +230,7 @@ class Results {
 		$results_threshold_points = $block['attrs']['resultsThresholdPoints'] ?? 50;
 		// Check if the block has the resultsThresholdDirection attribute.
 		$results_threshold_direction = $block['attrs']['resultsThresholdDirection'] ?? 'above';
+		$results_bucket_id           = $block['attrs']['resultsBucketId'] ?? '';
 
 		$tag = new WP_HTML_Tag_Processor( $block_content );
 		$tag->next_tag();
@@ -139,6 +259,7 @@ class Results {
 						'maxPoints'          => $results_max_points,
 						'thresholdPoints'    => $results_threshold_points,
 						'thresholdDirection' => $results_threshold_direction,
+						'bucketId'           => $results_bucket_id,
 					),
 				)
 			)
@@ -181,6 +302,10 @@ class Results {
 		// Then we look for the archetype data. If none can be found, we show an error message.
 		$archetype         = $archetype_id ? $this->get_archetype_data( $quiz_id, $archetype_id ) : null;
 		$archetype_context = array();
+		// Treat RTDB failures like a miss for results rendering.
+		if ( is_wp_error( $archetype ) ) {
+			$archetype = false;
+		}
 		// If an archetype is being requested but none found, we return back an error message.
 		if ( false === $archetype ) {
 			$error_message = $this->no_archetype_found( $quiz_id );

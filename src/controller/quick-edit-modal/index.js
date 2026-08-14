@@ -6,7 +6,6 @@ import { useState, useCallback, useMemo } from '@wordpress/element';
 import {
 	Modal,
 	Button,
-	FormToggle,
 	__experimentalNumberControl as NumberControl,
 } from '@wordpress/components';
 import { DataViews, filterSortAndPaginate } from '@wordpress/dataviews';
@@ -45,7 +44,7 @@ const DEFAULT_VIEW = {
 			page: { width: 100 },
 			questionText: { width: '30%' },
 			answerText: { width: '25%' },
-			correct: { width: 70, align: 'center' },
+			correct: { width: 100, align: 'center' },
 			points: { width: 70, align: 'center' },
 			resultsLabel: { width: '15%' },
 		},
@@ -164,15 +163,31 @@ export default function QuizQuickEditModal({ clientId, onClose }) {
 				label: __('Correct', 'prc-quiz'),
 				enableSorting: false,
 				enableGlobalSearch: false,
-				getValue: ({ item }) => (item.correct ? 'yes' : 'no'),
+				getValue: ({ item }) => {
+					if (true === item.correct) {
+						return 'yes';
+					}
+					if (false === item.correct) {
+						return 'no';
+					}
+					// null or undefined (unset) → Not sure
+					return 'not-sure';
+				},
 				render: ({ item }) => {
 					if (isFreeform) {
 						return <span>—</span>;
 					}
+					let label = __('Not sure', 'prc-quiz');
+					if (true === item.correct) {
+						label = __('Correct', 'prc-quiz');
+					} else if (false === item.correct) {
+						label = __('Incorrect', 'prc-quiz');
+					}
 					return (
-						<FormToggle
-							checked={!!item.correct}
-							onChange={() =>
+						<Button
+							variant="secondary"
+							size="small"
+							onClick={() =>
 								toggleCorrect(
 									item.answerClientId,
 									item.questionClientId,
@@ -180,7 +195,9 @@ export default function QuizQuickEditModal({ clientId, onClose }) {
 									item.correct
 								)
 							}
-						/>
+						>
+							{label}
+						</Button>
 					);
 				},
 			},

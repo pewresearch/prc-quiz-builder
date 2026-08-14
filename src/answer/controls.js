@@ -11,6 +11,7 @@ import { Fragment, useEffect, useCallback } from '@wordpress/element';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
 import {
 	Button,
+	ButtonGroup,
 	PanelBody,
 	BaseControl,
 	__experimentalNumberControl as NumberControl,
@@ -27,7 +28,7 @@ export default function Controls({
 	clientId,
 	context,
 	setAttributes,
-	handleToggleCorrect,
+	handleSetCorrect,
 }) {
 	const { uuid, points, correct, resultsLabel, answer } = attributes;
 
@@ -67,17 +68,35 @@ export default function Controls({
 				{'freeform' !== quizType && (
 					<BaseControl
 						help={__(
-							'Marking an answer as correct will automatically assign 1 point to the answer. Marking an answer as incorrect will automatically assign 0 points to the answer. You can modify these after initially marking the answer as correct or incorrect.'
+							'Correct answers get 1 point by default. Incorrect and Not sure answers get 0. You can change points after setting the state.'
 						)}
 					>
-						<Button
-							variant="secondary"
-							onClick={handleToggleCorrect}
-						>
-							{correct
-								? __('Mark as Incorrect', 'prc-quiz')
-								: __('Mark as Correct', 'prc-quiz')}
-						</Button>
+						<ButtonGroup>
+							<Button
+								variant={
+									true === correct ? 'primary' : 'secondary'
+								}
+								onClick={() => handleSetCorrect(true)}
+							>
+								{__('Correct', 'prc-quiz')}
+							</Button>
+							<Button
+								variant={
+									null === correct ? 'primary' : 'secondary'
+								}
+								onClick={() => handleSetCorrect(null)}
+							>
+								{__('Not sure', 'prc-quiz')}
+							</Button>
+							<Button
+								variant={
+									false === correct ? 'primary' : 'secondary'
+								}
+								onClick={() => handleSetCorrect(false)}
+							>
+								{__('Incorrect', 'prc-quiz')}
+							</Button>
+						</ButtonGroup>
 					</BaseControl>
 				)}
 				<NumberControl

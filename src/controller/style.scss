@@ -10,6 +10,11 @@
 		display: none;
 	}
 
+	/* Host paragraph/heading for the Correct / Incorrect bit — hidden until selection. */
+	.has-prc-quiz-question-outcome.is-awaiting-selection {
+		display: none;
+	}
+
 	.wp-block-prc-quiz-controller-submission-error {
 		border: 1px solid currentColor;
 		margin-block: 1rem;

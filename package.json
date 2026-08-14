@@ -1,13 +1,15 @@
 {
 	"name": "@prc/quiz-builder",
-	"version": "4.2.0",
+	"version": "4.4.0",
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"build": "wp-scripts build --webpack-copy-php && wp-scripts build --experimental-modules --webpack-copy-php && wp-scripts build-blocks-manifest",
+		"build": "wp-scripts build --webpack-copy-php && wp-scripts build --experimental-modules --webpack-copy-php && wp-scripts build-blocks-manifest && wp-scripts build --source-path=src/admin-dataview/ --output-path=build/admin-dataview/",
+		"build:admin": "wp-scripts build --source-path=src/admin-dataview/ --output-path=build/admin-dataview/",
 		"build:block": "node bin/build-block.js",
 		"build:manifest": "wp-scripts build-blocks-manifest",
 		"start": "node bin/start-block.js",
+		"start:admin": "wp-scripts start --source-path=src/admin-dataview/ --output-path=build/admin-dataview/",
 		"watch": "node bin/start-block.js"
 	},
 	"author": "",
@@ -19,6 +21,7 @@
 		"@prc/functions": "*",
 		"@prc/hooks": "*",
 		"@prc/icons": "*",
+		"@wordpress/dataviews": "17.2.0",
 		"@wordpress/icons": "^11.3.0",
 		"md5": "^2.3.0"
 	}

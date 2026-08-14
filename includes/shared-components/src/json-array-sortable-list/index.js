@@ -1,15 +1,25 @@
 /**
  * WordPress Dependencies
  */
-import { Fragment, useEffect, useState } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import {
 	BaseControl,
 	Button,
 	CardDivider,
-	__experimentalScrollable as Scrollable,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalInputControl as InputControl,
 } from '@wordpress/components';
+
+function getItemLabel(labels, index) {
+	if (!Array.isArray(labels)) {
+		return labels;
+	}
+	if (typeof labels[index] !== 'undefined') {
+		return labels[index];
+	}
+	return 'Detached Index';
+}
 
 const JSONSortableList = ({
 	label = null,
@@ -20,11 +30,7 @@ const JSONSortableList = ({
 	disableAddingItems = false,
 	allowReset = false,
 }) => {
-	const [items, setItems] = useState(values);
-
-	useEffect(() => {
-		onChange(items);
-	}, [items]);
+	const items = values;
 
 	return (
 		<BaseControl help={help}>
@@ -45,19 +51,12 @@ const JSONSortableList = ({
 							>
 								<div style={{ flexGrow: '1' }}>
 									<InputControl
-										label={
-											Array.isArray(labels)
-												? typeof labels[index] !==
-													'undefined'
-													? labels[index]
-													: 'Detached Index'
-												: labels
-										} // If labels is an array (matching the number of values), use the label at the index. Otherwise, use the singular labels value.
+										label={getItemLabel(labels, index)}
 										value={e}
 										onChange={(val) => {
 											const newItems = [...items];
 											newItems[index] = val;
-											setItems(newItems);
+											onChange(newItems);
 										}}
 									/>
 								</div>
@@ -69,9 +68,9 @@ const JSONSortableList = ({
 										<Button
 											isDestructive
 											onClick={() =>
-												setItems(
+												onChange(
 													items.filter(
-														(e, i) => i !== index
+														(item, i) => i !== index
 													)
 												)
 											}
@@ -91,7 +90,7 @@ const JSONSortableList = ({
 				})}
 			{false === disableAddingItems && (
 				<div>
-					<Button isPrimary onClick={() => setItems([...items, 0])}>
+					<Button isPrimary onClick={() => onChange([...items, 0])}>
 						Add Item
 					</Button>
 				</div>
@@ -100,7 +99,7 @@ const JSONSortableList = ({
 				<div>
 					<Button
 						isDestructive
-						onClick={() => setItems(labels.map(() => ''))}
+						onClick={() => onChange(labels.map(() => ''))}
 					>
 						Reset
 					</Button>

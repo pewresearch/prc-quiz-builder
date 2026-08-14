@@ -246,6 +246,13 @@ class Controller {
 					'groupDomain'            => $group_domain,
 					'archetype'              => $archetype,
 					'answerThreshold'        => $attributes['threshold'],
+					'liveFeedback'           => ! empty( $attributes['liveFeedback'] ) && 'quiz' === ( $attributes['type'] ?? '' ),
+					'outcomeLabels'          => array(
+						'correct'   => ! empty( $attributes['correctOutcomeLabel'] ) ? $attributes['correctOutcomeLabel'] : __( 'Correct', 'prc-quiz-builder' ),
+						'incorrect' => ! empty( $attributes['incorrectOutcomeLabel'] ) ? $attributes['incorrectOutcomeLabel'] : __( 'Incorrect', 'prc-quiz-builder' ),
+						'unsure'    => ! empty( $attributes['unsureOutcomeLabel'] ) ? $attributes['unsureOutcomeLabel'] : __( 'Not sure', 'prc-quiz-builder' ),
+					),
+					'scoreBuckets'           => $this->parse_score_buckets( $attributes['scoreBuckets'] ?? '[]' ),
 					'isEmbedded'             => $is_embedded,
 					'processing'             => false,
 					'loaded'                 => false,
@@ -293,6 +300,46 @@ class Controller {
 		$content = preg_replace( '/<\/div>$/', $submission_error . $loading . '</div>', $content );
 
 		return $content;
+	}
+
+	/**
+	 * Parse the scoreBuckets JSON attribute into a list of exclusive ranges.
+	 *
+	 * @param string|array $raw Raw attribute value.
+	 * @return array<int, array{id: string, label: string, min: int|float, max: int|float}>
+	 */
+	private function parse_score_buckets( $raw ): array {
+		if ( is_array( $raw ) ) {
+			$decoded = $raw;
+		} elseif ( is_string( $raw ) && '' !== $raw ) {
+			$decoded = json_decode( $raw, true );
+		} else {
+			$decoded = array();
+		}
+		if ( ! is_array( $decoded ) ) {
+			return array();
+		}
+
+		$buckets = array();
+		foreach ( $decoded as $index => $item ) {
+			if ( ! is_array( $item ) ) {
+				continue;
+			}
+			if ( ! isset( $item['min'], $item['max'] ) ) {
+				continue;
+			}
+			$min   = (float) $item['min'];
+			$max   = (float) $item['max'];
+			$label = isset( $item['label'] ) ? (string) $item['label'] : '';
+			$buckets[] = array(
+				'id'    => isset( $item['id'] ) ? (string) $item['id'] : 'bucket-' . $index,
+				// Match JS parseScoreBuckets: empty labels fall back to "Group N".
+				'label' => '' !== $label ? $label : 'Group ' . ( $index + 1 ),
+				'min'   => min( $min, $max ),
+				'max'   => max( $min, $max ),
+			);
+		}
+		return $buckets;
 	}
 
 	/**

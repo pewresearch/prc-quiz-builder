@@ -119,13 +119,21 @@ class Archetypes {
 		}
 
 		$quiz_id = $this->quiz_id;
-		// Check if the quiz exists in the db, if not, lets set it up.
-		$quiz_entry = $this->db->getReference( 'quiz/' . $quiz_id )->getValue();
-		if ( empty( $quiz_entry ) ) {
-			$quiz_entry = array(
-				'archetypes' => '',
+		try {
+			// Check if the quiz exists in the db, if not, lets set it up.
+			$quiz_entry = $this->db->getReference( 'quiz/' . $quiz_id )->getValue();
+			if ( empty( $quiz_entry ) ) {
+				$quiz_entry = array(
+					'archetypes' => '',
+				);
+				$this->db->getReference( 'quiz/' . $quiz_id )->set( $quiz_entry );
+			}
+		} catch ( \Kreait\Firebase\Exception\DatabaseException $e ) {
+			return new WP_Error(
+				'firebase_error',
+				'Quiz entry setup failed.',
+				array( 'status' => 503 )
 			);
-			$this->db->getReference( 'quiz/' . $quiz_id )->set( $quiz_entry );
 		}
 		return $quiz_entry;
 	}
@@ -147,7 +155,15 @@ class Archetypes {
 
 		$this->bump_cache_generation();
 
-		return $this->db->getReference( 'quiz/' . $this->quiz_id . '/archetypes' )->set( null );
+		try {
+			return $this->db->getReference( 'quiz/' . $this->quiz_id . '/archetypes' )->set( null );
+		} catch ( \Kreait\Firebase\Exception\DatabaseException $e ) {
+			return new WP_Error(
+				'firebase_error',
+				'Archetype purge failed.',
+				array( 'status' => 503 )
+			);
+		}
 	}
 
 	/**
@@ -215,10 +231,11 @@ class Archetypes {
 	/**
 	 * Get an archetype for a quiz by hash from Firebase.
 	 * If the archetype does not exist, return false.
+	 * RTDB connection failures return WP_Error (distinct from missing).
 	 *
 	 * @param bool $return_as_array Whether to return the archetype as an array.
 	 * @param bool $force_refresh Whether to force a refresh of the cache.
-	 * @return array|object|false
+	 * @return array|object|false|WP_Error
 	 */
 	public function get_archetype( $return_as_array = false, $force_refresh = false ) {
 		if ( ! $this->is_available() ) {
@@ -231,7 +248,15 @@ class Archetypes {
 			return false === $return_as_array ? (object) $cache : $cache;
 		}
 
-		$existing_archetype = $this->db->getReference( $this->archetype_ref() )->getValue();
+		try {
+			$existing_archetype = $this->db->getReference( $this->archetype_ref() )->getValue();
+		} catch ( \Kreait\Firebase\Exception\DatabaseException $e ) {
+			return new WP_Error(
+				'firebase_error',
+				'Archetype lookup failed.',
+				array( 'status' => 503 )
+			);
+		}
 
 		if ( empty( $existing_archetype ) ) {
 			return false;
@@ -270,7 +295,15 @@ class Archetypes {
 			'submission' => $submission,
 			'hits'       => 1,
 		);
-		$this->db->getReference( $this->archetype_ref() )->set( $new_archetype );
+		try {
+			$this->db->getReference( $this->archetype_ref() )->set( $new_archetype );
+		} catch ( \Kreait\Firebase\Exception\DatabaseException $e ) {
+			return new WP_Error(
+				'firebase_error',
+				'Archetype creation failed.',
+				array( 'status' => 503 )
+			);
+		}
 		wp_cache_delete( $this->get_cache_key(), Object_Cache::ARCHETYPES_GROUP );
 		return $new_archetype;
 	}
@@ -287,11 +320,22 @@ class Archetypes {
 		}
 
 		$existing_archetype = $this->get_archetype( false, true );
+		if ( is_wp_error( $existing_archetype ) ) {
+			return $existing_archetype;
+		}
 		if ( empty( $existing_archetype ) ) {
 			return new WP_Error( 'no-archetype', 'No archetype found.' );
 		}
 		++$existing_archetype->hits;
-		$this->db->getReference( $this->archetype_ref() )->set( $existing_archetype );
+		try {
+			$this->db->getReference( $this->archetype_ref() )->set( $existing_archetype );
+		} catch ( \Kreait\Firebase\Exception\DatabaseException $e ) {
+			return new WP_Error(
+				'firebase_error',
+				'Archetype hit logging failed.',
+				array( 'status' => 503 )
+			);
+		}
 		return $existing_archetype;
 	}
 }

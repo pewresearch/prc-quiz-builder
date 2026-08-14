@@ -27,7 +27,10 @@
       "default": 0
     },
     "correct": {
-      "type": "boolean"
+      "type": [
+        "boolean",
+        "null"
+      ]
     },
     "uuid": {
       "type": "string"

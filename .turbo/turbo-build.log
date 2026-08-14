@@ -1,80 +1,180 @@
 
-> @prc/quiz-builder@4.2.0 build
-> wp-scripts build --webpack-copy-php && wp-scripts build --experimental-modules --webpack-copy-php && wp-scripts build-blocks-manifest
+> @prc/quiz-builder@4.4.0 build
+> wp-scripts build --webpack-copy-php && wp-scripts build --experimental-modules --webpack-copy-php && wp-scripts build-blocks-manifest && wp-scripts build --source-path=src/admin-dataview/ --output-path=build/admin-dataview/
 
-assets by status 267 KiB [compared for emit] 77 assets
-assets by chunk 4.06 KiB (name: result-histogram/style-index)
-  asset result-histogram/style-index-rtl.css 2.03 KiB [emitted] (name: result-histogram/style-index) (id hint: style)
-  asset result-histogram/style-index.css 2.03 KiB [emitted] (name: result-histogram/style-index) (id hint: style)
-assets by chunk 1.8 KiB (name: result-table/style-index)
-  asset result-table/style-index-rtl.css 923 bytes [emitted] (name: result-table/style-index) (id hint: style)
-  asset result-table/style-index.css 923 bytes [emitted] (name: result-table/style-index) (id hint: style)
-assets by path results/*.css 332 bytes
-  asset results/style-index-rtl.css 166 bytes [emitted] (name: results/style-index) (id hint: style)
-  asset results/style-index.css 166 bytes [emitted] (name: results/style-index) (id hint: style)
-+ 10 assets
-orphan modules 1.39 MiB (javascript) 20.1 KiB (runtime) [orphan] 1275 modules
-runtime modules 30.8 KiB 42 modules
-built modules 11.9 KiB (css/mini-extract) 498 KiB (javascript) [built]
-  cacheable modules 11.9 KiB (css/mini-extract) 8.22 KiB (javascript)
-    modules by path ./src/ 11.9 KiB 22 modules
-    javascript modules 8.22 KiB
-      ../../node_modules/remove-accents/index.js 6.07 KiB [built] [code generated]
-      ../../node_modules/use-sync-external-store/shim/index.js 234 bytes [built] [code generated]
-      ../../node_modules/use-sync-external-store/cjs/use-sync-external-store-shim...(truncated) 1.92 KiB [built] [code generated]
-  + 14 modules
-webpack 5.106.2 compiled successfully in 3625 ms
-assets by chunk 20 KiB (id hint: style) 22 assets
-assets by chunk 136 KiB (name: controller/index) 4 assets
-assets by chunk 13.3 KiB (name: question/index) 4 assets
-assets by chunk 9.54 KiB (name: answer/index) 4 assets
+assets by chunk 22.5 KiB (id hint: style) 22 assets
+assets by chunk 357 KiB (name: controller/index) 4 assets
+assets by chunk 13.5 KiB (name: question/index) 4 assets
+assets by chunk 10.7 KiB (name: answer/index) 4 assets
 assets by chunk 10.5 KiB (name: result-histogram/index) 4 assets
-assets by chunk 9.48 KiB (name: result-table/index) 4 assets
-assets by path synced-quiz/ 9.89 KiB 4 assets
+assets by chunk 9.25 KiB (name: result-table/index) 4 assets
+assets by path [1m[32msynced-quiz/[39m[22m 9.89 KiB 4 assets
 assets by chunk 4.53 KiB (name: page/index) 4 assets
+assets by chunk 3.85 KiB (name: progress-bar/index) 4 assets
 assets by chunk 3.15 KiB (name: result-score/index) 4 assets
 assets by chunk 3.24 KiB (name: pages/index) 4 assets
-assets by chunk 2.68 KiB (name: progress-bar/index) 4 assets
 assets by chunk 2.6 KiB (name: group-results/index) 4 assets
-assets by path bindings/ 9.92 KiB 3 assets
-assets by path results/*.php 9.64 KiB 2 assets
+assets by path [1m[32mbindings/[39m[22m 9.92 KiB 3 assets
+assets by path [1m[32mresults/*.php[39m[22m 14.3 KiB 2 assets
 + 22 assets
-orphan modules 1.39 MiB (javascript) 20.1 KiB (runtime) [orphan] 1275 modules
-runtime modules 30.8 KiB 42 modules
-built modules 11.9 KiB (css/mini-extract) 498 KiB (javascript) [built]
-  cacheable modules 11.9 KiB (css/mini-extract) 8.22 KiB (javascript)
-    modules by path ./src/ 11.9 KiB 22 modules
-    javascript modules 8.22 KiB
-      ../../node_modules/remove-accents/index.js 6.07 KiB [built] [code generated]
-      ../../node_modules/use-sync-external-store/shim/index.js 234 bytes [built] [code generated]
-      ../../node_modules/use-sync-external-store/cjs/use-sync-external-store-shim...(truncated) 1.92 KiB [built] [code generated]
-  + 14 modules
-webpack 5.106.2 compiled successfully in 3110 ms
+orphan modules 4.81 MiB (javascript) 20.1 KiB (runtime) [1m[33m[orphan][39m[22m 2473 modules
+runtime modules 30.2 KiB 40 modules
+built modules 13.2 KiB (css/mini-extract) 1.26 MiB (javascript) [1m[33m[built][39m[22m
+  modules by path [1m./src/[39m[22m 13.2 KiB (css/mini-extract) 1.24 MiB (javascript)
+    cacheable modules 13.2 KiB 22 modules
+    javascript modules 1.24 MiB
+      [1m./src/answer/index.js + 18 modules[39m[22m 20.8 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+      + 12 modules
+  modules by path [1m../../node_modules/[39m[22m 13 KiB
+    modules by path [1m../../node_modules/use-sync-external-store/[39m[22m 5.03 KiB
+      modules by path [1m../../node_modules/use-sync-external-store/shim/*.js[39m[22m 496 bytes 2 modules
+      modules by path [1m../../node_modules/use-sync-external-store/cjs/[39m[22m 4.54 KiB 2 modules
+    [1m../../node_modules/remove-accents/index.js[39m[22m 6.07 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m../../node_modules/fast-deep-equal/es6/index.js[39m[22m 1.89 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  [1mexternal "React"[39m[22m 42 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
 
-assets by path controller/ 20.4 KiB 2 assets
-assets by path group-results/ 3.1 KiB 2 assets
-assets by path result-histogram/ 2.68 KiB 2 assets
-assets by path results/ 1.95 KiB 2 assets
-assets by path result-table/ 1.77 KiB 2 assets
-assets by path page/ 1.4 KiB 2 assets
-assets by path progress-bar/ 1 KiB 2 assets
-assets by path answer/ 707 bytes 2 assets
-assets by path pages/ 549 bytes 2 assets
-assets by path question/ 255 bytes 2 assets
-orphan modules 27 KiB [orphan] 7 modules
+[1m[33mWARNING[39m[22m in [1masset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+This can impact web performance.
+Assets: 
+  controller/index.js (356 KiB)[39m[22m
+
+[1m[33mWARNING[39m[22m in [1mentrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+Entrypoints:
+  controller/index (361 KiB)
+      controller/style-index.css
+      controller/style-index-rtl.css
+      controller/index.css
+      controller/index.js
+      controller/index-rtl.css
+      controller/index.asset.php
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1mwebpack performance recommendations: 
+You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+For more info visit https://webpack.js.org/guides/code-splitting/[39m[22m
+
+webpack 5.106.2 compiled with [1m[33m3 warnings[39m[22m in 94639 ms
+assets by chunk 22.5 KiB (id hint: style) 22 assets
+assets by chunk 357 KiB (name: controller/index) 4 assets
+assets by chunk 13.5 KiB (name: question/index) 4 assets
+assets by chunk 10.7 KiB (name: answer/index) 4 assets
+assets by chunk 10.5 KiB (name: result-histogram/index) 4 assets
+assets by chunk 9.25 KiB (name: result-table/index) 4 assets
+assets by path [1m[32msynced-quiz/[39m[22m 9.89 KiB 4 assets
+assets by chunk 4.53 KiB (name: page/index) 4 assets
+assets by chunk 3.85 KiB (name: progress-bar/index) 4 assets
+assets by chunk 3.15 KiB (name: result-score/index) 4 assets
+assets by chunk 3.24 KiB (name: pages/index) 4 assets
+assets by chunk 2.6 KiB (name: group-results/index) 4 assets
+assets by path [1m[32mbindings/[39m[22m 9.92 KiB 3 assets
+assets by path [1m[32mresults/*.php[39m[22m 14.3 KiB 2 assets
++ 22 assets
+orphan modules 4.81 MiB (javascript) 20.1 KiB (runtime) [1m[33m[orphan][39m[22m 2473 modules
+runtime modules 30.2 KiB 40 modules
+built modules 13.2 KiB (css/mini-extract) 1.26 MiB (javascript) [1m[33m[built][39m[22m
+  modules by path [1m./src/[39m[22m 13.2 KiB (css/mini-extract) 1.24 MiB (javascript)
+    cacheable modules 13.2 KiB 22 modules
+    javascript modules 1.24 MiB
+      [1m./src/answer/index.js + 18 modules[39m[22m 20.8 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+      + 12 modules
+  modules by path [1m../../node_modules/[39m[22m 13 KiB
+    modules by path [1m../../node_modules/use-sync-external-store/[39m[22m 5.03 KiB
+      modules by path [1m../../node_modules/use-sync-external-store/shim/*.js[39m[22m 496 bytes 2 modules
+      modules by path [1m../../node_modules/use-sync-external-store/cjs/[39m[22m 4.54 KiB 2 modules
+    [1m../../node_modules/remove-accents/index.js[39m[22m 6.07 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m../../node_modules/fast-deep-equal/es6/index.js[39m[22m 1.89 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  [1mexternal "React"[39m[22m 42 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+
+[1m[33mWARNING[39m[22m in [1masset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+This can impact web performance.
+Assets: 
+  controller/index.js (356 KiB)[39m[22m
+
+[1m[33mWARNING[39m[22m in [1mentrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+Entrypoints:
+  controller/index (361 KiB)
+      controller/style-index.css
+      controller/style-index-rtl.css
+      controller/index.css
+      controller/index.js
+      controller/index-rtl.css
+      controller/index.asset.php
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1mwebpack performance recommendations: 
+You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+For more info visit https://webpack.js.org/guides/code-splitting/[39m[22m
+
+webpack 5.106.2 compiled with [1m[33m3 warnings[39m[22m in 43736 ms
+
+assets by path [1m[32mcontroller/[39m[22m 20.4 KiB 2 assets
+assets by path [1m[32mgroup-results/[39m[22m 3.1 KiB 2 assets
+assets by path [1m[32mresult-histogram/[39m[22m 2.68 KiB 2 assets
+assets by path [1m[32manswer/[39m[22m 2.42 KiB 2 assets
+assets by path [1m[32mresults/[39m[22m 2.31 KiB 2 assets
+assets by path [1m[32mprogress-bar/[39m[22m 1.96 KiB 2 assets
+assets by path [1m[32mresult-table/[39m[22m 1.88 KiB 2 assets
+assets by path [1m[32mpage/[39m[22m 1.4 KiB 2 assets
+assets by path [1m[32mpages/[39m[22m 549 bytes 2 assets
+assets by path [1m[32mquestion/[39m[22m 255 bytes 2 assets
+orphan modules 31.2 KiB [1m[33m[orphan][39m[22m 9 modules
 runtime modules 663 bytes 3 modules
-built modules 85.3 KiB [built]
-  modules by path ./src/ 74.9 KiB
-    ./src/answer/view.js + 1 modules 1.98 KiB [not cacheable] [built] [code generated]
-    ./src/controller/view.js + 6 modules 42 KiB [not cacheable] [built] [code generated]
-    ./src/group-results/view.js + 2 modules 7.76 KiB [not cacheable] [built] [code generated]
-    ./src/page/view.js + 2 modules 3.35 KiB [not cacheable] [built] [code generated]
+built modules 96.6 KiB [1m[33m[built][39m[22m
+  modules by path [1m./src/[39m[22m 86.3 KiB
+    [1m./src/answer/view.js + 2 modules[39m[22m 6.73 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m./src/controller/view.js + 6 modules[39m[22m 42.1 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m./src/group-results/view.js + 2 modules[39m[22m 7.76 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m./src/page/view.js + 2 modules[39m[22m 3.35 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
     + 6 modules
   cacheable modules 10.3 KiB
-    ../../node_modules/md5/md5.js 5.89 KiB [built] [code generated]
-    ../../node_modules/crypt/crypt.js 2.9 KiB [built] [code generated]
-    ../../node_modules/charenc/charenc.js 850 bytes [built] [code generated]
-    ../../node_modules/is-buffer/index.js 698 bytes [built] [code generated]
-  external "@wordpress/interactivity-router" 42 bytes [optional] [built] [code generated]
-webpack 5.106.2 compiled successfully in 1338 ms
+    [1m../../node_modules/md5/md5.js[39m[22m 5.89 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m../../node_modules/crypt/crypt.js[39m[22m 2.9 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m../../node_modules/charenc/charenc.js[39m[22m 850 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m../../node_modules/is-buffer/index.js[39m[22m 698 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  [1mexternal "@wordpress/interactivity-router"[39m[22m 42 bytes [1m[33m[optional][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 16225 ms
 Block metadata PHP file generated at: build/blocks-manifest.php
+assets by chunk 6.9 KiB (name: index)
+  asset [1m[32mindex.js[39m[22m 6.7 KiB [1m[32m[emitted][39m[22m [1m[32m[minimized][39m[22m (name: index)
+  asset [1m[32mindex.asset.php[39m[22m 204 bytes [1m[32m[emitted][39m[22m (name: index)
+assets by path [1m[32m./*.css[39m[22m 2.49 KiB
+  asset [1m[32m./style-index-rtl.css[39m[22m 1.24 KiB [1m[32m[emitted][39m[22m (name: ./style-index) (id hint: style)
+  asset [1m[32m./style-index.css[39m[22m 1.24 KiB [1m[32m[emitted][39m[22m (name: ./style-index) (id hint: style)
+Entrypoint [1mindex[39m[22m 9.39 KiB = [1m[32m./style-index.css[39m[22m 1.24 KiB [1m[32m./style-index-rtl.css[39m[22m 1.24 KiB [1m[32mindex.js[39m[22m 6.7 KiB [1m[32mindex.asset.php[39m[22m 204 bytes
+orphan modules 242 KiB (javascript) 937 bytes (runtime) [1m[33m[orphan][39m[22m 341 modules
+runtime modules 2.51 KiB 3 modules
+built modules 10.2 KiB (javascript) 1.24 KiB (css/mini-extract) [1m[33m[built][39m[22m
+  [1m./src/admin-dataview/index.jsx + 11 modules[39m[22m 10.2 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  css ../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]![1m./src/admin-dataview/style.scss[39m[22m 1.24 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./src/admin-dataview/style.scss[39m[22m (./src/admin-dataview/style.scss.webpack[javascript/auto]!=!../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./src/admin-dataview/style.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 0, column 8 of file:///home/runner/work/prc-platform/prc-platform/plugins/prc-quiz-builder/src/admin-dataview/style.scss:0:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+0 | @import "../../includes/shared-components/src/quiz-analytics/quiz-analytics";
+
+
+src/admin-dataview/style.scss 1:9  root stylesheet
+[39m[22m
+ @ ./src/admin-dataview/style.scss
+ @ ./src/admin-dataview/index.jsx 15:0-22
+
+[1m[33mWARNING[39m[22m in [1m./src/admin-dataview/style.scss[39m[22m (./src/admin-dataview/style.scss.webpack[javascript/auto]!=!../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./src/admin-dataview/style.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 1, column 8 of file:///home/runner/work/prc-platform/prc-platform/plugins/prc-quiz-builder/src/admin-dataview/style.scss:1:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+1 | @import "../../includes/shared-components/src/quiz-analytics/group-analytics-modal";
+
+
+src/admin-dataview/style.scss 2:9  root stylesheet
+[39m[22m
+ @ ./src/admin-dataview/style.scss
+ @ ./src/admin-dataview/index.jsx 15:0-22
+
+webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 4579 ms

@@ -1,108 +1,111 @@
 {
-  "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 3,
-  "name": "prc-quiz/controller",
-  "version": "4.0.0",
-  "title": "Quiz Controller",
-  "description": "This block controls all aspects of a quiz.",
-  "category": "prc-quiz",
-  "keywords": [
-    "quiz",
-    "typology"
-  ],
-  "allowedBlocks": [
-    "core/group",
-    "prc-quiz/pages",
-    "prc-quiz/results",
-    "prc-quiz/group-results",
-    "prc-quiz-cast/host",
-    "prc-quiz-cast/player"
-  ],
-  "attributes": {
-    "type": {
-      "type": "string",
-      "enum": [
-        "quiz",
-        "typology",
-        "freeform"
-      ],
-      "default": "quiz"
-    },
-    "displayType": {
-      "type": "string",
-      "enum": [
-        "paged",
-        "scrollable",
-        "fluid"
-      ],
-      "default": "paged"
-    },
-    "allowSubmissions": {
-      "type": "boolean",
-      "default": true
-    },
-    "groupsEnabled": {
-      "type": "boolean",
-      "default": false
-    },
-    "mailchimpListId": {
-      "type": "string"
-    },
-    "demoBreakLabels": {
-      "type": "string"
-    },
-    "threshold": {
-      "type": "number",
-      "default": 4
-    }
-  },
-  "providesContext": {
-    "prc-quiz/type": "type",
-    "prc-quiz/display-type": "displayType",
-    "prc-quiz/demo-break-labels": "demoBreakLabels",
-    "prc-quiz/threshold": "threshold",
-    "prc-quiz/groupsEnabled": "groupsEnabled",
-    "prc-quiz/allowSubmissions": "allowSubmissions"
-  },
-  "usesContext": [
-    "prc-quiz/isEmbedded"
-  ],
-  "supports": {
-    "anchor": true,
-    "html": false,
-    "interactivity": true,
-    "color": {
-      "background": true,
-      "text": true,
-      "link": true
-    },
-    "spacing": {
-      "blockGap": true,
-      "margin": [
-        "top",
-        "bottom"
-      ],
-      "padding": true,
-      "__experimentalDefaultControls": {
-        "padding": true
-      }
-    },
-    "typography": {
-      "fontSize": true,
-      "__experimentalFontFamily": true,
-      "__experimentalDefaultControls": {
-        "fontSize": true,
-        "__experimentalFontFamily": true
-      }
-    }
-  },
-  "textdomain": "controller",
-  "editorScript": [
-    "ais-ai",
-    "file:./index.js"
-  ],
-  "editorStyle": "file:./index.css",
-  "style": "file:./style-index.css",
-  "viewStyle": "file:./view/style-index.css",
-  "viewScriptModule": "file:./view.js"
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "prc-quiz/controller",
+	"version": "4.0.0",
+	"title": "Quiz Controller",
+	"description": "This block controls all aspects of a quiz.",
+	"category": "prc-quiz",
+	"keywords": ["quiz", "typology"],
+	"allowedBlocks": [
+		"core/group",
+		"prc-quiz/pages",
+		"prc-quiz/results",
+		"prc-quiz/group-results",
+		"prc-quiz-cast/host",
+		"prc-quiz-cast/player"
+	],
+	"attributes": {
+		"type": {
+			"type": "string",
+			"enum": ["quiz", "typology", "freeform"],
+			"default": "quiz"
+		},
+		"displayType": {
+			"type": "string",
+			"enum": ["paged", "scrollable", "fluid"],
+			"default": "paged"
+		},
+		"allowSubmissions": {
+			"type": "boolean",
+			"default": true
+		},
+		"groupsEnabled": {
+			"type": "boolean",
+			"default": false
+		},
+		"mailchimpListId": {
+			"type": "string"
+		},
+		"demoBreakLabels": {
+			"type": "string"
+		},
+		"threshold": {
+			"type": "number",
+			"default": 4
+		},
+		"liveFeedback": {
+			"type": "boolean",
+			"default": false
+		},
+		"correctOutcomeLabel": {
+			"type": "string",
+			"default": "Correct"
+		},
+		"incorrectOutcomeLabel": {
+			"type": "string",
+			"default": "Incorrect"
+		},
+		"unsureOutcomeLabel": {
+			"type": "string",
+			"default": "Not sure"
+		},
+		"scoreBuckets": {
+			"type": "string",
+			"default": "[]"
+		}
+	},
+	"providesContext": {
+		"prc-quiz/type": "type",
+		"prc-quiz/display-type": "displayType",
+		"prc-quiz/demo-break-labels": "demoBreakLabels",
+		"prc-quiz/threshold": "threshold",
+		"prc-quiz/groupsEnabled": "groupsEnabled",
+		"prc-quiz/allowSubmissions": "allowSubmissions",
+		"prc-quiz/liveFeedback": "liveFeedback",
+		"prc-quiz/score-buckets": "scoreBuckets"
+	},
+	"usesContext": ["prc-quiz/isEmbedded"],
+	"supports": {
+		"anchor": true,
+		"html": false,
+		"interactivity": true,
+		"color": {
+			"background": true,
+			"text": true,
+			"link": true
+		},
+		"spacing": {
+			"blockGap": true,
+			"margin": ["top", "bottom"],
+			"padding": true,
+			"__experimentalDefaultControls": {
+				"padding": true
+			}
+		},
+		"typography": {
+			"fontSize": true,
+			"__experimentalFontFamily": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true,
+				"__experimentalFontFamily": true
+			}
+		}
+	},
+	"textdomain": "controller",
+	"editorScript": ["ais-ai", "file:./index.js"],
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewStyle": "file:./view/style-index.css",
+	"viewScriptModule": "file:./view.js"
 }

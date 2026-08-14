@@ -1,0 +1,46 @@
+/* Analytics Summary Stats */
+.analytics-summary {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	margin-bottom: 1.5rem;
+	padding: 1rem;
+	background: #f8f9fa;
+	border-radius: 4px;
+	border: 1px solid #e0e5ea;
+}
+
+.summary-stat {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	.stat-label {
+		font-size: 0.875rem;
+		color: #666;
+		font-weight: 500;
+	}
+
+	.stat-value {
+		font-size: 1.125rem;
+		font-weight: 600;
+		color: var(--wp-admin-theme-color-darker-10, #006ba1);
+		cursor: help;
+	}
+}
+
+.quiz-group-analytics-panel__help {
+	color: #646970;
+	font-size: 13px;
+	margin: 0 0 0.5rem;
+}
+
+.quiz-group-analytics-panel__error {
+	color: #b32d2e;
+	font-size: 13px;
+	margin: 0 0 0.75rem;
+}
+
+.quiz-group-analytics-panel__open-button {
+	margin-top: 0.5rem;
+}

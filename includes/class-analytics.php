@@ -23,6 +23,14 @@ class Analytics {
 	public const DAY_LOGGING_START_DATE = '2026-08-01';
 
 	/**
+	 * Scalar mirror of `_report['total']`.
+	 *
+	 * `_report` is an array, so `orderby => meta_value_num` cannot sort on it.
+	 * The DataViews list sorts its Submissions column on this key instead.
+	 */
+	public const META_SUBMISSIONS_TOTAL = '_prc_quiz_submissions_total';
+
+	/**
 	 * Constructor.
 	 *
 	 * @param object $loader The loader.
@@ -224,6 +232,7 @@ class Analytics {
 	 */
 	public static function save_report_data( int $quiz_id, array $data ): void {
 		update_post_meta( $quiz_id, '_report', $data );
+		update_post_meta( $quiz_id, self::META_SUBMISSIONS_TOTAL, (int) ( $data['total'] ?? 0 ) );
 	}
 
 	/**

@@ -133,22 +133,36 @@ export default function useQuickEditData(controllerClientId) {
 		[updateBlockAttributes]
 	);
 
+	/**
+	 * Cycle true → null → false → true for knowledge-quiz answers.
+	 * Unset (undefined) is treated like null / Not sure.
+	 */
 	const toggleCorrect = useCallback(
 		(answerClientId, questionClientId, questionType, currentCorrect) => {
 			if (quizType === 'freeform') {
 				return;
 			}
-			const newCorrect = !currentCorrect;
+			let newCorrect;
+			if (true === currentCorrect) {
+				newCorrect = null;
+			} else if (false === currentCorrect) {
+				newCorrect = true;
+			} else {
+				// null or undefined (default inserter / unset)
+				newCorrect = false;
+			}
 
-			if (questionType === 'single' && newCorrect) {
+			if (questionType === 'single' && true === newCorrect) {
 				const { getClientIdsOfDescendants, getBlock } =
 					staticSelect(blockEditorStore);
 				const descendants = getClientIdsOfDescendants(questionClientId);
+				// Demote only currently Correct answers; preserve Not sure (null).
 				descendants.forEach((id) => {
 					const block = getBlock(id);
 					if (
 						block?.name === 'prc-quiz/answer' &&
-						id !== answerClientId
+						id !== answerClientId &&
+						true === block?.attributes?.correct
 					) {
 						updateBlockAttributes(id, {
 							correct: false,
@@ -160,7 +174,7 @@ export default function useQuickEditData(controllerClientId) {
 
 			updateBlockAttributes(answerClientId, {
 				correct: newCorrect,
-				points: newCorrect ? 1 : 0,
+				points: true === newCorrect ? 1 : 0,
 			});
 		},
 		[quizType, updateBlockAttributes]

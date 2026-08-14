@@ -12,6 +12,7 @@ import {
  * Internal Dependencies
  */
 import { scrollToElement } from '../controller/scroll-utils';
+import { matchScoreBucket } from '../controller/score-buckets';
 
 const { state, actions } = store('prc-quiz/controller', {
 	state: {
@@ -19,6 +20,17 @@ const { state, actions } = store('prc-quiz/controller', {
 			const context = getContext();
 			const { userScore } = context;
 			return userScore?.score || 0;
+		},
+		get matchedScoreBucket() {
+			const context = getContext();
+			const buckets = context.scoreBuckets || [];
+			return matchScoreBucket(state.score, buckets);
+		},
+		get matchedScoreBucketLabel() {
+			return state.matchedScoreBucket?.label || '';
+		},
+		get isMatchedScoreBucketLabelHidden() {
+			return '' === state.matchedScoreBucketLabel;
 		},
 		/**
 		 * Total questions for the result-score denominator.
@@ -55,6 +67,7 @@ const { state, actions } = store('prc-quiz/controller', {
 				thresholdPoints,
 				thresholdDirection,
 				exactPointsString,
+				bucketId,
 			} = resultsDisplay;
 			const score = state.displayResultInnerBlockScore;
 			if (mode === 'always') {
@@ -80,6 +93,12 @@ const { state, actions } = store('prc-quiz/controller', {
 					return score >= thresholdPoints;
 				}
 				return score <= thresholdPoints;
+			}
+			if (mode === 'bucket') {
+				if (!bucketId) {
+					return false;
+				}
+				return state.matchedScoreBucket?.id === bucketId;
 			}
 			return false;
 		},

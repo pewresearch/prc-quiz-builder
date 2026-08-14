@@ -10,9 +10,8 @@ import {
 	Tooltip,
 } from '@wordpress/components';
 import { DataViews, filterSortAndPaginate } from '@wordpress/dataviews';
-import { formatAnalyticsDate, formatCompactNumber } from './analytics-utils';
 
-import './group-analytics-modal.scss';
+import { formatAnalyticsDate, formatCompactNumber } from './utils';
 
 const DEFAULT_VIEW = {
 	type: 'table',

@@ -1,54 +1,16 @@
 /**
- * External Dependencies
- */
-import classNames from 'classnames';
-
-/**
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
 import { RawHTML } from '@wordpress/element';
 import { Spinner } from '@wordpress/components';
-import { getColorClassName } from '@wordpress/block-editor';
 import { useDispatch } from '@wordpress/data';
 
 /**
  * Internal Dependencies
  */
 import { Icon } from '@prc/icons';
-
-const getRowClassName = (colors, index, correct = null) => {
-	const position = index + 1;
-	const isEven = position % 2 === 0;
-
-	// If "correct" is null then randomly assign a correct or incorrect state.
-	let c = correct;
-	if (null === c) {
-		c = Math.random() >= 0.5;
-	}
-
-	const {
-		rowBackgroundColor,
-		altRowBackgroundColor,
-		rowTextColor,
-		altRowTextColor,
-	} = colors;
-
-	const rowColor = !isEven ? rowBackgroundColor : altRowBackgroundColor;
-	const textColor = !isEven ? rowTextColor : altRowTextColor;
-
-	return classNames('prc-quiz-result-table__row', {
-		'has-text-color': !!textColor.color || !!textColor?.class,
-		[getColorClassName('color', textColor?.slug)]: !!textColor?.slug,
-		// eslint-disable-next-line prettier/prettier
-		'has-background': !!rowColor.color || rowColor.class,
-		// eslint-disable-next-line prettier/prettier
-		[getColorClassName('background-color', rowColor?.slug)]:
-			!!rowColor?.slug,
-		'is-correct': c,
-		'is-incorrect': !c,
-	});
-};
+import { getRowClassName, previewIsCorrect } from './row-preview';
 
 export default function Table({ questions, colors, isSelected }) {
 	const { selectBlock, toggleBlockHighlight } =
@@ -76,13 +38,19 @@ export default function Table({ questions, colors, isSelected }) {
 			<tbody>
 				{questions.map((row, index) => {
 					const correctAnswers = row.answers.filter(
-						(answer) => answer.correct
+						(answer) => true === answer.correct
 					);
-					const randomIsCorrect = Math.random() >= 0.5;
+					const randomIsCorrect = previewIsCorrect(
+						row.uuid || row.clientId
+					);
 					return (
 						<tr
 							key={index}
-							className={getRowClassName(colors, index)}
+							className={getRowClassName(
+								colors,
+								index,
+								randomIsCorrect
+							)}
 							onClick={(e) => {
 								e.preventDefault();
 								if (isSelected && e.shiftKey) {

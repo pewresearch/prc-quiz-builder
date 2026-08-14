@@ -103,7 +103,7 @@ const { state } = store('prc-quiz/controller', {
 
 				// Get all correct answers instead of just the first one
 				const correctAnswers = answersArray.filter(
-					(answer) => answer.correct
+					(answer) => true === answer.correct
 				);
 
 				// Get all user selected answers (multiple selections possible)
@@ -138,13 +138,19 @@ const { state } = store('prc-quiz/controller', {
 						.join(', ');
 				};
 
-				// Determine if the user got the question correct
-				// This could be implemented in different ways depending on requirements:
-				// 1. All correct answers must be selected (and no incorrect ones)
-				// 2. At least one correct answer must be selected
-				// 3. More correct than incorrect answers selected
-				// For now, using approach #1: exact match of correct answers
+				// Determine if the user got the question correct.
+				// Returns true | false | null (Not sure / neutral — neither icon).
+				// Exact match of correct answers; pure Not sure selections are null.
 				const isCorrect = () => {
+					if (
+						userSelectedAnswers.length > 0 &&
+						userSelectedAnswers.every(
+							(answer) => null === answer.correct
+						)
+					) {
+						return null;
+					}
+
 					if (correctAnswers.length === 0) {
 						return false; // No correct answers defined
 					}
@@ -166,9 +172,13 @@ const { state } = store('prc-quiz/controller', {
 					);
 				};
 
+				const correct = isCorrect();
+
 				return {
 					uuid: questionUuid,
-					correct: isCorrect(),
+					correct,
+					showCorrectIcon: true === correct,
+					showIncorrectIcon: false === correct,
 					question: sanitizeQuestionHtml(text),
 					selectedAnswer: formatSelectedAnswers(),
 					correctAnswer: formatCorrectAnswers(),

@@ -1,5 +1,7 @@
 # PRC Quiz Builder
 
+> Canonical docs: [docs/plugins/prc-quiz-builder/](../../docs/plugins/prc-quiz-builder/)
+
 An interactive, block-based quiz system for the PRC platform.
 
 ## Overview
@@ -34,11 +36,12 @@ The Controller block's `render_callback` is the key server/client bridge: it wri
 | `includes/class-ability-categories.php`  | Registers the `quiz` WP Abilities category for MCP discovery                                                     |
 | `includes/class-ability.php`            | WP Abilities API `prc-quiz-builder/get-analytics` tool (submissions + groups; MCP + REST)                |
 | `includes/class-cli-report.php`         | WP-CLI `wp prc quiz report` — ad hoc read/update of `_report` meta                                       |
-| `includes/class-cli-build-audience.php` | WP-CLI `wp prc quiz build-group-owners-audience` — newsletter audience from group owners                 |
+| `includes/class-cli-build-audience.php` | WP-CLI `wp prc quiz build-group-owners-audience` — thin wrapper around Audience_Service |
+| `includes/class-audience-service.php` | Shared build / list / delete for quiz group-owners audiences (CLI + REST) |
 | `includes/class-loader.php`             | Hook registration queue                                                                                  |
 | `includes/class-block-supports.php`     | CPT-scoped inserter filtering (`allowed_block_types_all`), Quiz Builder category, editor-support enqueue |
 | `includes/editor-support/`              | Unregisters quiz core block variations outside the `quiz` CPT editor                                     |
-| `includes/inspector-sidebar-panel/`     | Block editor plugin that renders a quiz analytics sidebar panel; only enqueued on the `quiz` CPT screen  |
+| `includes/inspector-sidebar-panel/`     | Block editor plugin: quiz analytics, group analytics, and group-creators audience panel |
 | `src/controller/class-controller.php`   | Controller block — server render, Interactivity API context injection, button directive patching         |
 | `src/controller/view.js`                | Controller Interactivity API store — display-type resolution, submission, page visibility, navigation    |
 | `src/results/class-results.php`         | Results block server render                                                                              |
@@ -60,9 +63,64 @@ The Controller block's `render_callback` is the key server/client bridge: it wri
 | Result Table     | `prc-quiz/result-table`     | Tabular results view; supports demographic breaks                      |
 | Result Histogram | `prc-quiz/result-histogram` | Score distribution histogram                                           |
 | Group Results    | `prc-quiz/group-results`    | Community group aggregate results; required to enable group creation   |
+| Progress Bar     | `prc-quiz/progress-bar`     | Linear bar or per-question circles showing completion and outcomes     |
 | Embeddable       | `prc-quiz/embeddable`       | Reuse a quiz across other posts; edits propagate to all embeds         |
 
 Quiz blocks appear in the block inserter only when editing the `quiz` post type, grouped under the **Quiz Builder** category (`prc-quiz` slug). The **Quiz** embeddable block (`prc-quiz/embeddable`) remains available on other post types for synced cross-post reuse.
+
+## Knowledge quiz features (`type: quiz`)
+
+These options apply only when the Controller `type` is `quiz` (not typology or freeform).
+
+### Live feedback and answer lock
+
+Enable **Live Feedback** on the Controller block. After a participant selects an answer on a single-choice or thermometer question, the UI shows whether the choice is correct or incorrect and **locks further changes** on that question. Multiple-choice questions stay open so participants can select every required answer before locking.
+
+Live feedback is implemented in `src/answer/view.js` via `context.liveFeedback` and `state.isQuestionLocked`.
+
+### Answer correctness tri-state
+
+Knowledge-quiz answers use a tri-state `correct` attribute:
+
+| Value | Meaning | Toolbar label |
+| ----- | ------- | ------------- |
+| `true` | Correct answer | Correct Answer |
+| `null` | Neutral / "Not sure" | Not Sure |
+| `false` | Incorrect answer | Incorrect Answer |
+
+The toolbar control lives in `src/answer/correct-toggle.js`. Freeform quizzes hide the control.
+
+### Question outcome
+
+`getQuestionOutcome()` (`src/controller/question-outcome.js`) resolves each question to `correct`, `incorrect`, `unsure`, or `unanswered`:
+
+- **Correct** — selected UUIDs exactly match every answer marked `correct: true`
+- **Unsure** — only `correct: null` answers are selected (no wrong or right answers)
+- **Incorrect** — any other non-empty selection
+- **Unanswered** — no selection
+
+The Results block exposes a **Correct / Incorrect** block bit (`prc-quiz-builder/question-outcome-label`) that prints the active question outcome from context. Labels come from the Quiz Controller (**Correct / Incorrect / Not sure outcome label** settings) and can be overridden per bit in the bit insert/edit popover. Empty bit fields inherit the quiz-wide defaults.
+
+Any `core/paragraph` or `core/heading` that contains this bit receives the class `has-prc-quiz-question-outcome` and the interactive class `is-awaiting-selection` while the question is unanswered, so the whole host block stays hidden until the user has a selection.
+
+Progress Circles use the same outcome logic for per-question marks.
+
+### Exclusive score buckets
+
+The Controller **Score Buckets** panel stores a JSON catalog of named, non-overlapping closed ranges (`[min, max]` inclusive; shared endpoints count as overlap). Validation runs in the editor via `validateExclusiveBuckets()` (`src/controller/score-buckets.js`).
+
+At results time, `matchScoreBucket()` returns the first bucket containing the participant's score. Insert the **Matching Score Bucket** block bit (`prc-quiz-builder/matching-score-bucket`) in the Results block to print the matched label.
+
+### Progress bar variations
+
+`prc-quiz/progress-bar` has two block variations:
+
+| Variation | Class | Behavior |
+| --------- | ----- | -------- |
+| Progress Bar (default) | _(none)_ | Linear fill showing percent of questions answered |
+| Progress Circles | `is-style-circles` | One circle per question — check, x, or question mark by outcome |
+
+Circles reflect live outcomes when **Live Feedback** is enabled; otherwise they show answered vs unanswered.
 
 ## Display Types and Frontend Behavior
 
@@ -218,6 +276,15 @@ Both cookies are registered with WP Consent API as `functional`, 30-day expiry.
 | `prc-quiz-builder`           | Quiz progress JSON: answers, scores, archetype hash, completion timestamp |
 | `prc-quiz-builder__typology` | Typology answers and assigned group for personalization                   |
 
+## Admin: Quizzes DataViews list
+
+**Quizzes → All Quizzes** opens a DataViews screen (`prc-quiz-builder-library`) instead of the classic `edit.php` list table. The list reads mirrored post meta (`_prc_quiz_type`, `_prc_quiz_display_type`, `_prc_quiz_groups_enabled`, `_prc_quiz_question_count`) synced on save because quiz configuration lives in block attributes inside `post_content`.
+
+- Open analytics for a quiz from the list actions (same modal as the editor inspector sidebar).
+- Escape hatch: append `?classic=1` to `edit.php?post_type=quiz` to use the classic list table (Trash and other status views redirect with the same filter preserved).
+
+Implementation: `includes/class-quiz-list.php` + `GET quiz/library` (via `prc_api_endpoints`).
+
 ## Local Development
 
 ```bash
@@ -248,7 +315,7 @@ Group creation (`quiz/create-group`) returns HTTP 503 when Firebase Auth is unav
 
 ### Local Firebase setup
 
-Service account generation is documented in [`docs/DEPENDENCY_AUTH.md`](../../docs/DEPENDENCY_AUTH.md) (`npm run gen:firebase-sa`). `prc-firebase` reads `WPCOM_VIP_PRIVATE_DIR/firebase-service-account.json`.
+Service account generation is documented in [`docs/dependency-auth.md`](../../docs/dependency-auth.md) (`npm run gen:firebase-sa`). `prc-firebase` reads `WPCOM_VIP_PRIVATE_DIR/firebase-service-account.json`.
 
 ## Troubleshooting
 
