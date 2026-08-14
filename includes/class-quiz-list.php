@@ -91,12 +91,23 @@ class Quiz_List {
 
 		$lists->register(
 			array(
-				'postType'            => Plugin::$post_type,
-				'pageSlug'            => self::PAGE_SLUG,
-				'menuTitle'           => __( 'All Quizzes', 'prc-quiz' ),
-				'pageTitle'           => __( 'All Quizzes', 'prc-quiz' ),
-				'restPath'            => '/prc-api/v3/quiz/library',
+				'postType'             => Plugin::$post_type,
+				'pageSlug'             => self::PAGE_SLUG,
+				'menuTitle'            => __( 'All Quizzes', 'prc-quiz' ),
+				'pageTitle'            => __( 'All Quizzes', 'prc-quiz' ),
+				'restPath'             => '/prc-api/v3/quiz/library',
 				'hideDefaultNewButton' => true,
+				'duplicate'            => array(
+					'includeMeta' => array(
+						self::META_TYPE,
+						self::META_DISPLAY_TYPE,
+						self::META_GROUPS_ENABLED,
+						self::META_QUESTION_COUNT,
+						'bylines',
+						'acknowledgements',
+						'displayBylines',
+					),
+				),
 			)
 		);
 	}
