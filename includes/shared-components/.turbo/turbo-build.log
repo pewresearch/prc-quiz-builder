@@ -1,40 +1,19 @@
 
-> @prc-quiz/shared-components@0.1.1 build
+> @prc-quiz/shared-components@0.1.0 build
 > wp-scripts build src/index.js --output-path=build
 
-asset [1m[33mindex.js[39m[22m [1m[33m350 KiB[39m[22m [1m[32m[emitted][39m[22m [1m[32m[minimized][39m[22m [1m[33m[big][39m[22m (name: index)
-asset [1m[32mindex.asset.php[39m[22m 395 bytes [1m[32m[emitted][39m[22m (name: index)
-Entrypoint [1mindex[39m[22m [1m[33m[big][39m[22m 350 KiB = [1m[32mindex.js[39m[22m 350 KiB [1m[32mindex.asset.php[39m[22m 395 bytes
-orphan modules 4.42 MiB [1m[33m[orphan][39m[22m 1939 modules
+asset index.js 240 KiB [emitted] [minimized] (name: index)
+asset index.asset.php 356 bytes [emitted] (name: index)
+Entrypoint index 241 KiB = index.js 240 KiB index.asset.php 356 bytes
+orphan modules 3.95 MiB [orphan] 2275 modules
 runtime modules 2.06 KiB 5 modules
-built modules 1.09 MiB [1m[33m[built][39m[22m
-  cacheable modules 13 KiB
-    modules by path [1m../../../../node_modules/use-sync-external-store/[39m[22m 5.03 KiB
-      modules by path [1m../../../../node_modules/use-sync-external-store/shim/*.js[39m[22m 496 bytes
-        [1m../../../../node_modules/use-sync-external-store/shim/index.js[39m[22m 234 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-        [1m../../../../node_modules/use-sync-external-store/shim/with-selector.js[39m[22m 262 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-      modules by path [1m../../../../node_modules/use-sync-external-store/cjs/[39m[22m 4.54 KiB
-        [1m../../../../node_modules/use-sync-external-store/cjs/use-sync-external-store-shi...(truncated)[39m[22m 1.92 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-        [1m../../../../node_modules/use-sync-external-store/cjs/use-sync-external-store-shi...(truncated)[39m[22m 2.62 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-    [1m../../../../node_modules/remove-accents/index.js[39m[22m 6.07 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-    [1m../../../../node_modules/fast-deep-equal/es6/index.js[39m[22m 1.89 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-  [1m./src/index.js + 364 modules[39m[22m 1.08 MiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-  [1mexternal "React"[39m[22m 42 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-
-[1m[33mWARNING[39m[22m in [1masset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
-This can impact web performance.
-Assets: 
-  index.js (350 KiB)[39m[22m
-
-[1m[33mWARNING[39m[22m in [1mentrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
-Entrypoints:
-  index (350 KiB)
-      index.js
-      index.asset.php
-[39m[22m
-
-[1m[33mWARNING[39m[22m in [1mwebpack performance recommendations: 
-You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
-For more info visit https://webpack.js.org/guides/code-splitting/[39m[22m
-
-webpack 5.106.2 compiled with [1m[33m3 warnings[39m[22m in 84896 ms
+built modules 702 KiB [built]
+  cacheable modules 10.1 KiB
+    modules by path ../../../../node_modules/use-sync-external-store/ 2.15 KiB
+      ../../../../node_modules/use-sync-external-store/shim/index.js 234 bytes [built] [code generated]
+      ../../../../node_modules/use-sync-external-store/cjs/use-sync-external-store-shi...(truncated) 1.92 KiB [built] [code generated]
+    ../../../../node_modules/remove-accents/index.js 6.07 KiB [built] [code generated]
+    ../../../../node_modules/fast-deep-equal/es6/index.js 1.89 KiB [built] [code generated]
+  ./src/index.js + 274 modules 692 KiB [not cacheable] [built] [code generated]
+  external "React" 42 bytes [built] [code generated]
+webpack 5.106.2 compiled successfully in 10581 ms

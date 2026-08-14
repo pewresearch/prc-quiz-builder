@@ -2,22 +2,22 @@
 > @prc/quiz-builder-inspector-sidebar-panel@1.0.0 build
 > wp-scripts build --webpack-copy-php
 
-assets by path [1m[32m*.css[39m[22m 174 KiB
-  asset [1m[32mindex-rtl.css[39m[22m 86.9 KiB [1m[32m[emitted][39m[22m (name: index)
-  asset [1m[32mindex.css[39m[22m 86.9 KiB [1m[32m[emitted][39m[22m (name: index)
-asset [1m[32mindex.js[39m[22m 4 KiB [1m[32m[emitted][39m[22m [1m[32m[minimized][39m[22m (name: index)
-asset [1m[32mindex.asset.php[39m[22m 304 bytes [1m[32m[emitted][39m[22m (name: index)
-Entrypoint [1mindex[39m[22m 178 KiB = [1m[32mindex.css[39m[22m 86.9 KiB [1m[32mindex.js[39m[22m 4 KiB [1m[32mindex-rtl.css[39m[22m 86.9 KiB [1m[32mindex.asset.php[39m[22m 304 bytes
-orphan modules 327 KiB (javascript) 937 bytes (runtime) [1m[33m[orphan][39m[22m 347 modules
+assets by path *.css 131 KiB
+  asset index-rtl.css 65.6 KiB [emitted] (name: index)
+  asset index.css 65.6 KiB [emitted] (name: index)
+asset index.js 4 KiB [emitted] [minimized] (name: index)
+asset index.asset.php 304 bytes [emitted] (name: index)
+Entrypoint index 135 KiB = index.css 65.6 KiB index.js 4 KiB index-rtl.css 65.6 KiB index.asset.php 304 bytes
+orphan modules 306 KiB (javascript) 937 bytes (runtime) [orphan] 347 modules
 runtime modules 663 bytes 3 modules
-built modules 8.79 KiB (javascript) 86.9 KiB (css/mini-extract) [1m[33m[built][39m[22m
-  [1m./src/index.js + 18 modules[39m[22m 8.79 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-  css ../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]![1m./src/analytics-panel.scss[39m[22m 86.9 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+built modules 8.79 KiB (javascript) 65.6 KiB (css/mini-extract) [built]
+  ./src/index.js + 18 modules 8.79 KiB [not cacheable] [built] [code generated]
+  css ../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./src/analytics-panel.scss 65.6 KiB [built] [code generated]
 
-[1m[33mWARNING[39m[22m in [1m./src/analytics-panel.scss[39m[22m (./src/analytics-panel.scss.webpack[javascript/auto]!=!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./src/analytics-panel.scss)
-[1mModule Warning (from ../../../../node_modules/sass-loader/dist/cjs.js):
-Deprecation Warning on line 1, column 8 of file:///home/runner/work/prc-platform/prc-platform/plugins/prc-quiz-builder/includes/inspector-sidebar-panel/src/analytics-panel.scss:1:8:
-Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+WARNING in ./src/analytics-panel.scss (./src/analytics-panel.scss.webpack[javascript/auto]!=!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./src/analytics-panel.scss)
+Module Warning (from ../../../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 1, column 8 of file:///workspace/plugins/prc-quiz-builder/includes/inspector-sidebar-panel/src/analytics-panel.scss:1:8:
+Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
 
 More info and automated migrator: https://sass-lang.com/d/import
 
@@ -25,15 +25,14 @@ More info and automated migrator: https://sass-lang.com/d/import
 
 
 src/analytics-panel.scss 2:9  root stylesheet
-[39m[22m
  @ ./src/analytics-panel.scss
  @ ./src/analytics-panel.js 6:0-32
  @ ./src/index.js 20:0-47 68:34-48
 
-[1m[33mWARNING[39m[22m in [1m./src/analytics-panel.scss[39m[22m (./src/analytics-panel.scss.webpack[javascript/auto]!=!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./src/analytics-panel.scss)
-[1mModule Warning (from ../../../../node_modules/sass-loader/dist/cjs.js):
-Deprecation Warning on line 2, column 8 of file:///home/runner/work/prc-platform/prc-platform/plugins/prc-quiz-builder/includes/inspector-sidebar-panel/src/analytics-panel.scss:2:8:
-Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+WARNING in ./src/analytics-panel.scss (./src/analytics-panel.scss.webpack[javascript/auto]!=!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./src/analytics-panel.scss)
+Module Warning (from ../../../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 2, column 8 of file:///workspace/plugins/prc-quiz-builder/includes/inspector-sidebar-panel/src/analytics-panel.scss:2:8:
+Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
 
 More info and automated migrator: https://sass-lang.com/d/import
 
@@ -41,9 +40,8 @@ More info and automated migrator: https://sass-lang.com/d/import
 
 
 src/analytics-panel.scss 3:9  root stylesheet
-[39m[22m
  @ ./src/analytics-panel.scss
  @ ./src/analytics-panel.js 6:0-32
  @ ./src/index.js 20:0-47 68:34-48
 
-webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 17763 ms
+webpack 5.106.2 compiled with 2 warnings in 2757 ms
