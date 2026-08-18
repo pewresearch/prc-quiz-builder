@@ -9,6 +9,7 @@ import {
 } from '@wordpress/interactivity';
 
 import { scrollToElement } from '../controller/scroll-utils';
+import '../controller/run-animation';
 
 const lastCurrentPageUuidByQuiz = new Map();
 
@@ -53,7 +54,7 @@ const { state, actions } = store('prc-quiz/controller', {
 				);
 				scrollToElement(quizContainer);
 			}
-			actions.runAnimation();
+			actions.runAnimation?.();
 		},
 		onLastPageScroll: withSyncEvent((event) => {
 			const context = getContext();

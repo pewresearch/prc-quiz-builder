@@ -186,10 +186,19 @@ const { state, actions } = store('prc-quiz/controller', {
 			if (!pendingSubmission || context.displayResults) {
 				return;
 			}
-			const message = isGroupSubmission(pendingSubmission)
-				? GROUP_SUBMISSION_RECOVERY_MESSAGE
-				: SUBMISSION_RECOVERY_MESSAGE;
-			showSubmissionRecoveryBanner(context, pendingSubmission, message);
+			if (pendingSubmission.lastError) {
+				const message = isGroupSubmissionError(
+					pendingSubmission.lastError,
+					pendingSubmission
+				)
+					? GROUP_SUBMISSION_RECOVERY_MESSAGE
+					: SUBMISSION_RECOVERY_MESSAGE;
+				showSubmissionRecoveryBanner(
+					context,
+					pendingSubmission,
+					message
+				);
+			}
 			actions.scheduleSilentRetry(pendingSubmission);
 		},
 		handleUnpersistedSubmission: (

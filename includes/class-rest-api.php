@@ -1049,7 +1049,6 @@ class Rest_API {
 			'perm'                   => 'editable',
 			'posts_per_page'         => $per_page,
 			'paged'                  => $page,
-			's'                      => (string) $request->get_param( 'search' ),
 			'no_found_rows'          => false,
 			'ignore_sticky_posts'    => true,
 			'update_post_meta_cache' => true,
@@ -1104,6 +1103,13 @@ class Rest_API {
 					),
 				);
 			}
+		}
+
+		$search = (string) $request->get_param( 'search' );
+		if ( class_exists( '\PRC\Platform\Wp_Admin_Dataview\Search_Query' ) ) {
+			$query_args = \PRC\Platform\Wp_Admin_Dataview\Search_Query::apply( $query_args, $search, $statuses );
+		} elseif ( '' !== $search ) {
+			$query_args['s'] = $search;
 		}
 
 		$query = new \WP_Query( $query_args );

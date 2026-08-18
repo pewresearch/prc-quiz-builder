@@ -12,6 +12,7 @@ import {
  * Internal Dependencies
  */
 import { scrollToElement } from '../controller/scroll-utils';
+import '../controller/run-animation';
 import { matchScoreBucket } from '../controller/score-buckets';
 
 const { state, actions } = store('prc-quiz/controller', {
@@ -126,7 +127,7 @@ const { state, actions } = store('prc-quiz/controller', {
 			}
 			const { ref } = getElement();
 			scrollToElement(ref);
-			actions.runAnimation();
+			actions.runAnimation?.();
 		},
 		onResultsDisplay: () => {
 			const context = getContext();
@@ -136,7 +137,7 @@ const { state, actions } = store('prc-quiz/controller', {
 			}
 			const { ref } = getElement();
 			scrollToElement(ref);
-			actions.runAnimation();
+			actions.runAnimation?.();
 		},
 		/**
 		 * Copy the awarded score into any prc-block/form field named "score"

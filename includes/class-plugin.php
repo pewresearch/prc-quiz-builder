@@ -495,10 +495,11 @@ class Plugin {
 				'prc-bylines',
 				'prc-art-direction',
 				'prc-datasets',
+				'prc-collections',
 				'prc-publication-listing',
 				'prc-publish-workflows',
 			),
-			'taxonomies'         => array( 'category', 'research-teams', 'bylines', 'datasets', 'collections', 'level_of_effort', 'primary_audience', 'information_type' ),
+			'taxonomies'         => array( 'category', 'research-teams', 'bylines', 'datasets', 'collection', 'level_of_effort', 'primary_audience', 'information_type' ),
 		);
 
 		register_post_type( self::$post_type, $args );

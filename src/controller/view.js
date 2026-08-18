@@ -17,6 +17,7 @@ import { scrollToElement } from './scroll-utils';
 import './progress-storage';
 import './submission-recovery';
 import './share';
+import './run-animation';
 
 const FLUID_BREAKPOINT_PX = 782;
 
@@ -122,27 +123,6 @@ const { state, actions } = store('prc-quiz/controller', {
 			const { userSubmission } = getContext();
 			const { answers, questions } = state;
 			return scoreQuiz(userSubmission, answers, questions);
-		},
-		/**
-		 * Checks the element for any available animations and dispatches them with the animations store.
-		 */
-		runAnimation: () => {
-			const { ref } = getElement();
-			const animationStore = store('prc-block/animation');
-			const animationElements = ref.querySelectorAll(
-				'.wp-block-prc-block-animation'
-			);
-			if (animationElements.length) {
-				animationElements.forEach((element) => {
-					const animationId = element.getAttribute('id');
-					const { parentElement } = element;
-					const isHidden =
-						null !== parentElement?.getAttribute('hidden');
-					if (animationId && !isHidden) {
-						animationStore.state[animationId].enabled = true;
-					}
-				});
-			}
 		},
 		applyDisplayType: () => {
 			const context = getContext();
