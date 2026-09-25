@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## Unreleased
+
+## 4.0.0 - 2026-08-23
+
+* Dropped support for PHP <8.3.
+* Removed the deprecated `Beste\Clock` interface. Clock implementations now implement 
+  `Psr\Clock\ClockInterface` directly.
+* `WrappingClock` will throw an `InvalidArgumentException` if the given object doesn't behave like
+  a PSR-20 clock and will throw an `UnexpectedValueException` if a later call does not return
+  `DateTimeImmutable`.
+
+## 3.1.0 - 2026-08-22
+
+Deprecated `Beste\Clock` in favor of `Psr\Clock\ClockInterface`. The implementations continue to implement
+the deprecated interface for backwards compatibility. Please type against `Psr\Clock\ClockInterface`.
+`Beste\Clock` will be removed in 4.0.
+
 ## 3.0.0 - 2022-11-26
 This release replaces `stella-maris/clock` with `psr/clock`.
 

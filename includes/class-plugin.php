@@ -95,6 +95,8 @@ class Plugin {
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-loader.php';
 		// Shared object-cache group/TTL constants (used by archetypes, groups, REST, analytics).
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-object-cache.php';
+		// Community-group capability (typology or non-empty score buckets).
+		require_once plugin_dir_path( __DIR__ ) . '/includes/class-group-capability.php';
 		// 1. Initialize Archetypes system.
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-archetypes.php';
 		// 2. Initialize Groups system.
@@ -114,8 +116,11 @@ class Plugin {
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-cli-build-audience.php';
 		// 7. WP-CLI: ad hoc quiz report (_report meta) read/update.
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-cli-report.php';
-		require_once plugin_dir_path( __DIR__ ) . '/includes/class-quiz-binding-resolver.php';
-		require_once plugin_dir_path( __DIR__ ) . '/includes/class-quiz-bindings.php';
+		require_once plugin_dir_path( __DIR__ ) . '/includes/class-histogram-population.php';
+		$bindings_dir = ( 'local' === wp_get_environment_type() ? 'src' : 'build' ) . '/bindings';
+		require_once plugin_dir_path( __DIR__ ) . '/' . $bindings_dir . '/class-quiz-binding-resolver.php';
+		require_once plugin_dir_path( __DIR__ ) . '/' . $bindings_dir . '/class-quiz-bindings.php';
+		require_once plugin_dir_path( __DIR__ ) . '/' . $bindings_dir . '/class-block-bits.php';
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-block-supports.php';
 		// 8. Quizzes DataViews list screen (replaces the classic list table).
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-quiz-list.php';
@@ -172,6 +177,11 @@ class Plugin {
 		new Block_Supports( $this->get_loader() );
 		new Quiz_List( $this->get_loader() );
 
+		add_action(
+			'prc_email_builder_register_audience_builders',
+			array( Audience_Service::class, 'register_builder' )
+		);
+
 		// Priority 5 ensures the quiz post type (and its declared supports like
 		// `prc-publication-listing`) is registered before any other plugin runs
 		// `get_post_types_by_support()` at the default init/10 priority — most
@@ -185,7 +195,6 @@ class Plugin {
 		$this->loader->add_action( 'wp_enqueue_scripts', $this, 'register_quiz_components', 0 );
 		$this->loader->add_action( 'admin_enqueue_scripts', $this, 'register_quiz_components', 0 );
 		$this->loader->add_action( 'prc_platform_on_post_init', $this, 'init_quiz_db_entry_on_new_post', 100 );
-		// $this->loader->add_action( 'init', $this, 'register_quiz_patterns' ); // @TODO: When block pattern overrides or a method to load patterns into sycned patterns is implemented, re-enable this.
 
 		// Register quiz cookie information with WP Consent API.
 		$this->loader->add_action( 'init', $this, 'register_quiz_cookie_info' );
@@ -216,8 +225,8 @@ class Plugin {
 		$block_files = glob( PRC_QUIZ_DIR . '/build/*', GLOB_ONLYDIR );
 		foreach ( $block_files as $block ) {
 			$block = basename( $block );
-			// Editor-only script entry; no PHP block class.
-			if ( 'bindings' === $block ) {
+			// Not Gutenberg block types. Bindings PHP is required above.
+			if ( in_array( $block, array( 'bindings', 'admin-dataview' ), true ) ) {
 				continue;
 			}
 			$loaded = $this->include_block( $block );
@@ -249,6 +258,7 @@ class Plugin {
 		// Synced quiz (embeddable by ref).
 		new Synced_Quiz( $this->get_loader() );
 		new Quiz_Bindings( $this->get_loader() );
+		new Block_Bits( $this->get_loader() );
 		// Core Quiz application blocks.
 		new Controller( $this->get_loader() );
 		new Answer( $this->get_loader() );
@@ -260,7 +270,6 @@ class Plugin {
 		new Group_Results( $this->get_loader() );
 		new Results( $this->get_loader() );
 		new Result_Histogram( $this->get_loader() );
-		new Result_Score( $this->get_loader() );
 		new Result_Table( $this->get_loader() );
 	}
 
@@ -358,84 +367,6 @@ class Plugin {
 		if ( ! $script ) {
 			return new WP_Error( 'prc-quiz-shared-components', __( 'Error registering script.' ) );
 		}
-	}
-
-	/**
-	 * Register the quiz patterns.
-	 *
-	 * @hook init
-	 *
-	 * @since 3.5.0
-	 */
-	public function register_quiz_patterns() {
-		register_block_pattern_category(
-			'prc-quiz',
-			array(
-				'label'       => 'Quiz Builder',
-				'description' => 'Patterns for Quiz Builder',
-			)
-		);
-
-		register_block_pattern(
-			'prc-quiz/next-button',
-			array(
-				'title'         => __( 'Quiz Next Button', 'prc-quiz' ),
-				'description'   => _x( 'Next button for paginated quizzes.', 'Block pattern description', 'prc-quiz' ),
-				'postTypes'     => array( self::$post_type ),
-				'filePath'      => PRC_QUIZ_DIR . '/includes/patterns/next-button.php',
-				'categories'    => array( 'prc-quiz' ),
-				'viewportWidth' => 320,
-			)
-		);
-
-		register_block_pattern(
-			'prc-quiz/start-button',
-			array(
-				'title'         => __( 'Quiz Start Button', 'prc-quiz' ),
-				'description'   => _x( 'Start button for quizzes.', 'Block pattern description', 'prc-quiz' ),
-				'postTypes'     => array( self::$post_type ),
-				'filePath'      => PRC_QUIZ_DIR . '/includes/patterns/start-button.php',
-				'categories'    => array( 'prc-quiz' ),
-				'viewportWidth' => 320,
-			)
-		);
-
-		register_block_pattern(
-			'prc-quiz/submit-button',
-			array(
-				'title'         => __( 'Quiz Submit Button', 'prc-quiz' ),
-				'description'   => _x( 'Submit button for quizzes.', 'Block pattern description', 'prc-quiz' ),
-				'postTypes'     => array( self::$post_type ),
-				'filePath'      => PRC_QUIZ_DIR . '/includes/patterns/submit-button.php',
-				'categories'    => array( 'prc-quiz' ),
-				'viewportWidth' => 320,
-			)
-		);
-
-		register_block_pattern(
-			'prc-quiz/create-group-form-dialog',
-			array(
-				'title'         => __( 'Create Group Form Dialog', 'prc-quiz' ),
-				'description'   => _x( 'Create group form dialog for quizzes.', 'Block pattern description', 'prc-quiz' ),
-				'postTypes'     => array( self::$post_type ),
-				'filePath'      => PRC_QUIZ_DIR . '/includes/patterns/create-group-form-dialog.php',
-				'categories'    => array( 'prc-quiz' ),
-				'viewportWidth' => 320,
-			)
-		);
-
-		register_block_pattern(
-			'prc-quiz/create-group-from-results-form-dialog',
-			array(
-				'title'         => __( 'Create Group from Results Form Dialog', 'prc-quiz' ),
-				'description'   => _x( 'Create a group directly from the results page with your result pre-included.', 'Block pattern description', 'prc-quiz' ),
-				'postTypes'     => array( self::$post_type ),
-				'filePath'      => PRC_QUIZ_DIR . '/includes/patterns/create-group-from-results-form-dialog.php',
-				'blockTypes'    => array( 'prc-quiz/results' ),
-				'categories'    => array( 'prc-quiz' ),
-				'viewportWidth' => 420,
-			)
-		);
 	}
 
 	/**
@@ -655,7 +586,7 @@ class Plugin {
 			false,                                          // Not restricted to members only.
 			false,                                          // Not restricted to administrators only.
 			'HTTP',                                         // Cookie type.
-			true                                            // Use current site domain.
+			''                                              // Use current site domain.
 		);
 		wp_add_cookie_info(
 			'prc-quiz-builder__typology',
@@ -667,7 +598,7 @@ class Plugin {
 			false,
 			false,
 			'HTTP',
-			true
+			''
 		);
 	}
 

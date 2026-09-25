@@ -19,6 +19,11 @@ import { useSelect } from '@wordpress/data';
  * Internal Dependencies
  */
 import Controls from './controls';
+import useGroupResultsSync from './use-group-results-sync';
+import useSeedHistogramPopulation from './use-seed-histogram-population';
+import { buildDefaultScoreHeadingContent } from '../bindings/score-bit';
+import { quizBuilderBinding } from '../bindings/binding-fields';
+import { ADULTS_RECEIVING_SCORE_FALLBACK } from './histogram-population';
 
 const TEMPLATE = [
 	[
@@ -46,7 +51,33 @@ const TEMPLATE = [
 			],
 		],
 	],
-	['prc-quiz/results', {}, [['prc-quiz/result-score']]],
+	[
+		'prc-quiz/results',
+		{},
+		[
+			[
+				'core/heading',
+				{
+					level: 2,
+					content: buildDefaultScoreHeadingContent('X'),
+				},
+			],
+			[
+				'core/heading',
+				{
+					level: 3,
+					content: ADULTS_RECEIVING_SCORE_FALLBACK,
+					metadata: {
+						bindings: {
+							content: quizBuilderBinding(
+								'adults-receiving-this-score'
+							),
+						},
+					},
+				},
+			],
+		],
+	],
 ];
 
 /**
@@ -70,6 +101,11 @@ export default function Edit({
 	clientId,
 }) {
 	const { allowedBlocks, displayType, groupsEnabled } = attributes;
+	const { groupResultsClientId, removeGroupResults } = useGroupResultsSync({
+		clientId,
+		groupsEnabled,
+	});
+	useSeedHistogramPopulation(clientId);
 
 	const blockProps = useBlockProps({
 		className: clsx(className, {
@@ -156,9 +192,15 @@ export default function Edit({
 		() => ({
 			'prc-quiz/id': quizId,
 			'prc-quiz/uuids': existingUuids,
+			'prc-quiz/histogram-population': attributes.histogramPopulation,
 			...groupBindingContext,
 		}),
-		[quizId, existingUuids, groupBindingContext]
+		[
+			quizId,
+			existingUuids,
+			groupBindingContext,
+			attributes.histogramPopulation,
+		]
 	);
 
 	return (
@@ -167,6 +209,8 @@ export default function Edit({
 				attributes={attributes}
 				setAttributes={setAttributes}
 				clientId={clientId}
+				groupResultsClientId={groupResultsClientId}
+				removeGroupResults={removeGroupResults}
 			/>
 			<div {...innerBlocksProps}>
 				<BlockContextProvider value={blockContextValue}>

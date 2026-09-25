@@ -101,7 +101,6 @@
   "usesContext": [
     "prc-quiz/id",
     "prc-quiz/type",
-    "prc-quiz/demo-break-labels",
     "prc-quiz/uuids"
   ],
   "textdomain": "question",

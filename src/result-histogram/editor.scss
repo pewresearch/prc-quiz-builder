@@ -9,6 +9,17 @@
 		color: inherit;
 		background: inherit;
 	}
+
+	&.has-no-chart {
+		min-height: 0;
+	}
+
+	.histogram-empty {
+		margin: 0;
+		padding: 1em;
+		color: #666;
+		text-align: center;
+	}
 	.cb__chart.cb__chart__bar--vertical {
 		margin: auto;
 	}
@@ -25,12 +36,19 @@
 	}
 	#bar-chart .bar {
 		position: relative;
-		background: #000;
+		background-color: var(
+			--prc-quiz-histogram-bar-color,
+			var(--wp--preset--color--oatmeal, #c8b8a0)
+		);
 		color: #fff;
 		min-height: 10px;
-		transition: height .2s ease-in-out;
+		transition: height 0.2s ease-in-out;
 	}
 	#bar-chart .bar.is-highlighted {
+		background-color: var(
+			--prc-quiz-histogram-highlight-color,
+			var(--wp--preset--color--mustard, #e0b500)
+		);
 		outline: 2px solid #000;
 	}
 	#bar-chart .bar__label {

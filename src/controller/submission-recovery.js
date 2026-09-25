@@ -280,7 +280,10 @@ const { state, actions } = store('prc-quiz/controller', {
 				SILENT_RETRY_BASE_DELAY_MS + jitter
 			);
 		},
-		silentlyRetryPendingSubmission: async (pendingSubmission) => {
+		silentlyRetryPendingSubmission: async (
+			pendingSubmission,
+			context = getContext()
+		) => {
 			const storageKey = getPendingSubmissionStorageKey(
 				pendingSubmission.quizId,
 				pendingSubmission.hash
@@ -312,8 +315,11 @@ const { state, actions } = store('prc-quiz/controller', {
 				}
 
 				scheduledSilentRetryKeys.delete(storageKey);
-				actions.clearPendingSubmission(nextPendingSubmission);
-				actions.clearCookie();
+				actions.clearPendingSubmission(nextPendingSubmission, context);
+				actions.saveSubmittedScore(
+					nextPendingSubmission.requestBody?.score,
+					context
+				);
 				if (
 					!state.currentSessionArchetypes.includes(
 						nextPendingSubmission.hash
@@ -412,7 +418,12 @@ const { state, actions } = store('prc-quiz/controller', {
 				context.processing = false;
 				context.readyForSubmission = false;
 				actions.clearPendingSubmission(nextPendingSubmission, context);
-				actions.clearCookie();
+				actions.saveSubmittedScore(
+					isDefinedScore(newScore)
+						? newScore
+						: context.userScore?.score,
+					context
+				);
 				if (
 					!state.currentSessionArchetypes.includes(
 						nextPendingSubmission.hash

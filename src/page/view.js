@@ -18,11 +18,19 @@ const { state, actions } = store('prc-quiz/controller', {
 		suppressPageScroll: false,
 		get isPageVisible() {
 			const context = getContext();
-			const { uuid, currentPageUuid, displayType } = context;
+			const { uuid, currentPageUuid, displayType, pageTransitionState } =
+				context;
 			if ('paged' !== displayType) {
 				return true;
 			}
-			return uuid === currentPageUuid;
+			return (
+				uuid === currentPageUuid ||
+				uuid === pageTransitionState?.fromUuid
+			);
+		},
+		get isPageLeaving() {
+			const { uuid, pageTransitionState } = getContext();
+			return uuid === pageTransitionState?.fromUuid;
 		},
 	},
 	callbacks: {
@@ -49,16 +57,21 @@ const { state, actions } = store('prc-quiz/controller', {
 			lastCurrentPageUuidByQuiz.set(quizKey, currentPageUuid);
 			if (hasNavigated && !suppressScroll) {
 				const { ref } = getElement();
-				const quizContainer = ref.closest(
-					'.wp-block-prc-quiz-controller'
-				);
-				scrollToElement(quizContainer);
+				if (context.scrollOnPageChange) {
+					scrollToElement(
+						ref.closest('.wp-block-prc-quiz-controller')
+					);
+				}
+				// A running page transition moves focus when it finishes.
+				if (!context.pageTransitionState) {
+					ref.focus({ preventScroll: true });
+				}
 			}
 			actions.runAnimation?.();
 		},
-		onLastPageScroll: withSyncEvent((event) => {
+		onLastPageScroll: withSyncEvent(() => {
 			const context = getContext();
-			const { uuid, currentPageUuid, displayType } = context;
+			const { uuid, displayType } = context;
 			if ('scrollable' !== displayType) {
 				return;
 			}

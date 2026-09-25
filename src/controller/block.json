@@ -26,6 +26,19 @@
 			"enum": ["paged", "scrollable", "fluid"],
 			"default": "paged"
 		},
+		"pageTransition": {
+			"type": "string",
+			"enum": ["none", "horizontal-parallax"],
+			"default": "none"
+		},
+		"parallaxStrength": {
+			"type": "number",
+			"default": 0.5
+		},
+		"scrollOnPageChange": {
+			"type": "boolean",
+			"default": true
+		},
 		"allowSubmissions": {
 			"type": "boolean",
 			"default": true
@@ -33,9 +46,6 @@
 		"groupsEnabled": {
 			"type": "boolean",
 			"default": false
-		},
-		"mailchimpListId": {
-			"type": "string"
 		},
 		"demoBreakLabels": {
 			"type": "string"
@@ -63,6 +73,10 @@
 		"scoreBuckets": {
 			"type": "string",
 			"default": "[]"
+		},
+		"histogramPopulation": {
+			"type": "string",
+			"default": "[]"
 		}
 	},
 	"providesContext": {
@@ -73,7 +87,8 @@
 		"prc-quiz/groupsEnabled": "groupsEnabled",
 		"prc-quiz/allowSubmissions": "allowSubmissions",
 		"prc-quiz/liveFeedback": "liveFeedback",
-		"prc-quiz/score-buckets": "scoreBuckets"
+		"prc-quiz/score-buckets": "scoreBuckets",
+		"prc-quiz/histogram-population": "histogramPopulation"
 	},
 	"usesContext": ["prc-quiz/isEmbedded"],
 	"supports": {

@@ -4,21 +4,25 @@ A library to work with [Google Firebase](https://firebase.google.com) tokens. Yo
 [create custom tokens](https://firebase.google.com/docs/auth/admin/create-custom-tokens) and 
 [verify ID Tokens](https://firebase.google.com/docs/auth/admin/verify-id-tokens).
 
-Achieve more with the [Firebase Admin SDK](https://github.com/kreait/firebase-php) for PHP (which uses this library).
+Achieve more with the [Firebase Admin SDK](https://packagist.org/packages/kreait/firebase-php) for PHP (which uses this library).
 
-[![Current version](https://img.shields.io/packagist/v/kreait/firebase-tokens.svg)](https://packagist.org/packages/kreait/firebase-tokens)
+[![Current version](https://img.shields.io/packagist/v/kreait/firebase-tokens.svg?logo=composer)](https://packagist.org/packages/kreait/firebase-tokens)
 [![Supported PHP version](https://img.shields.io/packagist/php-v/kreait/firebase-tokens.svg)]()
 [![Monthly Downloads](https://img.shields.io/packagist/dm/kreait/firebase-tokens.svg)](https://packagist.org/packages/kreait/firebase-tokens/stats)
 [![Total Downloads](https://img.shields.io/packagist/dt/kreait/firebase-tokens.svg)](https://packagist.org/packages/kreait/firebase-tokens/stats)
-[![Tests](https://github.com/kreait/firebase-tokens-php/workflows/Tests/badge.svg)](https://github.com/kreait/firebase-tokens-php/actions)
+[![Tests](https://github.com/beste/firebase-tokens-php/workflows/Tests/badge.svg)](https://github.com/beste/firebase-tokens-php/actions)
 [![Sponsor](https://img.shields.io/static/v1?logo=GitHub&label=Sponsor&message=%E2%9D%A4&color=ff69b4)](https://github.com/sponsors/jeromegamez)
 
----
 
-## The future of the Firebase Admin PHP SDK
+> [!IMPORTANT]
+> **Support the project:** This library is downloaded 1M+ times monthly and powers thousands of applications.
+> If it saves you or your team time, please consider
+> [sponsoring its development](https://github.com/sponsors/jeromegamez).
 
-Please read about the future of the Firebase Admin PHP SDK on the
-[SDK's GitHub Repository](https://github.com/kreait/firebase-php).
+> [!NOTE]
+> The project moved from the `kreait` to the `beste` GitHub Organization in January 2026.
+> The namespace remains `Kreait\Firebase\JWT` and the package name remains `kreait/firebase-tokens`.
+> Please update your remote URL if you have forked or cloned the repository.
 
 ---
 
@@ -31,7 +35,6 @@ Please read about the future of the Firebase Admin PHP SDK on the
   - [Tenant Awareness](#tenant-awareness) 
 - [Advanced Usage](#advanced-usage)
   - [Cache results from the Google Secure Token Store](#cache-results-from-the-google-secure-token-store)
-- [Supported Versions](#supported-versions)
 
 ## Installation
 
@@ -236,21 +239,6 @@ $cache = new FilesystemAdapter();
 
 $verifier = IdTokenVerifier::createWithProjectIdAndCache($projectId, $cache);
 ```
-
-## Supported Versions
-
-**Only the latest version is actively supported.**
-
-Earlier versions will receive security fixes as long as their **lowest** PHP requirement receives security fixes. For
-example, when a version supports PHP 7.4 and PHP 8.0, security support will end when security support for PHP 7.4 ends.
-
-| Version | Initial Release | Supported PHP Versions                   | Status      |
-|---------|-----------------|------------------------------------------|-------------|
-| `5.x`   | 25 Nov 2023     | `~8.1.0, ~8.2.0, ~8.3.0, ~8.4.0, ~8.5.0` | Active      |
-| `4.x`   | 26 Nov 2022     | `~8.1.0, ~8.2.0, ~8.3.0`                 | End of life |
-| `3.x`   | 25 Apr 2022     | `^7.4, ^8.0`                             | End of life |
-| `2.x`   | 03 Jan 2022     | `^7.4, ^8.0`                             | End of life |
-| `1.x`   | 06 Feb 2017     | `>=5.5`                                  | End of life |
 
 ## License
 

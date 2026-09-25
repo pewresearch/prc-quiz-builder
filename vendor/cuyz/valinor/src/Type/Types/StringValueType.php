@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CuyZ\Valinor\Type\Types;
 
-use CuyZ\Valinor\Compiler\Native\ComplianceNode;
 use CuyZ\Valinor\Compiler\Node;
 use CuyZ\Valinor\Mapper\Tree\Message\ErrorMessage;
 use CuyZ\Valinor\Mapper\Tree\Message\MessageBuilder;
@@ -12,11 +11,11 @@ use CuyZ\Valinor\Type\FixedType;
 use CuyZ\Valinor\Type\StringType;
 use CuyZ\Valinor\Type\Type;
 use CuyZ\Valinor\Utility\ValueDumper;
-use Stringable;
 
-use function assert;
-use function is_numeric;
-use function is_string;
+use function CuyZ\Valinor\Compiler\value;
+use function str_contains;
+use function str_ends_with;
+use function str_replace;
 use function str_starts_with;
 use function substr;
 
@@ -27,11 +26,15 @@ final class StringValueType implements StringType, FixedType
 
     public function __construct(private string $value) {}
 
-    public static function from(string $value): self
+    public static function quoted(string $value): self
     {
-        if (! str_starts_with($value, '"') && ! str_starts_with($value, "'")) {
-            return new self($value);
-        }
+        $value = match(true) {
+            str_starts_with($value, '"') && str_ends_with($value, '"') => $value,
+            str_starts_with($value, "'") && str_ends_with($value, "'") => $value,
+            str_contains($value, "'") && str_contains($value, '"') => "'" . str_replace("'", "\'", $value) . "'",
+            str_contains($value, "'") => '"' . $value . '"',
+            default => "'" . $value . "'",
+        };
 
         $instance = new self(substr($value, 1, -1));
         $instance->quoteChar = $value[0];
@@ -44,9 +47,9 @@ final class StringValueType implements StringType, FixedType
         return $value === $this->value;
     }
 
-    public function compiledAccept(ComplianceNode $node): ComplianceNode
+    public function compiledAccept(Node $node): Node
     {
-        return $node->equals(Node::value($this->value));
+        return $node->equals(value($this->value));
     }
 
     public function matches(Type $other): bool
@@ -59,17 +62,9 @@ final class StringValueType implements StringType, FixedType
         return $generics;
     }
 
-    public function canCast(mixed $value): bool
+    public function hasQuoteChar(): bool
     {
-        return (is_string($value) || is_numeric($value) || $value instanceof Stringable)
-            && (string)$value === $this->value;
-    }
-
-    public function cast(mixed $value): string
-    {
-        assert($this->canCast($value));
-
-        return $this->value;
+        return isset($this->quoteChar);
     }
 
     public function value(): string

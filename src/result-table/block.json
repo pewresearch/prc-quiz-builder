@@ -2,7 +2,7 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "prc-quiz/result-table",
-	"version": "4.0.1",
+	"version": "4.1.0",
 	"title": "Result Table",
 	"category": "prc-quiz",
 	"keywords": ["table", "results", "results table", "quiz table"],
@@ -51,7 +51,18 @@
 			}
 		}
 	},
-	"parent": ["prc-quiz/results"],
+	"styles": [
+		{
+			"name": "default",
+			"label": "Simple",
+			"isDefault": true
+		},
+		{
+			"name": "complex",
+			"label": "Complex"
+		}
+	],
+	"ancestor": ["prc-quiz/results", "prc-quiz/group-results"],
 	"usesContext": ["prc-quiz/demo-break-labels"],
 	"textdomain": "result-table",
 	"editorScript": "file:./index.js",

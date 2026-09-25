@@ -1,11 +1,25 @@
 /**
  * WordPress Dependencies
  */
-import { store, getContext } from '@wordpress/interactivity';
+import { store, getContext, getElement } from '@wordpress/interactivity';
 
 /**
  * Internal Dependencies
  */
+import {
+	resolveClusterKey,
+	resolveGroupCapability,
+} from '../controller/group-capability';
+import {
+	SHARE_KIND,
+	formatGroupBucketShareLabel,
+	formatGroupScoreShareLabel,
+	hasUsableGroupTally as groupDataHasUsableTally,
+	hasViewerScore,
+	readBucketIdFromAttributes,
+	resolveGroupBucketShare,
+	resolveGroupScoreShare,
+} from '../controller/group-score-share';
 import createGroupFormAction from './create-group-form-action';
 
 const { state } = store('prc-quiz/controller', {
@@ -57,6 +71,42 @@ const { state } = store('prc-quiz/controller', {
 			}
 			const { clusters } = quizData;
 			return clusters;
+		},
+		get groupScoreShare() {
+			const context = getContext();
+			let score = context.userScore?.score;
+			if (!hasViewerScore(score) && state.hasQuizProgress) {
+				score = state.quizProgress?.score;
+			}
+			return resolveGroupScoreShare({
+				score,
+				capability: resolveGroupCapability({
+					quizType: context.quizType,
+					scoreBuckets: context.scoreBuckets,
+				}),
+				groupData: context.groupData,
+			});
+		},
+		get groupScoreShareLabel() {
+			return formatGroupScoreShareLabel(state.groupScoreShare);
+		},
+		get hasGroupScoreShare() {
+			return SHARE_KIND.READY === state.groupScoreShare.kind;
+		},
+		get groupBucketShareLabel() {
+			const { attributes } = getElement();
+			return formatGroupBucketShareLabel(
+				resolveGroupBucketShare({
+					bucketId: readBucketIdFromAttributes(attributes),
+					groupData: getContext().groupData,
+				})
+			);
+		},
+		get hasUsableGroupTally() {
+			return groupDataHasUsableTally(getContext().groupData);
+		},
+		get hasViewerScoreAndUsableGroupTally() {
+			return state.hasViewerScore && state.hasUsableGroupTally;
 		},
 	},
 	actions: {
@@ -114,7 +164,11 @@ const { state } = store('prc-quiz/controller', {
 			const { quizId } = state;
 			const { groupAnswers, groupClusters } = state;
 			const context = getContext();
-			const { userScore } = context;
+			const { userScore, quizType, scoreBuckets } = context;
+			const groupCapability = resolveGroupCapability({
+				quizType,
+				scoreBuckets,
+			});
 
 			const headers = store(
 				'prc-user-accounts/content-gate'
@@ -141,9 +195,14 @@ const { state } = store('prc-quiz/controller', {
 			const ownerSubmission = userScore?.userSubmission?.length
 				? userScore.userSubmission
 				: null;
-			const ownerScore =
+			const rawOwnerScore =
 				userScore?.score !== undefined && userScore?.score !== null
 					? userScore.score
+					: null;
+			const ownerScore =
+				null !== rawOwnerScore
+					? (resolveClusterKey(rawOwnerScore, groupCapability) ??
+						rawOwnerScore)
 					: null;
 
 			try {
@@ -168,9 +227,28 @@ const { state } = store('prc-quiz/controller', {
 			if (!groupsEnabled) {
 				return;
 			}
-			// Ensure quiz data is available before doing any group initialization.
 			const _quizData = state[`quiz_${quizId}`];
 			void _quizData;
+
+			const { quizProgress, hasQuizProgress } = state;
+			if (!hasQuizProgress || !quizProgress) {
+				return;
+			}
+			if (
+				quizProgress.selectedAnswers &&
+				0 === Object.keys(context.selectedAnswers || {}).length
+			) {
+				context.selectedAnswers = quizProgress.selectedAnswers;
+			}
+			if (
+				hasViewerScore(quizProgress.score) &&
+				!hasViewerScore(context.userScore?.score)
+			) {
+				context.userScore = {
+					...context.userScore,
+					score: quizProgress.score,
+				};
+			}
 		},
 	},
 });

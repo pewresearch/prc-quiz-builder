@@ -1,3 +1,8 @@
+/**
+ * Internal Dependencies
+ */
+import { quizBuilderBinding } from '../bindings/binding-fields';
+
 export default {
 	questionAttributes: {
 		style: {
@@ -19,9 +24,7 @@ export default {
 			{
 				metadata: {
 					bindings: {
-						content: {
-							source: 'prc-quiz/question',
-						},
+						content: quizBuilderBinding('question-text'),
 					},
 				},
 				fontSize: 'medium',
@@ -71,9 +74,8 @@ export default {
 							{
 								metadata: {
 									bindings: {
-										content: {
-											source: 'prc-quiz/answer',
-										},
+										content:
+											quizBuilderBinding('answer-text'),
 									},
 								},
 							},
@@ -112,9 +114,8 @@ export default {
 								placeholder: 'Start typing your answer here...',
 								metadata: {
 									bindings: {
-										content: {
-											source: 'prc-quiz/answer',
-										},
+										content:
+											quizBuilderBinding('answer-text'),
 									},
 								},
 							},
@@ -153,9 +154,8 @@ export default {
 								placeholder: 'Start typing your answer here...',
 								metadata: {
 									bindings: {
-										content: {
-											source: 'prc-quiz/answer',
-										},
+										content:
+											quizBuilderBinding('answer-text'),
 									},
 								},
 								style: {
@@ -200,9 +200,8 @@ export default {
 								placeholder: 'Start typing your answer here...',
 								metadata: {
 									bindings: {
-										content: {
-											source: 'prc-quiz/answer',
-										},
+										content:
+											quizBuilderBinding('answer-text'),
 									},
 								},
 							},
@@ -241,9 +240,8 @@ export default {
 								placeholder: 'Start typing your answer here...',
 								metadata: {
 									bindings: {
-										content: {
-											source: 'prc-quiz/answer',
-										},
+										content:
+											quizBuilderBinding('answer-text'),
 									},
 								},
 							},
@@ -282,9 +280,8 @@ export default {
 								placeholder: 'Start typing your answer here...',
 								metadata: {
 									bindings: {
-										content: {
-											source: 'prc-quiz/answer',
-										},
+										content:
+											quizBuilderBinding('answer-text'),
 									},
 								},
 							},
@@ -323,9 +320,8 @@ export default {
 								placeholder: 'Start typing your answer here...',
 								metadata: {
 									bindings: {
-										content: {
-											source: 'prc-quiz/answer',
-										},
+										content:
+											quizBuilderBinding('answer-text'),
 									},
 								},
 							},
@@ -364,9 +360,8 @@ export default {
 								placeholder: 'Start typing your answer here...',
 								metadata: {
 									bindings: {
-										content: {
-											source: 'prc-quiz/answer',
-										},
+										content:
+											quizBuilderBinding('answer-text'),
 									},
 								},
 							},
@@ -405,9 +400,8 @@ export default {
 								placeholder: 'Start typing your answer here...',
 								metadata: {
 									bindings: {
-										content: {
-											source: 'prc-quiz/answer',
-										},
+										content:
+											quizBuilderBinding('answer-text'),
 									},
 								},
 							},
@@ -446,9 +440,8 @@ export default {
 								placeholder: 'Start typing your answer here...',
 								metadata: {
 									bindings: {
-										content: {
-											source: 'prc-quiz/answer',
-										},
+										content:
+											quizBuilderBinding('answer-text'),
 									},
 								},
 							},
@@ -483,9 +476,8 @@ export default {
 								placeholder: 'Start typing your answer here...',
 								metadata: {
 									bindings: {
-										content: {
-											source: 'prc-quiz/answer',
-										},
+										content:
+											quizBuilderBinding('answer-text'),
 									},
 								},
 							},

@@ -11,29 +11,24 @@
         }
     ],
     "require": {
-        "php": "^8.0",
+        "php": "^8.3",
         "psr/clock": "^1.0"
     },
     "require-dev": {
-        "phpstan/extension-installer": "^1.2",
-        "phpstan/phpstan": "^1.9.1",
-        "phpstan/phpstan-phpunit": "^1.2.2",
-        "phpstan/phpstan-strict-rules": "^1.4.4",
-        "phpunit/phpunit": "^9.5.26",
-        "psalm/plugin-phpunit": "^0.16.1",
-        "vimeo/psalm": "^4.29"
+        "phpstan/extension-installer": "^1.4.1",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpstan/phpstan-strict-rules": "^2.0",
+        "phpunit/phpunit": "^12.5"
     },
     "autoload": {
         "psr-4": {
-            "Beste\\Clock\\": "src/Clock"
-        },
-        "files": [
-            "src/Clock.php"
-        ]
+            "Beste\\Clock\\": "src"
+        }
     },
     "autoload-dev": {
         "psr-4": {
-            "Beste\\Clock\\Tests\\": "tests/Clock"
+            "Beste\\Clock\\Tests\\": "tests"
         }
     },
     "provide": {
@@ -48,11 +43,9 @@
     "scripts": {
         "test": [
             "@phpstan",
-            "@psalm",
             "@phpunit"
         ],
         "phpunit": "vendor/bin/phpunit",
-        "phpstan": "vendor/bin/phpstan analyse",
-        "psalm": "vendor/bin/psalm"
+        "phpstan": "vendor/bin/phpstan analyse"
     }
 }

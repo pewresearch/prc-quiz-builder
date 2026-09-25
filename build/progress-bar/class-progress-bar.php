@@ -43,21 +43,43 @@ class Progress_Bar {
 	}
 
 	/**
+	 * Visibility attributes shared with the Pages block.
+	 *
+	 * Stamps `hidden` on group-results URLs so the bar does not flash
+	 * before Interactivity hydrates `state.displayPages`.
+	 *
+	 * @param array $context Block context.
+	 * @return array<string, string>
+	 */
+	private function get_pages_visibility_attributes( array $context ): array {
+		$attrs = array(
+			'data-wp-bind--hidden' => '!state.displayPages',
+		);
+		if ( Group_Results::is_group_results_request( $context['prc-quiz/groupsEnabled'] ?? false ) ) {
+			$attrs['hidden'] = 'true';
+		}
+		return $attrs;
+	}
+
+	/**
 	 * Render the linear bar markup.
 	 *
+	 * @param array $context Block context.
 	 * @return string
 	 */
-	private function render_bar_markup(): string {
+	private function render_bar_markup( array $context ): string {
 		$wrapper_attrs = get_block_wrapper_attributes(
-			array(
-				'class'                         => 'wp-block-prc-quiz-progress-bar',
-				'data-wp-interactive'           => 'prc-quiz/controller',
-				'data-wp-bind--hidden'          => '!state.displayPages',
-				'role'                          => 'progressbar',
-				'data-wp-bind--aria-valuenow'   => 'state.progressPercentage',
-				'aria-valuemin'                 => '0',
-				'aria-valuemax'                 => '100',
-				'data-wp-bind--aria-valuetext'  => 'state.progressLabel',
+			array_merge(
+				array(
+					'class'                        => 'wp-block-prc-quiz-progress-bar',
+					'data-wp-interactive'          => 'prc-quiz/controller',
+					'role'                         => 'progressbar',
+					'data-wp-bind--aria-valuenow'  => 'state.progressPercentage',
+					'aria-valuemin'                => '0',
+					'aria-valuemax'                => '100',
+					'data-wp-bind--aria-valuetext' => 'state.progressLabel',
+				),
+				$this->get_pages_visibility_attributes( $context )
 			)
 		);
 
@@ -70,12 +92,14 @@ class Progress_Bar {
 	/**
 	 * Render the circles variation markup.
 	 *
+	 * @param array $context Block context.
 	 * @return string
 	 */
-	private function render_circles_markup(): string {
+	private function render_circles_markup( array $context ): string {
 		wp_interactivity_state(
 			'prc-quiz/controller',
 			array(
+				'lastPageInView'     => false,
 				'progressStepLabels' => array(
 					'correct'    => __( 'Correct', 'progress-bar' ),
 					'incorrect'  => __( 'Incorrect', 'progress-bar' ),
@@ -83,22 +107,39 @@ class Progress_Bar {
 					'answered'   => __( 'Answered', 'progress-bar' ),
 					'unanswered' => __( 'Unanswered', 'progress-bar' ),
 				),
+				'progressSkipLabels' => array(
+					'skipToLastPage'    => __( 'Skip to last page', 'progress-bar' ),
+					'goToFirstPage'     => __( 'Go to first page', 'progress-bar' ),
+					'scrollToEnd'       => __( 'Scroll to end', 'progress-bar' ),
+					'scrollToFirstPage' => __( 'Scroll to first page', 'progress-bar' ),
+				),
 			)
 		);
 
 		$wrapper_attrs = get_block_wrapper_attributes(
-			array(
-				'class'                => 'wp-block-prc-quiz-progress-bar is-style-circles',
-				'data-wp-interactive'  => 'prc-quiz/controller',
-				'data-wp-bind--hidden' => '!state.displayPages',
+			array_merge(
+				array(
+					'class'                           => 'wp-block-prc-quiz-progress-bar is-style-circles',
+					'data-wp-interactive'             => 'prc-quiz/controller',
+					'data-wp-init--observe-last-page' => 'callbacks.onProgressBarInit',
+				),
+				$this->get_pages_visibility_attributes( $context )
 			)
+		);
+
+		$skip = '<button type="button" class="wp-block-prc-quiz-progress-bar__skip" data-wp-on--click="actions.onProgressSkipClick" data-wp-text="state.progressSkipLabel" data-wp-bind--hidden="!state.showProgressSkip">' . esc_html( __( 'Skip to last page', 'progress-bar' ) ) . '</button>';
+
+		$header = wp_sprintf(
+			'<div class="wp-block-prc-quiz-progress-bar__header"><span class="wp-block-prc-quiz-progress-bar__label" data-wp-text="state.progressLabel"></span>%1$s</div>',
+			$skip
 		);
 
 		$step = '<template data-wp-each--step="state.progressSteps" data-wp-each-key="context.step.uuid"><li class="wp-block-prc-quiz-progress-bar__step" data-wp-class--is-correct="context.step.isCorrect" data-wp-class--is-incorrect="context.step.isIncorrect" data-wp-class--is-unsure="context.step.isUnsure" data-wp-class--is-unanswered="context.step.isUnanswered" data-wp-text="context.step.mark" data-wp-bind--aria-label="context.step.label"></li></template>';
 
 		return wp_sprintf(
-			'<div %1$s><span class="wp-block-prc-quiz-progress-bar__label" data-wp-text="state.progressLabel"></span><ol class="wp-block-prc-quiz-progress-bar__steps" aria-label="%2$s">%3$s</ol></div>',
+			'<div %1$s>%2$s<ol class="wp-block-prc-quiz-progress-bar__steps" aria-label="%3$s">%4$s</ol></div>',
 			$wrapper_attrs,
+			$header,
 			esc_attr( __( 'Quiz progress by question', 'prc-quiz' ) ),
 			$step
 		);
@@ -113,13 +154,14 @@ class Progress_Bar {
 	 * @return string The block content.
 	 */
 	public function render_block_callback( $attributes, $content, $block ) {
-		unset( $content, $block );
+		unset( $content );
+		$context = is_object( $block ) ? ( $block->context ?? array() ) : array();
 
 		if ( $this->is_circles_variation( $attributes ) ) {
-			return $this->render_circles_markup();
+			return $this->render_circles_markup( $context );
 		}
 
-		return $this->render_bar_markup();
+		return $this->render_bar_markup( $context );
 	}
 
 	/**

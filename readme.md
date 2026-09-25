@@ -33,15 +33,15 @@ The Controller block's `render_callback` is the key server/client bridge: it wri
 | `includes/class-groups.php`             | Firebase CRUD for community groups                                                                       |
 | `includes/class-rest-api.php`           | REST endpoint registration and handlers; contains the `$rest_disabled` kill switch                       |
 | `includes/class-analytics.php`          | `_report` post meta schema and submission counter; exposes `_submissions` REST field                     |
-| `includes/class-ability-categories.php`  | Registers the `quiz` WP Abilities category for MCP discovery                                                     |
+| `includes/class-ability-categories.php` | Registers the `quiz` WP Abilities category for MCP discovery                                             |
 | `includes/class-ability.php`            | WP Abilities API `prc-quiz-builder/get-analytics` tool (submissions + groups; MCP + REST)                |
 | `includes/class-cli-report.php`         | WP-CLI `wp prc quiz report` — ad hoc read/update of `_report` meta                                       |
-| `includes/class-cli-build-audience.php` | WP-CLI `wp prc quiz build-group-owners-audience` — thin wrapper around Audience_Service |
-| `includes/class-audience-service.php` | Shared build / list / delete for quiz group-owners audiences (CLI + REST) |
+| `includes/class-cli-build-audience.php` | WP-CLI `wp prc quiz build-group-owners-audience` — thin wrapper around Audience_Service                  |
+| `includes/class-audience-service.php`   | Shared build / list / delete for quiz group-owners audiences (CLI + REST)                                |
 | `includes/class-loader.php`             | Hook registration queue                                                                                  |
 | `includes/class-block-supports.php`     | CPT-scoped inserter filtering (`allowed_block_types_all`), Quiz Builder category, editor-support enqueue |
 | `includes/editor-support/`              | Unregisters quiz core block variations outside the `quiz` CPT editor                                     |
-| `includes/inspector-sidebar-panel/`     | Block editor plugin: quiz analytics, group analytics, and group-creators audience panel |
+| `includes/inspector-sidebar-panel/`     | Block editor plugin: quiz analytics, group analytics, and group-creators audience panel                  |
 | `src/controller/class-controller.php`   | Controller block — server render, Interactivity API context injection, button directive patching         |
 | `src/controller/view.js`                | Controller Interactivity API store — display-type resolution, submission, page visibility, navigation    |
 | `src/results/class-results.php`         | Results block server render                                                                              |
@@ -59,9 +59,8 @@ The Controller block's `render_callback` is the key server/client bridge: it wri
 | Question         | `prc-quiz/question`         | Single-choice, multiple-choice, or thermometer; supports randomization |
 | Answer           | `prc-quiz/answer`           | Answer choice with optional correctness, points, and label             |
 | Results          | `prc-quiz/results`          | Container rendered after quiz completion                               |
-| Result Score     | `prc-quiz/result-score`     | Displays the participant's score                                       |
-| Result Table     | `prc-quiz/result-table`     | Tabular results view; supports demographic breaks                      |
-| Result Histogram | `prc-quiz/result-histogram` | Score distribution histogram                                           |
+| Result Table     | `prc-quiz/result-table`     | Tabular results; Simple, Complex, or Community Group Complex variation |
+| Result Histogram | `prc-quiz/result-histogram` | Score distribution chart. Bin data lives on the Controller.            |
 | Group Results    | `prc-quiz/group-results`    | Community group aggregate results; required to enable group creation   |
 | Progress Bar     | `prc-quiz/progress-bar`     | Linear bar or per-question circles showing completion and outcomes     |
 | Embeddable       | `prc-quiz/embeddable`       | Reuse a quiz across other posts; edits propagate to all embeds         |
@@ -82,11 +81,11 @@ Live feedback is implemented in `src/answer/view.js` via `context.liveFeedback` 
 
 Knowledge-quiz answers use a tri-state `correct` attribute:
 
-| Value | Meaning | Toolbar label |
-| ----- | ------- | ------------- |
-| `true` | Correct answer | Correct Answer |
-| `null` | Neutral / "Not sure" | Not Sure |
-| `false` | Incorrect answer | Incorrect Answer |
+| Value   | Meaning              | Toolbar label    |
+| ------- | -------------------- | ---------------- |
+| `true`  | Correct answer       | Correct Answer   |
+| `null`  | Neutral / "Not sure" | Not Sure         |
+| `false` | Incorrect answer     | Incorrect Answer |
 
 The toolbar control lives in `src/answer/correct-toggle.js`. Freeform quizzes hide the control.
 
@@ -111,14 +110,22 @@ The Controller **Score Buckets** panel stores a JSON catalog of named, non-overl
 
 At results time, `matchScoreBucket()` returns the first bucket containing the participant's score. Insert the **Matching Score Bucket** block bit (`prc-quiz-builder/matching-score-bucket`) in the Results block to print the matched label.
 
+Insert the **Your Score** block bit (`prc-quiz-builder/your-score`) in a paragraph or heading inside Results to print the participant's score (for example, `You answered <your score bit> out of 8 questions correctly.`). Saved `prc-quiz/result-score` blocks still render on the frontend but are removed from the inserter.
+
+### Result histogram data
+
+Public-score bins (`# of correct answers` → `% of the public`) live on the Quiz Controller as `histogramPopulation`. Edit them from the Controller toolbar (**Edit Histogram Data**) in a DataForm modal with Add / Remove row. Quick Edit and Results Table Data stay on DataViews.
+
+The **Result Histogram** block is the chart only. Place **Adults Receiving This Score** (paragraph or heading variation) in Results for `X% of U.S. adults receive this score`. Both read the same controller context. Legacy histogram `histogramData` and the inner power table still render until the quiz is re-saved.
+
 ### Progress bar variations
 
 `prc-quiz/progress-bar` has two block variations:
 
-| Variation | Class | Behavior |
-| --------- | ----- | -------- |
-| Progress Bar (default) | _(none)_ | Linear fill showing percent of questions answered |
-| Progress Circles | `is-style-circles` | One circle per question — check, x, or question mark by outcome |
+| Variation              | Class              | Behavior                                                                                                                                                                                                     |
+| ---------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Progress Bar (default) | _(none)_           | Linear fill showing percent of questions answered                                                                                                                                                            |
+| Progress Circles       | `is-style-circles` | One circle per question — check, x, or question mark by outcome. Includes a skip control: **Skip to last page** / **Go to first page** (paged) or **Scroll to end** / **Scroll to first page** (scrollable). |
 
 Circles reflect live outcomes when **Live Feedback** is enabled; otherwise they show answered vs unanswered.
 
@@ -141,14 +148,14 @@ A `fluid` quiz resolves to a concrete display mode by viewport width (782px brea
 
 The Pages block binds `hidden` to `!state.displayPages` (`src/pages/class-pages.php`). Visibility rules:
 
-| Configuration                   | During quiz          | Results or group-results URL |
-| ------------------------------- | -------------------- | ---------------------------- |
-| `paged`                         | Pages visible        | Pages hidden                 |
-| `fluid` → `paged` (desktop)     | Pages visible        | Pages hidden                 |
-| `scrollable` (native)           | Pages always visible | Pages always visible         |
-| `fluid` → `scrollable` (mobile) | Pages visible        | Pages hidden (matches paged) |
+| Configuration                   | During quiz          | Individual-results URL | Group-results URL |
+| ------------------------------- | -------------------- | ---------------------- | ----------------- |
+| `paged`                         | Pages visible        | Pages hidden           | Pages hidden      |
+| `fluid` → `paged` (desktop)     | Pages visible        | Pages hidden           | Pages hidden      |
+| `scrollable` (native)           | Pages always visible | Pages always visible   | Pages hidden      |
+| `fluid` → `scrollable` (mobile) | Pages visible        | Pages hidden           | Pages hidden      |
 
-Native scrollable quizzes keep pages visible on results URLs so inline, submit-as-you-go results can render below the questions. Fluid quizzes on mobile hide pages when landing on a results URL so users are not dropped at the top of the question stack.
+Native scrollable quizzes keep pages visible on individual-results URLs so inline, submit-as-you-go results can render below the questions. Group-results URLs always hide pages (and the progress bar) so only aggregate group results show, including native scrollable and fluid quizzes. PHP stamps `hidden` on first paint for group-results landings so questions do not flash before Interactivity hydrates.
 
 ### Navigation buttons
 
@@ -200,33 +207,33 @@ When results become visible, `onResultsDisplay` in `src/results/view.js` scrolls
 
 All endpoints are registered through the platform's `prc_api_endpoints` filter. Public write endpoints validate the quiz post (exists, `quiz` post type, published) and apply per-IP rate limiting on submit.
 
-| Method | Route                   | Auth                         | Description                                                                                                  |
-| ------ | ----------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `POST` | `quiz/submit`           | Rate limit + quiz validation | Records a submission; creates or increments the archetype in Firebase; updates group if `groupId` is present |
+| Method | Route                   | Auth                                   | Description                                                                                                                                                                   |
+| ------ | ----------------------- | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `POST` | `quiz/submit`           | Rate limit + quiz validation           | Records a submission; creates or increments the archetype in Firebase; updates group if `groupId` is present                                                                  |
 | `POST` | `quiz/create-group`     | Firebase ID token (`X-PRC-User-Token`) | Creates a community group in Firebase; **owner is always the verified token's `sub` claim** — any `ownerId` in the request body is ignored; returns `{ group_id, group_url }` |
-| `GET`  | `quiz/get-group`        | Public                       | Returns full group data including typology clusters, answer tallies, and result/group URLs                   |
-| `POST` | `quiz/purge-archetypes` | `manage_options`             | Admin-only; wipes all archetypes for a quiz from Firebase                                                    |
+| `GET`  | `quiz/get-group`        | Public                                 | Returns full group data including typology clusters, answer tallies, and result/group URLs                                                                                    |
+| `POST` | `quiz/purge-archetypes` | `manage_options`                       | Admin-only; wipes all archetypes for a quiz from Firebase                                                                                                                     |
 
 The `quiz` REST resource also exposes a `_submissions` field containing the `_report` post meta (requires `edit_posts` capability).
 
 ## WP Abilities API
 
-| Ability ID | Input | Description |
-| --- | --- | --- |
+| Ability ID                       | Input                         | Description                                                                                                                                                                                                                                                                              |
+| -------------------------------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `prc-quiz-builder/get-analytics` | `post_id` (integer, required) | Returns `{ post_id, title, submissions, groups }` — submission report from `_report` meta plus community group analytics. Requires `edit_post` on that quiz. If Firebase is unavailable, `groups` includes an `error` field while `submissions` still returns. Exposed via REST and MCP. |
 
 ## WP-CLI
 
 Requires `manage_options`. All mutation subcommands support `--dry-run`.
 
-| Subcommand                         | Description                                                                                       |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------- |
-| `wp prc quiz report get`           | Print current `_report` for a quiz (`--format=table\|json`)                                       |
+| Subcommand                         | Description                                                                                          |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `wp prc quiz report get`           | Print current `_report` for a quiz (`--format=table\|json`)                                          |
 | `wp prc quiz report set`           | Set absolute month or day counts (`--year`, `--month`, optional `--day`, `--month-count`, `--total`) |
-| `wp prc quiz report add`           | Add a delta to month or day counts (same flags as `set`)                                         |
-| `wp prc quiz report set`           | Set absolute month and/or `total` counts                                                          |
-| `wp prc quiz report add`           | Add a delta to month and/or `total` counts                                                        |
-| `wp prc quiz report sync-firebase` | Sum Firebase archetype `hits` and apply to month + `total` (`--mode=delta\|set`, default `delta`) |
+| `wp prc quiz report add`           | Add a delta to month or day counts (same flags as `set`)                                             |
+| `wp prc quiz report set`           | Set absolute month and/or `total` counts                                                             |
+| `wp prc quiz report add`           | Add a delta to month and/or `total` counts                                                           |
+| `wp prc quiz report sync-firebase` | Sum Firebase archetype `hits` and apply to month + `total` (`--mode=delta\|set`, default `delta`)    |
 
 ```bash
 # Inspect report
@@ -259,13 +266,13 @@ Research-team-prefixed variants (e.g. `/politics/quiz/{slug}/...`) follow the sa
 
 ## Data Storage
 
-| Store           | Key / Path                           | Contents                                                                |
-| --------------- | ------------------------------------ | ----------------------------------------------------------------------- |
-| Firebase        | `quiz/{quiz_id}/archetypes/{hash}`   | `{ score, submission, hits }`                                           |
-| Firebase        | `quiz/{quiz_id}/groups/{group_id}`   | Group metadata, cluster tallies, answer tallies, total                  |
-| Firebase        | `users/{owner_id}/groups/{group_id}` | Group index per user                                                    |
+| Store           | Key / Path                           | Contents                                                                                                           |
+| --------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| Firebase        | `quiz/{quiz_id}/archetypes/{hash}`   | `{ score, submission, hits }`                                                                                      |
+| Firebase        | `quiz/{quiz_id}/groups/{group_id}`   | Group metadata, cluster tallies, answer tallies, total                                                             |
+| Firebase        | `users/{owner_id}/groups/{group_id}` | Group index per user                                                                                               |
 | WP post meta    | `_report`                            | Submission counts: first 24 hrs, first week, total, by year/month, and (from 2026-08-01) day buckets under `_days` |
-| WP object cache | MD5 of `{quiz_id, hash}`             | Cached archetype lookup; group `prc_quiz_builder_archetypes`; TTL 1 day |
+| WP object cache | MD5 of `{quiz_id, hash}`             | Cached archetype lookup; group `prc_quiz_builder_archetypes`; TTL 1 day                                            |
 
 ## Cookies
 
@@ -306,10 +313,10 @@ Archetype persistence and community groups require Firebase Realtime Database. `
 
 ### Submit behavior when Firebase is down
 
-| Quiz type | `quiz/submit` behavior |
-| --- | --- |
-| **Normal** (no `groupId`) | Returns `{ hash, time, persisted: false }` with HTTP 200 — in-session results still work; archetype hits are not stored |
-| **Group** (`groupId` present) | Returns HTTP 503 — shared group tallies cannot be updated without Firebase |
+| Quiz type                     | `quiz/submit` behavior                                                                                                  |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| **Normal** (no `groupId`)     | Returns `{ hash, time, persisted: false }` with HTTP 200 — in-session results still work; archetype hits are not stored |
+| **Group** (`groupId` present) | Returns HTTP 503 — shared group tallies cannot be updated without Firebase                                              |
 
 Group creation (`quiz/create-group`) returns HTTP 503 when Firebase Auth is unavailable.
 

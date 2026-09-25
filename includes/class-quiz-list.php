@@ -319,7 +319,8 @@ class Quiz_List {
 			if ( ! empty( $attributes['displayType'] ) && is_string( $attributes['displayType'] ) ) {
 				$parsed['display_type'] = sanitize_key( $attributes['displayType'] );
 			}
-			$parsed['groups_enabled'] = ! empty( $attributes['groupsEnabled'] ) ? 1 : 0;
+			$capability               = Group_Capability::resolve_from_attributes( $attributes );
+			$parsed['groups_enabled'] = ( ! empty( $attributes['groupsEnabled'] ) && ! empty( $capability['allowed'] ) ) ? 1 : 0;
 		}
 
 		$parsed['question_count'] = self::count_blocks( $blocks, 'prc-quiz/question' );

@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal Dependencies
  */
 import Icon from './icon';
+import { quizBuilderBinding } from '../bindings/binding-fields';
 
 export default [
 	{
@@ -23,14 +24,12 @@ export default [
 				'core/paragraph',
 				{
 					placeholder: __(
-						'Start typing your answer here...',
+						'Start typing your answer here…',
 						'prc-quiz'
 					),
 					metadata: {
 						bindings: {
-							content: {
-								source: 'prc-quiz/answer',
-							},
+							content: quizBuilderBinding('answer-text'),
 						},
 					},
 				},

@@ -30,6 +30,9 @@ export default function EditableCell({ value, onChange, hidden, label }) {
 	});
 
 	useEffect(() => {
+		if (null !== pendingValueRef.current) {
+			return;
+		}
 		setLocalValue(value ?? '');
 	}, [value]);
 

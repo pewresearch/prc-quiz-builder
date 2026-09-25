@@ -4,25 +4,26 @@ on:
   pull_request:
   push:
     branches:
-      - '1.x'
-      - '2.x'
-      - '3.x'
+      - '4.x'
 
 jobs:
   tests:
     name: PHP ${{ matrix.php }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
         php:
-          - "8.0"
-          - "8.1"
-          - "8.2"
+          - "8.3"
+          - "8.4"
+          - "8.5"
+        include:
+          - php: "8.6"
+            composer-options: "--ignore-platform-req=php+"
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -32,16 +33,15 @@ jobs:
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: "ramsey/composer-install@v2"
+      - uses: "ramsey/composer-install@v4"
+        with:
+          composer-options: "${{ matrix.composer-options }}"
 
       - name: Setup problem matchers for PHP
         run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
 
       - name: Run PHPStan
         run: vendor/bin/phpstan analyse --error-format=github
-
-      - name: Run Psalm
-        run: vendor/bin/psalm --output-format=github
 
       - name: Setup Problem Matchers for PHPUnit
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"

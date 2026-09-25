@@ -25,20 +25,29 @@ import {
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
-import { table } from '@wordpress/icons';
+import { table, chartBar, percent } from '@wordpress/icons';
 
 /**
  * Internal Dependencies
  */
 // eslint-disable-next-line import/no-relative-packages
-import { JSONSortableList } from '@prc/quiz-components';
 import QuizQuickEditModal from './quick-edit-modal';
+import QuizResultsDataModal from './results-data-modal';
+import QuizHistogramDataModal from './histogram-data-modal';
 import ScoreBucketsControl from './score-buckets-control';
+import { resolveGroupCapability } from './group-capability';
+import CommunityGroupsPanel from './community-groups-panel';
+import PageTransitionControls from './page-transition-controls';
 
-function Controls({ attributes, setAttributes, clientId }) {
+function Controls({
+	attributes,
+	setAttributes,
+	clientId,
+	groupResultsClientId,
+	removeGroupResults,
+}) {
 	const {
 		groupsEnabled,
-		demoBreakLabels,
 		threshold,
 		displayType,
 		allowSubmissions,
@@ -55,7 +64,19 @@ function Controls({ attributes, setAttributes, clientId }) {
 	}));
 
 	const [isQuickEditOpen, setIsQuickEditOpen] = useState(false);
+	const [isResultsDataOpen, setIsResultsDataOpen] = useState(false);
+	const [isHistogramDataOpen, setIsHistogramDataOpen] = useState(false);
 	const [isPurgingArchetypes, setIsPurgingArchetypes] = useState(false);
+	const groupCapability = resolveGroupCapability({
+		quizType,
+		scoreBuckets,
+	});
+
+	useEffect(() => {
+		if (!groupCapability.allowed && groupsEnabled) {
+			setAttributes({ groupsEnabled: false });
+		}
+	}, [groupCapability.allowed, groupsEnabled, setAttributes]);
 
 	const purgeArchetypes = () => {
 		setIsPurgingArchetypes(true);
@@ -63,12 +84,10 @@ function Controls({ attributes, setAttributes, clientId }) {
 			path: `/prc-api/v3/quiz/purge-archetypes?quizId=${postId}`,
 			method: 'POST',
 		})
-			.then((response) => {
-				console.log('response', response);
+			.then(() => {
 				setIsPurgingArchetypes(false);
 			})
-			.catch((error) => {
-				console.error('error', error);
+			.catch(() => {
 				setIsPurgingArchetypes(false);
 			});
 	};
@@ -82,6 +101,16 @@ function Controls({ attributes, setAttributes, clientId }) {
 						label={__('Quick Edit Content', 'prc-quiz')}
 						onClick={() => setIsQuickEditOpen(true)}
 					/>
+					<ToolbarButton
+						icon={chartBar}
+						label={__('Edit Results Table Data', 'prc-quiz')}
+						onClick={() => setIsResultsDataOpen(true)}
+					/>
+					<ToolbarButton
+						icon={percent}
+						label={__('Edit Histogram Data', 'prc-quiz')}
+						onClick={() => setIsHistogramDataOpen(true)}
+					/>
 				</ToolbarGroup>
 			</BlockControls>
 			{isQuickEditOpen && (
@@ -90,8 +119,21 @@ function Controls({ attributes, setAttributes, clientId }) {
 					onClose={() => setIsQuickEditOpen(false)}
 				/>
 			)}
+			{isResultsDataOpen && (
+				<QuizResultsDataModal
+					clientId={clientId}
+					onClose={() => setIsResultsDataOpen(false)}
+				/>
+			)}
+			{isHistogramDataOpen && (
+				<QuizHistogramDataModal
+					clientId={clientId}
+					onClose={() => setIsHistogramDataOpen(false)}
+				/>
+			)}
 			<InspectorAdvancedControls>
 				<BaseControl
+					id="prc-quiz-purge-archetypes"
 					label="Purge Quiz Archetypes"
 					help="Purge the quiz archetypes. This will remove all the archetypes for the quiz."
 				>
@@ -99,6 +141,8 @@ function Controls({ attributes, setAttributes, clientId }) {
 						variant="primary"
 						isDestructive={true}
 						isBusy={isPurgingArchetypes}
+						__next40pxDefaultSize
+						style={{ width: '100%', justifyContent: 'center' }}
 						text={
 							isPurgingArchetypes
 								? 'Purging...'
@@ -113,6 +157,8 @@ function Controls({ attributes, setAttributes, clientId }) {
 			<InspectorControls>
 				<PanelBody title={__('Quiz Settings')}>
 					<SelectControl
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 						label="Display Type"
 						help="Select the display type for the quiz. Paged shows one page at a time. Scrollable shows all questions in a single scrollable view. Fluid uses paged on desktop (≥782px) and scrollable on smaller screens, updating when the viewport is resized."
 						options={[
@@ -124,6 +170,10 @@ function Controls({ attributes, setAttributes, clientId }) {
 						onChange={(value) => {
 							setAttributes({ displayType: value });
 						}}
+					/>
+					<PageTransitionControls
+						attributes={attributes}
+						setAttributes={setAttributes}
 					/>
 					<ToggleControl
 						label="Allow Submissions"
@@ -166,6 +216,7 @@ function Controls({ attributes, setAttributes, clientId }) {
 								}}
 							/>
 							<TextControl
+								__next40pxDefaultSize
 								label={__('Correct outcome label', 'prc-quiz')}
 								help={__(
 									'Default text for the Correct / Incorrect bit when the answer is correct. Individual bits can override this.',
@@ -179,6 +230,7 @@ function Controls({ attributes, setAttributes, clientId }) {
 								}}
 							/>
 							<TextControl
+								__next40pxDefaultSize
 								label={__(
 									'Incorrect outcome label',
 									'prc-quiz'
@@ -195,6 +247,7 @@ function Controls({ attributes, setAttributes, clientId }) {
 								}}
 							/>
 							<TextControl
+								__next40pxDefaultSize
 								label={__('Not sure outcome label', 'prc-quiz')}
 								help={__(
 									'Default text for the Correct / Incorrect bit when the answer is Not sure. Individual bits can override this.',
@@ -210,57 +263,13 @@ function Controls({ attributes, setAttributes, clientId }) {
 						</>
 					)}
 				</PanelBody>
-				<PanelBody title={__('Community Groups')} initialOpen={false}>
-					<BaseControl
-						id="community-groups"
-						label={__('Community Groups')}
-					>
-						<ToggleControl
-							label={groupsEnabled ? 'Enabled' : 'Disabled'}
-							checked={groupsEnabled}
-							onChange={() => {
-								setAttributes({
-									groupsEnabled: !groupsEnabled,
-								});
-							}}
-						/>
-						{true === groupsEnabled && (
-							<TextControl
-								label="Mailchimp List ID"
-								help="Enter a Mailchimp list id that group owners will be subscribed to for future communication about this quiz."
-								value={attributes.mailchimpListId}
-								onChange={(value) => {
-									setAttributes({
-										mailchimpListId: value,
-									});
-								}}
-							/>
-						)}
-					</BaseControl>
-				</PanelBody>
-				<PanelBody
-					title={__('Demographic Breakdown')}
-					initialOpen={false}
-				>
-					<JSONSortableList
-						label={__('Demographic Breakdown Labels', 'prc-quiz')}
-						help={__(
-							'Set the labels/categories for demographic breakdowns. When you add values here you will be prompted per question block to add values to each category. These will appear in the results table block.',
-							'prc-quiz'
-						)}
-						values={
-							undefined === demoBreakLabels
-								? []
-								: JSON.parse(demoBreakLabels)
-						}
-						labels="Demographic Break"
-						onChange={(values) => {
-							setAttributes({
-								demoBreakLabels: JSON.stringify(values),
-							});
-						}}
-					/>
-				</PanelBody>
+				<CommunityGroupsPanel
+					groupsEnabled={groupsEnabled}
+					groupCapability={groupCapability}
+					setAttributes={setAttributes}
+					groupResultsClientId={groupResultsClientId}
+					removeGroupResults={removeGroupResults}
+				/>
 				<PanelBody title={__('Score Buckets')} initialOpen={false}>
 					<ScoreBucketsControl
 						value={scoreBuckets}

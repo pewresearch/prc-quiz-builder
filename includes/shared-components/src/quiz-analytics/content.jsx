@@ -10,6 +10,7 @@ import {
 	AnalyticsPeriodControls,
 	CalendarHeatmap,
 	MONTH_LABELS,
+	monthKeyFromIndex,
 } from '@prc/components';
 
 import GroupAnalyticsModal from './group-analytics-modal';
@@ -163,6 +164,19 @@ export function QuizAnalyticsContent({ postId, idPrefix = 'quiz-analytics' }) {
 						>
 							<CalendarHeatmap
 								values={data}
+								onCellClick={(index) => {
+									setSelectedMonth(monthKeyFromIndex(index));
+								}}
+								getCellAriaLabel={(_, index) =>
+									sprintf(
+										/* translators: %s: month abbreviation */
+										__(
+											'View daily submissions for %s',
+											'prc-quiz-builder'
+										),
+										MONTH_LABELS[index]
+									)
+								}
 								getTooltipText={(v) => v.toLocaleString()}
 								renderValue={(v) => formatCompactNumber(v)}
 							/>

@@ -10,6 +10,7 @@ import { useDispatch } from '@wordpress/data';
  * Internal Dependencies
  */
 import { Icon } from '@prc/icons';
+import { toHtmlString } from './utils';
 import { getRowClassName, previewIsCorrect } from './row-preview';
 
 export default function Table({ questions, colors, isSelected }) {
@@ -72,16 +73,17 @@ export default function Table({ questions, colors, isSelected }) {
 								)}
 							</td>
 							<td>
-								<RawHTML>{row.question}</RawHTML>
+								<RawHTML>{toHtmlString(row.question)}</RawHTML>
 							</td>
 							<td>{__(`N/A`, 'prc-quiz')}</td>
 							<td>
 								<RawHTML>
 									{correctAnswers
 										.map((answer) =>
-											answer.resultsLabel
-												? answer.resultsLabel
-												: answer.answer
+											toHtmlString(
+												answer.resultsLabel ||
+													answer.answer
+											)
 										)
 										.join(', ')}
 								</RawHTML>

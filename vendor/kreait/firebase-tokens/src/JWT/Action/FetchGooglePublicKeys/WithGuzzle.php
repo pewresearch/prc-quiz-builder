@@ -19,11 +19,11 @@ use const JSON_THROW_ON_ERROR;
 /**
  * @internal
  */
-final class WithGuzzle implements Handler
+final readonly class WithGuzzle implements Handler
 {
     public function __construct(
-        private readonly ClientInterface $client,
-        private readonly ClockInterface $clock,
+        private ClientInterface $client,
+        private ClockInterface $clock,
     ) {
     }
 
@@ -89,8 +89,8 @@ final class WithGuzzle implements Handler
             $keys = [];
         }
 
-        $keys = array_filter($keys, fn(mixed $key): bool => is_string($key));
-        $keys = array_map(fn(string $key): string => trim($key), $keys);
+        $keys = array_filter($keys, is_string(...));
+        $keys = array_map(trim(...), $keys);
         $keys = array_filter($keys, fn(string $key): bool => $key !== '');
 
         return [

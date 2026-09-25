@@ -28,10 +28,14 @@
     "typography": {
       "fontSize": true,
       "__experimentalFontFamily": true
+    },
+    "position": {
+      "sticky": true
     }
   },
   "usesContext": [
-    "prc-quiz/id"
+    "prc-quiz/id",
+    "prc-quiz/groupsEnabled"
   ],
   "textdomain": "progress-bar",
   "editorScript": "file:./index.js",

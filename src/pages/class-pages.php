@@ -35,7 +35,7 @@ class Pages {
 	 */
 	public function set_pages_in_context( $context, $parsed_block ) {
 		if ( 'prc-quiz/pages' === $parsed_block['blockName'] ) {
-			$page_blocks = array_values(
+			$page_blocks               = array_values(
 				array_filter(
 					$parsed_block['innerBlocks'],
 					fn( $inner ) => 'prc-quiz/page' === $inner['blockName']
@@ -59,8 +59,8 @@ class Pages {
 	 */
 	public function render_block_callback( $attributes, $content, $block ) {
 		// Find the first page block in $block->inner_blocks, and get the uuid attribute.
-		$parsed_block = $block->parsed_block;
-		$inner_blocks = array_values(
+		$parsed_block          = $block->parsed_block;
+		$inner_blocks          = array_values(
 			array_filter(
 				$parsed_block['innerBlocks'],
 				fn( $inner ) => 'prc-quiz/page' === $inner['blockName']
@@ -69,6 +69,16 @@ class Pages {
 		$first_page_block      = $inner_blocks[0];
 		$first_page_block_uuid = $first_page_block['attrs']['uuid'];
 
+		$page_backgrounds = array();
+		foreach ( $inner_blocks as $page_block ) {
+			$page_attributes = $page_block['attrs'] ?? array();
+			$image           = Page::get_background_image( $page_attributes );
+			$page_backgrounds[ $page_attributes['uuid'] ?? '' ] = array(
+				'key' => Page::get_background_key( $page_attributes ),
+				'url' => $image['url'] ?? '',
+			);
+		}
+
 		$tag = new WP_HTML_Tag_Processor( $content );
 		$tag->next_tag();
 		$tag->set_attribute( 'data-wp-interactive', 'prc-quiz/controller' );
@@ -76,18 +86,27 @@ class Pages {
 			'data-wp-context',
 			wp_json_encode(
 				array(
-					'firstPageUuid'   => $first_page_block_uuid,
-					'currentPageUuid' => $first_page_block_uuid, // On first render, we set the current page uuid to the first page block uuid.
-					'pages'           => array_map(
+					'firstPageUuid'       => $first_page_block_uuid,
+					'currentPageUuid'     => $first_page_block_uuid, // On first render, we set the current page uuid to the first page block uuid.
+					'pages'               => array_map(
 						fn( $page ) => $page['attrs']['uuid'],
 						$inner_blocks
 					),
+					'pageBackgrounds'     => (object) $page_backgrounds,
+					'pageTransitionState' => null, // { id, fromUuid, toUuid } while a page transition animates.
 				)
 			)
 		);
 		$tag->set_attribute( 'data-wp-init--on-pages-init', 'callbacks.onPagesInit' );
+		$tag->set_attribute( 'data-wp-class--is-page-transitioning', 'state.isPageTransitioning' );
+		$tag->set_attribute( 'data-wp-on-async--touchstart', 'actions.onPagesTouchStart' );
+		$tag->set_attribute( 'data-wp-on-async--touchend', 'actions.onPagesTouchEnd' );
 		$tag->set_attribute( 'data-wp-watch--store-current-page-uuid', 'callbacks.storeCurrentPageUuid' );
 		$tag->set_attribute( 'data-wp-bind--hidden', '!state.displayPages' );
+		$groups_enabled = $block->context['prc-quiz/groupsEnabled'] ?? false;
+		if ( Group_Results::is_group_results_request( $groups_enabled ) ) {
+			$tag->set_attribute( 'hidden', 'true' );
+		}
 		return $tag->get_updated_html();
 	}
 

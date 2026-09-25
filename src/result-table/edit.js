@@ -6,8 +6,13 @@ import { useQuizDataModel } from '@prc/quiz-components';
 /**
  * WordPress Dependencies
  */
-import { Fragment } from '@wordpress/element';
-import { useBlockProps, withColors } from '@wordpress/block-editor';
+import { useState } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
+import {
+	useBlockProps,
+	withColors,
+	store as blockEditorStore,
+} from '@wordpress/block-editor';
 import { Spinner } from '@wordpress/components';
 
 /**
@@ -15,7 +20,9 @@ import { Spinner } from '@wordpress/components';
  */
 import Controls from './controls';
 import Table from './table';
-import TableDemoBreaks from './table-demo-breaks';
+import TableComplex from './table-complex';
+import QuizResultsDataModal from '../controller/results-data-modal';
+import { isCommunityGroupStyle, isComplexStyle } from './utils';
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -59,6 +66,21 @@ function Edit({
 }) {
 	const blockProps = useBlockProps();
 	const { data, loading } = useQuizDataModel(clientId);
+	const [isResultsDataOpen, setIsResultsDataOpen] = useState(false);
+	const showComplex =
+		isComplexStyle(attributes.className) ||
+		isCommunityGroupStyle(attributes.className);
+	const showCommunityGroup = isCommunityGroupStyle(attributes.className);
+
+	const controllerClientId = useSelect(
+		(select) => {
+			const { getBlockParentsByBlockName } = select(blockEditorStore);
+			return getBlockParentsByBlockName(clientId, [
+				'prc-quiz/controller',
+			]).pop();
+		},
+		[clientId]
+	);
 
 	const { questions, demoBreakLabels } = data;
 
@@ -81,7 +103,14 @@ function Edit({
 				colors={colors}
 				iconColor={iconColor}
 				setIconColor={setIconColor}
+				onEditResultsData={() => setIsResultsDataOpen(true)}
 			/>
+			{isResultsDataOpen && controllerClientId && (
+				<QuizResultsDataModal
+					clientId={controllerClientId}
+					onClose={() => setIsResultsDataOpen(false)}
+				/>
+			)}
 			<div {...blockProps}>
 				{loading && (
 					<div>
@@ -89,19 +118,19 @@ function Edit({
 						<Spinner />
 					</div>
 				)}
-				{!loading && 0 >= demoBreakLabels?.length && (
+				{!loading && !showComplex && (
 					<Table
 						questions={questions}
 						colors={colors}
 						isSelected={isSelected}
 					/>
 				)}
-				{!loading && 0 < demoBreakLabels?.length && (
-					<TableDemoBreaks
+				{!loading && showComplex && (
+					<TableComplex
 						questions={questions}
-						colors={colors}
 						demoBreakLabels={demoBreakLabels}
 						isSelected={isSelected}
+						isCommunityGroup={showCommunityGroup}
 					/>
 				)}
 				<p className="wp-block-prc-quiz-result-table__instructions">

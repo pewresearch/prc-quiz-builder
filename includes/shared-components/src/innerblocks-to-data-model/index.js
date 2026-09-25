@@ -5,6 +5,8 @@ import { useMemo, useRef } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import { store as blockEditorStore } from '@wordpress/block-editor';
 
+import { toHtmlString } from '../to-html-string';
+
 const EMPTY_MODEL = {
 	demoBreakLabels: [],
 	questions: [],
@@ -17,11 +19,26 @@ function modelSignature(data) {
 	});
 }
 
+function parseDemoBreakLabels(value) {
+	if (!value) {
+		return [];
+	}
+	if (Array.isArray(value)) {
+		return value;
+	}
+	try {
+		const parsed = JSON.parse(value);
+		return Array.isArray(parsed) ? parsed : [];
+	} catch {
+		return [];
+	}
+}
+
 function structureData(controllerBlock) {
 	const dataToReturn = {
-		demoBreakLabels: controllerBlock.attributes.demoBreakLabels
-			? JSON.parse(controllerBlock.attributes.demoBreakLabels)
-			: [],
+		demoBreakLabels: parseDemoBreakLabels(
+			controllerBlock.attributes.demoBreakLabels
+		),
 		questions: [],
 	};
 
@@ -80,16 +97,16 @@ function structureData(controllerBlock) {
 			const questionBlock = {
 				clientId: question.clientId,
 				uuid: question.attributes.uuid,
-				question: question.attributes.question,
+				question: toHtmlString(question.attributes.question),
 				questionId: questionInternalId,
 				type: question.attributes.type,
 				conditional: question.attributes?.conditionalDisplay,
 				name: 'prc-quiz/question',
 				answers: [],
 				randomize: false,
-				demoBreakValues: question.attributes.demoBreakValues
-					? JSON.parse(question.attributes.demoBreakValues)
-					: [],
+				demoBreakValues: parseDemoBreakLabels(
+					question.attributes.demoBreakValues
+				),
 				pageTitle,
 				pageIndex,
 			};
@@ -97,15 +114,31 @@ function structureData(controllerBlock) {
 			// Parse Answer Blocks recursively:
 			const answerBlocks = findAnswerBlocks(question.innerBlocks);
 			answerBlocks.forEach((answer) => {
+				let answerDemoBreakValues = [];
+				if (answer.attributes?.demoBreakValues) {
+					try {
+						const parsed = JSON.parse(
+							answer.attributes.demoBreakValues
+						);
+						answerDemoBreakValues = Array.isArray(parsed)
+							? parsed
+							: [];
+					} catch {
+						answerDemoBreakValues = [];
+					}
+				}
 				questionBlock.answers.push({
 					clientId: answer.clientId,
 					uuid: answer.attributes.uuid,
-					answer: answer.attributes.answer,
+					answer: toHtmlString(answer.attributes.answer),
 					questionId: questionInternalId,
 					name: 'prc-quiz/answer',
 					correct: answer.attributes?.correct,
 					points: answer.attributes?.points,
-					resultsLabel: answer.attributes?.resultsLabel,
+					resultsLabel: toHtmlString(answer.attributes?.resultsLabel),
+					populationPercent:
+						answer.attributes?.populationPercent || '',
+					demoBreakValues: answerDemoBreakValues,
 				});
 			});
 

@@ -25,6 +25,12 @@ return array(
 			'resultsLabel' => array(
 				'type' => 'string'
 			),
+			'populationPercent' => array(
+				'type' => 'string'
+			),
+			'demoBreakValues' => array(
+				'type' => 'string'
+			),
 			'points' => array(
 				'type' => 'number',
 				'default' => 0
@@ -158,6 +164,22 @@ return array(
 				),
 				'default' => 'paged'
 			),
+			'pageTransition' => array(
+				'type' => 'string',
+				'enum' => array(
+					'none',
+					'horizontal-parallax'
+				),
+				'default' => 'none'
+			),
+			'parallaxStrength' => array(
+				'type' => 'number',
+				'default' => 0.5
+			),
+			'scrollOnPageChange' => array(
+				'type' => 'boolean',
+				'default' => true
+			),
 			'allowSubmissions' => array(
 				'type' => 'boolean',
 				'default' => true
@@ -165,9 +187,6 @@ return array(
 			'groupsEnabled' => array(
 				'type' => 'boolean',
 				'default' => false
-			),
-			'mailchimpListId' => array(
-				'type' => 'string'
 			),
 			'demoBreakLabels' => array(
 				'type' => 'string'
@@ -195,6 +214,10 @@ return array(
 			'scoreBuckets' => array(
 				'type' => 'string',
 				'default' => '[]'
+			),
+			'histogramPopulation' => array(
+				'type' => 'string',
+				'default' => '[]'
 			)
 		),
 		'providesContext' => array(
@@ -205,7 +228,8 @@ return array(
 			'prc-quiz/groupsEnabled' => 'groupsEnabled',
 			'prc-quiz/allowSubmissions' => 'allowSubmissions',
 			'prc-quiz/liveFeedback' => 'liveFeedback',
-			'prc-quiz/score-buckets' => 'scoreBuckets'
+			'prc-quiz/score-buckets' => 'scoreBuckets',
+			'prc-quiz/histogram-population' => 'histogramPopulation'
 		),
 		'usesContext' => array(
 			'prc-quiz/isEmbedded'
@@ -344,6 +368,11 @@ return array(
 				'text' => true,
 				'link' => true
 			),
+			'background' => array(
+				'backgroundImage' => true,
+				'backgroundSize' => true,
+				'__experimentalSkipSerialization' => true
+			),
 			'align' => array(
 				'wide',
 				'full'
@@ -448,6 +477,9 @@ return array(
 		'parent' => array(
 			'prc-quiz/controller'
 		),
+		'usesContext' => array(
+			'prc-quiz/groupsEnabled'
+		),
 		'textdomain' => 'pages',
 		'editorScript' => 'file:./index.js',
 		'editorStyle' => 'file:./index.css',
@@ -484,10 +516,14 @@ return array(
 			'typography' => array(
 				'fontSize' => true,
 				'__experimentalFontFamily' => true
+			),
+			'position' => array(
+				'sticky' => true
 			)
 		),
 		'usesContext' => array(
-			'prc-quiz/id'
+			'prc-quiz/id',
+			'prc-quiz/groupsEnabled'
 		),
 		'textdomain' => 'progress-bar',
 		'editorScript' => 'file:./index.js',
@@ -598,7 +634,6 @@ return array(
 		'usesContext' => array(
 			'prc-quiz/id',
 			'prc-quiz/type',
-			'prc-quiz/demo-break-labels',
 			'prc-quiz/uuids'
 		),
 		'textdomain' => 'question',
@@ -611,10 +646,10 @@ return array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
 		'name' => 'prc-quiz/result-histogram',
-		'version' => '4.1',
+		'version' => '4.2',
 		'title' => 'Result Histogram',
 		'category' => 'prc-quiz',
-		'description' => 'Histogram representing distribution of scores.',
+		'description' => 'Chart of how many people received each score. Edit the data on the Quiz Controller.',
 		'attributes' => array(
 			'message' => array(
 				'type' => 'string'
@@ -642,9 +677,15 @@ return array(
 				'type' => 'string',
 				'default' => 'oatmeal'
 			),
+			'customBarColor' => array(
+				'type' => 'string'
+			),
 			'isHighlightedColor' => array(
 				'type' => 'string',
 				'default' => 'mustard'
+			),
+			'customIsHighlightedColor' => array(
+				'type' => 'string'
 			),
 			'yAxisDomain' => array(
 				'type' => 'number',
@@ -655,6 +696,10 @@ return array(
 				'default' => 'Score'
 			),
 			'showScoreSummary' => array(
+				'type' => 'boolean',
+				'default' => true
+			),
+			'showChart' => array(
 				'type' => 'boolean',
 				'default' => true
 			),
@@ -696,6 +741,14 @@ return array(
 			'typography' => array(
 				'fontSize' => true,
 				'__experimentalFontFamily' => true
+			),
+			'color' => array(
+				'background' => false,
+				'text' => false,
+				'heading' => false,
+				'button' => false,
+				'link' => false,
+				'enableContrastChecker' => false
 			)
 		),
 		'ancestor' => array(
@@ -703,7 +756,8 @@ return array(
 		),
 		'usesContext' => array(
 			'prc-quiz/id',
-			'prc-quiz/type'
+			'prc-quiz/type',
+			'prc-quiz/histogram-population'
 		),
 		'textdomain' => 'result-histogram',
 		'editorScript' => 'file:./index.js',
@@ -711,59 +765,11 @@ return array(
 		'viewScriptModule' => 'file:./view.js',
 		'style' => 'file:./style-index.css'
 	),
-	'result-score' => array(
-		'$schema' => 'https://schemas.wp.org/trunk/block.json',
-		'apiVersion' => 3,
-		'name' => 'prc-quiz/result-score',
-		'version' => '4.0',
-		'title' => 'Results Score',
-		'category' => 'prc-quiz',
-		'description' => 'Your score from this quiz.',
-		'attributes' => array(
-			'numberOfQuestions' => array(
-				'type' => 'string'
-			),
-			'questionsToCheck' => array(
-				'type' => 'array'
-			)
-		),
-		'supports' => array(
-			'anchor' => true,
-			'html' => false,
-			'interactivity' => true,
-			'multiple' => false,
-			'color' => array(
-				'background' => true,
-				'text' => true
-			),
-			'spacing' => array(
-				'margin' => array(
-					'top',
-					'bottom'
-				),
-				'padding' => true
-			),
-			'typography' => array(
-				'fontSize' => true,
-				'__experimentalFontFamily' => true
-			)
-		),
-		'parent' => array(
-			'prc-quiz/results'
-		),
-		'usesContext' => array(
-			'prc-quiz/results/score'
-		),
-		'textdomain' => 'result-score',
-		'editorScript' => 'file:./index.js',
-		'editorStyle' => 'file:./index.css',
-		'style' => 'file:./style-index.css'
-	),
 	'result-table' => array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
 		'name' => 'prc-quiz/result-table',
-		'version' => '4.0.1',
+		'version' => '4.1.0',
 		'title' => 'Result Table',
 		'category' => 'prc-quiz',
 		'keywords' => array(
@@ -823,8 +829,20 @@ return array(
 				)
 			)
 		),
-		'parent' => array(
-			'prc-quiz/results'
+		'styles' => array(
+			array(
+				'name' => 'default',
+				'label' => 'Simple',
+				'isDefault' => true
+			),
+			array(
+				'name' => 'complex',
+				'label' => 'Complex'
+			)
+		),
+		'ancestor' => array(
+			'prc-quiz/results',
+			'prc-quiz/group-results'
 		),
 		'usesContext' => array(
 			'prc-quiz/demo-break-labels'

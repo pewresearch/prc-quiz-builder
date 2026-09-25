@@ -1,11 +1,8 @@
 /**
- * External Dependencies
+ * WordPress Dependencies
  */
-import { Icon } from '@prc/icons';
+import { Icon, help } from '@wordpress/icons';
 
-export default function ({ variant = 'quiz' }) {
-	if ('freeform' === variant) {
-		return <Icon icon="block-question" library="solid" />;
-	}
-	return <Icon icon="block-question" library="light" />;
+export default function () {
+	return <Icon icon={help} />;
 }

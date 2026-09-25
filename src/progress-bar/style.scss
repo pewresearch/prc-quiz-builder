@@ -4,10 +4,36 @@
 	gap: 0.5rem;
 	margin-block-end: 1.25rem;
 
+	&__header {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 0.5rem 1rem;
+	}
+
 	&__label {
 		font-size: 0.875rem;
 		font-weight: 600;
 		line-height: 1.4;
+	}
+
+	&__skip {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		background: none;
+		color: inherit;
+		font-size: 0.875rem;
+		font-weight: 600;
+		line-height: 1.4;
+		text-decoration: underline;
+		cursor: pointer;
+
+		&[hidden] {
+			display: none;
+		}
 	}
 
 	&__track {

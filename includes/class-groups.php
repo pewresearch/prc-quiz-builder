@@ -163,6 +163,11 @@ class Groups {
 	 * @return array|object|false|WP_Error
 	 */
 	public function get_group( $return_as_array = false ) {
+		// Firebase groups live under quiz/{quiz_id}/groups/{group_id}; quiz_id is required.
+		if ( empty( $this->quiz_id ) || empty( $this->group_id ) ) {
+			return false;
+		}
+
 		if ( ! $this->is_available() ) {
 			return $this->firebase_unavailable_error();
 		}
@@ -176,12 +181,19 @@ class Groups {
 				array( 'status' => 503 )
 			);
 		}
-		if ( empty( $existing_group ) ) {
+		if ( empty( $existing_group ) || ! is_array( $existing_group ) ) {
 			return false;
 		}
 		// Check if $existing_group has typology_groups if so convert it clusters.
 		if ( ! empty( $existing_group['typology_groups'] ) && ! array_key_exists( 'clusters', $existing_group ) ) {
 			$existing_group['clusters'] = $existing_group['typology_groups'];
+		}
+		// Backfill quiz_id when the RTDB document omits it (avoids stdClass::$quiz_id warnings).
+		if ( empty( $existing_group['quiz_id'] ) ) {
+			$existing_group['quiz_id'] = (int) $this->quiz_id;
+		}
+		if ( empty( $existing_group['group_id'] ) ) {
+			$existing_group['group_id'] = $this->group_id;
 		}
 		// Get the latest data for results_url, group_Url, and quiz_name to return back here...
 		// This ensures the data is always up to date.

@@ -51,6 +51,19 @@ class Answer {
 			$correct = (bool) $attributes['correct'];
 		}
 
+		$demo_break_values = array();
+		if ( ! empty( $attributes['demoBreakValues'] ) ) {
+			$parsed = json_decode( $attributes['demoBreakValues'], true );
+			if ( is_array( $parsed ) ) {
+				$demo_break_values = $parsed;
+			}
+		}
+
+		$population_percent = '';
+		if ( array_key_exists( 'populationPercent', $attributes ) && is_string( $attributes['populationPercent'] ) ) {
+			$population_percent = $attributes['populationPercent'];
+		}
+
 		// Add the answer to the question's answers array in quiz state.
 		$state = wp_interactivity_state( 'prc-quiz/controller', array() );
 		$state[ 'quiz_' . $quiz_id ]['questions'][ $question_uuid ]['answers'][ $attributes['uuid'] ] = array(
@@ -59,6 +72,8 @@ class Answer {
 			'correct'               => $correct,
 			'points'                => array_key_exists( 'points', $attributes ) ? $attributes['points'] : 0,
 			'resultsLabel'          => array_key_exists( 'resultsLabel', $attributes ) ? $attributes['resultsLabel'] : null,
+			'populationPercent'     => $population_percent,
+			'demoBreakValues'       => $demo_break_values,
 			'conditional'           => array_key_exists( 'conditionalDisplay', $attributes ) ? $attributes['conditionalDisplay'] : false,
 			'conditionalAnswerUuid' => array_key_exists( 'conditionalAnswerUuid', $attributes ) ? $attributes['conditionalAnswerUuid'] : false,
 			'questionUuid'          => $question_uuid,
@@ -84,7 +99,7 @@ class Answer {
 		);
 		$tag->set_attribute( 'data-wp-on--click', 'actions.onAnswerClick' );
 		$tag->set_attribute( 'data-wp-class--is-active', 'state.isAnswerSelected' );
-		$tag->set_attribute( 'data-wp-class--is-feedback-correct', 'state.isFeedbackCorrect' );
+		$tag->set_attribute( 'data-wp-class--is-feedback-correct', 'state.isFeedbackCorrectHighlight' );
 		$tag->set_attribute( 'data-wp-class--is-feedback-incorrect', 'state.isFeedbackIncorrect' );
 		$tag->set_attribute( 'data-wp-bind--disabled', 'state.isAnswerDisabled' );
 		if ( array_key_exists( 'conditionalDisplay', $attributes ) && $attributes['conditionalDisplay'] ) {
@@ -101,6 +116,11 @@ class Answer {
 		return $content;
 	}
 
+	/**
+	 * Register the answer block from metadata.
+	 *
+	 * @return void
+	 */
 	public function block_init() {
 		register_block_type_from_metadata(
 			PRC_QUIZ_DIR . '/build/answer',

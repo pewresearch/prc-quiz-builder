@@ -6,8 +6,18 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { InspectorControls, PanelColorSettings } from '@wordpress/block-editor';
-import { PanelBody, RangeControl } from '@wordpress/components';
+import {
+	InspectorControls,
+	PanelColorSettings,
+	BlockControls,
+} from '@wordpress/block-editor';
+import {
+	PanelBody,
+	RangeControl,
+	ToolbarGroup,
+	ToolbarButton,
+} from '@wordpress/components';
+import { chartBar } from '@wordpress/icons';
 
 export default function Controls({
 	attributes,
@@ -15,6 +25,7 @@ export default function Controls({
 	colors,
 	iconColor,
 	setIconColor,
+	onEditResultsData,
 }) {
 	const {
 		rowBackgroundColor,
@@ -31,6 +42,15 @@ export default function Controls({
 
 	return (
 		<>
+			<BlockControls>
+				<ToolbarGroup>
+					<ToolbarButton
+						icon={chartBar}
+						label={__('Edit Results Table Data', 'prc-quiz')}
+						onClick={onEditResultsData}
+					/>
+				</ToolbarGroup>
+			</BlockControls>
 			<InspectorControls>
 				<PanelBody title={__('Icon settings', 'prc-quiz')}>
 					<RangeControl
@@ -42,6 +62,7 @@ export default function Controls({
 						max={3}
 						step={0.1}
 						withInputField
+						__next40pxDefaultSize
 					/>
 				</PanelBody>
 			</InspectorControls>

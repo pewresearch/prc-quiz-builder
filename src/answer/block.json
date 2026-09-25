@@ -22,6 +22,12 @@
 		"resultsLabel": {
 			"type": "string"
 		},
+		"populationPercent": {
+			"type": "string"
+		},
+		"demoBreakValues": {
+			"type": "string"
+		},
 		"points": {
 			"type": "number",
 			"default": 0

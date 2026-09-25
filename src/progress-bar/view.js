@@ -1,12 +1,26 @@
 /**
  * WordPress Dependencies
  */
-import { store, getContext } from '@wordpress/interactivity';
+import {
+	store,
+	getContext,
+	getElement,
+	withScope,
+	withSyncEvent,
+} from '@wordpress/interactivity';
 
 /**
  * Internal Dependencies
  */
 import { getQuestionOutcome } from '../controller/question-outcome';
+import { scrollToElement } from '../controller/scroll-utils';
+import '../controller/page-navigation';
+import {
+	getProgressSkipLabel,
+	getProgressSkipTargetUuid,
+	isAtQuizEnd as quizIsAtEnd,
+	showProgressSkip as quizShowProgressSkip,
+} from './progress-skip';
 
 /**
  * Whether a gated question is currently reachable, mirroring the conditional
@@ -53,8 +67,9 @@ function outcomeLabel(outcome, labels) {
 	return labels?.[outcome] || labels?.unanswered || outcome;
 }
 
-const { state } = store('prc-quiz/controller', {
+const { state, actions } = store('prc-quiz/controller', {
 	state: {
+		lastPageInView: false,
 		get activeQuestions() {
 			const { selectedAnswers, quizId } = getContext();
 			const allQuestions =
@@ -87,6 +102,27 @@ const { state } = store('prc-quiz/controller', {
 			const { answeredQuestions, totalQuestions } = state;
 			return `${answeredQuestions} of ${totalQuestions} answered`;
 		},
+		get showProgressSkip() {
+			const { pages } = getContext();
+			return quizShowProgressSkip(pages);
+		},
+		get isAtQuizEnd() {
+			const { displayType, currentPageUuid, pages } = getContext();
+			return quizIsAtEnd({
+				displayType,
+				currentPageUuid,
+				pages,
+				lastPageInView: state.lastPageInView,
+			});
+		},
+		get progressSkipLabel() {
+			const { displayType } = getContext();
+			return getProgressSkipLabel({
+				isAtEnd: state.isAtQuizEnd,
+				displayType,
+				labels: state.progressSkipLabels || {},
+			});
+		},
 		/**
 		 * Per-question steps for the circles variation.
 		 *
@@ -118,6 +154,61 @@ const { state } = store('prc-quiz/controller', {
 					isUnanswered: outcome === 'unanswered',
 				};
 			});
+		},
+	},
+	actions: {
+		onProgressSkipClick: withSyncEvent(() => {
+			const context = getContext();
+			const { displayType, pages, firstPageUuid } = context;
+			const targetUuid = getProgressSkipTargetUuid({
+				isAtEnd: state.isAtQuizEnd,
+				firstPageUuid,
+				pages,
+			});
+			if (!targetUuid) {
+				return;
+			}
+
+			if ('scrollable' === displayType) {
+				const { ref } = getElement();
+				const root =
+					ref?.closest('.wp-block-prc-quiz-controller') || document;
+				scrollToElement(
+					root.querySelector(`[data-page-uuid="${targetUuid}"]`)
+				);
+				return;
+			}
+
+			actions.goToPage(targetUuid);
+			actions.saveQuizProgress();
+		}),
+	},
+	callbacks: {
+		onProgressBarInit: () => {
+			const { pages } = getContext();
+			const lastUuid = pages?.[pages.length - 1];
+			if (
+				!lastUuid ||
+				typeof window.IntersectionObserver === 'undefined'
+			) {
+				return;
+			}
+			const { ref } = getElement();
+			const root =
+				ref?.closest('.wp-block-prc-quiz-controller') || document;
+			const lastPage = root.querySelector(
+				`[data-page-uuid="${lastUuid}"]`
+			);
+			if (!lastPage) {
+				return;
+			}
+			const observer = new window.IntersectionObserver(
+				withScope((entries) => {
+					state.lastPageInView = Boolean(entries[0]?.isIntersecting);
+				}),
+				{ threshold: 0 }
+			);
+			observer.observe(lastPage);
 		},
 	},
 });

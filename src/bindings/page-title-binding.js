@@ -3,8 +3,8 @@ import { __ } from '@wordpress/i18n';
 
 import registerQuizBuilderBindings from './quiz-builder-bindings';
 import {
-	QUIZ_BUILDER_SOURCE,
 	isQuizBuilderBindingActive,
+	quizBuilderBinding,
 } from './binding-fields';
 
 export default function registerPageTitleBinding() {
@@ -18,15 +18,12 @@ export default function registerPageTitleBinding() {
 			fontSize: 'large',
 			metadata: {
 				bindings: {
-					content: {
-						source: QUIZ_BUILDER_SOURCE,
-						args: { field: 'page-title-text' },
-					},
+					content: quizBuilderBinding('page-title-text'),
 				},
 			},
 		},
 		ancestor: ['prc-quiz/page'],
-		isActive: (blockAttributes, variationAttributes) => {
+		isActive: (blockAttributes) => {
 			const binding = blockAttributes.metadata?.bindings?.content;
 			return isQuizBuilderBindingActive(
 				binding,

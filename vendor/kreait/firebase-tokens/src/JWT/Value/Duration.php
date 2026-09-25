@@ -17,11 +17,11 @@ use function is_int;
  *
  * @see https://github.com/jeromegamez/duration-php
  */
-final class Duration implements Stringable
+final readonly class Duration implements Stringable
 {
-    public const NONE = 'PT0S';
+    public const string NONE = 'PT0S';
 
-    private function __construct(private readonly DateInterval $value)
+    private function __construct(private DateInterval $value)
     {
     }
 
@@ -54,14 +54,10 @@ final class Duration implements Stringable
             throw new InvalidArgumentException("Unable to determine a duration from '{$value}'");
         }
 
-        if ($interval === false) {
-            throw new InvalidArgumentException("Unable to determine a duration from '{$value}'");
-        }
-
         $duration = self::fromDateInterval($interval);
         // If the string doesn't contain a zero, but the result equals to zero
         // the value must be invalid.
-        if (mb_strpos($value, '0') !== false) {
+        if (str_contains($value, '0')) {
             return $duration;
         }
 

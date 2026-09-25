@@ -30,11 +30,7 @@
 		"type": {
 			"type": "string",
 			"default": "single",
-			"enum": [
-				"single",
-				"multiple",
-				"thermometer"
-			]
+			"enum": ["single", "multiple", "thermometer"]
 		},
 		"conditionalDisplay": {
 			"type": "boolean",
@@ -79,10 +75,7 @@
 		},
 		"spacing": {
 			"blockGap": true,
-			"margin": [
-				"top",
-				"bottom"
-			],
+			"margin": ["top", "bottom"],
 			"padding": true
 		},
 		"typography": {
@@ -90,20 +83,13 @@
 			"__experimentalFontFamily": true
 		}
 	},
-	"parent": [
-		"prc-quiz/page"
-	],
+	"parent": ["prc-quiz/page"],
 	"providesContext": {
 		"prc-quiz/question/type": "type",
 		"prc-quiz/question/uuid": "uuid",
 		"prc-quiz/question/text": "question"
 	},
-	"usesContext": [
-		"prc-quiz/id",
-		"prc-quiz/type",
-		"prc-quiz/demo-break-labels",
-		"prc-quiz/uuids"
-	],
+	"usesContext": ["prc-quiz/id", "prc-quiz/type", "prc-quiz/uuids"],
 	"textdomain": "question",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",

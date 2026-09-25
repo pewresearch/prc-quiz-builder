@@ -5,10 +5,7 @@
 	"version": "4.0",
 	"title": "Pages",
 	"category": "prc-quiz",
-	"allowedBlocks": [
-		"prc-quiz/progress-bar",
-		"prc-quiz/page"
-	],
+	"allowedBlocks": ["prc-quiz/progress-bar", "prc-quiz/page"],
 	"attributes": {},
 	"supports": {
 		"anchor": false,
@@ -34,10 +31,7 @@
 		},
 		"spacing": {
 			"blockGap": true,
-			"margin": [
-				"top",
-				"bottom"
-			],
+			"margin": ["top", "bottom"],
 			"padding": true
 		},
 		"typography": {
@@ -45,9 +39,8 @@
 			"__experimentalFontFamily": true
 		}
 	},
-	"parent": [
-		"prc-quiz/controller"
-	],
+	"parent": ["prc-quiz/controller"],
+	"usesContext": ["prc-quiz/groupsEnabled"],
 	"textdomain": "pages",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",

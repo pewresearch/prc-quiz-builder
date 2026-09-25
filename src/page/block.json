@@ -47,6 +47,11 @@
 			"text": true,
 			"link": true
 		},
+		"background": {
+			"backgroundImage": true,
+			"backgroundSize": true,
+			"__experimentalSkipSerialization": true
+		},
 		"align": ["wide", "full"],
 		"layout": {
 			"default": {

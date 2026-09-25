@@ -9,3 +9,42 @@
 	color: inherit;
 	background: inherit;
 }
+
+.is-horizontal-parallax .wp-block-prc-quiz-pages {
+	touch-action: pan-y;
+
+	// Only one page shows at a time, so every page gets the first page's
+	// resting offset. Otherwise constrained layout gives the first page no
+	// margin and later pages a block gap, and pages that share one grid cell
+	// while sliding would sit at different heights. Pages after a progress bar
+	// all keep the gap.
+	> .wp-block-prc-quiz-page:not(.wp-block-prc-quiz-progress-bar ~ *) {
+		margin-block-start: 0;
+	}
+}
+
+// Leaving and entering pages share one grid cell so they overlap while they
+// slide; the progress bar keeps its place before or after them.
+.wp-block-prc-quiz-pages.is-page-transitioning {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	overflow-x: clip;
+
+	> .wp-block-prc-quiz-progress-bar {
+		grid-row: 1;
+	}
+
+	> .wp-block-prc-quiz-page {
+		grid-row: 2;
+		grid-column: 1;
+		align-self: start;
+		// Auto inline margins (constrained layout) would shrink the grid item to its content.
+		width: 100%;
+		overflow: clip;
+		will-change: transform;
+	}
+
+	> .wp-block-prc-quiz-page ~ .wp-block-prc-quiz-progress-bar {
+		grid-row: 3;
+	}
+}

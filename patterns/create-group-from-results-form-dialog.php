@@ -3,8 +3,10 @@
  * Title: Create Group from Results Form
  * Slug: prc-quiz-builder/create-group-from-results-form-dialog
  * Categories: prc-quiz-builder
- * Description: Create a group from the results page with your result pre-included.
+ * Description: Create a group directly from the results page with your result pre-included.
  * Block Types: prc-block/dialog
+ * Post Types: quiz
+ * Viewport Width: 420
  *
  * @package PRC\Platform\Quiz
  */

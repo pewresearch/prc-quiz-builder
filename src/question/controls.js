@@ -1,9 +1,7 @@
-/* eslint-disable import/no-relative-packages */
 /**
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useEffect, useMemo } from '@wordpress/element';
 import {
 	InspectorControls,
 	InspectorAdvancedControls,
@@ -20,87 +18,10 @@ import {
  * Internal Dependencies
  */
 
-import {
-	JSONSortableList,
-	ConditionalPanel,
-	UUIDCopyToClipboard,
-} from '@prc/quiz-components';
+import { ConditionalPanel, UUIDCopyToClipboard } from '@prc/quiz-components';
 
-function parseDemoBreakValues(demoBreakValues) {
-	if (undefined === demoBreakValues) {
-		return [];
-	}
-	try {
-		const parsed = JSON.parse(demoBreakValues);
-		return Array.isArray(parsed) ? parsed : [];
-	} catch {
-		return [];
-	}
-}
-
-function DemographicBreaksControls({ attributes, setAttributes, labels }) {
-	const { demoBreakValues } = attributes;
-
-	useEffect(() => {
-		const current = parseDemoBreakValues(demoBreakValues);
-		if (current.length === labels.length) {
-			return;
-		}
-		const next = labels.map((_, i) =>
-			typeof current[i] !== 'undefined' ? current[i] : ''
-		);
-		setAttributes({ demoBreakValues: JSON.stringify(next) });
-	}, [demoBreakValues, labels, setAttributes]);
-
-	const values = useMemo(() => {
-		const current = parseDemoBreakValues(demoBreakValues);
-		if (current.length === labels.length) {
-			return current;
-		}
-		return labels.map((_, i) =>
-			typeof current[i] !== 'undefined' ? current[i] : ''
-		);
-	}, [demoBreakValues, labels]);
-
-	return (
-		<JSONSortableList
-			label={__('Demographic Break Values', 'prc-quiz')}
-			help={__(
-				'If there are demographic breaks set in the controller block, the corresponding fields will appear here. You can assign values to each category on a per-question basis.',
-				'prc-quiz'
-			)}
-			values={values}
-			labels={labels}
-			onChange={(nextValues) => {
-				setAttributes({ demoBreakValues: JSON.stringify(nextValues) });
-			}}
-			disableAddingItems
-			allowReset
-		/>
-	);
-}
-
-export default function Controls({ attributes, setAttributes, context }) {
+export default function Controls({ attributes, setAttributes }) {
 	const { uuid, internalId, type, randomizeAnswers, question } = attributes;
-
-	const quizType = context['prc-quiz/type'];
-	const demoBreakLabels = context['prc-quiz/demo-break-labels'];
-	const parsedDemoBreakLabels = useMemo(() => {
-		if (undefined === demoBreakLabels) {
-			return [];
-		}
-		try {
-			const parsed = JSON.parse(demoBreakLabels);
-			return Array.isArray(parsed) ? parsed : [];
-		} catch {
-			return [];
-		}
-	}, [demoBreakLabels]);
-
-	const displayAdvancedDemoBreaks =
-		'quiz' === quizType &&
-		undefined !== demoBreakLabels &&
-		'thermometer' !== type;
 
 	return (
 		<>
@@ -139,14 +60,6 @@ export default function Controls({ attributes, setAttributes, context }) {
 				</ConditionalPanel>
 			</InspectorControls>
 			<InspectorAdvancedControls>
-				{displayAdvancedDemoBreaks && (
-					<DemographicBreaksControls
-						attributes={attributes}
-						setAttributes={setAttributes}
-						labels={parsedDemoBreakLabels}
-					/>
-				)}
-
 				<BaseControl
 					id="question-internal-id"
 					label={__('Internal ID')}
@@ -155,6 +68,7 @@ export default function Controls({ attributes, setAttributes, context }) {
 					)}
 				>
 					<TextControl
+						__next40pxDefaultSize
 						value={internalId}
 						onChange={(value) =>
 							setAttributes({ internalId: value })

@@ -6,9 +6,7 @@
 	"title": "Quiz Progress Bar",
 	"description": "Displays quiz completion progress based on answered questions.",
 	"category": "prc-quiz",
-	"ancestor": [
-		"prc-quiz/controller"
-	],
+	"ancestor": ["prc-quiz/controller"],
 	"supports": {
 		"anchor": true,
 		"html": false,
@@ -19,20 +17,18 @@
 			"text": true
 		},
 		"spacing": {
-			"margin": [
-				"top",
-				"bottom"
-			],
+			"margin": ["top", "bottom"],
 			"padding": true
 		},
 		"typography": {
 			"fontSize": true,
 			"__experimentalFontFamily": true
+		},
+		"position": {
+			"sticky": true
 		}
 	},
-	"usesContext": [
-		"prc-quiz/id"
-	],
+	"usesContext": ["prc-quiz/id", "prc-quiz/groupsEnabled"],
 	"textdomain": "progress-bar",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",

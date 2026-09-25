@@ -5,6 +5,19 @@ import { __ } from '@wordpress/i18n';
 
 export const QUIZ_BUILDER_SOURCE = 'prc-quiz/builder';
 
+/**
+ * Binding metadata for the consolidated quiz builder source.
+ *
+ * @param {string} field Consolidated field key.
+ * @return {{source: string, args: {field: string}}} Binding object for block metadata.
+ */
+export function quizBuilderBinding(field) {
+	return {
+		source: QUIZ_BUILDER_SOURCE,
+		args: { field },
+	};
+}
+
 /** @type {Record<string, string>} Legacy source name → consolidated field key (mirrors PHP). */
 export const LEGACY_SOURCE_FIELDS = {
 	'prc-quiz/question': 'question-text',
@@ -45,6 +58,7 @@ export const QUIZ_BUILDER_USES_CONTEXT = [
 	'prc-quiz/group/name',
 	'prc-quiz/group/response-count',
 	'prc-quiz/group/results-url',
+	'prc-quiz/histogram-population',
 ];
 
 /** @type {Array<{label: string, type: string, args: {field: string}}>} */
@@ -84,6 +98,11 @@ export const QUIZ_BUILDER_BINDING_FIELDS = [
 		type: 'string',
 		args: { field: 'share-quiz-url' },
 	},
+	{
+		label: __('Adults Receiving This Score', 'prc-quiz'),
+		type: 'string',
+		args: { field: 'adults-receiving-this-score' },
+	},
 ];
 
 const FIELD_CONTEXT_KEYS = {
@@ -94,6 +113,7 @@ const FIELD_CONTEXT_KEYS = {
 	'community-group-response-count': ['prc-quiz/group/response-count'],
 	'community-group-results-url': ['prc-quiz/group/results-url'],
 	'share-quiz-url': ['prc-quiz/id'],
+	'adults-receiving-this-score': ['prc-quiz/histogram-population'],
 };
 
 const EDITABLE_FIELDS = new Set([
@@ -105,7 +125,7 @@ const EDITABLE_FIELDS = new Set([
 /**
  * Return panel fields available for the Bindings connect panel.
  *
- * @return {typeof QUIZ_BUILDER_BINDING_FIELDS}
+ * @return {typeof QUIZ_BUILDER_BINDING_FIELDS} Field descriptors for the connect panel.
  */
 export function getQuizBuilderFieldsForContext() {
 	return QUIZ_BUILDER_BINDING_FIELDS;
@@ -115,7 +135,7 @@ export function getQuizBuilderFieldsForContext() {
  * Resolve the active binding field key from editor bindings metadata.
  *
  * @param {Record<string, {args?: {field?: string}}>} bindings Active bindings.
- * @return {string|undefined}
+ * @return {string|undefined} Consolidated field key when present.
  */
 export function getQuizBuilderBindingField(bindings = {}) {
 	const fromKnownAttribute =
@@ -137,7 +157,7 @@ export function getQuizBuilderBindingField(bindings = {}) {
  * Map a legacy source name to a consolidated field key.
  *
  * @param {string} sourceName Legacy binding source name.
- * @return {string|undefined}
+ * @return {string|undefined} Consolidated field key when the source is known.
  */
 export function legacyFieldForSource(sourceName) {
 	return LEGACY_SOURCE_FIELDS[sourceName];
@@ -146,7 +166,7 @@ export function legacyFieldForSource(sourceName) {
 /**
  * Legacy source names retained for editor and render compatibility.
  *
- * @return {string[]}
+ * @return {string[]} Registered legacy source names.
  */
 export function getLegacySourceNames() {
 	return Object.keys(LEGACY_SOURCE_FIELDS);
@@ -156,7 +176,7 @@ export function getLegacySourceNames() {
  * Block context keys required by a consolidated field.
  *
  * @param {string} field Consolidated field key.
- * @return {string[]}
+ * @return {string[]} Context keys the field reads.
  */
 export function getUsesContextForField(field) {
 	return FIELD_CONTEXT_KEYS[field] ?? [];
@@ -165,10 +185,10 @@ export function getUsesContextForField(field) {
 /**
  * Whether a saved binding targets a quiz builder field.
  *
- * @param {{source?: string, args?: {field?: string}}} binding Saved binding metadata.
- * @param {string} legacySource Legacy source name.
- * @param {string} field Consolidated field key.
- * @return {boolean}
+ * @param {{source?: string, args?: {field?: string}}} binding      Saved binding metadata.
+ * @param {string}                                     legacySource Legacy source name.
+ * @param {string}                                     field        Consolidated field key.
+ * @return {boolean} True when the binding matches the field.
  */
 export function isQuizBuilderBindingActive(binding, legacySource, field) {
 	if (!binding) {

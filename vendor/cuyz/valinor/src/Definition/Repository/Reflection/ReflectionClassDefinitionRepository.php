@@ -19,9 +19,8 @@ use CuyZ\Valinor\Definition\Repository\Reflection\TypeResolver\ClassParentTypeRe
 use CuyZ\Valinor\Definition\Repository\Reflection\TypeResolver\ReflectionTypeResolver;
 use CuyZ\Valinor\Mapper\Object\Constructor;
 use CuyZ\Valinor\Type\ObjectType;
+use CuyZ\Valinor\Type\ObjectWithGenericType;
 use CuyZ\Valinor\Type\Parser\Factory\TypeParserFactory;
-use CuyZ\Valinor\Type\Parser\UnresolvableTypeFinderParser;
-use CuyZ\Valinor\Type\Parser\VacantTypeAssignerParser;
 use CuyZ\Valinor\Type\Type;
 use CuyZ\Valinor\Type\Types\InterfaceType;
 use CuyZ\Valinor\Type\Types\NativeClassType;
@@ -34,6 +33,8 @@ use function array_count_values;
 use function array_filter;
 use function array_keys;
 use function array_map;
+use function array_values;
+use function assert;
 
 /** @internal */
 final class ReflectionClassDefinitionRepository implements ClassDefinitionRepository
@@ -64,7 +65,7 @@ final class ReflectionClassDefinitionRepository implements ClassDefinitionReposi
         $this->typeParserFactory = $typeParserFactory;
         $this->attributesRepository = new ReflectionAttributesRepository($this, $allowedAttributes);
         $this->propertyBuilder = new ReflectionPropertyDefinitionBuilder($this->attributesRepository);
-        $this->methodBuilder = new ReflectionMethodDefinitionBuilder($this->attributesRepository);
+        $this->methodBuilder = new ReflectionMethodDefinitionBuilder($this->attributesRepository, $this->typeParserFactory);
         $this->parentTypeResolver = new ClassParentTypeResolver($this->typeParserFactory);
         $this->genericResolver = new ClassGenericResolver($this->typeParserFactory);
         $this->localTypeAliasResolver = new ClassLocalTypeAliasResolver($this->typeParserFactory);
@@ -75,15 +76,21 @@ final class ReflectionClassDefinitionRepository implements ClassDefinitionReposi
     {
         $reflection = Reflection::class($type->className());
 
-        $vacantTypes = $this->vacantTypes($type);
+        $generics = [];
+
+        if ($type instanceof ObjectWithGenericType) {
+            $generics = $this->genericResolver->resolveGenerics($type);
+
+            $type = new $type($type->className(), array_values($generics));
+        }
+
+        $vacantTypes = $this->vacantTypes($type, $generics);
 
         $nativeTypeParser = $this->typeParserFactory->buildNativeTypeParserForClass($type->className());
 
         $advancedTypeParser = $this->typeParserFactory->buildAdvancedTypeParserForClass($type->className());
-        $advancedTypeParser = new VacantTypeAssignerParser($advancedTypeParser, $vacantTypes);
-        $advancedTypeParser = new UnresolvableTypeFinderParser($advancedTypeParser);
 
-        $typeResolver = new ReflectionTypeResolver($nativeTypeParser, $advancedTypeParser);
+        $typeResolver = new ReflectionTypeResolver($nativeTypeParser, $advancedTypeParser, $vacantTypes);
 
         return new ClassDefinition(
             $reflection->name,
@@ -97,16 +104,11 @@ final class ReflectionClassDefinitionRepository implements ClassDefinitionReposi
     }
 
     /**
+     * @param array<non-empty-string, Type> $generics
      * @return array<non-empty-string, Type>
      */
-    private function vacantTypes(ObjectType $type): array
+    private function vacantTypes(ObjectType $type, array $generics): array
     {
-        $generics = [];
-
-        if ($type instanceof NativeClassType || $type instanceof InterfaceType) {
-            $generics = $this->genericResolver->resolveGenerics($type);
-        }
-
         $localTypes = $this->localTypeAliasResolver->resolveLocalTypeAliases($type);
         $importedTypes = $this->importedTypeAliasResolver->resolveImportedTypeAliases($type);
 
@@ -136,6 +138,7 @@ final class ReflectionClassDefinitionRepository implements ClassDefinitionReposi
         $reflection = Reflection::class($type->className());
 
         $properties = [];
+        $parentClasses = [];
 
         foreach ($reflection->getProperties() as $property) {
             $declaringClass = $property->getDeclaringClass();
@@ -143,9 +146,14 @@ final class ReflectionClassDefinitionRepository implements ClassDefinitionReposi
             if ($declaringClass->name === $type->className()) {
                 $properties[$property->name] = $this->propertyBuilder->for($property, $typeResolver);
             } else {
-                $parentClass = $this->parentTypeResolver->resolveParentTypeFor($type);
+                assert($type instanceof NativeClassType || $type instanceof InterfaceType);
 
-                $properties[$property->name] = $this->for($parentClass)->properties->get($property->name);
+                $parentClass = $this->parentTypeResolver->resolveParentTypeFor($type, $property);
+
+                // @infection-ignore-all Just some memoization
+                $parentClasses[$parentClass->toString()] ??= $this->for($parentClass);
+
+                $properties[$property->name] = $parentClasses[$parentClass->toString()]->properties->get($property->name);
             }
         }
 
@@ -177,6 +185,9 @@ final class ReflectionClassDefinitionRepository implements ClassDefinitionReposi
         $reflection = Reflection::class($type->className());
         $methods = array_filter($reflection->getMethods(), $this->shouldMethodBeIncluded(...));
 
+        $parentClasses = [];
+        $definitions = [];
+
         // Because `ReflectionMethod::getMethods()` wont list the constructor if
         // it comes from a parent class AND is not public, we need to manually
         // fetch it and add it to the list.
@@ -184,22 +195,30 @@ final class ReflectionClassDefinitionRepository implements ClassDefinitionReposi
             $methods[] = $reflection->getMethod('__construct');
         }
 
-        return array_map(function (ReflectionMethod $method) use ($type, $typeResolver) {
+        foreach ($methods as $method) {
             $declaringClass = $method->getDeclaringClass();
 
             if ($declaringClass->name === $type->className()) {
-                return $this->methodBuilder->for($method, $typeResolver);
+                $definitions[] = $this->methodBuilder->for($method, $typeResolver);
+                continue;
             }
 
-            $parentClass = $this->parentTypeResolver->resolveParentTypeFor($type);
+            assert($type instanceof NativeClassType || $type instanceof InterfaceType);
 
-            return $this->for($parentClass)->methods->get($method->name);
-        }, $methods);
+            $parentClass = $this->parentTypeResolver->resolveParentTypeFor($type, $method);
+
+            // @infection-ignore-all Just some memoization
+            $parentClasses[$parentClass->toString()] ??= $this->for($parentClass);
+
+            $definitions[] = $parentClasses[$parentClass->toString()]->methods->get($method->name);
+        }
+        return $definitions;
     }
 
     private function shouldMethodBeIncluded(ReflectionMethod $method): bool
     {
         return $method->name === 'map'
+            || $method->name === 'mapKey'
             || $method->name === 'normalize'
             || $method->name === 'normalizeKey'
             || $method->getAttributes(Constructor::class) !== [];

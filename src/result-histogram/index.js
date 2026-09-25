@@ -30,6 +30,7 @@ import './editor.scss';
 import Edit from './edit';
 import Save from './save';
 import Icon from './icon';
+import v1Save from './deprecated';
 
 import metadata from './block.json';
 
@@ -41,10 +42,19 @@ const settings = {
 	 * @see ./Edit.jsx
 	 */
 	edit: Edit,
-	/**
-	 * @see ./Save.jsx
-	 */
 	save: Save,
+	deprecated: [
+		{
+			attributes: metadata.attributes,
+			save: v1Save,
+			migrate(attributes) {
+				return attributes;
+			},
+			isEligible(_attributes, innerBlocks) {
+				return Array.isArray(innerBlocks) && innerBlocks.length > 0;
+			},
+		},
+	],
 };
 
 /**

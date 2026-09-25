@@ -1,0 +1,51 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Kreait\Firebase;
+
+use Kreait\Firebase\AppCheck\ApiClient;
+use Kreait\Firebase\AppCheck\AppCheckToken;
+use Kreait\Firebase\AppCheck\AppCheckTokenGenerator;
+use Kreait\Firebase\AppCheck\AppCheckTokenOptions;
+use Kreait\Firebase\AppCheck\AppCheckTokenVerifier;
+use Kreait\Firebase\AppCheck\VerifyAppCheckTokenResponse;
+use Kreait\Firebase\Contract\AppCheckWithReplayProtection;
+use SensitiveParameter;
+
+use function is_array;
+
+/**
+ * @internal
+ */
+final readonly class AppCheck implements Contract\AppCheck, AppCheckWithReplayProtection
+{
+    public function __construct(
+        private ApiClient $client,
+        private AppCheckTokenGenerator $tokenGenerator,
+        private AppCheckTokenVerifier $tokenVerifier,
+    ) {
+    }
+
+    public function createToken(string $appId, AppCheckTokenOptions|array|null $options = null): AppCheckToken
+    {
+        if (is_array($options)) {
+            $options = AppCheckTokenOptions::fromArray($options);
+        }
+
+        $customToken = $this->tokenGenerator->createCustomToken($appId, $options);
+        $result = $this->client->exchangeCustomToken($appId, $customToken);
+
+        return AppCheckToken::fromArray($result);
+    }
+
+    public function verifyToken(#[SensitiveParameter] string $appCheckToken): VerifyAppCheckTokenResponse
+    {
+        return $this->tokenVerifier->verifyToken($appCheckToken);
+    }
+
+    public function verifyTokenWithReplayProtection(#[SensitiveParameter] string $appCheckToken): VerifyAppCheckTokenResponse
+    {
+        return $this->tokenVerifier->verifyToken($appCheckToken, true);
+    }
+}

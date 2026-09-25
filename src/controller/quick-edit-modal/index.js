@@ -3,11 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState, useCallback, useMemo } from '@wordpress/element';
-import {
-	Modal,
-	Button,
-	__experimentalNumberControl as NumberControl,
-} from '@wordpress/components';
+import { Modal, Button } from '@wordpress/components';
 import { DataViews, filterSortAndPaginate } from '@wordpress/dataviews';
 import { plus } from '@wordpress/icons';
 
@@ -15,7 +11,7 @@ import { plus } from '@wordpress/icons';
  * Internal Dependencies
  */
 import useQuickEditData from './use-quick-edit-data';
-import EditableCell from './editable-cell';
+import { buildFields, QuickEditWritersContext } from './fields';
 
 import './style.scss';
 
@@ -88,235 +84,77 @@ export default function QuizQuickEditModal({ clientId, onClose }) {
 
 	const isFreeform = quizType === 'freeform';
 
-	const fields = useMemo(
-		() => [
-			{
-				id: 'questionNumber',
-				label: __('#', 'prc-quiz'),
-				enableSorting: true,
-				enableGlobalSearch: false,
-				enableHiding: false,
-				getValue: ({ item }) => item.questionIndex + 1,
-				render: ({ item }) => {
-					if (item.answerIndex > 0) {
-						return null;
-					}
-					return (
-						<span className="quiz-quick-edit__question-number">
-							{item.questionIndex + 1}
-						</span>
-					);
-				},
-			},
-			{
-				id: 'page',
-				label: __('Page', 'prc-quiz'),
-				enableSorting: true,
-				enableGlobalSearch: false,
-				getValue: ({ item }) => item.pageTitle,
-				render: ({ item }) => {
-					if (item.answerIndex > 0) {
-						return null;
-					}
-					return <span>{item.pageTitle}</span>;
-				},
-				elements: getPageElements(rows),
-				filterBy: {
-					operators: ['is', 'isNot'],
-				},
-			},
-			{
-				id: 'questionText',
-				label: __('Question', 'prc-quiz'),
-				enableSorting: false,
-				enableGlobalSearch: true,
-				getValue: ({ item }) => item.questionText,
-				render: ({ item }) => (
-					<EditableCell
-						value={item.questionText}
-						onChange={(val) =>
-							updateQuestion(item.questionClientId, val)
-						}
-						hidden={item.answerIndex > 0}
-						label={__('Question text', 'prc-quiz')}
-					/>
-				),
-			},
-			{
-				id: 'answerText',
-				label: __('Answer', 'prc-quiz'),
-				enableSorting: false,
-				enableGlobalSearch: true,
-				getValue: ({ item }) => item.answerText,
-				render: ({ item }) => (
-					<EditableCell
-						value={item.answerText}
-						onChange={(val) =>
-							updateAnswer(item.answerClientId, val)
-						}
-						label={__('Answer text', 'prc-quiz')}
-					/>
-				),
-			},
-			{
-				id: 'correct',
-				label: __('Correct', 'prc-quiz'),
-				enableSorting: false,
-				enableGlobalSearch: false,
-				getValue: ({ item }) => {
-					if (true === item.correct) {
-						return 'yes';
-					}
-					if (false === item.correct) {
-						return 'no';
-					}
-					// null or undefined (unset) → Not sure
-					return 'not-sure';
-				},
-				render: ({ item }) => {
-					if (isFreeform) {
-						return <span>—</span>;
-					}
-					let label = __('Not sure', 'prc-quiz');
-					if (true === item.correct) {
-						label = __('Correct', 'prc-quiz');
-					} else if (false === item.correct) {
-						label = __('Incorrect', 'prc-quiz');
-					}
-					return (
-						<Button
-							variant="secondary"
-							size="small"
-							onClick={() =>
-								toggleCorrect(
-									item.answerClientId,
-									item.questionClientId,
-									item.questionType,
-									item.correct
-								)
-							}
-						>
-							{label}
-						</Button>
-					);
-				},
-			},
-			{
-				id: 'points',
-				label: __('Pts', 'prc-quiz'),
-				type: 'integer',
-				enableSorting: true,
-				enableGlobalSearch: false,
-				getValue: ({ item }) => item.points ?? 0,
-				render: ({ item }) => {
-					if (isFreeform) {
-						return <span>{item.points ?? 0}</span>;
-					}
-					return (
-						<NumberControl
-							className="quiz-quick-edit__points-input"
-							value={item.points ?? 0}
-							onChange={(val) =>
-								updateAnswerAttr(
-									item.answerClientId,
-									'points',
-									Math.round(parseFloat(val) || 0)
-								)
-							}
-							min={0}
-							max={100}
-							hideHTMLArrows
-							label={__('Points', 'prc-quiz')}
-							hideLabelFromVision
-						/>
-					);
-				},
-			},
-			{
-				id: 'resultsLabel',
-				label: __('Results Label', 'prc-quiz'),
-				enableSorting: false,
-				enableGlobalSearch: true,
-				getValue: ({ item }) => item.resultsLabel,
-				render: ({ item }) => (
-					<EditableCell
-						value={item.resultsLabel}
-						onChange={(val) =>
-							updateAnswerAttr(
-								item.answerClientId,
-								'resultsLabel',
-								val
-							)
-						}
-						label={__('Results label', 'prc-quiz')}
-					/>
-				),
-			},
-		],
-		[
-			rows,
+	const writers = useMemo(
+		() => ({
 			isFreeform,
 			updateQuestion,
 			updateAnswer,
 			updateAnswerAttr,
 			toggleCorrect,
+		}),
+		[
+			isFreeform,
+			toggleCorrect,
+			updateAnswer,
+			updateAnswerAttr,
+			updateQuestion,
 		]
 	);
+
+	const pageTitleKey = JSON.stringify([
+		...new Set(rows.map((row) => row.pageTitle)),
+	]);
+	const pageElements = useMemo(
+		() =>
+			JSON.parse(pageTitleKey).map((title) => ({
+				value: title,
+				label: title,
+			})),
+		[pageTitleKey]
+	);
+
+	const fields = useMemo(() => buildFields(pageElements), [pageElements]);
 
 	const { data: processedData, paginationInfo } = useMemo(
 		() => filterSortAndPaginate(rows, view, fields),
 		[rows, view, fields]
 	);
 
-	return (
-		<Modal
-			title={__('Quick Edit Quiz Content', 'prc-quiz')}
-			onRequestClose={onClose}
-			isFullScreen
-			className="quiz-quick-edit-modal"
-			headerActions={
-				<Button
-					icon={plus}
-					variant="primary"
-					onClick={addQuestion}
-					text={__('Add Question', 'prc-quiz')}
-					size="compact"
-				/>
-			}
-		>
-			<DataViews
-				data={processedData}
-				fields={fields}
-				view={view}
-				onChangeView={handleChangeView}
-				defaultLayouts={DEFAULT_LAYOUTS}
-				paginationInfo={paginationInfo}
-				isLoading={loading}
-				search
-				searchLabel={__('Search questions and answers…', 'prc-quiz')}
-				getItemId={(item) => item.id}
-			/>
-		</Modal>
-	);
-}
+	const getItemId = useCallback((item) => item.id, []);
 
-/**
- * Derives unique page filter elements from the flat row data.
- *
- * @param {Array} rows Flat row data from useQuickEditData.
- * @return {Array} DataViews filter elements.
- */
-function getPageElements(rows) {
-	const seen = new Set();
-	const elements = [];
-	for (const row of rows) {
-		if (!seen.has(row.pageTitle)) {
-			seen.add(row.pageTitle);
-			elements.push({
-				value: row.pageTitle,
-				label: row.pageTitle,
-			});
-		}
-	}
-	return elements;
+	return (
+		<QuickEditWritersContext.Provider value={writers}>
+			<Modal
+				title={__('Quick Edit Quiz Content', 'prc-quiz')}
+				onRequestClose={onClose}
+				isFullScreen
+				className="quiz-quick-edit-modal"
+				headerActions={
+					<Button
+						icon={plus}
+						variant="primary"
+						onClick={addQuestion}
+						text={__('Add Question', 'prc-quiz')}
+						size="compact"
+					/>
+				}
+			>
+				<DataViews
+					data={processedData}
+					fields={fields}
+					view={view}
+					onChangeView={handleChangeView}
+					defaultLayouts={DEFAULT_LAYOUTS}
+					paginationInfo={paginationInfo}
+					isLoading={loading}
+					search
+					searchLabel={__(
+						'Search questions and answers…',
+						'prc-quiz'
+					)}
+					getItemId={getItemId}
+				/>
+			</Modal>
+		</QuickEditWritersContext.Provider>
+	);
 }

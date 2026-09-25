@@ -32,9 +32,14 @@ export default function Edit({ attributes }) {
 	if (isCircles) {
 		return (
 			<div {...blockProps}>
-				<span className="wp-block-prc-quiz-progress-bar__label">
-					{__('4 of 7 answered', 'progress-bar')}
-				</span>
+				<div className="wp-block-prc-quiz-progress-bar__header">
+					<span className="wp-block-prc-quiz-progress-bar__label">
+						{__('4 of 7 answered', 'progress-bar')}
+					</span>
+					<span className="wp-block-prc-quiz-progress-bar__skip">
+						{__('Skip to last page', 'progress-bar')}
+					</span>
+				</div>
 				<ol className="wp-block-prc-quiz-progress-bar__steps">
 					{SAMPLE_STEPS.map((step, index) => (
 						<li

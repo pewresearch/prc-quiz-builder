@@ -24,160 +24,77 @@ class Results {
 	 */
 	public function __construct( $loader ) {
 		$loader->add_action( 'init', $this, 'block_init' );
-		$loader->add_action( 'init', $this, 'define_block_bits', 11 );
+		$loader->add_action( 'init', $this, 'register_legacy_result_score_block', 12 );
 		$loader->add_filter( 'render_block', $this, 'handle_results_display_logic', 10, 2 );
-		$loader->add_filter( 'render_block_core/paragraph', $this, 'stamp_question_outcome_host', 110, 2 );
-		$loader->add_filter( 'render_block_core/heading', $this, 'stamp_question_outcome_host', 110, 2 );
 	}
 
 	/**
-	 * Register the group-results-link bit with the platform-wide @prc/block-bits
-	 * registry. The central bits walker at priority 100 emits the iAPI directives
-	 * onto any saved bit span, replacing the per-plugin handle_block_bits() walker.
+	 * Keep rendering saved prc-quiz/result-score blocks on the frontend.
+	 * The block is removed from the inserter in favor of the Your Score bit.
 	 *
-	 * @hook init priority 11
+	 * @hook init priority 12
 	 */
-	public function define_block_bits(): void {
-		if ( ! function_exists( '\PRC\Platform\Block_Bits\register_block_bit' ) ) {
-			return;
-		}
-
-		\PRC\Platform\Block_Bits\register_block_bit(
-			'prc-quiz-builder/group-results-link',
+	public function register_legacy_result_score_block(): void {
+		register_block_type(
+			'prc-quiz/result-score',
 			array(
-				'label'               => __( 'Quiz: View Group Results Link', 'prc-quiz-builder' ),
-				'category'            => 'Quiz',
-				'allowed_block_types' => array( 'core/paragraph', 'core/heading' ),
-				'render_strategy'     => 'iapi',
-				'iapi'                => array(
-					'namespace' => 'prc-quiz/controller',
-					'text'      => 'state.groupResultsLinkText',
-					'bind'      => array(
-						'href'   => 'state.groupResultsLinkUrl',
-						'hidden' => '!state.hasGroup',
+				'render_callback' => array( $this, 'render_legacy_result_score_block' ),
+				'supports'        => array(
+					'anchor'        => true,
+					'html'          => false,
+					'interactivity' => true,
+					'multiple'      => false,
+					'inserter'      => false,
+					'color'         => array(
+						'background' => true,
+						'text'       => true,
 					),
-					// Renders as <a> so data-wp-bind--href creates a real clickable link.
-					'tag_name'  => 'a',
-				),
-				'default_text'        => __( "View your group's results.", 'prc-quiz-builder' ),
-			)
-		);
-
-		\PRC\Platform\Block_Bits\register_block_bit(
-			'prc-quiz-builder/question-outcome-label',
-			array(
-				'label'               => __( 'Quiz: Correct / Incorrect', 'prc-quiz-builder' ),
-				'category'            => 'Quiz',
-				'allowed_block_types' => array( 'core/paragraph', 'core/heading' ),
-				'attributes'          => array(
-					'correctLabel'   => array(
-						'type'    => 'string',
-						'default' => '',
+					'spacing'       => array(
+						'margin'  => array( 'top', 'bottom' ),
+						'padding' => true,
 					),
-					'incorrectLabel' => array(
-						'type'    => 'string',
-						'default' => '',
-					),
-					'unsureLabel'    => array(
-						'type'    => 'string',
-						'default' => '',
+					'typography'    => array(
+						'fontSize'                 => true,
+						'__experimentalFontFamily' => true,
 					),
 				),
-				'render_strategy'     => 'callback',
-				'render_callback'     => array( $this, 'render_question_outcome_label_bit' ),
-				'default_text'        => __( 'Correct', 'prc-quiz-builder' ),
-			)
-		);
-
-		\PRC\Platform\Block_Bits\register_block_bit(
-			'prc-quiz-builder/matching-score-bucket',
-			array(
-				'label'               => __( 'Quiz: Matching Score Bucket', 'prc-quiz-builder' ),
-				'category'            => 'Quiz',
-				'allowed_block_types' => array( 'core/paragraph', 'core/heading' ),
-				'render_strategy'     => 'iapi',
-				'iapi'                => array(
-					'namespace' => 'prc-quiz/controller',
-					'text'      => 'state.matchedScoreBucketLabel',
-					'bind'      => array(
-						'hidden' => 'state.isMatchedScoreBucketLabelHidden',
-					),
-				),
-				'default_text'        => __( 'your score group', 'prc-quiz-builder' ),
 			)
 		);
 	}
 
 	/**
-	 * Render the question-outcome-label bit with optional per-bit label overrides.
+	 * Render a legacy Results Score block saved before the Your Score bit.
 	 *
-	 * Empty override attributes inherit quiz-wide outcomeLabels from the
-	 * controller context. Only non-empty overrides are stamped onto the bit's
-	 * data-wp-context so they do not clobber parent defaults.
-	 *
-	 * @param array $attributes Sanitized attribute map (camelCase keys).
+	 * @param array  $attributes Block attributes.
+	 * @param string $content    Block content.
 	 * @return string
 	 */
-	public function render_question_outcome_label_bit( array $attributes ): string {
-		$overrides = array();
-		foreach ( array( 'correctLabel', 'incorrectLabel', 'unsureLabel' ) as $key ) {
-			$value = isset( $attributes[ $key ] ) ? trim( (string) $attributes[ $key ] ) : '';
-			if ( '' !== $value ) {
-				$overrides[ $key ] = $value;
-			}
+	public function render_legacy_result_score_block( $attributes, $content ) {
+		unset( $content );
+		$number_of_questions = array_key_exists( 'numberOfQuestions', $attributes )
+			? trim( (string) $attributes['numberOfQuestions'] )
+			: '';
+
+		if ( '' === $number_of_questions || 'N/A' === $number_of_questions ) {
+			$number_of_questions = '';
 		}
 
-		$fallback = __( 'Correct', 'prc-quiz-builder' );
-		$tag      = new WP_HTML_Tag_Processor(
-			'<span class="prc-block-bit" data-prc-block-bit="prc-quiz-builder/question-outcome-label">' . esc_html( $fallback ) . '</span>'
+		$block_wrapper_attrs = get_block_wrapper_attributes(
+			array(
+				'class'               => 'wp-block-prc-quiz-result-score',
+				'data-wp-interactive' => 'prc-quiz/controller',
+				'data-wp-context'     => wp_json_encode(
+					array(
+						'numberOfQuestions' => $number_of_questions,
+					)
+				),
+			)
 		);
-		$tag->next_tag();
-		$tag->set_attribute( 'data-wp-interactive', 'prc-quiz/controller' );
-		$tag->set_attribute( 'data-wp-text', 'state.questionOutcomeLabel' );
-		$tag->set_attribute( 'data-wp-bind--hidden', '!state.questionOutcomeLabel' );
 
-		// Persist overrides as data-* attrs. The view getter reads them via
-		// getElement().dataset — more reliable than same-element data-wp-context
-		// for derived state on this nested interactive span.
-		foreach ( $overrides as $key => $value ) {
-			$tag->set_attribute( 'data-' . strtolower( (string) preg_replace( '/([a-z0-9])([A-Z])/', '$1-$2', $key ) ), $value );
-		}
-
-		return $tag->get_updated_html();
-	}
-
-	/**
-	 * Stamp host paragraph/heading classes so outcome feedback stays hidden
-	 * until the user has a selection for the active question.
-	 *
-	 * Runs after the block-bits walker (priority 110) so the rendered bit
-	 * marker is already present in the HTML.
-	 *
-	 * @hook render_block_core/paragraph
-	 * @hook render_block_core/heading
-	 *
-	 * @param string $block_content The block content.
-	 * @param array  $block         The block data.
-	 * @return string
-	 */
-	public function stamp_question_outcome_host( $block_content, $block ) {
-		unset( $block );
-		if ( ! is_string( $block_content ) || ! str_contains( $block_content, 'prc-quiz-builder/question-outcome-label' ) ) {
-			return $block_content;
-		}
-
-		$tag = new WP_HTML_Tag_Processor( $block_content );
-		if ( ! $tag->next_tag() ) {
-			return $block_content;
-		}
-
-		$tag->add_class( 'has-prc-quiz-question-outcome' );
-		// Stamp awaiting-selection up front so CSS hides the host before hydration.
-		$tag->add_class( 'is-awaiting-selection' );
-		$tag->set_attribute( 'data-wp-interactive', 'prc-quiz/controller' );
-		$tag->set_attribute( 'data-wp-class--is-awaiting-selection', 'state.isQuestionOutcomeLabelHidden' );
-
-		return $tag->get_updated_html();
+		return wp_sprintf(
+			'<h1 %1$s>You answered <strong><span data-wp-text="state.score"></span> out of <span data-wp-text="state.numberOfQuestionsTotal"></span></strong> questions correctly.</h1>',
+			$block_wrapper_attrs
+		);
 	}
 
 	/**
@@ -241,8 +158,6 @@ class Results {
 				'<div data-wp-interactive="prc-quiz/controller">%s</div>',
 				$block_content
 			);
-			// If New Relic is available, add a custom tracer or log a custom event for transaction tracing.
-			\PRC\Platform\Newrelic\trace( 'quiz-builder/results/handle_results_display_logic', 'wrapped_interactive_block' );
 			// Reset the tag processor.
 			$tag = new WP_HTML_Tag_Processor( $content );
 			$tag->next_tag();
@@ -365,7 +280,6 @@ class Results {
 				$tag->remove_attribute( 'data-wp-context' );
 			}
 			$tag->set_attribute( 'data-wp-interactive', 'prc-quiz/controller' ); // Now our view.js actions.onShareClick will be used instead.
-			\PRC\Platform\Newrelic\trace( 'quiz-builder/results/render_block_callback', 'hijack_social_links_block' );
 		}
 
 		$content = $tag->get_updated_html();

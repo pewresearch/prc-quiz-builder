@@ -1,10 +1,7 @@
 import {
 	store,
 	getContext,
-	getServerContext,
-	getServerState,
 	getElement,
-	withScope,
 	withSyncEvent,
 } from '@wordpress/interactivity';
 
@@ -14,13 +11,38 @@ import {
 import { scrollToElement } from '../controller/scroll-utils';
 import '../controller/run-animation';
 import { matchScoreBucket } from '../controller/score-buckets';
+import { hasViewerScore as viewerScoreIsPresent } from '../controller/group-score-share';
+import {
+	formatAdultsReceivingThisScore,
+	percentForScore,
+	resolveHistogramBins,
+} from '../controller/histogram-population';
 
 const { state, actions } = store('prc-quiz/controller', {
 	state: {
 		get score() {
 			const context = getContext();
 			const { userScore } = context;
-			return userScore?.score || 0;
+			if (viewerScoreIsPresent(userScore?.score)) {
+				return userScore.score;
+			}
+			if (
+				state.hasQuizProgress &&
+				viewerScoreIsPresent(state.quizProgress?.score)
+			) {
+				return state.quizProgress.score;
+			}
+			return 0;
+		},
+		get hasViewerScore() {
+			const context = getContext();
+			if (viewerScoreIsPresent(context.userScore?.score)) {
+				return true;
+			}
+			return (
+				state.hasQuizProgress &&
+				viewerScoreIsPresent(state.quizProgress?.score)
+			);
 		},
 		get matchedScoreBucket() {
 			const context = getContext();
@@ -53,6 +75,19 @@ const { state, actions } = store('prc-quiz/controller', {
 				}
 			}
 			return '0';
+		},
+		get adultsReceivingThisScore() {
+			const context = getContext();
+			return formatAdultsReceivingThisScore(
+				percentForScore(
+					resolveHistogramBins(
+						context.histogramPopulation,
+						context.histogramData,
+						state.numberOfQuestionsTotal
+					),
+					state.score
+				)
+			);
 		},
 		get displayResultInnerBlockScore() {
 			return state.score;
@@ -113,7 +148,7 @@ const { state, actions } = store('prc-quiz/controller', {
 				state.score
 			);
 			newShareText = newShareText.replace('%title%', context.quizTitle);
-			navigator.share({
+			window.navigator.share({
 				title: newShareText,
 				url: context.quizUrl,
 			});

@@ -4,11 +4,6 @@
 import md5 from 'md5';
 
 /**
- * WordPress Dependencies
- */
-import { getContext } from '@wordpress/interactivity';
-
-/**
  * Get the correct answers from the flattened answers.
  * @param {Object} answers - All possible answers for the quiz.
  * @returns {Array} The correct answers.

@@ -21,6 +21,7 @@ import { useSelect } from '@wordpress/data';
  */
 // eslint-disable-next-line import/no-relative-packages
 import Controls from './controls';
+import { quizBuilderBinding } from '../bindings/binding-fields';
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -48,7 +49,7 @@ export default function Edit({
 	const { type, uuid } = attributes;
 
 	const quizType = context['prc-quiz/type'];
-	const existingUuids = context['prc-quiz/uuids'] || [];
+	const existingUuids = context['prc-quiz/uuids'];
 	const blockProps = useBlockProps({
 		className: clsx(layoutClassNames),
 	});
@@ -83,9 +84,7 @@ export default function Edit({
 					placeholder: __('Enter question text', 'prc-quiz'),
 					metadata: {
 						bindings: {
-							content: {
-								source: 'prc-quiz/question',
-							},
+							content: quizBuilderBinding('question-text'),
 						},
 					},
 				},
@@ -99,9 +98,7 @@ export default function Edit({
 						{
 							metadata: {
 								bindings: {
-									content: {
-										source: 'prc-quiz/answer',
-									},
+									content: quizBuilderBinding('answer-text'),
 								},
 							},
 						},
@@ -128,9 +125,7 @@ export default function Edit({
 					{
 						metadata: {
 							bindings: {
-								content: {
-									source: 'prc-quiz/answer',
-								},
+								content: quizBuilderBinding('answer-text'),
 							},
 						},
 					},
@@ -144,11 +139,12 @@ export default function Edit({
 	 * Iniitalize a uuid for the question block.
 	 */
 	useEffect(() => {
+		const uuids = existingUuids || {};
 		// If a uuid is already set, check if existinguuids includes it, and if it does does it have this clientId? If not then lets set a new uuid using this clientId.
 		if (
 			uuid &&
-			Object.keys(existingUuids).includes(uuid) &&
-			existingUuids[uuid] !== clientId
+			Object.keys(uuids).includes(uuid) &&
+			uuids[uuid] !== clientId
 		) {
 			setAttributes({
 				uuid: clientId,
@@ -160,7 +156,7 @@ export default function Edit({
 				uuid: clientId,
 			});
 		}
-	}, [existingUuids]);
+	}, [clientId, existingUuids, setAttributes, uuid]);
 
 	return (
 		<>

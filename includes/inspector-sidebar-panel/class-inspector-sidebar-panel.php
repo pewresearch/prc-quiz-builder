@@ -53,10 +53,15 @@ class Inspector_Sidebar_Panel {
 			return new WP_Error( 'prc-quiz-analytics-inspector-sidebar-panel', __( 'Error registering script.' ) );
 		}
 
+		$style_deps = array();
+		if ( in_array( 'prc-components', $asset_file['dependencies'], true ) ) {
+			$style_deps[] = 'prc-components';
+		}
+
 		wp_register_style(
 			$asset_slug,
 			$style_src,
-			array(),
+			$style_deps,
 			$asset_file['version']
 		);
 

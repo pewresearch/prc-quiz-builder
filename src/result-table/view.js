@@ -3,6 +3,17 @@
  */
 import { store, getContext, getElement } from '@wordpress/interactivity';
 
+/**
+ * Internal Dependencies
+ */
+import { parseJsonArray } from './utils';
+import {
+	COMPLEX_TABLE_MODE,
+	buildComplexTableRows,
+	buildSimpleTableRows,
+} from './table-rows';
+import { parseGroupAnswerTally } from '../controller/group-score-share';
+
 const ELEMENT_NODE = 1;
 
 /**
@@ -69,11 +80,11 @@ const { state } = store('prc-quiz/controller', {
 			const { quizId } = context;
 			const quizData = state[`quiz_${quizId}`];
 
-			if (!quizData || !quizData.demoBreakLabels) {
+			if (!quizData) {
 				return [];
 			}
 
-			return quizData.demoBreakLabels;
+			return parseJsonArray(quizData.demoBreakLabels);
 		},
 		get resultsTableRows() {
 			if (!state.displayResults) {
@@ -83,107 +94,44 @@ const { state } = store('prc-quiz/controller', {
 			const { quizId, userScore } = context;
 			const { userSubmission } = userScore;
 			const quizData = state[`quiz_${quizId}`];
-			const { questions } = quizData;
+			if (!quizData?.questions) {
+				return [];
+			}
 
-			// Convert questions object to array since questions appears to be an object with UUIDs as keys
-			const questionsArray = Object.values(questions);
+			return buildSimpleTableRows({
+				questions: quizData.questions,
+				userSubmission,
+				sanitizeQuestion: sanitizeQuestionHtml,
+			});
+		},
+		get complexTableRows() {
+			const context = getContext();
+			const { quizId, userScore, resultTableMode, groupData } = context;
+			const isCommunityGroup =
+				COMPLEX_TABLE_MODE.COMMUNITY_GROUP === resultTableMode;
+			if (isCommunityGroup && !state.displayGroupResults) {
+				return [];
+			}
+			if (!isCommunityGroup && !state.displayResults) {
+				return [];
+			}
+			const { userSubmission } = userScore || {};
+			const quizData = state[`quiz_${quizId}`];
+			if (!quizData?.questions) {
+				return [];
+			}
 
-			return questionsArray.map((question) => {
-				const {
-					uuid: questionUuid,
-					text,
-					answers,
-					demoBreakValues,
-				} = question;
-
-				// Convert answers object to array if it's also an object
-				const answersArray = Array.isArray(answers)
-					? answers
-					: Object.values(answers);
-
-				// Get all correct answers instead of just the first one
-				const correctAnswers = answersArray.filter(
-					(answer) => true === answer.correct
-				);
-
-				// Get all user selected answers (multiple selections possible)
-				const userSelectedAnswers = answersArray.filter((answer) =>
-					userSubmission.includes(answer.uuid)
-				);
-
-				// console.log('userSelectedAnswers = ', userSelectedAnswers);
-				// console.log('correctAnswers = ', correctAnswers);
-				// console.log('question = ', question);
-				// console.log('answersArray = ', answersArray);
-
-				// Format multiple correct answers for display
-				const formatCorrectAnswers = () => {
-					if (correctAnswers.length === 0) {
-						return 'No correct answer';
-					}
-
-					return correctAnswers
-						.map((answer) => answer.resultsLabel || answer.text)
-						.join(', ');
-				};
-
-				// Format multiple selected answers for display
-				const formatSelectedAnswers = () => {
-					if (userSelectedAnswers.length === 0) {
-						return 'No answer selected';
-					}
-
-					return userSelectedAnswers
-						.map((answer) => answer.resultsLabel || answer.text)
-						.join(', ');
-				};
-
-				// Determine if the user got the question correct.
-				// Returns true | false | null (Not sure / neutral — neither icon).
-				// Exact match of correct answers; pure Not sure selections are null.
-				const isCorrect = () => {
-					if (
-						userSelectedAnswers.length > 0 &&
-						userSelectedAnswers.every(
-							(answer) => null === answer.correct
-						)
-					) {
-						return null;
-					}
-
-					if (correctAnswers.length === 0) {
-						return false; // No correct answers defined
-					}
-
-					// Check if user selected exactly the correct answers
-					const correctUuids = correctAnswers
-						.map((answer) => answer.uuid)
-						.sort();
-					const selectedUuids = userSelectedAnswers
-						.map((answer) => answer.uuid)
-						.sort();
-
-					return (
-						correctUuids.length === selectedUuids.length &&
-						correctUuids.every(
-							(correctUuid, index) =>
-								correctUuid === selectedUuids[index]
-						)
-					);
-				};
-
-				const correct = isCorrect();
-
-				return {
-					uuid: questionUuid,
-					correct,
-					showCorrectIcon: true === correct,
-					showIncorrectIcon: false === correct,
-					question: sanitizeQuestionHtml(text),
-					selectedAnswer: formatSelectedAnswers(),
-					correctAnswer: formatCorrectAnswers(),
-					demoBreakValues: demoBreakValues || [],
-				};
+			return buildComplexTableRows({
+				questions: quizData.questions,
+				userSubmission,
+				demoBreakLabels: parseJsonArray(quizData.demoBreakLabels),
+				mode: isCommunityGroup
+					? COMPLEX_TABLE_MODE.COMMUNITY_GROUP
+					: COMPLEX_TABLE_MODE.PERSONAL,
+				groupTally: isCommunityGroup
+					? parseGroupAnswerTally(groupData)
+					: null,
+				sanitizeQuestion: sanitizeQuestionHtml,
 			});
 		},
 	},

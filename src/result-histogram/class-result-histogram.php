@@ -14,19 +14,64 @@ namespace PRC\Platform\Quiz;
  */
 class Result_Histogram {
 	/**
-	 * Default comparison sentence template.
-	 *
-	 * @var string
-	 */
-	const DEFAULT_COMPARISON_TEXT = 'You scored better than {betterThan} of the public, below {lowerThan} of the public and the same as {sameAs}.';
-
-	/**
 	 * Constructor.
 	 *
 	 * @param object $loader The loader.
 	 */
 	public function __construct( $loader ) {
 		$loader->add_action( 'init', $this, 'block_init' );
+	}
+
+	/**
+	 * Resolve a color slug or hex to a CSS value.
+	 *
+	 * @param string $color         Color slug, hex, rgb(), or var().
+	 * @param string $fallback_slug Preset slug when $color is empty.
+	 * @return string
+	 */
+	private function resolve_color( $color, $fallback_slug ) {
+		$color = is_string( $color ) ? trim( $color ) : '';
+		if ( '' === $color ) {
+			$color = $fallback_slug;
+		}
+		if ( preg_match( '/^#([0-9A-F]{3}){1,2}$/i', $color ) ) {
+			return $color;
+		}
+		if ( str_starts_with( $color, 'var(' ) || str_starts_with( $color, 'rgb' ) ) {
+			return $color;
+		}
+		return 'var(--wp--preset--color--' . sanitize_title( $color ) . ')';
+	}
+
+	/**
+	 * Whether histogram data contains at least one positive percent.
+	 *
+	 * @param array $bins Parsed bins.
+	 * @return bool
+	 */
+	private function has_chart_data( array $bins ) {
+		foreach ( $bins as $bin ) {
+			$percent = is_array( $bin ) ? ( $bin['percent'] ?? $bin['y'] ?? 0 ) : 0;
+			if ( is_numeric( $percent ) && (float) $percent > 0 ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Resolve population bins from controller context, then the saved attribute.
+	 *
+	 * @param array    $attributes Block attributes.
+	 * @param WP_Block $block      Block instance.
+	 * @return array
+	 */
+	private function resolve_bins( $attributes, $block ) {
+		$from_context = Histogram_Population::parse( $block->context['prc-quiz/histogram-population'] ?? array() );
+		if ( ! empty( $from_context ) ) {
+			return $from_context;
+		}
+		return Histogram_Population::parse( $attributes['histogramData'] ?? '[]' );
 	}
 
 	/**
@@ -38,82 +83,71 @@ class Result_Histogram {
 	 * @return string The block content.
 	 */
 	public function render_block_callback( $attributes, $content, $block ) {
-		$message = array_key_exists( 'message', $attributes ) ? $attributes['message'] : "I scored %s on a Pew Research Center's " . get_the_title() . ' quiz.';
-		$data    = isset( $attributes['histogramData'] ) ? json_decode( $attributes['histogramData'] ) : array();
+		unset( $content );
+		$bins       = $this->resolve_bins( $attributes, $block );
+		$show_chart = $this->has_chart_data( $bins );
+		$block_id   = wp_unique_id( 'prc-quiz-result-histogram-' );
+		$height     = $attributes['height'] ?? 300;
+		$bar_width  = $attributes['barWidth'] ?? 24;
 
-		$show_score_summary = array_key_exists( 'showScoreSummary', $attributes )
-			? (bool) $attributes['showScoreSummary']
-			: true;
+		$bar_color       = ! empty( $attributes['customBarColor'] )
+			? $attributes['customBarColor']
+			: ( $attributes['barColor'] ?? 'oatmeal' );
+		$highlight_color = ! empty( $attributes['customIsHighlightedColor'] )
+			? $attributes['customIsHighlightedColor']
+			: ( $attributes['isHighlightedColor'] ?? 'mustard' );
 
-		$comparison_text = array_key_exists( 'comparisonText', $attributes ) && is_string( $attributes['comparisonText'] ) && '' !== trim( $attributes['comparisonText'] )
-			? $attributes['comparisonText']
-			: self::DEFAULT_COMPARISON_TEXT;
+		$bar_css       = $this->resolve_color( $bar_color, 'oatmeal' );
+		$highlight_css = $this->resolve_color( $highlight_color, 'mustard' );
 
-		$top_performer_text    = array_key_exists( 'topPerformerText', $attributes ) ? (string) $attributes['topPerformerText'] : '';
-		$lower_performer_text  = array_key_exists( 'lowerPerformerText', $attributes ) ? (string) $attributes['lowerPerformerText'] : '';
-		$top_performer_threshold    = array_key_exists( 'topPerformerThreshold', $attributes ) ? (int) $attributes['topPerformerThreshold'] : 75;
-		$lower_performer_threshold  = array_key_exists( 'lowerPerformerThreshold', $attributes ) ? (int) $attributes['lowerPerformerThreshold'] : 25;
-
-		$block_id = wp_unique_id( 'prc-quiz-result-histogram-' );
-
-		$height    = $attributes['height'] ?? 300;
-		$bar_width = $attributes['barWidth'] ?? 24;
+		$style_parts = array(
+			sprintf( '--prc-quiz-histogram-bar-color: %s;', $bar_css ),
+			sprintf( '--prc-quiz-histogram-highlight-color: %s;', $highlight_css ),
+		);
+		if ( $show_chart ) {
+			$style_parts[] = sprintf( '--histogram-height: %dpx;', (int) $height );
+		}
 
 		$block_attrs = get_block_wrapper_attributes(
 			array(
-				'id'              => $block_id,
+				'id'                  => $block_id,
+				'class'               => $show_chart ? 'has-chart' : 'has-no-chart',
 				'data-wp-interactive' => 'prc-quiz/controller',
-				'style'           => sprintf( '--histogram-height: %dpx;', (int) $height ),
-				'data-wp-context' => wp_json_encode(
+				'style'               => implode( ' ', $style_parts ),
+				'data-wp-context'     => wp_json_encode(
 					array(
-						'histogramData'           => $data ?? array(),
-						'width'                   => $attributes['width'] ?? 100,
-						'height'                  => sprintf( '%dpx', (int) $height ),
-						'barWidth'                => $bar_width,
-						'barLabelPosition'        => $attributes['barLabelPosition'] ?? 0,
-						'barLabelCutoff'          => $attributes['barLabelCutoff'] ?? 0,
-						'barColor'                => $attributes['barColor'] ?? 'oatmeal',
-						'isHighlightedColor'      => $attributes['isHighlightedColor'] ?? 'mustard',
-						'yAxisDomain'             => $attributes['yAxisDomain'] ?? 100,
-						'xAxisLabel'              => $attributes['xAxisLabel'] ?? 'Score',
-						'message'                 => $message,
-						'showScoreSummary'        => $show_score_summary,
-						'comparisonText'          => $comparison_text,
-						'topPerformerText'        => $top_performer_text,
-						'lowerPerformerText'      => $lower_performer_text,
-						'topPerformerThreshold'   => $top_performer_threshold,
-						'lowerPerformerThreshold' => $lower_performer_threshold,
+						'histogramData'      => $bins,
+						'height'             => sprintf( '%dpx', (int) $height ),
+						'barWidth'           => $bar_width,
+						'barLabelCutoff'     => $attributes['barLabelCutoff'] ?? 0,
+						'barColor'           => $bar_color,
+						'isHighlightedColor' => $highlight_color,
+						'xAxisLabel'         => $attributes['xAxisLabel'] ?? 'Score',
+						'showChart'          => $show_chart,
 					)
 				),
 			)
 		);
 
-		$histogram_chart_template = '<div class="bars" role="img" aria-label="Distribution of public scores" data-wp-style--height="context.height">'
+		if ( ! $show_chart ) {
+			return wp_sprintf( '<div %1$s></div>', $block_attrs );
+		}
+
+		$chart        = '<div id="bar-chart"><div class="bars" role="img" aria-label="Distribution of public scores" data-wp-style--height="context.height">'
 			. '<template data-wp-each--bar="state.histogramBars">'
 			. '<div class="bar" data-wp-class--is-highlighted="context.bar.isHighlighted" data-wp-bind--aria-label="context.bar.ariaLabel" data-wp-bind--style="state.getBarStyle">'
 			. '<span class="bar__label" data-wp-text="context.bar.label" data-wp-class--is-outside="context.bar.showOutside"></span>'
 			. '<span class="bar__x" data-wp-text="context.bar.xLabel"></span>'
 			. '</div>'
 			. '</template>'
-			. '</div>';
+			. '</div></div>';
+		$x_axis_label = '<div class="x-axis-label" data-wp-text="context.xAxisLabel"></div>';
 
-		$score_summary = '';
-		if ( $show_score_summary ) {
-			$score_summary = '<h2>You answered <span data-wp-text="state.answeredCorrectly"></span> questions correctly</h2>';
-		}
-
-		return wp_sprintf(
-			'<div %1$s><div id="score">%2$s<h3 data-wp-text="state.comparisonSentence"></h3></div><div id="bar-chart">%3$s</div><div class="x-axis-label" data-wp-text="context.xAxisLabel"></div></div>',
-			$block_attrs,
-			$score_summary,
-			$histogram_chart_template
-		);
+		return wp_sprintf( '<div %1$s>%2$s%3$s</div>', $block_attrs, $chart, $x_axis_label );
 	}
 
 	/**
 	 * Registers the block using the metadata loaded from the `block.json` file.
-	 * Behind the scenes, it registers also all assets so they can be enqueued
-	 * through the block editor in the corresponding context.
 	 *
 	 * @see https://developer.wordpress.org/reference/functions/register_block_type/
 	 */

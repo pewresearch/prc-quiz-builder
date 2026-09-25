@@ -3,8 +3,8 @@ import { __ } from '@wordpress/i18n';
 
 import registerQuizBuilderBindings from './quiz-builder-bindings';
 import {
-	QUIZ_BUILDER_SOURCE,
 	isQuizBuilderBindingActive,
+	quizBuilderBinding,
 } from './binding-fields';
 
 export default function registerQuestionBinding() {
@@ -18,14 +18,11 @@ export default function registerQuestionBinding() {
 			fontSize: 'medium',
 			metadata: {
 				bindings: {
-					content: {
-						source: QUIZ_BUILDER_SOURCE,
-						args: { field: 'question-text' },
-					},
+					content: quizBuilderBinding('question-text'),
 				},
 			},
 		},
-		isActive: (blockAttributes, variationAttributes) => {
+		isActive: (blockAttributes) => {
 			const binding = blockAttributes.metadata?.bindings?.content;
 			return isQuizBuilderBindingActive(
 				binding,

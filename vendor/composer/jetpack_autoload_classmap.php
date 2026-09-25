@@ -6,6 +6,10 @@ $vendorDir = dirname(__DIR__);
 $baseDir   = dirname($vendorDir);
 
 return array(
+	'Attribute' => array(
+		'version' => '1.37.0.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php'
+	),
 	'Autoloader' => array(
 		'version' => '5.0.16',
 		'path'    => $vendorDir . '/automattic/jetpack-autoloader/src/class-autoloader.php'
@@ -39,1952 +43,2696 @@ return array(
 		'path'    => $vendorDir . '/automattic/jetpack-autoloader/src/ManifestGenerator.php'
 	),
 	'Beste\\Cache\\CacheItem' => array(
-		'version' => '1.4.0.0',
+		'version' => '1.6.0.0',
 		'path'    => $vendorDir . '/beste/in-memory-cache/src/CacheItem.php'
 	),
 	'Beste\\Cache\\CacheKey' => array(
-		'version' => '1.4.0.0',
+		'version' => '1.6.0.0',
 		'path'    => $vendorDir . '/beste/in-memory-cache/src/CacheKey.php'
 	),
 	'Beste\\Cache\\InMemoryCache' => array(
-		'version' => '1.4.0.0',
+		'version' => '1.6.0.0',
 		'path'    => $vendorDir . '/beste/in-memory-cache/src/InMemoryCache.php'
 	),
 	'Beste\\Cache\\InvalidArgument' => array(
-		'version' => '1.4.0.0',
+		'version' => '1.6.0.0',
 		'path'    => $vendorDir . '/beste/in-memory-cache/src/InvalidArgument.php'
 	),
 	'Beste\\Clock\\FrozenClock' => array(
-		'version' => '3.0.0.0',
-		'path'    => $vendorDir . '/beste/clock/src/Clock/FrozenClock.php'
+		'version' => '4.0.0.0',
+		'path'    => $vendorDir . '/beste/clock/src/FrozenClock.php'
 	),
 	'Beste\\Clock\\LocalizedClock' => array(
-		'version' => '3.0.0.0',
-		'path'    => $vendorDir . '/beste/clock/src/Clock/LocalizedClock.php'
+		'version' => '4.0.0.0',
+		'path'    => $vendorDir . '/beste/clock/src/LocalizedClock.php'
 	),
 	'Beste\\Clock\\MinuteClock' => array(
-		'version' => '3.0.0.0',
-		'path'    => $vendorDir . '/beste/clock/src/Clock/MinuteClock.php'
+		'version' => '4.0.0.0',
+		'path'    => $vendorDir . '/beste/clock/src/MinuteClock.php'
 	),
 	'Beste\\Clock\\SystemClock' => array(
-		'version' => '3.0.0.0',
-		'path'    => $vendorDir . '/beste/clock/src/Clock/SystemClock.php'
+		'version' => '4.0.0.0',
+		'path'    => $vendorDir . '/beste/clock/src/SystemClock.php'
 	),
 	'Beste\\Clock\\UTCClock' => array(
-		'version' => '3.0.0.0',
-		'path'    => $vendorDir . '/beste/clock/src/Clock/UTCClock.php'
+		'version' => '4.0.0.0',
+		'path'    => $vendorDir . '/beste/clock/src/UTCClock.php'
 	),
 	'Beste\\Clock\\WrappingClock' => array(
-		'version' => '3.0.0.0',
-		'path'    => $vendorDir . '/beste/clock/src/Clock/WrappingClock.php'
+		'version' => '4.0.0.0',
+		'path'    => $vendorDir . '/beste/clock/src/WrappingClock.php'
 	),
 	'Brick\\Math\\BigDecimal' => array(
-		'version' => '0.14.8.0',
+		'version' => '1.0.0.0',
 		'path'    => $vendorDir . '/brick/math/src/BigDecimal.php'
 	),
 	'Brick\\Math\\BigInteger' => array(
-		'version' => '0.14.8.0',
+		'version' => '1.0.0.0',
 		'path'    => $vendorDir . '/brick/math/src/BigInteger.php'
 	),
 	'Brick\\Math\\BigNumber' => array(
-		'version' => '0.14.8.0',
+		'version' => '1.0.0.0',
 		'path'    => $vendorDir . '/brick/math/src/BigNumber.php'
 	),
 	'Brick\\Math\\BigRational' => array(
-		'version' => '0.14.8.0',
+		'version' => '1.0.0.0',
 		'path'    => $vendorDir . '/brick/math/src/BigRational.php'
 	),
 	'Brick\\Math\\Exception\\DivisionByZeroException' => array(
-		'version' => '0.14.8.0',
+		'version' => '1.0.0.0',
 		'path'    => $vendorDir . '/brick/math/src/Exception/DivisionByZeroException.php'
 	),
 	'Brick\\Math\\Exception\\IntegerOverflowException' => array(
-		'version' => '0.14.8.0',
+		'version' => '1.0.0.0',
 		'path'    => $vendorDir . '/brick/math/src/Exception/IntegerOverflowException.php'
 	),
+	'Brick\\Math\\Exception\\InvalidArgumentException' => array(
+		'version' => '1.0.0.0',
+		'path'    => $vendorDir . '/brick/math/src/Exception/InvalidArgumentException.php'
+	),
 	'Brick\\Math\\Exception\\MathException' => array(
-		'version' => '0.14.8.0',
+		'version' => '1.0.0.0',
 		'path'    => $vendorDir . '/brick/math/src/Exception/MathException.php'
 	),
 	'Brick\\Math\\Exception\\NegativeNumberException' => array(
-		'version' => '0.14.8.0',
+		'version' => '1.0.0.0',
 		'path'    => $vendorDir . '/brick/math/src/Exception/NegativeNumberException.php'
 	),
+	'Brick\\Math\\Exception\\NoInverseException' => array(
+		'version' => '1.0.0.0',
+		'path'    => $vendorDir . '/brick/math/src/Exception/NoInverseException.php'
+	),
 	'Brick\\Math\\Exception\\NumberFormatException' => array(
-		'version' => '0.14.8.0',
+		'version' => '1.0.0.0',
 		'path'    => $vendorDir . '/brick/math/src/Exception/NumberFormatException.php'
 	),
+	'Brick\\Math\\Exception\\PlatformException' => array(
+		'version' => '1.0.0.0',
+		'path'    => $vendorDir . '/brick/math/src/Exception/PlatformException.php'
+	),
+	'Brick\\Math\\Exception\\RandomSourceException' => array(
+		'version' => '1.0.0.0',
+		'path'    => $vendorDir . '/brick/math/src/Exception/RandomSourceException.php'
+	),
 	'Brick\\Math\\Exception\\RoundingNecessaryException' => array(
-		'version' => '0.14.8.0',
+		'version' => '1.0.0.0',
 		'path'    => $vendorDir . '/brick/math/src/Exception/RoundingNecessaryException.php'
 	),
 	'Brick\\Math\\Internal\\Calculator' => array(
-		'version' => '0.14.8.0',
+		'version' => '1.0.0.0',
 		'path'    => $vendorDir . '/brick/math/src/Internal/Calculator.php'
 	),
 	'Brick\\Math\\Internal\\CalculatorRegistry' => array(
-		'version' => '0.14.8.0',
+		'version' => '1.0.0.0',
 		'path'    => $vendorDir . '/brick/math/src/Internal/CalculatorRegistry.php'
 	),
 	'Brick\\Math\\Internal\\Calculator\\BcMathCalculator' => array(
-		'version' => '0.14.8.0',
+		'version' => '1.0.0.0',
 		'path'    => $vendorDir . '/brick/math/src/Internal/Calculator/BcMathCalculator.php'
 	),
 	'Brick\\Math\\Internal\\Calculator\\GmpCalculator' => array(
-		'version' => '0.14.8.0',
+		'version' => '1.0.0.0',
 		'path'    => $vendorDir . '/brick/math/src/Internal/Calculator/GmpCalculator.php'
 	),
 	'Brick\\Math\\Internal\\Calculator\\NativeCalculator' => array(
-		'version' => '0.14.8.0',
+		'version' => '1.0.0.0',
 		'path'    => $vendorDir . '/brick/math/src/Internal/Calculator/NativeCalculator.php'
 	),
+	'Brick\\Math\\Internal\\DecimalHelper' => array(
+		'version' => '1.0.0.0',
+		'path'    => $vendorDir . '/brick/math/src/Internal/DecimalHelper.php'
+	),
+	'Brick\\Math\\Internal\\Safe' => array(
+		'version' => '1.0.0.0',
+		'path'    => $vendorDir . '/brick/math/src/Internal/Safe.php'
+	),
+	'Brick\\Math\\NumberSyntax' => array(
+		'version' => '1.0.0.0',
+		'path'    => $vendorDir . '/brick/math/src/NumberSyntax.php'
+	),
 	'Brick\\Math\\RoundingMode' => array(
-		'version' => '0.14.8.0',
+		'version' => '1.0.0.0',
 		'path'    => $vendorDir . '/brick/math/src/RoundingMode.php'
+	),
+	'Carbon\\AbstractTranslator' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/AbstractTranslator.php'
+	),
+	'Carbon\\Callback' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Callback.php'
+	),
+	'Carbon\\Carbon' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Carbon.php'
+	),
+	'Carbon\\CarbonConverterInterface' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/CarbonConverterInterface.php'
+	),
+	'Carbon\\CarbonImmutable' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/CarbonImmutable.php'
+	),
+	'Carbon\\CarbonInterface' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/CarbonInterface.php'
+	),
+	'Carbon\\CarbonInterval' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/CarbonInterval.php'
+	),
+	'Carbon\\CarbonPeriod' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/CarbonPeriod.php'
+	),
+	'Carbon\\CarbonPeriodImmutable' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/CarbonPeriodImmutable.php'
+	),
+	'Carbon\\CarbonTimeZone' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/CarbonTimeZone.php'
+	),
+	'Carbon\\Cli\\Invoker' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Cli/Invoker.php'
+	),
+	'Carbon\\Constants\\DiffOptions' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Constants/DiffOptions.php'
+	),
+	'Carbon\\Constants\\Format' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Constants/Format.php'
+	),
+	'Carbon\\Constants\\TranslationOptions' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Constants/TranslationOptions.php'
+	),
+	'Carbon\\Constants\\UnitValue' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Constants/UnitValue.php'
+	),
+	'Carbon\\Doctrine\\CarbonDoctrineType' => array(
+		'version' => '3.2.1.0',
+		'path'    => $vendorDir . '/carbonphp/carbon-doctrine-types/src/Carbon/Doctrine/CarbonDoctrineType.php'
+	),
+	'Carbon\\Doctrine\\CarbonImmutableType' => array(
+		'version' => '3.2.1.0',
+		'path'    => $vendorDir . '/carbonphp/carbon-doctrine-types/src/Carbon/Doctrine/CarbonImmutableType.php'
+	),
+	'Carbon\\Doctrine\\CarbonType' => array(
+		'version' => '3.2.1.0',
+		'path'    => $vendorDir . '/carbonphp/carbon-doctrine-types/src/Carbon/Doctrine/CarbonType.php'
+	),
+	'Carbon\\Doctrine\\CarbonTypeConverter' => array(
+		'version' => '3.2.1.0',
+		'path'    => $vendorDir . '/carbonphp/carbon-doctrine-types/src/Carbon/Doctrine/CarbonTypeConverter.php'
+	),
+	'Carbon\\Doctrine\\DateTimeDefaultPrecision' => array(
+		'version' => '3.2.1.0',
+		'path'    => $vendorDir . '/carbonphp/carbon-doctrine-types/src/Carbon/Doctrine/DateTimeDefaultPrecision.php'
+	),
+	'Carbon\\Doctrine\\DateTimeImmutableType' => array(
+		'version' => '3.2.1.0',
+		'path'    => $vendorDir . '/carbonphp/carbon-doctrine-types/src/Carbon/Doctrine/DateTimeImmutableType.php'
+	),
+	'Carbon\\Doctrine\\DateTimeType' => array(
+		'version' => '3.2.1.0',
+		'path'    => $vendorDir . '/carbonphp/carbon-doctrine-types/src/Carbon/Doctrine/DateTimeType.php'
+	),
+	'Carbon\\Exceptions\\BadComparisonUnitException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/BadComparisonUnitException.php'
+	),
+	'Carbon\\Exceptions\\BadFluentConstructorException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/BadFluentConstructorException.php'
+	),
+	'Carbon\\Exceptions\\BadFluentSetterException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/BadFluentSetterException.php'
+	),
+	'Carbon\\Exceptions\\BadMethodCallException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/BadMethodCallException.php'
+	),
+	'Carbon\\Exceptions\\EndLessPeriodException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/EndLessPeriodException.php'
+	),
+	'Carbon\\Exceptions\\Exception' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/Exception.php'
+	),
+	'Carbon\\Exceptions\\ImmutableException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/ImmutableException.php'
+	),
+	'Carbon\\Exceptions\\InvalidArgumentException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/InvalidArgumentException.php'
+	),
+	'Carbon\\Exceptions\\InvalidCastException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/InvalidCastException.php'
+	),
+	'Carbon\\Exceptions\\InvalidDateException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/InvalidDateException.php'
+	),
+	'Carbon\\Exceptions\\InvalidFormatException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/InvalidFormatException.php'
+	),
+	'Carbon\\Exceptions\\InvalidIntervalException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/InvalidIntervalException.php'
+	),
+	'Carbon\\Exceptions\\InvalidPeriodDateException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/InvalidPeriodDateException.php'
+	),
+	'Carbon\\Exceptions\\InvalidPeriodParameterException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/InvalidPeriodParameterException.php'
+	),
+	'Carbon\\Exceptions\\InvalidTimeZoneException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/InvalidTimeZoneException.php'
+	),
+	'Carbon\\Exceptions\\InvalidTypeException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/InvalidTypeException.php'
+	),
+	'Carbon\\Exceptions\\NotACarbonClassException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/NotACarbonClassException.php'
+	),
+	'Carbon\\Exceptions\\NotAPeriodException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/NotAPeriodException.php'
+	),
+	'Carbon\\Exceptions\\NotLocaleAwareException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/NotLocaleAwareException.php'
+	),
+	'Carbon\\Exceptions\\OutOfRangeException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/OutOfRangeException.php'
+	),
+	'Carbon\\Exceptions\\ParseErrorException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/ParseErrorException.php'
+	),
+	'Carbon\\Exceptions\\PeriodFilterSafetyException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/PeriodFilterSafetyException.php'
+	),
+	'Carbon\\Exceptions\\RuntimeException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/RuntimeException.php'
+	),
+	'Carbon\\Exceptions\\UnitException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/UnitException.php'
+	),
+	'Carbon\\Exceptions\\UnitNotConfiguredException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/UnitNotConfiguredException.php'
+	),
+	'Carbon\\Exceptions\\UnknownGetterException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/UnknownGetterException.php'
+	),
+	'Carbon\\Exceptions\\UnknownMethodException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/UnknownMethodException.php'
+	),
+	'Carbon\\Exceptions\\UnknownSetterException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/UnknownSetterException.php'
+	),
+	'Carbon\\Exceptions\\UnknownUnitException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/UnknownUnitException.php'
+	),
+	'Carbon\\Exceptions\\UnreachableException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/UnreachableException.php'
+	),
+	'Carbon\\Exceptions\\UnsupportedUnitException' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/UnsupportedUnitException.php'
+	),
+	'Carbon\\Factory' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Factory.php'
+	),
+	'Carbon\\FactoryImmutable' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/FactoryImmutable.php'
+	),
+	'Carbon\\Language' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Language.php'
+	),
+	'Carbon\\Laravel\\ServiceProvider' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Laravel/ServiceProvider.php'
+	),
+	'Carbon\\MessageFormatter\\MessageFormatterMapper' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/MessageFormatter/MessageFormatterMapper.php'
+	),
+	'Carbon\\Month' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Month.php'
+	),
+	'Carbon\\OverflowMode' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/OverflowMode.php'
+	),
+	'Carbon\\PHPStan\\MacroExtension' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/PHPStan/MacroExtension.php'
+	),
+	'Carbon\\PHPStan\\MacroMethodReflection' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/PHPStan/MacroMethodReflection.php'
+	),
+	'Carbon\\Traits\\Boundaries' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Boundaries.php'
+	),
+	'Carbon\\Traits\\Cast' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Cast.php'
+	),
+	'Carbon\\Traits\\Comparison' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Comparison.php'
+	),
+	'Carbon\\Traits\\Converter' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Converter.php'
+	),
+	'Carbon\\Traits\\Creator' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Creator.php'
+	),
+	'Carbon\\Traits\\Date' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Date.php'
+	),
+	'Carbon\\Traits\\DeprecatedPeriodProperties' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/DeprecatedPeriodProperties.php'
+	),
+	'Carbon\\Traits\\Difference' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Difference.php'
+	),
+	'Carbon\\Traits\\IntervalRounding' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/IntervalRounding.php'
+	),
+	'Carbon\\Traits\\IntervalStep' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/IntervalStep.php'
+	),
+	'Carbon\\Traits\\LocalFactory' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/LocalFactory.php'
+	),
+	'Carbon\\Traits\\Localization' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Localization.php'
+	),
+	'Carbon\\Traits\\Macro' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Macro.php'
+	),
+	'Carbon\\Traits\\MagicParameter' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/MagicParameter.php'
+	),
+	'Carbon\\Traits\\Mixin' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Mixin.php'
+	),
+	'Carbon\\Traits\\Modifiers' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Modifiers.php'
+	),
+	'Carbon\\Traits\\Mutability' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Mutability.php'
+	),
+	'Carbon\\Traits\\ObjectInitialisation' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/ObjectInitialisation.php'
+	),
+	'Carbon\\Traits\\Options' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Options.php'
+	),
+	'Carbon\\Traits\\Rounding' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Rounding.php'
+	),
+	'Carbon\\Traits\\Serialization' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Serialization.php'
+	),
+	'Carbon\\Traits\\StaticLocalization' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/StaticLocalization.php'
+	),
+	'Carbon\\Traits\\StaticOptions' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/StaticOptions.php'
+	),
+	'Carbon\\Traits\\Test' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Test.php'
+	),
+	'Carbon\\Traits\\Timestamp' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Timestamp.php'
+	),
+	'Carbon\\Traits\\ToStringFormat' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/ToStringFormat.php'
+	),
+	'Carbon\\Traits\\TogglableDetection' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/TogglableDetection.php'
+	),
+	'Carbon\\Traits\\Units' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Units.php'
+	),
+	'Carbon\\Traits\\Week' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Week.php'
+	),
+	'Carbon\\Translator' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Translator.php'
+	),
+	'Carbon\\TranslatorImmutable' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/TranslatorImmutable.php'
+	),
+	'Carbon\\TranslatorStrongTypeInterface' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/TranslatorStrongTypeInterface.php'
+	),
+	'Carbon\\Unit' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/Unit.php'
+	),
+	'Carbon\\WeekDay' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/WeekDay.php'
+	),
+	'Carbon\\WrapperClock' => array(
+		'version' => '3.14.0.0',
+		'path'    => $vendorDir . '/nesbot/carbon/src/Carbon/WrapperClock.php'
 	),
 	'Container' => array(
 		'version' => '5.0.16',
 		'path'    => $vendorDir . '/automattic/jetpack-autoloader/src/class-container.php'
 	),
 	'CuyZ\\Valinor\\Cache\\Cache' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Cache/Cache.php'
 	),
 	'CuyZ\\Valinor\\Cache\\CacheEntry' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Cache/CacheEntry.php'
 	),
 	'CuyZ\\Valinor\\Cache\\Exception\\CacheDirectoryNotWritable' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Cache/Exception/CacheDirectoryNotWritable.php'
 	),
 	'CuyZ\\Valinor\\Cache\\Exception\\CompiledPhpCacheFileNotWritten' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Cache/Exception/CompiledPhpCacheFileNotWritten.php'
 	),
 	'CuyZ\\Valinor\\Cache\\Exception\\CorruptedCompiledPhpCacheFile' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Cache/Exception/CorruptedCompiledPhpCacheFile.php'
 	),
 	'CuyZ\\Valinor\\Cache\\Exception\\InvalidSignatureToWarmup' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Cache/Exception/InvalidSignatureToWarmup.php'
 	),
 	'CuyZ\\Valinor\\Cache\\FileSystemCache' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Cache/FileSystemCache.php'
 	),
 	'CuyZ\\Valinor\\Cache\\FileWatchingCache' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Cache/FileWatchingCache.php'
 	),
 	'CuyZ\\Valinor\\Cache\\KeySanitizerCache' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Cache/KeySanitizerCache.php'
 	),
 	'CuyZ\\Valinor\\Cache\\RuntimeCache' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Cache/RuntimeCache.php'
 	),
 	'CuyZ\\Valinor\\Cache\\TypeFilesWatcher' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Cache/TypeFilesWatcher.php'
 	),
 	'CuyZ\\Valinor\\Cache\\Warmup\\RecursiveCacheWarmupService' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Cache/Warmup/RecursiveCacheWarmupService.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Compiler' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Compiler.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Library\\NewAttributeNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Library/NewAttributeNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Library\\TypeAcceptNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Library/TypeAcceptNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\AnonymousClassNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/AnonymousClassNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\ArrayKeyAccessNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/ArrayKeyAccessNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\ArrayNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/ArrayNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\AssignNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/AssignNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\CallNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/CallNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\CastNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/CastNode.php'
 	),
+	'CuyZ\\Valinor\\Compiler\\Native\\ClassConstantNode' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/ClassConstantNode.php'
+	),
 	'CuyZ\\Valinor\\Compiler\\Native\\ClassNameNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/ClassNameNode.php'
 	),
-	'CuyZ\\Valinor\\Compiler\\Native\\ClassNode' => array(
-		'version' => '2.4.0.0',
-		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/ClassNode.php'
-	),
 	'CuyZ\\Valinor\\Compiler\\Native\\CloneNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/CloneNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\ClosureNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/ClosureNode.php'
 	),
-	'CuyZ\\Valinor\\Compiler\\Native\\ComplianceNode' => array(
-		'version' => '2.4.0.0',
-		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/ComplianceNode.php'
-	),
 	'CuyZ\\Valinor\\Compiler\\Native\\DifferentNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/DifferentNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\EqualsNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/EqualsNode.php'
 	),
-	'CuyZ\\Valinor\\Compiler\\Native\\ExpressionNode' => array(
-		'version' => '2.4.0.0',
-		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/ExpressionNode.php'
-	),
 	'CuyZ\\Valinor\\Compiler\\Native\\ForEachNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/ForEachNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\FunctionCallNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/FunctionCallNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\FunctionNameNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/FunctionNameNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\GreaterOrEqualsToNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/GreaterOrEqualsToNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\GreaterThanNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/GreaterThanNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\IfNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/IfNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\InstanceOfNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/InstanceOfNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\LessOrEqualsToNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/LessOrEqualsToNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\LessThanNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/LessThanNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\LogicalAndNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/LogicalAndNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\LogicalOrNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/LogicalOrNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\MatchNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/MatchNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\MethodCallNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/MethodCallNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\MethodNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/MethodNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\NegateNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/NegateNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\NewClassNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/NewClassNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\ParameterDeclarationNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/ParameterDeclarationNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\PhpFileNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/PhpFileNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\PropertyDeclarationNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/PropertyDeclarationNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\PropertyNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/PropertyNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\ReturnNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/ReturnNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\ShortClosureNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/ShortClosureNode.php'
 	),
+	'CuyZ\\Valinor\\Compiler\\Native\\StatementNode' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/StatementNode.php'
+	),
 	'CuyZ\\Valinor\\Compiler\\Native\\StaticAccessNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/StaticAccessNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\StaticMethodCallNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/StaticMethodCallNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\TernaryNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/TernaryNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\ThrowNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/ThrowNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\ValueNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/ValueNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\VariableAccessNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/VariableAccessNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\VariableNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/VariableNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\WrapNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/WrapNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Native\\YieldNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Native/YieldNode.php'
 	),
 	'CuyZ\\Valinor\\Compiler\\Node' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/Node.php'
 	),
 	'CuyZ\\Valinor\\Definition\\AttributeDefinition' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/AttributeDefinition.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Attributes' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Attributes.php'
 	),
 	'CuyZ\\Valinor\\Definition\\ClassDefinition' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/ClassDefinition.php'
 	),
 	'CuyZ\\Valinor\\Definition\\FunctionDefinition' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/FunctionDefinition.php'
 	),
 	'CuyZ\\Valinor\\Definition\\FunctionObject' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/FunctionObject.php'
 	),
 	'CuyZ\\Valinor\\Definition\\FunctionsContainer' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/FunctionsContainer.php'
 	),
 	'CuyZ\\Valinor\\Definition\\MethodDefinition' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/MethodDefinition.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Methods' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Methods.php'
 	),
 	'CuyZ\\Valinor\\Definition\\ParameterDefinition' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/ParameterDefinition.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Parameters' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Parameters.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Properties' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Properties.php'
 	),
 	'CuyZ\\Valinor\\Definition\\PropertyDefinition' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/PropertyDefinition.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\AttributesRepository' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/AttributesRepository.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Cache\\CompiledClassDefinitionRepository' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Cache/CompiledClassDefinitionRepository.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Cache\\CompiledFunctionDefinitionRepository' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Cache/CompiledFunctionDefinitionRepository.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Cache\\Compiler\\AttributesCompiler' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Cache/Compiler/AttributesCompiler.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Cache\\Compiler\\ClassDefinitionCompiler' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Cache/Compiler/ClassDefinitionCompiler.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Cache\\Compiler\\Exception\\TypeCannotBeCompiled' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Cache/Compiler/Exception/TypeCannotBeCompiled.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Cache\\Compiler\\FunctionDefinitionCompiler' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Cache/Compiler/FunctionDefinitionCompiler.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Cache\\Compiler\\MethodDefinitionCompiler' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Cache/Compiler/MethodDefinitionCompiler.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Cache\\Compiler\\ParameterDefinitionCompiler' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Cache/Compiler/ParameterDefinitionCompiler.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Cache\\Compiler\\PropertyDefinitionCompiler' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Cache/Compiler/PropertyDefinitionCompiler.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Cache\\Compiler\\TypeCompiler' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Cache/Compiler/TypeCompiler.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Cache\\InMemoryClassDefinitionRepository' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Cache/InMemoryClassDefinitionRepository.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Cache\\InMemoryFunctionDefinitionRepository' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Cache/InMemoryFunctionDefinitionRepository.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\ClassDefinitionRepository' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/ClassDefinitionRepository.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\FunctionDefinitionRepository' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/FunctionDefinitionRepository.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Reflection\\ReflectionAttributesRepository' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Reflection/ReflectionAttributesRepository.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Reflection\\ReflectionClassDefinitionRepository' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Reflection/ReflectionClassDefinitionRepository.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Reflection\\ReflectionFunctionDefinitionRepository' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Reflection/ReflectionFunctionDefinitionRepository.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Reflection\\ReflectionMethodDefinitionBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Reflection/ReflectionMethodDefinitionBuilder.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Reflection\\ReflectionParameterDefinitionBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Reflection/ReflectionParameterDefinitionBuilder.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Reflection\\ReflectionPropertyDefinitionBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Reflection/ReflectionPropertyDefinitionBuilder.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Reflection\\TypeResolver\\ClassGenericResolver' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Reflection/TypeResolver/ClassGenericResolver.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Reflection\\TypeResolver\\ClassImportedTypeAliasResolver' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Reflection/TypeResolver/ClassImportedTypeAliasResolver.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Reflection\\TypeResolver\\ClassLocalTypeAliasResolver' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Reflection/TypeResolver/ClassLocalTypeAliasResolver.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Reflection\\TypeResolver\\ClassParentTypeResolver' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Reflection/TypeResolver/ClassParentTypeResolver.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Reflection\\TypeResolver\\FunctionReturnTypeResolver' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Reflection/TypeResolver/FunctionReturnTypeResolver.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Reflection\\TypeResolver\\ParameterTypeResolver' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Reflection/TypeResolver/ParameterTypeResolver.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Reflection\\TypeResolver\\PropertyTypeResolver' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Reflection/TypeResolver/PropertyTypeResolver.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Reflection\\TypeResolver\\ReflectionTypeResolver' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Reflection/TypeResolver/ReflectionTypeResolver.php'
 	),
 	'CuyZ\\Valinor\\Definition\\Repository\\Reflection\\TypeResolver\\TemplateResolver' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Definition/Repository/Reflection/TypeResolver/TemplateResolver.php'
 	),
 	'CuyZ\\Valinor\\Library\\Container' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Library/Container.php'
 	),
 	'CuyZ\\Valinor\\Library\\Settings' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Library/Settings.php'
 	),
 	'CuyZ\\Valinor\\MapperBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/MapperBuilder.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\ArgumentsMapper' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/ArgumentsMapper.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\ArgumentsMapperError' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/ArgumentsMapperError.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\AsConverter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/AsConverter.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Configurator\\ConvertKeysToCamelCase' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Configurator/ConvertKeysToCamelCase.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Configurator\\ConvertKeysToSnakeCase' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Configurator/ConvertKeysToSnakeCase.php'
 	),
+	'CuyZ\\Valinor\\Mapper\\Configurator\\MapArrayToList' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Configurator/MapArrayToList.php'
+	),
+	'CuyZ\\Valinor\\Mapper\\Configurator\\MapAsBool' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Configurator/MapAsBool.php'
+	),
+	'CuyZ\\Valinor\\Mapper\\Configurator\\MapAsFloat' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Configurator/MapAsFloat.php'
+	),
+	'CuyZ\\Valinor\\Mapper\\Configurator\\MapAsInt' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Configurator/MapAsInt.php'
+	),
+	'CuyZ\\Valinor\\Mapper\\Configurator\\MapAsString' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Configurator/MapAsString.php'
+	),
+	'CuyZ\\Valinor\\Mapper\\Configurator\\MapExplodedStringToList' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Configurator/MapExplodedStringToList.php'
+	),
+	'CuyZ\\Valinor\\Mapper\\Configurator\\MapFromJson' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Configurator/MapFromJson.php'
+	),
+	'CuyZ\\Valinor\\Mapper\\Configurator\\MapFromKey' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Configurator/MapFromKey.php'
+	),
+	'CuyZ\\Valinor\\Mapper\\Configurator\\MapKeysToCamelCase' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Configurator/MapKeysToCamelCase.php'
+	),
+	'CuyZ\\Valinor\\Mapper\\Configurator\\MapKeysToSnakeCase' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Configurator/MapKeysToSnakeCase.php'
+	),
+	'CuyZ\\Valinor\\Mapper\\Configurator\\MapToDateTimeFromFormat' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Configurator/MapToDateTimeFromFormat.php'
+	),
 	'CuyZ\\Valinor\\Mapper\\Configurator\\MapperBuilderConfigurator' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Configurator/MapperBuilderConfigurator.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Configurator\\RestrictKeysToCamelCase' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Configurator/RestrictKeysToCamelCase.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Configurator\\RestrictKeysToKebabCase' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Configurator/RestrictKeysToKebabCase.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Configurator\\RestrictKeysToPascalCase' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Configurator/RestrictKeysToPascalCase.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Configurator\\RestrictKeysToSnakeCase' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Configurator/RestrictKeysToSnakeCase.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Exception\\InvalidMappingTypeSignature' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Exception/InvalidMappingTypeSignature.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Exception\\MappingLogicalException' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Exception/MappingLogicalException.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Exception\\PsrRequestParsedBodyIsObject' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Exception/PsrRequestParsedBodyIsObject.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Exception\\TypeErrorDuringArgumentsMapping' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Exception/TypeErrorDuringArgumentsMapping.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Exception\\TypeErrorDuringMapping' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Exception/TypeErrorDuringMapping.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Http\\FromBody' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Http/FromBody.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Http\\FromQuery' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Http/FromQuery.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Http\\FromRoute' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Http/FromRoute.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Http\\HttpRequest' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Http/HttpRequest.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\MappingError' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/MappingError.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Object\\Argument' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/Argument.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Object\\Arguments' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/Arguments.php'
 	),
-	'CuyZ\\Valinor\\Mapper\\Object\\ArgumentsValues' => array(
-		'version' => '2.4.0.0',
-		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/ArgumentsValues.php'
-	),
 	'CuyZ\\Valinor\\Mapper\\Object\\Constructor' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/Constructor.php'
 	),
-	'CuyZ\\Valinor\\Mapper\\Object\\DateTimeFormatConstructor' => array(
-		'version' => '2.4.0.0',
-		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/DateTimeFormatConstructor.php'
-	),
 	'CuyZ\\Valinor\\Mapper\\Object\\DynamicConstructor' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/DynamicConstructor.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Object\\Exception\\CannotFindObjectBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/Exception/CannotFindObjectBuilder.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Object\\Exception\\CannotInstantiateObject' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/Exception/CannotInstantiateObject.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Object\\Exception\\CannotParseToDateTime' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/Exception/CannotParseToDateTime.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Object\\Exception\\InvalidConstructorClassTypeParameter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/Exception/InvalidConstructorClassTypeParameter.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Object\\Exception\\InvalidConstructorMethodWithAttributeReturnType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/Exception/InvalidConstructorMethodWithAttributeReturnType.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Object\\Exception\\InvalidConstructorReturnType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/Exception/InvalidConstructorReturnType.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Object\\Exception\\MissingConstructorClassTypeParameter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/Exception/MissingConstructorClassTypeParameter.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Object\\Exception\\ObjectBuildersCollision' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/Exception/ObjectBuildersCollision.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Object\\Exception\\PermissiveTypeNotAllowed' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/Exception/PermissiveTypeNotAllowed.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Object\\Factory\\CircularDependencyDetectorObjectBuilderFactory' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/Factory/CircularDependencyDetectorObjectBuilderFactory.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Object\\Factory\\ConstructorObjectBuilderFactory' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/Factory/ConstructorObjectBuilderFactory.php'
 	),
-	'CuyZ\\Valinor\\Mapper\\Object\\Factory\\DateTimeObjectBuilderFactory' => array(
-		'version' => '2.4.0.0',
-		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/Factory/DateTimeObjectBuilderFactory.php'
-	),
-	'CuyZ\\Valinor\\Mapper\\Object\\Factory\\DateTimeZoneObjectBuilderFactory' => array(
-		'version' => '2.4.0.0',
-		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/Factory/DateTimeZoneObjectBuilderFactory.php'
-	),
 	'CuyZ\\Valinor\\Mapper\\Object\\Factory\\InMemoryObjectBuilderFactory' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/Factory/InMemoryObjectBuilderFactory.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Object\\Factory\\ObjectBuilderFactory' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/Factory/ObjectBuilderFactory.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Object\\Factory\\ReflectionObjectBuilderFactory' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/Factory/ReflectionObjectBuilderFactory.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Object\\Factory\\SortingObjectBuilderFactory' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/Factory/SortingObjectBuilderFactory.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Object\\Factory\\StrictTypesObjectBuilderFactory' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/Factory/StrictTypesObjectBuilderFactory.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Object\\FunctionObjectBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/FunctionObjectBuilder.php'
 	),
+	'CuyZ\\Valinor\\Mapper\\Object\\InternalClassConstructors' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/InternalClassConstructors.php'
+	),
 	'CuyZ\\Valinor\\Mapper\\Object\\MethodArguments' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/MethodArguments.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Object\\MethodObjectBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/MethodObjectBuilder.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Object\\NativeConstructorObjectBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/NativeConstructorObjectBuilder.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Object\\NativeEnumObjectBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/NativeEnumObjectBuilder.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Object\\ObjectBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/ObjectBuilder.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Object\\ReflectionObjectBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Object/ReflectionObjectBuilder.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Source\\Exception\\FileExtensionNotHandled' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Source/Exception/FileExtensionNotHandled.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Source\\Exception\\InvalidJson' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Source/Exception/InvalidJson.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Source\\Exception\\InvalidSource' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Source/Exception/InvalidSource.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Source\\Exception\\InvalidYaml' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Source/Exception/InvalidYaml.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Source\\Exception\\SourceNotIterable' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Source/Exception/SourceNotIterable.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Source\\Exception\\UnableToReadFile' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Source/Exception/UnableToReadFile.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Source\\Exception\\YamlExtensionNotEnabled' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Source/Exception/YamlExtensionNotEnabled.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Source\\FileSource' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Source/FileSource.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Source\\JsonSource' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Source/JsonSource.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Source\\Modifier\\CamelCaseKeys' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Source/Modifier/CamelCaseKeys.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Source\\Modifier\\Mapping' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Source/Modifier/Mapping.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Source\\Modifier\\PathMapping' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Source/Modifier/PathMapping.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Source\\Source' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Source/Source.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Source\\YamlSource' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Source/YamlSource.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\TreeMapper' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/TreeMapper.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Builder\\ArrayNodeBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Builder/ArrayNodeBuilder.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Builder\\ConverterContainer' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Builder/ConverterContainer.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Builder\\HttpRequestNodeBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Builder/HttpRequestNodeBuilder.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Builder\\InterfaceInferringContainer' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Builder/InterfaceInferringContainer.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Builder\\InterfaceNodeBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Builder/InterfaceNodeBuilder.php'
 	),
-	'CuyZ\\Valinor\\Mapper\\Tree\\Builder\\KeyConversionPipeline' => array(
-		'version' => '2.4.0.0',
-		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Builder/KeyConversionPipeline.php'
-	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Builder\\KeyConverterNodeBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Builder/KeyConverterNodeBuilder.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Builder\\ListNodeBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Builder/ListNodeBuilder.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Builder\\MixedNodeBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Builder/MixedNodeBuilder.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Builder\\Node' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Builder/Node.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Builder\\NodeBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Builder/NodeBuilder.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Builder\\NullNodeBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Builder/NullNodeBuilder.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Builder\\ObjectNodeBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Builder/ObjectNodeBuilder.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Builder\\ScalarNodeBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Builder/ScalarNodeBuilder.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Builder\\ShapedArrayNodeBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Builder/ShapedArrayNodeBuilder.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Builder\\TypeNodeBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Builder/TypeNodeBuilder.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Builder\\UndefinedObjectNodeBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Builder/UndefinedObjectNodeBuilder.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Builder\\UnionNodeBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Builder/UnionNodeBuilder.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Builder\\ValueConverterNodeBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Builder/ValueConverterNodeBuilder.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\CannotInferFinalClass' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/CannotInferFinalClass.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\CannotMapHttpRequestToUnsealedShapedArray' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/CannotMapHttpRequestToUnsealedShapedArray.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\CannotMapToPermissiveType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/CannotMapToPermissiveType.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\CannotResolveObjectType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/CannotResolveObjectType.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\CannotResolveTypeFromUnion' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/CannotResolveTypeFromUnion.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\CannotUseBothFromBodyAttributes' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/CannotUseBothFromBodyAttributes.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\CannotUseBothFromQueryAttributes' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/CannotUseBothFromQueryAttributes.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\CircularDependencyDetected' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/CircularDependencyDetected.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\ConverterHasInvalidCallableParameter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/ConverterHasInvalidCallableParameter.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\ConverterHasInvalidReturnType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/ConverterHasInvalidReturnType.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\ConverterHasNoParameter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/ConverterHasNoParameter.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\ConverterHasTooManyParameters' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/ConverterHasTooManyParameters.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\HttpRequestKeyCollision' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/HttpRequestKeyCollision.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\InterfaceHasBothConstructorAndInfer' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/InterfaceHasBothConstructorAndInfer.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\InvalidArrayKey' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/InvalidArrayKey.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\InvalidIterableKeyType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/InvalidIterableKeyType.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\InvalidListKey' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/InvalidListKey.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\InvalidNodeDuringValueConversion' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/InvalidNodeDuringValueConversion.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\InvalidNodeValue' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/InvalidNodeValue.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\InvalidResolvedImplementationValue' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/InvalidResolvedImplementationValue.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\KeyConverterHasInvalidStringParameter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/KeyConverterHasInvalidStringParameter.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\KeyConverterHasNoParameter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/KeyConverterHasNoParameter.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\KeyConverterHasTooManyParameters' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/KeyConverterHasTooManyParameters.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\KeysCollision' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/KeysCollision.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\MissingNodeValue' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/MissingNodeValue.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\MissingObjectImplementationRegistration' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/MissingObjectImplementationRegistration.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\ObjectImplementationCallbackError' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/ObjectImplementationCallbackError.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\ObjectImplementationNotRegistered' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/ObjectImplementationNotRegistered.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\ResolvedImplementationIsNotAccepted' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/ResolvedImplementationIsNotAccepted.php'
 	),
+	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\SeveralAttributesMapToSameKey' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/SeveralAttributesMapToSameKey.php'
+	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\SourceIsEmptyArray' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/SourceIsEmptyArray.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\SourceIsEmptyList' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/SourceIsEmptyList.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\SourceIsNotNull' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/SourceIsNotNull.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\SourceMustBeIterable' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/SourceMustBeIterable.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\TooManyResolvedTypesFromUnion' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/TooManyResolvedTypesFromUnion.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\UnexpectedKeyInSource' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/UnexpectedKeyInSource.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Exception\\UnresolvableShellType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Exception/UnresolvableShellType.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Message\\DefaultMessage' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Message/DefaultMessage.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Message\\ErrorMessage' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Message/ErrorMessage.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Message\\Formatter\\AggregateMessageFormatter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Message/Formatter/AggregateMessageFormatter.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Message\\Formatter\\CallbackMessageFormatter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Message/Formatter/CallbackMessageFormatter.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Message\\Formatter\\LocaleMessageFormatter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Message/Formatter/LocaleMessageFormatter.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Message\\Formatter\\MessageFormatter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Message/Formatter/MessageFormatter.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Message\\Formatter\\MessageMapFormatter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Message/Formatter/MessageMapFormatter.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Message\\Formatter\\TranslationMessageFormatter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Message/Formatter/TranslationMessageFormatter.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Message\\HasCode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Message/HasCode.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Message\\HasParameters' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Message/HasParameters.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Message\\Message' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Message/Message.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Message\\MessageBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Message/MessageBuilder.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Message\\Messages' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Message/Messages.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Message\\NodeMessage' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Message/NodeMessage.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Message\\UserlandError' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Message/UserlandError.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\RootNodeBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/RootNodeBuilder.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\Tree\\Shell' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/Tree/Shell.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\TypeArgumentsMapper' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/TypeArgumentsMapper.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\TypeTreeMapper' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/TypeTreeMapper.php'
 	),
 	'CuyZ\\Valinor\\Mapper\\TypeTreeMapperError' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Mapper/TypeTreeMapperError.php'
 	),
 	'CuyZ\\Valinor\\NormalizerBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/NormalizerBuilder.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\ArrayNormalizer' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/ArrayNormalizer.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\AsTransformer' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/AsTransformer.php'
 	),
+	'CuyZ\\Valinor\\Normalizer\\Configurator\\IgnoreOnNormalization' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Configurator/IgnoreOnNormalization.php'
+	),
+	'CuyZ\\Valinor\\Normalizer\\Configurator\\NormalizeDateTimeFormat' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Configurator/NormalizeDateTimeFormat.php'
+	),
+	'CuyZ\\Valinor\\Normalizer\\Configurator\\NormalizeKeyTo' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Configurator/NormalizeKeyTo.php'
+	),
+	'CuyZ\\Valinor\\Normalizer\\Configurator\\NormalizeKeysToCamelCase' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Configurator/NormalizeKeysToCamelCase.php'
+	),
+	'CuyZ\\Valinor\\Normalizer\\Configurator\\NormalizeKeysToKebabCase' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Configurator/NormalizeKeysToKebabCase.php'
+	),
+	'CuyZ\\Valinor\\Normalizer\\Configurator\\NormalizeKeysToPascalCase' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Configurator/NormalizeKeysToPascalCase.php'
+	),
+	'CuyZ\\Valinor\\Normalizer\\Configurator\\NormalizeKeysToSnakeCase' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Configurator/NormalizeKeysToSnakeCase.php'
+	),
+	'CuyZ\\Valinor\\Normalizer\\Configurator\\NormalizeToSingleValue' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Configurator/NormalizeToSingleValue.php'
+	),
 	'CuyZ\\Valinor\\Normalizer\\Configurator\\NormalizerBuilderConfigurator' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Configurator/NormalizerBuilderConfigurator.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Exception\\CircularReferenceFoundDuringNormalization' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Exception/CircularReferenceFoundDuringNormalization.php'
 	),
+	'CuyZ\\Valinor\\Normalizer\\Exception\\IgnoreOnNormalizationIsNotRegistered' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Exception/IgnoreOnNormalizationIsNotRegistered.php'
+	),
 	'CuyZ\\Valinor\\Normalizer\\Exception\\KeyTransformerHasTooManyParameters' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Exception/KeyTransformerHasTooManyParameters.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Exception\\KeyTransformerParameterInvalidType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Exception/KeyTransformerParameterInvalidType.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Exception\\TransformerHasInvalidCallableParameter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Exception/TransformerHasInvalidCallableParameter.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Exception\\TransformerHasNoParameter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Exception/TransformerHasNoParameter.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Exception\\TransformerHasTooManyParameters' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Exception/TransformerHasTooManyParameters.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Exception\\TypeUnhandledByNormalizer' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Exception/TypeUnhandledByNormalizer.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Format' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Format.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Formatter\\Exception\\CannotFormatInvalidTypeToJson' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Formatter/Exception/CannotFormatInvalidTypeToJson.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Formatter\\JsonFormatter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Formatter/JsonFormatter.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\JsonNormalizer' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/JsonNormalizer.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Normalizer' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Normalizer.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\StreamNormalizer' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/StreamNormalizer.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Transformer\\CompiledTransformer' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/CompiledTransformer.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Transformer\\Compiler\\TransformerDefinition' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/Compiler/TransformerDefinition.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Transformer\\Compiler\\TransformerDefinitionBuilder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/Compiler/TransformerDefinitionBuilder.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Transformer\\Compiler\\TransformerRootNode' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/Compiler/TransformerRootNode.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Transformer\\Compiler\\TypeFormatter\\ClassFormatter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/Compiler/TypeFormatter/ClassFormatter.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Transformer\\Compiler\\TypeFormatter\\DateTimeFormatter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/Compiler/TypeFormatter/DateTimeFormatter.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Transformer\\Compiler\\TypeFormatter\\DateTimeZoneFormatter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/Compiler/TypeFormatter/DateTimeZoneFormatter.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Transformer\\Compiler\\TypeFormatter\\EnumFormatter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/Compiler/TypeFormatter/EnumFormatter.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Transformer\\Compiler\\TypeFormatter\\InterfaceFormatter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/Compiler/TypeFormatter/InterfaceFormatter.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Transformer\\Compiler\\TypeFormatter\\MixedFormatter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/Compiler/TypeFormatter/MixedFormatter.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Transformer\\Compiler\\TypeFormatter\\NullFormatter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/Compiler/TypeFormatter/NullFormatter.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Transformer\\Compiler\\TypeFormatter\\RegisteredTransformersFormatter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/Compiler/TypeFormatter/RegisteredTransformersFormatter.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Transformer\\Compiler\\TypeFormatter\\ScalarFormatter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/Compiler/TypeFormatter/ScalarFormatter.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Transformer\\Compiler\\TypeFormatter\\ShapedArrayFormatter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/Compiler/TypeFormatter/ShapedArrayFormatter.php'
 	),
+	'CuyZ\\Valinor\\Normalizer\\Transformer\\Compiler\\TypeFormatter\\ShapedListFormatter' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/Compiler/TypeFormatter/ShapedListFormatter.php'
+	),
 	'CuyZ\\Valinor\\Normalizer\\Transformer\\Compiler\\TypeFormatter\\StdClassFormatter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/Compiler/TypeFormatter/StdClassFormatter.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Transformer\\Compiler\\TypeFormatter\\TraversableFormatter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/Compiler/TypeFormatter/TraversableFormatter.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Transformer\\Compiler\\TypeFormatter\\TypeFormatter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/Compiler/TypeFormatter/TypeFormatter.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Transformer\\Compiler\\TypeFormatter\\UnionFormatter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/Compiler/TypeFormatter/UnionFormatter.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Transformer\\Compiler\\TypeFormatter\\UnitEnumFormatter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/Compiler/TypeFormatter/UnitEnumFormatter.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Transformer\\Compiler\\TypeFormatter\\UnsureTypeFormatter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/Compiler/TypeFormatter/UnsureTypeFormatter.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Transformer\\EmptyObject' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/EmptyObject.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Transformer\\RecursiveTransformer' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/RecursiveTransformer.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Transformer\\Transformer' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/Transformer.php'
 	),
 	'CuyZ\\Valinor\\Normalizer\\Transformer\\TransformerContainer' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Normalizer/Transformer/TransformerContainer.php'
 	),
 	'CuyZ\\Valinor\\Type\\BooleanType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/BooleanType.php'
 	),
 	'CuyZ\\Valinor\\Type\\ClassType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/ClassType.php'
 	),
 	'CuyZ\\Valinor\\Type\\CombiningType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/CombiningType.php'
 	),
 	'CuyZ\\Valinor\\Type\\CompositeTraversableType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/CompositeTraversableType.php'
 	),
 	'CuyZ\\Valinor\\Type\\CompositeType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/CompositeType.php'
 	),
 	'CuyZ\\Valinor\\Type\\DumpableType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/DumpableType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Dumper\\TypeDumpContext' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Dumper/TypeDumpContext.php'
 	),
 	'CuyZ\\Valinor\\Type\\Dumper\\TypeDumper' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Dumper/TypeDumper.php'
 	),
 	'CuyZ\\Valinor\\Type\\FixedType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/FixedType.php'
 	),
 	'CuyZ\\Valinor\\Type\\FloatType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/FloatType.php'
 	),
 	'CuyZ\\Valinor\\Type\\IntegerType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/IntegerType.php'
 	),
 	'CuyZ\\Valinor\\Type\\ObjectType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/ObjectType.php'
 	),
 	'CuyZ\\Valinor\\Type\\ObjectWithGenericType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/ObjectWithGenericType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\CachedParser' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/CachedParser.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Callable\\ExpectedClosingParenthesisAfterCallable' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Callable/ExpectedClosingParenthesisAfterCallable.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Callable\\ExpectedColonAfterCallableClosingParenthesis' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Callable/ExpectedColonAfterCallableClosingParenthesis.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Callable\\ExpectedReturnTypeAfterCallableColon' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Callable/ExpectedReturnTypeAfterCallableColon.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Callable\\ExpectedTypeForCallable' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Callable/ExpectedTypeForCallable.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Callable\\UnexpectedTokenAfterCallableClosingParenthesis' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Callable/UnexpectedTokenAfterCallableClosingParenthesis.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Constant\\ClassConstantCaseNotFound' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Constant/ClassConstantCaseNotFound.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Constant\\MissingClassConstantCase' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Constant/MissingClassConstantCase.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Enum\\EnumCaseNotFound' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Enum/EnumCaseNotFound.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Enum\\EnumHasNoCase' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Enum/EnumHasNoCase.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Enum\\MissingEnumCase' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Enum/MissingEnumCase.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Enum\\MissingSpecificEnumCase' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Enum/MissingSpecificEnumCase.php'
 	),
+	'CuyZ\\Valinor\\Type\\Parser\\Exception\\ExpectedClosingParenthesisAfterType' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/ExpectedClosingParenthesisAfterType.php'
+	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Generic\\CannotAssignGeneric' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Generic/CannotAssignGeneric.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Generic\\GenericClosingBracketMissing' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Generic/GenericClosingBracketMissing.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Generic\\GenericCommaMissing' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Generic/GenericCommaMissing.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Generic\\MissingGenerics' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Generic/MissingGenerics.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Intersection\\InvalidIntersectionElement' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Intersection/InvalidIntersectionElement.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Intersection\\RightIntersectionTypeMissing' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Intersection/RightIntersectionTypeMissing.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\InvalidType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/InvalidType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Iterable\\ArrayClosingBracketMissing' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Iterable/ArrayClosingBracketMissing.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Iterable\\ArrayCommaMissing' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Iterable/ArrayCommaMissing.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Iterable\\ArrayExpectedCommaOrClosingBracket' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Iterable/ArrayExpectedCommaOrClosingBracket.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Iterable\\ArrayMissingSubType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Iterable/ArrayMissingSubType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Iterable\\InvalidArrayKey' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Iterable/InvalidArrayKey.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Iterable\\InvalidShapedArrayUnsealedType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Iterable/InvalidShapedArrayUnsealedType.php'
 	),
-	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Iterable\\ListClosingBracketMissing' => array(
-		'version' => '2.4.0.0',
-		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Iterable/ListClosingBracketMissing.php'
-	),
-	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Iterable\\ListMissingSubType' => array(
-		'version' => '2.4.0.0',
-		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Iterable/ListMissingSubType.php'
+	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Iterable\\InvalidShapedListUnsealedType' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Iterable/InvalidShapedListUnsealedType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Iterable\\ShapedArrayClosingBracketMissing' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Iterable/ShapedArrayClosingBracketMissing.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Iterable\\ShapedArrayColonTokenMissing' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Iterable/ShapedArrayColonTokenMissing.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Iterable\\ShapedArrayCommaMissing' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Iterable/ShapedArrayCommaMissing.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Iterable\\ShapedArrayElementDuplicatedKey' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Iterable/ShapedArrayElementDuplicatedKey.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Iterable\\ShapedArrayElementTypeMissing' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Iterable/ShapedArrayElementTypeMissing.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Iterable\\ShapedArrayUnexpectedTokenAfterSealedType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Iterable/ShapedArrayUnexpectedTokenAfterSealedType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Iterable\\ShapedArrayWithoutElementsWithSealedType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Iterable/ShapedArrayWithoutElementsWithSealedType.php'
 	),
+	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Iterable\\ShapedListInvalidKey' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Iterable/ShapedListInvalidKey.php'
+	),
+	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Iterable\\ShapedListMandatoryAfterOptionalElement' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Iterable/ShapedListMandatoryAfterOptionalElement.php'
+	),
+	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Iterable\\ShapedListMixedKeys' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Iterable/ShapedListMixedKeys.php'
+	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Iterable\\SimpleArrayClosingBracketMissing' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Iterable/SimpleArrayClosingBracketMissing.php'
 	),
+	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Magic\\KeyOfClosingBracketMissing' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Magic/KeyOfClosingBracketMissing.php'
+	),
+	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Magic\\KeyOfIncorrectSubType' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Magic/KeyOfIncorrectSubType.php'
+	),
+	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Magic\\KeyOfMissingSubType' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Magic/KeyOfMissingSubType.php'
+	),
+	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Magic\\KeyOfOpeningBracketMissing' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Magic/KeyOfOpeningBracketMissing.php'
+	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Magic\\ValueOfClosingBracketMissing' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Magic/ValueOfClosingBracketMissing.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Magic\\ValueOfIncorrectSubType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Magic/ValueOfIncorrectSubType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Magic\\ValueOfMissingSubType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Magic/ValueOfMissingSubType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Magic\\ValueOfOpeningBracketMissing' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Magic/ValueOfOpeningBracketMissing.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\MissingClosingQuoteChar' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/MissingClosingQuoteChar.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Scalar\\ClassStringClosingBracketMissing' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Scalar/ClassStringClosingBracketMissing.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Scalar\\ClassStringMissingSubType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Scalar/ClassStringMissingSubType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Scalar\\IntegerRangeInvalidMaxValue' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Scalar/IntegerRangeInvalidMaxValue.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Scalar\\IntegerRangeInvalidMinValue' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Scalar/IntegerRangeInvalidMinValue.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Scalar\\IntegerRangeMissingClosingBracket' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Scalar/IntegerRangeMissingClosingBracket.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Scalar\\IntegerRangeMissingComma' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Scalar/IntegerRangeMissingComma.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Scalar\\IntegerRangeMissingMaxValue' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Scalar/IntegerRangeMissingMaxValue.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Scalar\\IntegerRangeMissingMinValue' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Scalar/IntegerRangeMissingMinValue.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Scalar\\NullableMissingRightType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Scalar/NullableMissingRightType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Scalar\\ReversedValuesForIntegerRange' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Scalar/ReversedValuesForIntegerRange.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Scalar\\SameValueForIntegerRange' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Scalar/SameValueForIntegerRange.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\UnexpectedToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/UnexpectedToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Union\\ForbiddenMixedType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Union/ForbiddenMixedType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Union\\InvalidClassStringElements' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Union/InvalidClassStringElements.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Exception\\Union\\RightUnionTypeMissing' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Exception/Union/RightUnionTypeMissing.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Factory\\Specifications\\AliasSpecification' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Factory/Specifications/AliasSpecification.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Factory\\Specifications\\ClassContextSpecification' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Factory/Specifications/ClassContextSpecification.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Factory\\Specifications\\ObjectSpecification' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Factory/Specifications/ObjectSpecification.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Factory\\Specifications\\TypeParserSpecification' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Factory/Specifications/TypeParserSpecification.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Factory\\TypeParserFactory' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Factory/TypeParserFactory.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\NativeLexer' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/NativeLexer.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\SpecificationsLexer' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/SpecificationsLexer.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\TokenStream' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/TokenStream.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\ArrayToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/ArrayToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\CallableToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/CallableToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\CaseFinder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/CaseFinder.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\ClassNameToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/ClassNameToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\ClassStringToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/ClassStringToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\ClosingBracketToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/ClosingBracketToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\ClosingCurlyBracketToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/ClosingCurlyBracketToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\ClosingParenthesisToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/ClosingParenthesisToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\ClosingSquareBracketToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/ClosingSquareBracketToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\ColonToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/ColonToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\CommaToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/CommaToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\DoubleColonToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/DoubleColonToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\EnumNameToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/EnumNameToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\FloatValueToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/FloatValueToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\IntegerToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/IntegerToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\IntegerValueToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/IntegerValueToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\IntersectionToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/IntersectionToken.php'
 	),
+	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\KeyOfToken' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/KeyOfToken.php'
+	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\LeftTraversingToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/LeftTraversingToken.php'
 	),
-	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\ListToken' => array(
-		'version' => '2.4.0.0',
-		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/ListToken.php'
-	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\NullableToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/NullableToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\ObjectToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/ObjectToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\OpeningBracketToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/OpeningBracketToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\OpeningCurlyBracketToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/OpeningCurlyBracketToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\OpeningParenthesisToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/OpeningParenthesisToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\OpeningSquareBracketToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/OpeningSquareBracketToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\StringValueToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/StringValueToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\Token' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/Token.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\TraversingToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/TraversingToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\TripleDotsToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/TripleDotsToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\TypeToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/TypeToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\UnionToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/UnionToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\VacantToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/VacantToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\Token\\ValueOfToken' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/Token/ValueOfToken.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\TokenizedAnnotation' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/TokenizedAnnotation.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\TokensExtractor' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/TokensExtractor.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\Lexer\\TypeLexer' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/Lexer/TypeLexer.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\LexingParser' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/LexingParser.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\TypeParser' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/TypeParser.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\UnresolvableTypeFinderParser' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/UnresolvableTypeFinderParser.php'
 	),
 	'CuyZ\\Valinor\\Type\\Parser\\VacantTypeAssignerParser' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Parser/VacantTypeAssignerParser.php'
 	),
 	'CuyZ\\Valinor\\Type\\ScalarType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/ScalarType.php'
 	),
 	'CuyZ\\Valinor\\Type\\StringType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/StringType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Type' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Type.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\ArrayKeyType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/ArrayKeyType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\ArrayType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/ArrayType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\BooleanValueType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/BooleanValueType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\CallableType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/CallableType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\ClassStringType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/ClassStringType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\EnumType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/EnumType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\Factory\\CannotBuildTypeFromValue' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/Factory/CannotBuildTypeFromValue.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\Factory\\ValueTypeFactory' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/Factory/ValueTypeFactory.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\FloatValueType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/FloatValueType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\GenericType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/GenericType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\Generics' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/Generics.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\IntegerRangeType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/IntegerRangeType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\IntegerValueType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/IntegerValueType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\InterfaceType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/InterfaceType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\IntersectionType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/IntersectionType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\IterableType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/IterableType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\ListType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/ListType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\MixedType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/MixedType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\NativeBooleanType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/NativeBooleanType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\NativeClassType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/NativeClassType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\NativeFloatType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/NativeFloatType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\NativeIntegerType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/NativeIntegerType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\NativeStringType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/NativeStringType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\NegativeIntegerType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/NegativeIntegerType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\NonEmptyArrayType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/NonEmptyArrayType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\NonEmptyListType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/NonEmptyListType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\NonEmptyStringType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/NonEmptyStringType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\NonNegativeIntegerType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/NonNegativeIntegerType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\NonPositiveIntegerType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/NonPositiveIntegerType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\NullType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/NullType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\NumericStringType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/NumericStringType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\PositiveIntegerType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/PositiveIntegerType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\ScalarConcreteType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/ScalarConcreteType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\ShapedArrayElement' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/ShapedArrayElement.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\ShapedArrayType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/ShapedArrayType.php'
 	),
+	'CuyZ\\Valinor\\Type\\Types\\ShapedListType' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/ShapedListType.php'
+	),
 	'CuyZ\\Valinor\\Type\\Types\\StringValueType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/StringValueType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\UndefinedObjectType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/UndefinedObjectType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\UnionType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/UnionType.php'
 	),
 	'CuyZ\\Valinor\\Type\\Types\\UnresolvableType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/Types/UnresolvableType.php'
 	),
 	'CuyZ\\Valinor\\Type\\VacantType' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Type/VacantType.php'
 	),
 	'CuyZ\\Valinor\\Utility\\IsSingleton' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Utility/IsSingleton.php'
 	),
 	'CuyZ\\Valinor\\Utility\\Package' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Utility/Package.php'
 	),
 	'CuyZ\\Valinor\\Utility\\Polyfill' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Utility/Polyfill.php'
 	),
 	'CuyZ\\Valinor\\Utility\\Reflection\\Annotations' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Utility/Reflection/Annotations.php'
 	),
+	'CuyZ\\Valinor\\Utility\\Reflection\\InternalClassTemplates' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Utility/Reflection/InternalClassTemplates.php'
+	),
 	'CuyZ\\Valinor\\Utility\\Reflection\\NamespaceFinder' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Utility/Reflection/NamespaceFinder.php'
 	),
 	'CuyZ\\Valinor\\Utility\\Reflection\\PhpParser' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Utility/Reflection/PhpParser.php'
 	),
 	'CuyZ\\Valinor\\Utility\\Reflection\\Reflection' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Utility/Reflection/Reflection.php'
 	),
 	'CuyZ\\Valinor\\Utility\\Reflection\\TokenParser' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Utility/Reflection/TokenParser.php'
 	),
 	'CuyZ\\Valinor\\Utility\\String\\StringCutter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Utility/String/StringCutter.php'
 	),
 	'CuyZ\\Valinor\\Utility\\String\\StringFormatter' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Utility/String/StringFormatter.php'
 	),
 	'CuyZ\\Valinor\\Utility\\String\\StringFormatterError' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Utility/String/StringFormatterError.php'
 	),
 	'CuyZ\\Valinor\\Utility\\TypeHelper' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Utility/TypeHelper.php'
 	),
 	'CuyZ\\Valinor\\Utility\\ValueDumper' => array(
-		'version' => '2.4.0.0',
+		'version' => '2.6.0.0',
 		'path'    => $vendorDir . '/cuyz/valinor/src/Utility/ValueDumper.php'
+	),
+	'DelayedTargetValidation' => array(
+		'version' => '1.41.0.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php85/Resources/stubs/DelayedTargetValidation.php'
+	),
+	'Deprecated' => array(
+		'version' => '1.38.1.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php84/Resources/stubs/Deprecated.php'
+	),
+	'Doctrine\\Inflector\\CachedWordInflector' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/CachedWordInflector.php'
+	),
+	'Doctrine\\Inflector\\GenericLanguageInflectorFactory' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/GenericLanguageInflectorFactory.php'
+	),
+	'Doctrine\\Inflector\\Inflector' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Inflector.php'
+	),
+	'Doctrine\\Inflector\\InflectorFactory' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/InflectorFactory.php'
+	),
+	'Doctrine\\Inflector\\Language' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Language.php'
+	),
+	'Doctrine\\Inflector\\LanguageInflectorFactory' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/LanguageInflectorFactory.php'
+	),
+	'Doctrine\\Inflector\\NoopWordInflector' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/NoopWordInflector.php'
+	),
+	'Doctrine\\Inflector\\Rules\\English\\Inflectible' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/English/Inflectible.php'
+	),
+	'Doctrine\\Inflector\\Rules\\English\\InflectorFactory' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/English/InflectorFactory.php'
+	),
+	'Doctrine\\Inflector\\Rules\\English\\Rules' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/English/Rules.php'
+	),
+	'Doctrine\\Inflector\\Rules\\English\\Uninflected' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/English/Uninflected.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Esperanto\\Inflectible' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Esperanto/Inflectible.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Esperanto\\InflectorFactory' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Esperanto/InflectorFactory.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Esperanto\\Rules' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Esperanto/Rules.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Esperanto\\Uninflected' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Esperanto/Uninflected.php'
+	),
+	'Doctrine\\Inflector\\Rules\\French\\Inflectible' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/French/Inflectible.php'
+	),
+	'Doctrine\\Inflector\\Rules\\French\\InflectorFactory' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/French/InflectorFactory.php'
+	),
+	'Doctrine\\Inflector\\Rules\\French\\Rules' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/French/Rules.php'
+	),
+	'Doctrine\\Inflector\\Rules\\French\\Uninflected' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/French/Uninflected.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Italian\\Inflectible' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Italian/Inflectible.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Italian\\InflectorFactory' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Italian/InflectorFactory.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Italian\\Rules' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Italian/Rules.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Italian\\Uninflected' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Italian/Uninflected.php'
+	),
+	'Doctrine\\Inflector\\Rules\\NorwegianBokmal\\Inflectible' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/NorwegianBokmal/Inflectible.php'
+	),
+	'Doctrine\\Inflector\\Rules\\NorwegianBokmal\\InflectorFactory' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/NorwegianBokmal/InflectorFactory.php'
+	),
+	'Doctrine\\Inflector\\Rules\\NorwegianBokmal\\Rules' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/NorwegianBokmal/Rules.php'
+	),
+	'Doctrine\\Inflector\\Rules\\NorwegianBokmal\\Uninflected' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/NorwegianBokmal/Uninflected.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Pattern' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Pattern.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Patterns' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Patterns.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Portuguese\\Inflectible' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Portuguese/Inflectible.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Portuguese\\InflectorFactory' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Portuguese/InflectorFactory.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Portuguese\\Rules' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Portuguese/Rules.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Portuguese\\Uninflected' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Portuguese/Uninflected.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Ruleset' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Ruleset.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Spanish\\Inflectible' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Spanish/Inflectible.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Spanish\\InflectorFactory' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Spanish/InflectorFactory.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Spanish\\Rules' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Spanish/Rules.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Spanish\\Uninflected' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Spanish/Uninflected.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Substitution' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Substitution.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Substitutions' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Substitutions.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Transformation' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Transformation.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Transformations' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Transformations.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Turkish\\Inflectible' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Turkish/Inflectible.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Turkish\\InflectorFactory' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Turkish/InflectorFactory.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Turkish\\Rules' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Turkish/Rules.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Turkish\\Uninflected' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Turkish/Uninflected.php'
+	),
+	'Doctrine\\Inflector\\Rules\\Word' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/Rules/Word.php'
+	),
+	'Doctrine\\Inflector\\RulesetInflector' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/RulesetInflector.php'
+	),
+	'Doctrine\\Inflector\\WordInflector' => array(
+		'version' => '2.1.0.0',
+		'path'    => $vendorDir . '/doctrine/inflector/src/WordInflector.php'
+	),
+	'DougSisk\\CountryState\\CountryState' => array(
+		'version' => '5.1.0.0',
+		'path'    => $vendorDir . '/dougsisk/laravel-country-state/src/CountryState.php'
+	),
+	'DougSisk\\CountryState\\CountryStateFacade' => array(
+		'version' => '5.1.0.0',
+		'path'    => $vendorDir . '/dougsisk/laravel-country-state/src/CountryStateFacade.php'
+	),
+	'DougSisk\\CountryState\\CountryStateServiceProvider' => array(
+		'version' => '5.1.0.0',
+		'path'    => $vendorDir . '/dougsisk/laravel-country-state/src/CountryStateServiceProvider.php'
+	),
+	'DougSisk\\CountryState\\Exceptions\\CountryNotFoundException' => array(
+		'version' => '5.1.0.0',
+		'path'    => $vendorDir . '/dougsisk/laravel-country-state/src/Exceptions/CountryNotFoundException.php'
+	),
+	'DougSisk\\CountryState\\Exceptions\\StateNotFoundException' => array(
+		'version' => '5.1.0.0',
+		'path'    => $vendorDir . '/dougsisk/laravel-country-state/src/Exceptions/StateNotFoundException.php'
 	),
 	'Fig\\Http\\Message\\RequestMethodInterface' => array(
 		'version' => '1.1.5.0',
@@ -1994,344 +2742,348 @@ return array(
 		'version' => '1.1.5.0',
 		'path'    => $vendorDir . '/fig/http-message-util/src/StatusCodeInterface.php'
 	),
+	'Filter\\FilterException' => array(
+		'version' => '1.41.0.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php85/Resources/stubs/Filter/FilterException.php'
+	),
+	'Filter\\FilterFailedException' => array(
+		'version' => '1.41.0.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php85/Resources/stubs/Filter/FilterFailedException.php'
+	),
 	'Firebase\\JWT\\BeforeValidException' => array(
-		'version' => '7.0.5.0',
+		'version' => '7.2.0.0',
 		'path'    => $vendorDir . '/firebase/php-jwt/src/BeforeValidException.php'
 	),
 	'Firebase\\JWT\\CachedKeySet' => array(
-		'version' => '7.0.5.0',
+		'version' => '7.2.0.0',
 		'path'    => $vendorDir . '/firebase/php-jwt/src/CachedKeySet.php'
 	),
 	'Firebase\\JWT\\ExpiredException' => array(
-		'version' => '7.0.5.0',
+		'version' => '7.2.0.0',
 		'path'    => $vendorDir . '/firebase/php-jwt/src/ExpiredException.php'
 	),
 	'Firebase\\JWT\\JWK' => array(
-		'version' => '7.0.5.0',
+		'version' => '7.2.0.0',
 		'path'    => $vendorDir . '/firebase/php-jwt/src/JWK.php'
 	),
 	'Firebase\\JWT\\JWT' => array(
-		'version' => '7.0.5.0',
+		'version' => '7.2.0.0',
 		'path'    => $vendorDir . '/firebase/php-jwt/src/JWT.php'
 	),
 	'Firebase\\JWT\\JWTExceptionWithPayloadInterface' => array(
-		'version' => '7.0.5.0',
+		'version' => '7.2.0.0',
 		'path'    => $vendorDir . '/firebase/php-jwt/src/JWTExceptionWithPayloadInterface.php'
 	),
 	'Firebase\\JWT\\Key' => array(
-		'version' => '7.0.5.0',
+		'version' => '7.2.0.0',
 		'path'    => $vendorDir . '/firebase/php-jwt/src/Key.php'
 	),
 	'Firebase\\JWT\\SignatureInvalidException' => array(
-		'version' => '7.0.5.0',
+		'version' => '7.2.0.0',
 		'path'    => $vendorDir . '/firebase/php-jwt/src/SignatureInvalidException.php'
 	),
-	'GPBMetadata\\ApiCore\\Testing\\Mocks' => array(
-		'version' => '1.42.2.0',
-		'path'    => $vendorDir . '/google/gax/metadata/ApiCore/Testing/Mocks.php'
-	),
 	'GPBMetadata\\Google\\Api\\Annotations' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Annotations.php'
 	),
 	'GPBMetadata\\Google\\Api\\Auth' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Auth.php'
 	),
 	'GPBMetadata\\Google\\Api\\Backend' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Backend.php'
 	),
 	'GPBMetadata\\Google\\Api\\Billing' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Billing.php'
 	),
 	'GPBMetadata\\Google\\Api\\Client' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Client.php'
 	),
 	'GPBMetadata\\Google\\Api\\ConfigChange' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/ConfigChange.php'
 	),
 	'GPBMetadata\\Google\\Api\\Consumer' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Consumer.php'
 	),
 	'GPBMetadata\\Google\\Api\\Context' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Context.php'
 	),
 	'GPBMetadata\\Google\\Api\\Control' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Control.php'
 	),
 	'GPBMetadata\\Google\\Api\\Distribution' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Distribution.php'
 	),
 	'GPBMetadata\\Google\\Api\\Documentation' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Documentation.php'
 	),
 	'GPBMetadata\\Google\\Api\\Endpoint' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Endpoint.php'
 	),
 	'GPBMetadata\\Google\\Api\\ErrorReason' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/ErrorReason.php'
 	),
 	'GPBMetadata\\Google\\Api\\FieldBehavior' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/FieldBehavior.php'
 	),
 	'GPBMetadata\\Google\\Api\\FieldInfo' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/FieldInfo.php'
 	),
 	'GPBMetadata\\Google\\Api\\Http' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Http.php'
 	),
 	'GPBMetadata\\Google\\Api\\Httpbody' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Httpbody.php'
 	),
 	'GPBMetadata\\Google\\Api\\Label' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Label.php'
 	),
 	'GPBMetadata\\Google\\Api\\LaunchStage' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/LaunchStage.php'
 	),
 	'GPBMetadata\\Google\\Api\\Log' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Log.php'
 	),
 	'GPBMetadata\\Google\\Api\\Logging' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Logging.php'
 	),
 	'GPBMetadata\\Google\\Api\\Metric' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Metric.php'
 	),
 	'GPBMetadata\\Google\\Api\\MonitoredResource' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/MonitoredResource.php'
 	),
 	'GPBMetadata\\Google\\Api\\Monitoring' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Monitoring.php'
 	),
 	'GPBMetadata\\Google\\Api\\Policy' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Policy.php'
 	),
 	'GPBMetadata\\Google\\Api\\Quota' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Quota.php'
 	),
 	'GPBMetadata\\Google\\Api\\Resource' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Resource.php'
 	),
 	'GPBMetadata\\Google\\Api\\Routing' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Routing.php'
 	),
 	'GPBMetadata\\Google\\Api\\Service' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Service.php'
 	),
 	'GPBMetadata\\Google\\Api\\SourceInfo' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/SourceInfo.php'
 	),
 	'GPBMetadata\\Google\\Api\\SystemParameter' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/SystemParameter.php'
 	),
 	'GPBMetadata\\Google\\Api\\Usage' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Usage.php'
 	),
 	'GPBMetadata\\Google\\Api\\Visibility' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Api/Visibility.php'
 	),
 	'GPBMetadata\\Google\\Cloud\\ExtendedOperations' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Cloud/ExtendedOperations.php'
 	),
 	'GPBMetadata\\Google\\Cloud\\Location\\Locations' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Cloud/Location/Locations.php'
 	),
 	'GPBMetadata\\Google\\Iam\\V1\\IamPolicy' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Iam/V1/IamPolicy.php'
 	),
 	'GPBMetadata\\Google\\Iam\\V1\\Logging\\AuditData' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Iam/V1/Logging/AuditData.php'
 	),
 	'GPBMetadata\\Google\\Iam\\V1\\Options' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Iam/V1/Options.php'
 	),
 	'GPBMetadata\\Google\\Iam\\V1\\Policy' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Iam/V1/Policy.php'
 	),
 	'GPBMetadata\\Google\\Iam\\V1\\ResourcePolicyMember' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Iam/V1/ResourcePolicyMember.php'
 	),
 	'GPBMetadata\\Google\\Logging\\Type\\HttpRequest' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Logging/Type/HttpRequest.php'
 	),
 	'GPBMetadata\\Google\\Logging\\Type\\LogSeverity' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Logging/Type/LogSeverity.php'
 	),
 	'GPBMetadata\\Google\\Longrunning\\Operations' => array(
-		'version' => '0.7.1.0',
+		'version' => '0.8.4.0',
 		'path'    => $vendorDir . '/google/longrunning/metadata/Longrunning/Operations.php'
 	),
 	'GPBMetadata\\Google\\Protobuf\\Any' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/GPBMetadata/Google/Protobuf/Any.php'
 	),
 	'GPBMetadata\\Google\\Protobuf\\Api' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/GPBMetadata/Google/Protobuf/Api.php'
 	),
 	'GPBMetadata\\Google\\Protobuf\\Duration' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/GPBMetadata/Google/Protobuf/Duration.php'
 	),
 	'GPBMetadata\\Google\\Protobuf\\FieldMask' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/GPBMetadata/Google/Protobuf/FieldMask.php'
 	),
 	'GPBMetadata\\Google\\Protobuf\\GPBEmpty' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/GPBMetadata/Google/Protobuf/GPBEmpty.php'
 	),
 	'GPBMetadata\\Google\\Protobuf\\Internal\\Descriptor' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/GPBMetadata/Google/Protobuf/Internal/Descriptor.php'
 	),
 	'GPBMetadata\\Google\\Protobuf\\SourceContext' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/GPBMetadata/Google/Protobuf/SourceContext.php'
 	),
 	'GPBMetadata\\Google\\Protobuf\\Struct' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/GPBMetadata/Google/Protobuf/Struct.php'
 	),
 	'GPBMetadata\\Google\\Protobuf\\Timestamp' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/GPBMetadata/Google/Protobuf/Timestamp.php'
 	),
 	'GPBMetadata\\Google\\Protobuf\\Type' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/GPBMetadata/Google/Protobuf/Type.php'
 	),
 	'GPBMetadata\\Google\\Protobuf\\Wrappers' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/GPBMetadata/Google/Protobuf/Wrappers.php'
 	),
 	'GPBMetadata\\Google\\Rpc\\Code' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Rpc/Code.php'
 	),
 	'GPBMetadata\\Google\\Rpc\\Context\\AttributeContext' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Rpc/Context/AttributeContext.php'
 	),
 	'GPBMetadata\\Google\\Rpc\\Context\\AuditContext' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Rpc/Context/AuditContext.php'
 	),
 	'GPBMetadata\\Google\\Rpc\\ErrorDetails' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Rpc/ErrorDetails.php'
 	),
 	'GPBMetadata\\Google\\Rpc\\Status' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Rpc/Status.php'
 	),
 	'GPBMetadata\\Google\\Type\\CalendarPeriod' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Type/CalendarPeriod.php'
 	),
 	'GPBMetadata\\Google\\Type\\Color' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Type/Color.php'
 	),
 	'GPBMetadata\\Google\\Type\\Date' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Type/Date.php'
 	),
 	'GPBMetadata\\Google\\Type\\Datetime' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Type/Datetime.php'
 	),
 	'GPBMetadata\\Google\\Type\\Dayofweek' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Type/Dayofweek.php'
 	),
 	'GPBMetadata\\Google\\Type\\Decimal' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Type/Decimal.php'
 	),
 	'GPBMetadata\\Google\\Type\\Expr' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Type/Expr.php'
 	),
 	'GPBMetadata\\Google\\Type\\Fraction' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Type/Fraction.php'
 	),
 	'GPBMetadata\\Google\\Type\\Interval' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Type/Interval.php'
 	),
 	'GPBMetadata\\Google\\Type\\Latlng' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Type/Latlng.php'
 	),
 	'GPBMetadata\\Google\\Type\\LocalizedText' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Type/LocalizedText.php'
 	),
 	'GPBMetadata\\Google\\Type\\Money' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Type/Money.php'
 	),
 	'GPBMetadata\\Google\\Type\\Month' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Type/Month.php'
 	),
 	'GPBMetadata\\Google\\Type\\PhoneNumber' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Type/PhoneNumber.php'
 	),
 	'GPBMetadata\\Google\\Type\\PostalAddress' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Type/PostalAddress.php'
 	),
 	'GPBMetadata\\Google\\Type\\Quaternion' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Type/Quaternion.php'
 	),
 	'GPBMetadata\\Google\\Type\\Timeofday' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/metadata/Type/Timeofday.php'
 	),
 	'GPBMetadata\\GrpcGcp' => array(
@@ -2339,2423 +3091,2459 @@ return array(
 		'path'    => $vendorDir . '/google/grpc-gcp/src/generated/GPBMetadata/GrpcGcp.php'
 	),
 	'Google\\ApiCore\\AgentHeader' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/AgentHeader.php'
 	),
 	'Google\\ApiCore\\ApiException' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/ApiException.php'
 	),
 	'Google\\ApiCore\\ApiKeyHeaderCredentials' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/ApiKeyHeaderCredentials.php'
 	),
 	'Google\\ApiCore\\ApiStatus' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/ApiStatus.php'
 	),
 	'Google\\ApiCore\\ArrayTrait' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/ArrayTrait.php'
 	),
 	'Google\\ApiCore\\BidiStream' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/BidiStream.php'
 	),
 	'Google\\ApiCore\\Call' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Call.php'
 	),
 	'Google\\ApiCore\\ClientOptionsTrait' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/ClientOptionsTrait.php'
 	),
 	'Google\\ApiCore\\ClientStream' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/ClientStream.php'
 	),
 	'Google\\ApiCore\\CredentialsWrapper' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/CredentialsWrapper.php'
 	),
 	'Google\\ApiCore\\FixedSizeCollection' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/FixedSizeCollection.php'
 	),
 	'Google\\ApiCore\\GPBLabel' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/GPBLabel.php'
 	),
 	'Google\\ApiCore\\GPBType' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/GPBType.php'
 	),
 	'Google\\ApiCore\\GapicClientTrait' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/GapicClientTrait.php'
 	),
 	'Google\\ApiCore\\GrpcSupportTrait' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/GrpcSupportTrait.php'
 	),
 	'Google\\ApiCore\\HeaderCredentialsInterface' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/HeaderCredentialsInterface.php'
 	),
 	'Google\\ApiCore\\InsecureCredentialsWrapper' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/InsecureCredentialsWrapper.php'
 	),
 	'Google\\ApiCore\\InsecureRequestBuilder' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/InsecureRequestBuilder.php'
 	),
 	'Google\\ApiCore\\KnownTypes' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/KnownTypes.php'
 	),
 	'Google\\ApiCore\\LongRunning\\Gapic\\OperationsGapicClient' => array(
-		'version' => '0.7.1.0',
+		'version' => '0.8.4.0',
 		'path'    => $vendorDir . '/google/longrunning/src/ApiCore/LongRunning/Gapic/OperationsGapicClient.php'
 	),
 	'Google\\ApiCore\\LongRunning\\OperationsClient' => array(
-		'version' => '0.7.1.0',
+		'version' => '0.8.4.0',
 		'path'    => $vendorDir . '/google/longrunning/src/ApiCore/LongRunning/OperationsClient.php'
 	),
 	'Google\\ApiCore\\Middleware\\CredentialsWrapperMiddleware' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Middleware/CredentialsWrapperMiddleware.php'
 	),
 	'Google\\ApiCore\\Middleware\\FixedHeaderMiddleware' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Middleware/FixedHeaderMiddleware.php'
 	),
 	'Google\\ApiCore\\Middleware\\MiddlewareInterface' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Middleware/MiddlewareInterface.php'
 	),
 	'Google\\ApiCore\\Middleware\\OperationsMiddleware' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Middleware/OperationsMiddleware.php'
 	),
 	'Google\\ApiCore\\Middleware\\OptionsFilterMiddleware' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Middleware/OptionsFilterMiddleware.php'
 	),
 	'Google\\ApiCore\\Middleware\\PagedMiddleware' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Middleware/PagedMiddleware.php'
 	),
 	'Google\\ApiCore\\Middleware\\RequestAutoPopulationMiddleware' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Middleware/RequestAutoPopulationMiddleware.php'
 	),
 	'Google\\ApiCore\\Middleware\\ResponseMetadataMiddleware' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Middleware/ResponseMetadataMiddleware.php'
 	),
 	'Google\\ApiCore\\Middleware\\RetryMiddleware' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Middleware/RetryMiddleware.php'
 	),
 	'Google\\ApiCore\\Middleware\\TransportCallMiddleware' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Middleware/TransportCallMiddleware.php'
 	),
 	'Google\\ApiCore\\OperationResponse' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/OperationResponse.php'
 	),
 	'Google\\ApiCore\\Options\\CallOptions' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Options/CallOptions.php'
 	),
 	'Google\\ApiCore\\Options\\ClientOptions' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Options/ClientOptions.php'
 	),
 	'Google\\ApiCore\\Options\\OptionsInterface' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Options/OptionsInterface.php'
 	),
 	'Google\\ApiCore\\Options\\OptionsTrait' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Options/OptionsTrait.php'
 	),
 	'Google\\ApiCore\\Options\\TransportOptions' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Options/TransportOptions.php'
 	),
 	'Google\\ApiCore\\Options\\TransportOptions\\GrpcFallbackTransportOptions' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Options/TransportOptions/GrpcFallbackTransportOptions.php'
 	),
 	'Google\\ApiCore\\Options\\TransportOptions\\GrpcTransportOptions' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Options/TransportOptions/GrpcTransportOptions.php'
 	),
 	'Google\\ApiCore\\Options\\TransportOptions\\RestTransportOptions' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Options/TransportOptions/RestTransportOptions.php'
 	),
 	'Google\\ApiCore\\Page' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Page.php'
 	),
 	'Google\\ApiCore\\PageStreamingDescriptor' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/PageStreamingDescriptor.php'
 	),
 	'Google\\ApiCore\\PagedListResponse' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/PagedListResponse.php'
 	),
 	'Google\\ApiCore\\PathTemplate' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/PathTemplate.php'
 	),
 	'Google\\ApiCore\\PollingTrait' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/PollingTrait.php'
 	),
 	'Google\\ApiCore\\RequestBuilder' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/RequestBuilder.php'
 	),
 	'Google\\ApiCore\\RequestParamsHeaderDescriptor' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/RequestParamsHeaderDescriptor.php'
 	),
 	'Google\\ApiCore\\ResourceHelperTrait' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/ResourceHelperTrait.php'
 	),
 	'Google\\ApiCore\\ResourceTemplate\\AbsoluteResourceTemplate' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/ResourceTemplate/AbsoluteResourceTemplate.php'
 	),
 	'Google\\ApiCore\\ResourceTemplate\\Parser' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/ResourceTemplate/Parser.php'
 	),
 	'Google\\ApiCore\\ResourceTemplate\\RelativeResourceTemplate' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/ResourceTemplate/RelativeResourceTemplate.php'
 	),
 	'Google\\ApiCore\\ResourceTemplate\\ResourceTemplateInterface' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/ResourceTemplate/ResourceTemplateInterface.php'
 	),
 	'Google\\ApiCore\\ResourceTemplate\\Segment' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/ResourceTemplate/Segment.php'
 	),
+	'Google\\ApiCore\\ResumableUpload\\ResumableUpload' => array(
+		'version' => '1.50.0.0',
+		'path'    => $vendorDir . '/google/gax/src/ResumableUpload/ResumableUpload.php'
+	),
+	'Google\\ApiCore\\ResumableUpload\\ResumableUploadClient' => array(
+		'version' => '1.50.0.0',
+		'path'    => $vendorDir . '/google/gax/src/ResumableUpload/ResumableUploadClient.php'
+	),
+	'Google\\ApiCore\\ResumableUpload\\ResumableUploadState' => array(
+		'version' => '1.50.0.0',
+		'path'    => $vendorDir . '/google/gax/src/ResumableUpload/ResumableUploadState.php'
+	),
+	'Google\\ApiCore\\ResumableUpload\\ResumableUploadTrait' => array(
+		'version' => '1.50.0.0',
+		'path'    => $vendorDir . '/google/gax/src/ResumableUpload/ResumableUploadTrait.php'
+	),
+	'Google\\ApiCore\\ResumableUpload\\ResumableUploadTransportInterface' => array(
+		'version' => '1.50.0.0',
+		'path'    => $vendorDir . '/google/gax/src/ResumableUpload/ResumableUploadTransportInterface.php'
+	),
 	'Google\\ApiCore\\RetrySettings' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/RetrySettings.php'
 	),
 	'Google\\ApiCore\\Serializer' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Serializer.php'
 	),
 	'Google\\ApiCore\\ServerStream' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/ServerStream.php'
 	),
 	'Google\\ApiCore\\ServerStreamingCallInterface' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/ServerStreamingCallInterface.php'
 	),
 	'Google\\ApiCore\\ServiceAddressTrait' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/ServiceAddressTrait.php'
 	),
 	'Google\\ApiCore\\Testing\\GeneratedTest' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Testing/GeneratedTest.php'
 	),
 	'Google\\ApiCore\\Testing\\MessageAwareArrayComparator' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Testing/MessageAwareArrayComparator.php'
 	),
 	'Google\\ApiCore\\Testing\\MessageAwareExporter' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Testing/MessageAwareExporter.php'
 	),
 	'Google\\ApiCore\\Testing\\MockBidiStreamingCall' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Testing/MockBidiStreamingCall.php'
 	),
 	'Google\\ApiCore\\Testing\\MockClientStreamingCall' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Testing/MockClientStreamingCall.php'
 	),
 	'Google\\ApiCore\\Testing\\MockGrpcTransport' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Testing/MockGrpcTransport.php'
 	),
-	'Google\\ApiCore\\Testing\\MockRequest' => array(
-		'version' => '1.42.2.0',
-		'path'    => $vendorDir . '/google/gax/src/Testing/MockRequest.php'
-	),
-	'Google\\ApiCore\\Testing\\MockRequestBody' => array(
-		'version' => '1.42.2.0',
-		'path'    => $vendorDir . '/google/gax/src/Testing/MockRequestBody.php'
-	),
-	'Google\\ApiCore\\Testing\\MockResponse' => array(
-		'version' => '1.42.2.0',
-		'path'    => $vendorDir . '/google/gax/src/Testing/MockResponse.php'
-	),
 	'Google\\ApiCore\\Testing\\MockServerStreamingCall' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Testing/MockServerStreamingCall.php'
 	),
 	'Google\\ApiCore\\Testing\\MockStatus' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Testing/MockStatus.php'
 	),
 	'Google\\ApiCore\\Testing\\MockStubTrait' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Testing/MockStubTrait.php'
 	),
 	'Google\\ApiCore\\Testing\\MockTransport' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Testing/MockTransport.php'
 	),
 	'Google\\ApiCore\\Testing\\MockUnaryCall' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Testing/MockUnaryCall.php'
 	),
 	'Google\\ApiCore\\Testing\\ProtobufGPBEmptyComparator' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Testing/ProtobufGPBEmptyComparator.php'
 	),
 	'Google\\ApiCore\\Testing\\ProtobufMessageComparator' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Testing/ProtobufMessageComparator.php'
 	),
 	'Google\\ApiCore\\Testing\\ReceivedRequest' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Testing/ReceivedRequest.php'
 	),
 	'Google\\ApiCore\\Testing\\SerializationTrait' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Testing/SerializationTrait.php'
 	),
 	'Google\\ApiCore\\Transport\\GrpcFallbackTransport' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Transport/GrpcFallbackTransport.php'
 	),
 	'Google\\ApiCore\\Transport\\GrpcTransport' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Transport/GrpcTransport.php'
 	),
 	'Google\\ApiCore\\Transport\\Grpc\\ForwardingCall' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Transport/Grpc/ForwardingCall.php'
 	),
 	'Google\\ApiCore\\Transport\\Grpc\\ForwardingServerStreamingCall' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Transport/Grpc/ForwardingServerStreamingCall.php'
 	),
 	'Google\\ApiCore\\Transport\\Grpc\\ForwardingUnaryCall' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Transport/Grpc/ForwardingUnaryCall.php'
 	),
 	'Google\\ApiCore\\Transport\\Grpc\\ServerStreamingCallWrapper' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Transport/Grpc/ServerStreamingCallWrapper.php'
 	),
 	'Google\\ApiCore\\Transport\\Grpc\\UnaryInterceptorInterface' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Transport/Grpc/UnaryInterceptorInterface.php'
 	),
 	'Google\\ApiCore\\Transport\\HttpUnaryTransportTrait' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Transport/HttpUnaryTransportTrait.php'
 	),
 	'Google\\ApiCore\\Transport\\RestTransport' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Transport/RestTransport.php'
 	),
 	'Google\\ApiCore\\Transport\\Rest\\JsonStreamDecoder' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Transport/Rest/JsonStreamDecoder.php'
 	),
 	'Google\\ApiCore\\Transport\\Rest\\RestServerStreamingCall' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Transport/Rest/RestServerStreamingCall.php'
 	),
 	'Google\\ApiCore\\Transport\\TransportInterface' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Transport/TransportInterface.php'
 	),
 	'Google\\ApiCore\\UriTrait' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/UriTrait.php'
 	),
 	'Google\\ApiCore\\ValidationException' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/ValidationException.php'
 	),
 	'Google\\ApiCore\\ValidationTrait' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/ValidationTrait.php'
 	),
 	'Google\\ApiCore\\Version' => array(
-		'version' => '1.42.2.0',
+		'version' => '1.50.0.0',
 		'path'    => $vendorDir . '/google/gax/src/Version.php'
 	),
 	'Google\\Api\\Advice' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Advice.php'
 	),
 	'Google\\Api\\AuthProvider' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/AuthProvider.php'
 	),
 	'Google\\Api\\AuthRequirement' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/AuthRequirement.php'
 	),
 	'Google\\Api\\Authentication' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Authentication.php'
 	),
 	'Google\\Api\\AuthenticationRule' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/AuthenticationRule.php'
 	),
 	'Google\\Api\\Backend' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Backend.php'
 	),
 	'Google\\Api\\BackendRule' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/BackendRule.php'
 	),
 	'Google\\Api\\BackendRule\\PathTranslation' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/BackendRule/PathTranslation.php'
 	),
 	'Google\\Api\\BatchingConfigProto' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/BatchingConfigProto.php'
 	),
 	'Google\\Api\\BatchingDescriptorProto' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/BatchingDescriptorProto.php'
 	),
 	'Google\\Api\\BatchingSettingsProto' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/BatchingSettingsProto.php'
 	),
 	'Google\\Api\\Billing' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Billing.php'
 	),
 	'Google\\Api\\Billing\\BillingDestination' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Billing/BillingDestination.php'
 	),
 	'Google\\Api\\ChangeType' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/ChangeType.php'
 	),
 	'Google\\Api\\ClientLibraryDestination' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/ClientLibraryDestination.php'
 	),
 	'Google\\Api\\ClientLibraryOrganization' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/ClientLibraryOrganization.php'
 	),
 	'Google\\Api\\ClientLibrarySettings' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/ClientLibrarySettings.php'
 	),
 	'Google\\Api\\CommonLanguageSettings' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/CommonLanguageSettings.php'
 	),
 	'Google\\Api\\ConfigChange' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/ConfigChange.php'
 	),
 	'Google\\Api\\Context' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Context.php'
 	),
 	'Google\\Api\\ContextRule' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/ContextRule.php'
 	),
 	'Google\\Api\\Control' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Control.php'
 	),
 	'Google\\Api\\CppSettings' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/CppSettings.php'
 	),
 	'Google\\Api\\CustomHttpPattern' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/CustomHttpPattern.php'
 	),
 	'Google\\Api\\Distribution' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Distribution.php'
 	),
 	'Google\\Api\\Distribution\\BucketOptions' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Distribution/BucketOptions.php'
 	),
 	'Google\\Api\\Distribution\\BucketOptions\\Explicit' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Distribution/BucketOptions/Explicit.php'
 	),
 	'Google\\Api\\Distribution\\BucketOptions\\Exponential' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Distribution/BucketOptions/Exponential.php'
 	),
 	'Google\\Api\\Distribution\\BucketOptions\\Linear' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Distribution/BucketOptions/Linear.php'
 	),
 	'Google\\Api\\Distribution\\Exemplar' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Distribution/Exemplar.php'
 	),
 	'Google\\Api\\Distribution\\Range' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Distribution/Range.php'
 	),
 	'Google\\Api\\Documentation' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Documentation.php'
 	),
 	'Google\\Api\\DocumentationRule' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/DocumentationRule.php'
 	),
 	'Google\\Api\\DotnetSettings' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/DotnetSettings.php'
 	),
 	'Google\\Api\\Endpoint' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Endpoint.php'
 	),
 	'Google\\Api\\ErrorReason' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/ErrorReason.php'
 	),
 	'Google\\Api\\FieldBehavior' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/FieldBehavior.php'
 	),
 	'Google\\Api\\FieldInfo' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/FieldInfo.php'
 	),
 	'Google\\Api\\FieldInfo\\Format' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/FieldInfo/Format.php'
 	),
 	'Google\\Api\\FieldPolicy' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/FieldPolicy.php'
 	),
 	'Google\\Api\\FlowControlLimitExceededBehaviorProto' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/FlowControlLimitExceededBehaviorProto.php'
 	),
 	'Google\\Api\\GoSettings' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/GoSettings.php'
 	),
 	'Google\\Api\\Http' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Http.php'
 	),
 	'Google\\Api\\HttpBody' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/HttpBody.php'
 	),
 	'Google\\Api\\HttpRule' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/HttpRule.php'
 	),
 	'Google\\Api\\JavaSettings' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/JavaSettings.php'
 	),
 	'Google\\Api\\JwtLocation' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/JwtLocation.php'
 	),
 	'Google\\Api\\LabelDescriptor' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/LabelDescriptor.php'
 	),
 	'Google\\Api\\LabelDescriptor\\ValueType' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/LabelDescriptor/ValueType.php'
 	),
 	'Google\\Api\\LaunchStage' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/LaunchStage.php'
 	),
 	'Google\\Api\\LogDescriptor' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/LogDescriptor.php'
 	),
 	'Google\\Api\\Logging' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Logging.php'
 	),
 	'Google\\Api\\Logging\\LoggingDestination' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Logging/LoggingDestination.php'
 	),
 	'Google\\Api\\MethodPolicy' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/MethodPolicy.php'
 	),
 	'Google\\Api\\MethodSettings' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/MethodSettings.php'
 	),
 	'Google\\Api\\MethodSettings\\LongRunning' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/MethodSettings/LongRunning.php'
 	),
 	'Google\\Api\\Metric' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Metric.php'
 	),
 	'Google\\Api\\MetricDescriptor' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/MetricDescriptor.php'
 	),
 	'Google\\Api\\MetricDescriptor\\MetricDescriptorMetadata' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/MetricDescriptor/MetricDescriptorMetadata.php'
 	),
 	'Google\\Api\\MetricDescriptor\\MetricDescriptorMetadata\\TimeSeriesResourceHierarchyLevel' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/MetricDescriptor/MetricDescriptorMetadata/TimeSeriesResourceHierarchyLevel.php'
 	),
 	'Google\\Api\\MetricDescriptor\\MetricKind' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/MetricDescriptor/MetricKind.php'
 	),
 	'Google\\Api\\MetricDescriptor\\ValueType' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/MetricDescriptor/ValueType.php'
 	),
 	'Google\\Api\\MetricRule' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/MetricRule.php'
 	),
 	'Google\\Api\\MonitoredResource' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/MonitoredResource.php'
 	),
 	'Google\\Api\\MonitoredResourceDescriptor' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/MonitoredResourceDescriptor.php'
 	),
 	'Google\\Api\\MonitoredResourceMetadata' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/MonitoredResourceMetadata.php'
 	),
 	'Google\\Api\\Monitoring' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Monitoring.php'
 	),
 	'Google\\Api\\Monitoring\\MonitoringDestination' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Monitoring/MonitoringDestination.php'
 	),
 	'Google\\Api\\NodeSettings' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/NodeSettings.php'
 	),
 	'Google\\Api\\OAuthRequirements' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/OAuthRequirements.php'
 	),
 	'Google\\Api\\Page' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Page.php'
 	),
 	'Google\\Api\\PhpSettings' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/PhpSettings.php'
 	),
 	'Google\\Api\\ProjectProperties' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/ProjectProperties.php'
 	),
 	'Google\\Api\\Property' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Property.php'
 	),
 	'Google\\Api\\Property\\PropertyType' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Property/PropertyType.php'
 	),
 	'Google\\Api\\Publishing' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Publishing.php'
 	),
 	'Google\\Api\\PythonSettings' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/PythonSettings.php'
 	),
 	'Google\\Api\\PythonSettings\\ExperimentalFeatures' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/PythonSettings/ExperimentalFeatures.php'
 	),
 	'Google\\Api\\Quota' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Quota.php'
 	),
 	'Google\\Api\\QuotaLimit' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/QuotaLimit.php'
 	),
 	'Google\\Api\\ResourceDescriptor' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/ResourceDescriptor.php'
 	),
 	'Google\\Api\\ResourceDescriptor\\History' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/ResourceDescriptor/History.php'
 	),
 	'Google\\Api\\ResourceDescriptor\\Style' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/ResourceDescriptor/Style.php'
 	),
 	'Google\\Api\\ResourceReference' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/ResourceReference.php'
 	),
 	'Google\\Api\\RoutingParameter' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/RoutingParameter.php'
 	),
 	'Google\\Api\\RoutingRule' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/RoutingRule.php'
 	),
 	'Google\\Api\\RubySettings' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/RubySettings.php'
 	),
 	'Google\\Api\\SelectiveGapicGeneration' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/SelectiveGapicGeneration.php'
 	),
 	'Google\\Api\\Service' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Service.php'
 	),
 	'Google\\Api\\SourceInfo' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/SourceInfo.php'
 	),
 	'Google\\Api\\SystemParameter' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/SystemParameter.php'
 	),
 	'Google\\Api\\SystemParameterRule' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/SystemParameterRule.php'
 	),
 	'Google\\Api\\SystemParameters' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/SystemParameters.php'
 	),
 	'Google\\Api\\TypeReference' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/TypeReference.php'
 	),
 	'Google\\Api\\Usage' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Usage.php'
 	),
 	'Google\\Api\\UsageRule' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/UsageRule.php'
 	),
 	'Google\\Api\\Visibility' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/Visibility.php'
 	),
 	'Google\\Api\\VisibilityRule' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Api/VisibilityRule.php'
 	),
 	'Google\\Auth\\AccessToken' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/AccessToken.php'
 	),
 	'Google\\Auth\\ApplicationDefaultCredentials' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/ApplicationDefaultCredentials.php'
 	),
 	'Google\\Auth\\CacheTrait' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/CacheTrait.php'
 	),
 	'Google\\Auth\\Cache\\FileSystemCacheItemPool' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/Cache/FileSystemCacheItemPool.php'
 	),
 	'Google\\Auth\\Cache\\InvalidArgumentException' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/Cache/InvalidArgumentException.php'
 	),
 	'Google\\Auth\\Cache\\MemoryCacheItemPool' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/Cache/MemoryCacheItemPool.php'
 	),
 	'Google\\Auth\\Cache\\SysVCacheItemPool' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/Cache/SysVCacheItemPool.php'
 	),
 	'Google\\Auth\\Cache\\TypedItem' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/Cache/TypedItem.php'
 	),
 	'Google\\Auth\\CredentialSource\\AwsNativeSource' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/CredentialSource/AwsNativeSource.php'
 	),
 	'Google\\Auth\\CredentialSource\\ExecutableSource' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/CredentialSource/ExecutableSource.php'
 	),
 	'Google\\Auth\\CredentialSource\\FileSource' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/CredentialSource/FileSource.php'
 	),
 	'Google\\Auth\\CredentialSource\\UrlSource' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/CredentialSource/UrlSource.php'
 	),
+	'Google\\Auth\\CredentialSource\\X509Source' => array(
+		'version' => '1.55.0.0',
+		'path'    => $vendorDir . '/google/auth/src/CredentialSource/X509Source.php'
+	),
 	'Google\\Auth\\CredentialsLoader' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/CredentialsLoader.php'
 	),
 	'Google\\Auth\\Credentials\\AppIdentityCredentials' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/Credentials/AppIdentityCredentials.php'
 	),
+	'Google\\Auth\\Credentials\\ExternalAccountAuthorizedUserCredentials' => array(
+		'version' => '1.55.0.0',
+		'path'    => $vendorDir . '/google/auth/src/Credentials/ExternalAccountAuthorizedUserCredentials.php'
+	),
 	'Google\\Auth\\Credentials\\ExternalAccountCredentials' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/Credentials/ExternalAccountCredentials.php'
 	),
 	'Google\\Auth\\Credentials\\GCECredentials' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/Credentials/GCECredentials.php'
 	),
 	'Google\\Auth\\Credentials\\IAMCredentials' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/Credentials/IAMCredentials.php'
 	),
 	'Google\\Auth\\Credentials\\ImpersonatedServiceAccountCredentials' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/Credentials/ImpersonatedServiceAccountCredentials.php'
 	),
 	'Google\\Auth\\Credentials\\InsecureCredentials' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/Credentials/InsecureCredentials.php'
 	),
+	'Google\\Auth\\Credentials\\RegionalAccessBoundaryTrait' => array(
+		'version' => '1.55.0.0',
+		'path'    => $vendorDir . '/google/auth/src/Credentials/RegionalAccessBoundaryTrait.php'
+	),
 	'Google\\Auth\\Credentials\\ServiceAccountCredentials' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/Credentials/ServiceAccountCredentials.php'
 	),
 	'Google\\Auth\\Credentials\\ServiceAccountJwtAccessCredentials' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/Credentials/ServiceAccountJwtAccessCredentials.php'
 	),
+	'Google\\Auth\\Credentials\\StaticCredentials' => array(
+		'version' => '1.55.0.0',
+		'path'    => $vendorDir . '/google/auth/src/Credentials/StaticCredentials.php'
+	),
 	'Google\\Auth\\Credentials\\UserRefreshCredentials' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/Credentials/UserRefreshCredentials.php'
 	),
 	'Google\\Auth\\ExecutableHandler\\ExecutableHandler' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/ExecutableHandler/ExecutableHandler.php'
 	),
 	'Google\\Auth\\ExecutableHandler\\ExecutableResponseError' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/ExecutableHandler/ExecutableResponseError.php'
 	),
 	'Google\\Auth\\ExternalAccountCredentialSourceInterface' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/ExternalAccountCredentialSourceInterface.php'
 	),
 	'Google\\Auth\\FetchAuthTokenCache' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/FetchAuthTokenCache.php'
 	),
 	'Google\\Auth\\FetchAuthTokenInterface' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/FetchAuthTokenInterface.php'
 	),
 	'Google\\Auth\\GCECache' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/GCECache.php'
 	),
 	'Google\\Auth\\GetQuotaProjectInterface' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/GetQuotaProjectInterface.php'
 	),
 	'Google\\Auth\\GetUniverseDomainInterface' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/GetUniverseDomainInterface.php'
 	),
 	'Google\\Auth\\HttpHandler\\Guzzle6HttpHandler' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/HttpHandler/Guzzle6HttpHandler.php'
 	),
 	'Google\\Auth\\HttpHandler\\Guzzle7HttpHandler' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/HttpHandler/Guzzle7HttpHandler.php'
 	),
 	'Google\\Auth\\HttpHandler\\HttpClientCache' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/HttpHandler/HttpClientCache.php'
 	),
 	'Google\\Auth\\HttpHandler\\HttpHandlerFactory' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/HttpHandler/HttpHandlerFactory.php'
 	),
 	'Google\\Auth\\Iam' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/Iam.php'
 	),
 	'Google\\Auth\\IamSignerTrait' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/IamSignerTrait.php'
 	),
 	'Google\\Auth\\Logging\\LoggingTrait' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/Logging/LoggingTrait.php'
 	),
 	'Google\\Auth\\Logging\\RpcLogEvent' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/Logging/RpcLogEvent.php'
 	),
 	'Google\\Auth\\Logging\\StdOutLogger' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/Logging/StdOutLogger.php'
 	),
 	'Google\\Auth\\MetricsTrait' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/MetricsTrait.php'
 	),
 	'Google\\Auth\\Middleware\\AuthTokenMiddleware' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/Middleware/AuthTokenMiddleware.php'
 	),
 	'Google\\Auth\\Middleware\\ProxyAuthTokenMiddleware' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/Middleware/ProxyAuthTokenMiddleware.php'
 	),
 	'Google\\Auth\\Middleware\\ScopedAccessTokenMiddleware' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/Middleware/ScopedAccessTokenMiddleware.php'
 	),
 	'Google\\Auth\\Middleware\\SimpleMiddleware' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/Middleware/SimpleMiddleware.php'
 	),
 	'Google\\Auth\\OAuth2' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/OAuth2.php'
 	),
 	'Google\\Auth\\ProjectIdProviderInterface' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/ProjectIdProviderInterface.php'
 	),
 	'Google\\Auth\\ServiceAccountSignerTrait' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/ServiceAccountSignerTrait.php'
 	),
 	'Google\\Auth\\SignBlobInterface' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/SignBlobInterface.php'
 	),
 	'Google\\Auth\\UpdateMetadataInterface' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/UpdateMetadataInterface.php'
 	),
 	'Google\\Auth\\UpdateMetadataTrait' => array(
-		'version' => '1.50.1.0',
+		'version' => '1.55.0.0',
 		'path'    => $vendorDir . '/google/auth/src/UpdateMetadataTrait.php'
 	),
 	'Google\\Cloud\\Core\\AnonymousCredentials' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/AnonymousCredentials.php'
 	),
 	'Google\\Cloud\\Core\\ApiHelperTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/ApiHelperTrait.php'
 	),
 	'Google\\Cloud\\Core\\ArrayTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/ArrayTrait.php'
 	),
 	'Google\\Cloud\\Core\\Batch\\BatchDaemon' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Batch/BatchDaemon.php'
 	),
 	'Google\\Cloud\\Core\\Batch\\BatchDaemonTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Batch/BatchDaemonTrait.php'
 	),
 	'Google\\Cloud\\Core\\Batch\\BatchJob' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Batch/BatchJob.php'
 	),
 	'Google\\Cloud\\Core\\Batch\\BatchRunner' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Batch/BatchRunner.php'
 	),
 	'Google\\Cloud\\Core\\Batch\\BatchTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Batch/BatchTrait.php'
 	),
 	'Google\\Cloud\\Core\\Batch\\ClosureSerializerInterface' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Batch/ClosureSerializerInterface.php'
 	),
 	'Google\\Cloud\\Core\\Batch\\ConfigStorageInterface' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Batch/ConfigStorageInterface.php'
 	),
 	'Google\\Cloud\\Core\\Batch\\HandleFailureTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Batch/HandleFailureTrait.php'
 	),
 	'Google\\Cloud\\Core\\Batch\\InMemoryConfigStorage' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Batch/InMemoryConfigStorage.php'
 	),
 	'Google\\Cloud\\Core\\Batch\\InterruptTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Batch/InterruptTrait.php'
 	),
 	'Google\\Cloud\\Core\\Batch\\JobConfig' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Batch/JobConfig.php'
 	),
 	'Google\\Cloud\\Core\\Batch\\JobInterface' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Batch/JobInterface.php'
 	),
 	'Google\\Cloud\\Core\\Batch\\JobTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Batch/JobTrait.php'
 	),
 	'Google\\Cloud\\Core\\Batch\\OpisClosureSerializer' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Batch/OpisClosureSerializer.php'
 	),
 	'Google\\Cloud\\Core\\Batch\\OpisClosureSerializerV4' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Batch/OpisClosureSerializerV4.php'
 	),
 	'Google\\Cloud\\Core\\Batch\\ProcessItemInterface' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Batch/ProcessItemInterface.php'
 	),
 	'Google\\Cloud\\Core\\Batch\\QueueOverflowException' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Batch/QueueOverflowException.php'
 	),
 	'Google\\Cloud\\Core\\Batch\\Retry' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Batch/Retry.php'
 	),
 	'Google\\Cloud\\Core\\Batch\\SerializableClientTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Batch/SerializableClientTrait.php'
 	),
 	'Google\\Cloud\\Core\\Batch\\SimpleJob' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Batch/SimpleJob.php'
 	),
 	'Google\\Cloud\\Core\\Batch\\SimpleJobTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Batch/SimpleJobTrait.php'
 	),
 	'Google\\Cloud\\Core\\Batch\\SysvConfigStorage' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Batch/SysvConfigStorage.php'
 	),
 	'Google\\Cloud\\Core\\Batch\\SysvProcessor' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Batch/SysvProcessor.php'
 	),
 	'Google\\Cloud\\Core\\Blob' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Blob.php'
 	),
 	'Google\\Cloud\\Core\\ClientTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/ClientTrait.php'
 	),
 	'Google\\Cloud\\Core\\Compute\\Metadata' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Compute/Metadata.php'
 	),
 	'Google\\Cloud\\Core\\Compute\\Metadata\\Readers\\HttpHandlerReader' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Compute/Metadata/Readers/HttpHandlerReader.php'
 	),
 	'Google\\Cloud\\Core\\Compute\\Metadata\\Readers\\ReaderInterface' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Compute/Metadata/Readers/ReaderInterface.php'
 	),
 	'Google\\Cloud\\Core\\Compute\\Metadata\\Readers\\StreamReader' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Compute/Metadata/Readers/StreamReader.php'
 	),
 	'Google\\Cloud\\Core\\ConcurrencyControlTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/ConcurrencyControlTrait.php'
 	),
 	'Google\\Cloud\\Core\\DebugInfoTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/DebugInfoTrait.php'
 	),
 	'Google\\Cloud\\Core\\DetectProjectIdTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/DetectProjectIdTrait.php'
 	),
 	'Google\\Cloud\\Core\\Duration' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Duration.php'
 	),
 	'Google\\Cloud\\Core\\EmulatorTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/EmulatorTrait.php'
 	),
 	'Google\\Cloud\\Core\\Exception\\AbortedException' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Exception/AbortedException.php'
 	),
 	'Google\\Cloud\\Core\\Exception\\BadRequestException' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Exception/BadRequestException.php'
 	),
 	'Google\\Cloud\\Core\\Exception\\ConflictException' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Exception/ConflictException.php'
 	),
 	'Google\\Cloud\\Core\\Exception\\DeadlineExceededException' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Exception/DeadlineExceededException.php'
 	),
 	'Google\\Cloud\\Core\\Exception\\FailedPreconditionException' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Exception/FailedPreconditionException.php'
 	),
 	'Google\\Cloud\\Core\\Exception\\GoogleException' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Exception/GoogleException.php'
 	),
 	'Google\\Cloud\\Core\\Exception\\NotFoundException' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Exception/NotFoundException.php'
 	),
 	'Google\\Cloud\\Core\\Exception\\ServerException' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Exception/ServerException.php'
 	),
 	'Google\\Cloud\\Core\\Exception\\ServiceException' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Exception/ServiceException.php'
 	),
 	'Google\\Cloud\\Core\\ExponentialBackoff' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/ExponentialBackoff.php'
 	),
 	'Google\\Cloud\\Core\\GeoPoint' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/GeoPoint.php'
 	),
 	'Google\\Cloud\\Core\\GrpcRequestWrapper' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/GrpcRequestWrapper.php'
 	),
 	'Google\\Cloud\\Core\\GrpcTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/GrpcTrait.php'
 	),
 	'Google\\Cloud\\Core\\Iam\\Iam' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Iam/Iam.php'
 	),
 	'Google\\Cloud\\Core\\Iam\\IamConnectionInterface' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Iam/IamConnectionInterface.php'
 	),
 	'Google\\Cloud\\Core\\Iam\\IamManager' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Iam/IamManager.php'
 	),
 	'Google\\Cloud\\Core\\Iam\\PolicyBuilder' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Iam/PolicyBuilder.php'
 	),
 	'Google\\Cloud\\Core\\InsecureCredentialsWrapper' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/InsecureCredentialsWrapper.php'
 	),
 	'Google\\Cloud\\Core\\Int64' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Int64.php'
 	),
 	'Google\\Cloud\\Core\\Iterator\\ItemIterator' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Iterator/ItemIterator.php'
 	),
 	'Google\\Cloud\\Core\\Iterator\\ItemIteratorTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Iterator/ItemIteratorTrait.php'
 	),
 	'Google\\Cloud\\Core\\Iterator\\PageIterator' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Iterator/PageIterator.php'
 	),
 	'Google\\Cloud\\Core\\Iterator\\PageIteratorTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Iterator/PageIteratorTrait.php'
 	),
 	'Google\\Cloud\\Core\\JsonTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/JsonTrait.php'
 	),
 	'Google\\Cloud\\Core\\Lock\\FlockLock' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Lock/FlockLock.php'
 	),
 	'Google\\Cloud\\Core\\Lock\\LockInterface' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Lock/LockInterface.php'
 	),
 	'Google\\Cloud\\Core\\Lock\\LockTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Lock/LockTrait.php'
 	),
 	'Google\\Cloud\\Core\\Lock\\SemaphoreLock' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Lock/SemaphoreLock.php'
 	),
 	'Google\\Cloud\\Core\\Lock\\SymfonyLockAdapter' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Lock/SymfonyLockAdapter.php'
 	),
 	'Google\\Cloud\\Core\\Logger\\AppEngineFlexFormatter' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Logger/AppEngineFlexFormatter.php'
 	),
 	'Google\\Cloud\\Core\\Logger\\AppEngineFlexFormatterV2' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Logger/AppEngineFlexFormatterV2.php'
 	),
 	'Google\\Cloud\\Core\\Logger\\AppEngineFlexFormatterV3' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Logger/AppEngineFlexFormatterV3.php'
 	),
 	'Google\\Cloud\\Core\\Logger\\AppEngineFlexHandler' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Logger/AppEngineFlexHandler.php'
 	),
 	'Google\\Cloud\\Core\\Logger\\AppEngineFlexHandlerFactory' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Logger/AppEngineFlexHandlerFactory.php'
 	),
 	'Google\\Cloud\\Core\\Logger\\AppEngineFlexHandlerV2' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Logger/AppEngineFlexHandlerV2.php'
 	),
 	'Google\\Cloud\\Core\\Logger\\AppEngineFlexHandlerV3' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Logger/AppEngineFlexHandlerV3.php'
 	),
 	'Google\\Cloud\\Core\\Logger\\FormatterTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Logger/FormatterTrait.php'
 	),
 	'Google\\Cloud\\Core\\LongRunning\\LROTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/LongRunning/LROTrait.php'
 	),
 	'Google\\Cloud\\Core\\LongRunning\\LongRunningClientConnection' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/LongRunning/LongRunningClientConnection.php'
 	),
 	'Google\\Cloud\\Core\\LongRunning\\LongRunningConnectionInterface' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/LongRunning/LongRunningConnectionInterface.php'
 	),
 	'Google\\Cloud\\Core\\LongRunning\\LongRunningOperation' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/LongRunning/LongRunningOperation.php'
 	),
 	'Google\\Cloud\\Core\\LongRunning\\OperationResponseTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/LongRunning/OperationResponseTrait.php'
 	),
 	'Google\\Cloud\\Core\\OptionsValidator' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/OptionsValidator.php'
 	),
 	'Google\\Cloud\\Core\\PhpArray' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/PhpArray.php'
 	),
 	'Google\\Cloud\\Core\\Report\\CloudRunJobMetadataProvider' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Report/CloudRunJobMetadataProvider.php'
 	),
 	'Google\\Cloud\\Core\\Report\\CloudRunMetadataProvider' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Report/CloudRunMetadataProvider.php'
 	),
 	'Google\\Cloud\\Core\\Report\\CloudRunServiceMetadataProvider' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Report/CloudRunServiceMetadataProvider.php'
 	),
 	'Google\\Cloud\\Core\\Report\\EmptyMetadataProvider' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Report/EmptyMetadataProvider.php'
 	),
 	'Google\\Cloud\\Core\\Report\\GAEFlexMetadataProvider' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Report/GAEFlexMetadataProvider.php'
 	),
 	'Google\\Cloud\\Core\\Report\\GAEMetadataProvider' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Report/GAEMetadataProvider.php'
 	),
 	'Google\\Cloud\\Core\\Report\\GAEStandardMetadataProvider' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Report/GAEStandardMetadataProvider.php'
 	),
 	'Google\\Cloud\\Core\\Report\\MetadataProviderInterface' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Report/MetadataProviderInterface.php'
 	),
 	'Google\\Cloud\\Core\\Report\\MetadataProviderUtils' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Report/MetadataProviderUtils.php'
 	),
 	'Google\\Cloud\\Core\\Report\\SimpleMetadataProvider' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Report/SimpleMetadataProvider.php'
 	),
 	'Google\\Cloud\\Core\\RequestBuilder' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/RequestBuilder.php'
 	),
 	'Google\\Cloud\\Core\\RequestHandler' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/RequestHandler.php'
 	),
 	'Google\\Cloud\\Core\\RequestProcessorTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/RequestProcessorTrait.php'
 	),
 	'Google\\Cloud\\Core\\RequestWrapper' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/RequestWrapper.php'
 	),
 	'Google\\Cloud\\Core\\RequestWrapperTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/RequestWrapperTrait.php'
 	),
 	'Google\\Cloud\\Core\\RestTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/RestTrait.php'
 	),
 	'Google\\Cloud\\Core\\Retry' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Retry.php'
 	),
 	'Google\\Cloud\\Core\\RetryDeciderTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/RetryDeciderTrait.php'
 	),
 	'Google\\Cloud\\Core\\ServiceBuilder' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/ServiceBuilder.php'
 	),
 	'Google\\Cloud\\Core\\SysvTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/SysvTrait.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\ArrayHasSameValuesToken' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/ArrayHasSameValuesToken.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\CheckForClassTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/CheckForClassTrait.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\DatastoreOperationRefreshTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/DatastoreOperationRefreshTrait.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\FileListFilterIterator' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/FileListFilterIterator.php'
 	),
-	'Google\\Cloud\\Core\\Testing\\GcTestListener' => array(
-		'version' => '1.72.0.0',
-		'path'    => $vendorDir . '/google/cloud-core/src/Testing/GcTestListener.php'
-	),
 	'Google\\Cloud\\Core\\Testing\\GrpcTestTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/GrpcTestTrait.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\KeyPairGenerateTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/KeyPairGenerateTrait.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\Lock\\MockValues' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/Lock/MockValues.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\Reflection\\DescriptionFactory' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/Reflection/DescriptionFactory.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\Reflection\\ReflectionHandlerFactory' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/Reflection/ReflectionHandlerFactory.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\Reflection\\ReflectionHandlerV6' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/Reflection/ReflectionHandlerV6.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\RegexFileFilter' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/RegexFileFilter.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\Snippet\\Container' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/Snippet/Container.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\Snippet\\Coverage\\Coverage' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/Snippet/Coverage/Coverage.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\Snippet\\Coverage\\ExcludeFilter' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/Snippet/Coverage/ExcludeFilter.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\Snippet\\Coverage\\Scanner' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/Snippet/Coverage/Scanner.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\Snippet\\Coverage\\ScannerInterface' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/Snippet/Coverage/ScannerInterface.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\Snippet\\Fixtures' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/Snippet/Fixtures.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\Snippet\\Parser\\InvokeResult' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/Snippet/Parser/InvokeResult.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\Snippet\\Parser\\Parser' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/Snippet/Parser/Parser.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\Snippet\\Parser\\Snippet' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/Snippet/Parser/Snippet.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\Snippet\\SnippetTestCase' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/Snippet/SnippetTestCase.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\StubTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/StubTrait.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\System\\DeletionQueue' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/System/DeletionQueue.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\System\\KeyManager' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/System/KeyManager.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\System\\SystemTestCase' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/System/SystemTestCase.php'
 	),
 	'Google\\Cloud\\Core\\Testing\\TestHelpers' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Testing/TestHelpers.php'
 	),
 	'Google\\Cloud\\Core\\TimeTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/TimeTrait.php'
 	),
 	'Google\\Cloud\\Core\\Timestamp' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Timestamp.php'
 	),
 	'Google\\Cloud\\Core\\TimestampTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/TimestampTrait.php'
 	),
 	'Google\\Cloud\\Core\\Upload\\AbstractUploader' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Upload/AbstractUploader.php'
 	),
 	'Google\\Cloud\\Core\\Upload\\MultipartUploader' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Upload/MultipartUploader.php'
 	),
 	'Google\\Cloud\\Core\\Upload\\ResumableUploader' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Upload/ResumableUploader.php'
 	),
 	'Google\\Cloud\\Core\\Upload\\SignedUrlUploader' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Upload/SignedUrlUploader.php'
 	),
 	'Google\\Cloud\\Core\\Upload\\StreamableUploader' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/Upload/StreamableUploader.php'
 	),
 	'Google\\Cloud\\Core\\UriTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/UriTrait.php'
 	),
 	'Google\\Cloud\\Core\\ValidateTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/ValidateTrait.php'
 	),
 	'Google\\Cloud\\Core\\ValueMapperTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/ValueMapperTrait.php'
 	),
 	'Google\\Cloud\\Core\\WhitelistTrait' => array(
-		'version' => '1.72.0.0',
+		'version' => '1.73.4.0',
 		'path'    => $vendorDir . '/google/cloud-core/src/WhitelistTrait.php'
 	),
 	'Google\\Cloud\\Iam\\V1\\AuditConfig' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Cloud/Iam/V1/AuditConfig.php'
 	),
 	'Google\\Cloud\\Iam\\V1\\AuditConfigDelta' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Cloud/Iam/V1/AuditConfigDelta.php'
 	),
 	'Google\\Cloud\\Iam\\V1\\AuditConfigDelta\\Action' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Cloud/Iam/V1/AuditConfigDelta/Action.php'
 	),
 	'Google\\Cloud\\Iam\\V1\\AuditLogConfig' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Cloud/Iam/V1/AuditLogConfig.php'
 	),
 	'Google\\Cloud\\Iam\\V1\\AuditLogConfig\\LogType' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Cloud/Iam/V1/AuditLogConfig/LogType.php'
 	),
 	'Google\\Cloud\\Iam\\V1\\Binding' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Cloud/Iam/V1/Binding.php'
 	),
 	'Google\\Cloud\\Iam\\V1\\BindingDelta' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Cloud/Iam/V1/BindingDelta.php'
 	),
 	'Google\\Cloud\\Iam\\V1\\BindingDelta\\Action' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Cloud/Iam/V1/BindingDelta/Action.php'
 	),
 	'Google\\Cloud\\Iam\\V1\\GetIamPolicyRequest' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Cloud/Iam/V1/GetIamPolicyRequest.php'
 	),
 	'Google\\Cloud\\Iam\\V1\\GetPolicyOptions' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Cloud/Iam/V1/GetPolicyOptions.php'
 	),
 	'Google\\Cloud\\Iam\\V1\\Policy' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Cloud/Iam/V1/Policy.php'
 	),
 	'Google\\Cloud\\Iam\\V1\\PolicyDelta' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Cloud/Iam/V1/PolicyDelta.php'
 	),
 	'Google\\Cloud\\Iam\\V1\\ResourcePolicyMember' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Cloud/Iam/V1/ResourcePolicyMember.php'
 	),
 	'Google\\Cloud\\Iam\\V1\\SetIamPolicyRequest' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Cloud/Iam/V1/SetIamPolicyRequest.php'
 	),
 	'Google\\Cloud\\Iam\\V1\\TestIamPermissionsRequest' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Cloud/Iam/V1/TestIamPermissionsRequest.php'
 	),
 	'Google\\Cloud\\Iam\\V1\\TestIamPermissionsResponse' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Cloud/Iam/V1/TestIamPermissionsResponse.php'
 	),
 	'Google\\Cloud\\Location\\GetLocationRequest' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Cloud/Location/GetLocationRequest.php'
 	),
 	'Google\\Cloud\\Location\\ListLocationsRequest' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Cloud/Location/ListLocationsRequest.php'
 	),
 	'Google\\Cloud\\Location\\ListLocationsResponse' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Cloud/Location/ListLocationsResponse.php'
 	),
 	'Google\\Cloud\\Location\\Location' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Cloud/Location/Location.php'
 	),
 	'Google\\Cloud\\Logging\\Type\\HttpRequest' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Cloud/Logging/Type/HttpRequest.php'
 	),
 	'Google\\Cloud\\Logging\\Type\\LogSeverity' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Cloud/Logging/Type/LogSeverity.php'
 	),
 	'Google\\Cloud\\OperationResponseMapping' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Cloud/OperationResponseMapping.php'
 	),
 	'Google\\Cloud\\Storage\\Acl' => array(
-		'version' => '1.51.0.0',
+		'version' => '2.5.4.0',
 		'path'    => $vendorDir . '/google/cloud-storage/src/Acl.php'
 	),
 	'Google\\Cloud\\Storage\\Bucket' => array(
-		'version' => '1.51.0.0',
+		'version' => '2.5.4.0',
 		'path'    => $vendorDir . '/google/cloud-storage/src/Bucket.php'
 	),
 	'Google\\Cloud\\Storage\\BucketIterator' => array(
-		'version' => '1.51.0.0',
+		'version' => '2.5.4.0',
 		'path'    => $vendorDir . '/google/cloud-storage/src/BucketIterator.php'
 	),
 	'Google\\Cloud\\Storage\\Connection\\ConnectionInterface' => array(
-		'version' => '1.51.0.0',
+		'version' => '2.5.4.0',
 		'path'    => $vendorDir . '/google/cloud-storage/src/Connection/ConnectionInterface.php'
 	),
 	'Google\\Cloud\\Storage\\Connection\\IamBucket' => array(
-		'version' => '1.51.0.0',
+		'version' => '2.5.4.0',
 		'path'    => $vendorDir . '/google/cloud-storage/src/Connection/IamBucket.php'
 	),
 	'Google\\Cloud\\Storage\\Connection\\Rest' => array(
-		'version' => '1.51.0.0',
+		'version' => '2.5.4.0',
 		'path'    => $vendorDir . '/google/cloud-storage/src/Connection/Rest.php'
 	),
 	'Google\\Cloud\\Storage\\Connection\\RetryTrait' => array(
-		'version' => '1.51.0.0',
+		'version' => '2.5.4.0',
 		'path'    => $vendorDir . '/google/cloud-storage/src/Connection/RetryTrait.php'
 	),
 	'Google\\Cloud\\Storage\\CreatedHmacKey' => array(
-		'version' => '1.51.0.0',
+		'version' => '2.5.4.0',
 		'path'    => $vendorDir . '/google/cloud-storage/src/CreatedHmacKey.php'
 	),
 	'Google\\Cloud\\Storage\\EncryptionTrait' => array(
-		'version' => '1.51.0.0',
+		'version' => '2.5.4.0',
 		'path'    => $vendorDir . '/google/cloud-storage/src/EncryptionTrait.php'
 	),
+	'Google\\Cloud\\Storage\\HashValidatingStream' => array(
+		'version' => '2.5.4.0',
+		'path'    => $vendorDir . '/google/cloud-storage/src/HashValidatingStream.php'
+	),
 	'Google\\Cloud\\Storage\\HmacKey' => array(
-		'version' => '1.51.0.0',
+		'version' => '2.5.4.0',
 		'path'    => $vendorDir . '/google/cloud-storage/src/HmacKey.php'
 	),
 	'Google\\Cloud\\Storage\\Lifecycle' => array(
-		'version' => '1.51.0.0',
+		'version' => '2.5.4.0',
 		'path'    => $vendorDir . '/google/cloud-storage/src/Lifecycle.php'
 	),
 	'Google\\Cloud\\Storage\\Notification' => array(
-		'version' => '1.51.0.0',
+		'version' => '2.5.4.0',
 		'path'    => $vendorDir . '/google/cloud-storage/src/Notification.php'
 	),
 	'Google\\Cloud\\Storage\\ObjectIterator' => array(
-		'version' => '1.51.0.0',
+		'version' => '2.5.4.0',
 		'path'    => $vendorDir . '/google/cloud-storage/src/ObjectIterator.php'
 	),
 	'Google\\Cloud\\Storage\\ObjectPageIterator' => array(
-		'version' => '1.51.0.0',
+		'version' => '2.5.4.0',
 		'path'    => $vendorDir . '/google/cloud-storage/src/ObjectPageIterator.php'
 	),
 	'Google\\Cloud\\Storage\\ReadStream' => array(
-		'version' => '1.51.0.0',
+		'version' => '2.5.4.0',
 		'path'    => $vendorDir . '/google/cloud-storage/src/ReadStream.php'
 	),
 	'Google\\Cloud\\Storage\\SigningHelper' => array(
-		'version' => '1.51.0.0',
+		'version' => '2.5.4.0',
 		'path'    => $vendorDir . '/google/cloud-storage/src/SigningHelper.php'
 	),
 	'Google\\Cloud\\Storage\\StorageClient' => array(
-		'version' => '1.51.0.0',
+		'version' => '2.5.4.0',
 		'path'    => $vendorDir . '/google/cloud-storage/src/StorageClient.php'
 	),
 	'Google\\Cloud\\Storage\\StorageObject' => array(
-		'version' => '1.51.0.0',
+		'version' => '2.5.4.0',
 		'path'    => $vendorDir . '/google/cloud-storage/src/StorageObject.php'
 	),
 	'Google\\Cloud\\Storage\\StreamWrapper' => array(
-		'version' => '1.51.0.0',
+		'version' => '2.5.4.0',
 		'path'    => $vendorDir . '/google/cloud-storage/src/StreamWrapper.php'
 	),
 	'Google\\Cloud\\Storage\\WriteStream' => array(
-		'version' => '1.51.0.0',
+		'version' => '2.5.4.0',
 		'path'    => $vendorDir . '/google/cloud-storage/src/WriteStream.php'
 	),
 	'Google\\Iam\\V1\\Logging\\AuditData' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Iam/V1/Logging/AuditData.php'
 	),
 	'Google\\LongRunning\\CancelOperationRequest' => array(
-		'version' => '0.7.1.0',
+		'version' => '0.8.4.0',
 		'path'    => $vendorDir . '/google/longrunning/src/LongRunning/CancelOperationRequest.php'
 	),
 	'Google\\LongRunning\\Client\\OperationsClient' => array(
-		'version' => '0.7.1.0',
+		'version' => '0.8.4.0',
 		'path'    => $vendorDir . '/google/longrunning/src/LongRunning/Client/OperationsClient.php'
 	),
 	'Google\\LongRunning\\DeleteOperationRequest' => array(
-		'version' => '0.7.1.0',
+		'version' => '0.8.4.0',
 		'path'    => $vendorDir . '/google/longrunning/src/LongRunning/DeleteOperationRequest.php'
 	),
 	'Google\\LongRunning\\Gapic\\OperationsGapicClient' => array(
-		'version' => '0.7.1.0',
+		'version' => '0.8.4.0',
 		'path'    => $vendorDir . '/google/longrunning/src/LongRunning/Gapic/OperationsGapicClient.php'
 	),
 	'Google\\LongRunning\\GetOperationRequest' => array(
-		'version' => '0.7.1.0',
+		'version' => '0.8.4.0',
 		'path'    => $vendorDir . '/google/longrunning/src/LongRunning/GetOperationRequest.php'
 	),
 	'Google\\LongRunning\\ListOperationsRequest' => array(
-		'version' => '0.7.1.0',
+		'version' => '0.8.4.0',
 		'path'    => $vendorDir . '/google/longrunning/src/LongRunning/ListOperationsRequest.php'
 	),
 	'Google\\LongRunning\\ListOperationsResponse' => array(
-		'version' => '0.7.1.0',
+		'version' => '0.8.4.0',
 		'path'    => $vendorDir . '/google/longrunning/src/LongRunning/ListOperationsResponse.php'
 	),
 	'Google\\LongRunning\\Operation' => array(
-		'version' => '0.7.1.0',
+		'version' => '0.8.4.0',
 		'path'    => $vendorDir . '/google/longrunning/src/LongRunning/Operation.php'
 	),
 	'Google\\LongRunning\\OperationInfo' => array(
-		'version' => '0.7.1.0',
+		'version' => '0.8.4.0',
 		'path'    => $vendorDir . '/google/longrunning/src/LongRunning/OperationInfo.php'
 	),
 	'Google\\LongRunning\\OperationsClient' => array(
-		'version' => '0.7.1.0',
+		'version' => '0.8.4.0',
 		'path'    => $vendorDir . '/google/longrunning/src/LongRunning/OperationsClient.php'
 	),
 	'Google\\LongRunning\\OperationsGrpcClient' => array(
-		'version' => '0.7.1.0',
+		'version' => '0.8.4.0',
 		'path'    => $vendorDir . '/google/longrunning/src/LongRunning/OperationsGrpcClient.php'
 	),
 	'Google\\LongRunning\\WaitOperationRequest' => array(
-		'version' => '0.7.1.0',
+		'version' => '0.8.4.0',
 		'path'    => $vendorDir . '/google/longrunning/src/LongRunning/WaitOperationRequest.php'
 	),
 	'Google\\Protobuf\\Any' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Any.php'
 	),
 	'Google\\Protobuf\\Api' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Api.php'
 	),
 	'Google\\Protobuf\\BoolValue' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/BoolValue.php'
 	),
 	'Google\\Protobuf\\BytesValue' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/BytesValue.php'
 	),
 	'Google\\Protobuf\\Descriptor' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Descriptor.php'
 	),
 	'Google\\Protobuf\\DescriptorPool' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/DescriptorPool.php'
 	),
 	'Google\\Protobuf\\DoubleValue' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/DoubleValue.php'
 	),
 	'Google\\Protobuf\\Duration' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Duration.php'
 	),
 	'Google\\Protobuf\\Enum' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Enum.php'
 	),
 	'Google\\Protobuf\\EnumDescriptor' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/EnumDescriptor.php'
 	),
 	'Google\\Protobuf\\EnumValue' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/EnumValue.php'
 	),
 	'Google\\Protobuf\\EnumValueDescriptor' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/EnumValueDescriptor.php'
 	),
 	'Google\\Protobuf\\Field' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Field.php'
 	),
 	'Google\\Protobuf\\FieldDescriptor' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/FieldDescriptor.php'
 	),
 	'Google\\Protobuf\\FieldMask' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/FieldMask.php'
 	),
 	'Google\\Protobuf\\Field\\Cardinality' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Field/Cardinality.php'
 	),
 	'Google\\Protobuf\\Field\\Kind' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Field/Kind.php'
 	),
 	'Google\\Protobuf\\FloatValue' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/FloatValue.php'
 	),
 	'Google\\Protobuf\\GPBEmpty' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/GPBEmpty.php'
 	),
 	'Google\\Protobuf\\Int32Value' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Int32Value.php'
 	),
 	'Google\\Protobuf\\Int64Value' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Int64Value.php'
 	),
 	'Google\\Protobuf\\Internal\\AnyBase' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/AnyBase.php'
 	),
 	'Google\\Protobuf\\Internal\\CodedInputStream' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/CodedInputStream.php'
 	),
 	'Google\\Protobuf\\Internal\\CodedOutputStream' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/CodedOutputStream.php'
 	),
 	'Google\\Protobuf\\Internal\\Descriptor' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/Descriptor.php'
 	),
 	'Google\\Protobuf\\Internal\\DescriptorPool' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/DescriptorPool.php'
 	),
 	'Google\\Protobuf\\Internal\\DescriptorProto' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/DescriptorProto.php'
 	),
 	'Google\\Protobuf\\Internal\\DescriptorProto\\ExtensionRange' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/DescriptorProto/ExtensionRange.php'
 	),
 	'Google\\Protobuf\\Internal\\DescriptorProto\\ReservedRange' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/DescriptorProto/ReservedRange.php'
 	),
 	'Google\\Protobuf\\Internal\\Edition' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/Edition.php'
 	),
 	'Google\\Protobuf\\Internal\\EnumBuilderContext' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/EnumBuilderContext.php'
 	),
 	'Google\\Protobuf\\Internal\\EnumDescriptor' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/EnumDescriptor.php'
 	),
 	'Google\\Protobuf\\Internal\\EnumDescriptorProto' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/EnumDescriptorProto.php'
 	),
 	'Google\\Protobuf\\Internal\\EnumDescriptorProto\\EnumReservedRange' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/EnumDescriptorProto/EnumReservedRange.php'
 	),
 	'Google\\Protobuf\\Internal\\EnumOptions' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/EnumOptions.php'
 	),
+	'Google\\Protobuf\\Internal\\EnumValueDescriptor' => array(
+		'version' => '5.36.2.0',
+		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/EnumValueDescriptor.php'
+	),
 	'Google\\Protobuf\\Internal\\EnumValueDescriptorProto' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/EnumValueDescriptorProto.php'
 	),
 	'Google\\Protobuf\\Internal\\EnumValueOptions' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/EnumValueOptions.php'
 	),
 	'Google\\Protobuf\\Internal\\ExtensionRangeOptions' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/ExtensionRangeOptions.php'
 	),
 	'Google\\Protobuf\\Internal\\ExtensionRangeOptions\\Declaration' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/ExtensionRangeOptions/Declaration.php'
 	),
 	'Google\\Protobuf\\Internal\\ExtensionRangeOptions\\VerificationState' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/ExtensionRangeOptions/VerificationState.php'
 	),
 	'Google\\Protobuf\\Internal\\FeatureSet' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FeatureSet.php'
 	),
 	'Google\\Protobuf\\Internal\\FeatureSetDefaults' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FeatureSetDefaults.php'
 	),
 	'Google\\Protobuf\\Internal\\FeatureSetDefaults\\FeatureSetEditionDefault' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FeatureSetDefaults/FeatureSetEditionDefault.php'
 	),
 	'Google\\Protobuf\\Internal\\FeatureSet\\EnforceNamingStyle' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FeatureSet/EnforceNamingStyle.php'
 	),
 	'Google\\Protobuf\\Internal\\FeatureSet\\EnumType' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FeatureSet/EnumType.php'
 	),
 	'Google\\Protobuf\\Internal\\FeatureSet\\FieldPresence' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FeatureSet/FieldPresence.php'
 	),
 	'Google\\Protobuf\\Internal\\FeatureSet\\JsonFormat' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FeatureSet/JsonFormat.php'
 	),
 	'Google\\Protobuf\\Internal\\FeatureSet\\MessageEncoding' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FeatureSet/MessageEncoding.php'
 	),
+	'Google\\Protobuf\\Internal\\FeatureSet\\ProtoLimitsFeature' => array(
+		'version' => '5.36.2.0',
+		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FeatureSet/ProtoLimitsFeature.php'
+	),
+	'Google\\Protobuf\\Internal\\FeatureSet\\ProtoLimitsFeature\\EnforceProtoLimits' => array(
+		'version' => '5.36.2.0',
+		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FeatureSet/ProtoLimitsFeature/EnforceProtoLimits.php'
+	),
 	'Google\\Protobuf\\Internal\\FeatureSet\\RepeatedFieldEncoding' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FeatureSet/RepeatedFieldEncoding.php'
 	),
 	'Google\\Protobuf\\Internal\\FeatureSet\\Utf8Validation' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FeatureSet/Utf8Validation.php'
 	),
 	'Google\\Protobuf\\Internal\\FeatureSet\\VisibilityFeature' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FeatureSet/VisibilityFeature.php'
 	),
 	'Google\\Protobuf\\Internal\\FeatureSet\\VisibilityFeature\\DefaultSymbolVisibility' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FeatureSet/VisibilityFeature/DefaultSymbolVisibility.php'
 	),
 	'Google\\Protobuf\\Internal\\FieldDescriptor' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FieldDescriptor.php'
 	),
 	'Google\\Protobuf\\Internal\\FieldDescriptorProto' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FieldDescriptorProto.php'
 	),
 	'Google\\Protobuf\\Internal\\FieldDescriptorProto\\Label' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FieldDescriptorProto/Label.php'
 	),
 	'Google\\Protobuf\\Internal\\FieldDescriptorProto\\Type' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FieldDescriptorProto/Type.php'
 	),
 	'Google\\Protobuf\\Internal\\FieldOptions' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FieldOptions.php'
 	),
 	'Google\\Protobuf\\Internal\\FieldOptions\\CType' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FieldOptions/CType.php'
 	),
 	'Google\\Protobuf\\Internal\\FieldOptions\\EditionDefault' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FieldOptions/EditionDefault.php'
 	),
 	'Google\\Protobuf\\Internal\\FieldOptions\\FeatureSupport' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FieldOptions/FeatureSupport.php'
 	),
 	'Google\\Protobuf\\Internal\\FieldOptions\\JSType' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FieldOptions/JSType.php'
 	),
 	'Google\\Protobuf\\Internal\\FieldOptions\\OptionRetention' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FieldOptions/OptionRetention.php'
 	),
 	'Google\\Protobuf\\Internal\\FieldOptions\\OptionTargetType' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FieldOptions/OptionTargetType.php'
 	),
 	'Google\\Protobuf\\Internal\\FileDescriptor' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FileDescriptor.php'
 	),
 	'Google\\Protobuf\\Internal\\FileDescriptorProto' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FileDescriptorProto.php'
 	),
 	'Google\\Protobuf\\Internal\\FileDescriptorSet' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FileDescriptorSet.php'
 	),
 	'Google\\Protobuf\\Internal\\FileOptions' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FileOptions.php'
 	),
 	'Google\\Protobuf\\Internal\\FileOptions\\OptimizeMode' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/FileOptions/OptimizeMode.php'
 	),
 	'Google\\Protobuf\\Internal\\GPBDecodeException' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/GPBDecodeException.php'
 	),
 	'Google\\Protobuf\\Internal\\GPBJsonWire' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/GPBJsonWire.php'
 	),
 	'Google\\Protobuf\\Internal\\GPBLabel' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/GPBLabel.php'
 	),
 	'Google\\Protobuf\\Internal\\GPBType' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/GPBType.php'
 	),
 	'Google\\Protobuf\\Internal\\GPBUtil' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/GPBUtil.php'
 	),
 	'Google\\Protobuf\\Internal\\GPBWire' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/GPBWire.php'
 	),
 	'Google\\Protobuf\\Internal\\GPBWireType' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/GPBWireType.php'
 	),
 	'Google\\Protobuf\\Internal\\GeneratedCodeInfo' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/GeneratedCodeInfo.php'
 	),
 	'Google\\Protobuf\\Internal\\GeneratedCodeInfo\\Annotation' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/GeneratedCodeInfo/Annotation.php'
 	),
 	'Google\\Protobuf\\Internal\\GeneratedCodeInfo\\Annotation\\Semantic' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/GeneratedCodeInfo/Annotation/Semantic.php'
 	),
 	'Google\\Protobuf\\Internal\\GetPublicDescriptorTrait' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/GetPublicDescriptorTrait.php'
 	),
 	'Google\\Protobuf\\Internal\\HasPublicDescriptorTrait' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/HasPublicDescriptorTrait.php'
 	),
 	'Google\\Protobuf\\Internal\\MapEntry' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/MapEntry.php'
 	),
 	'Google\\Protobuf\\Internal\\MapField' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/MapField.php'
 	),
 	'Google\\Protobuf\\Internal\\MapFieldIter' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/MapFieldIter.php'
 	),
 	'Google\\Protobuf\\Internal\\Message' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/Message.php'
 	),
 	'Google\\Protobuf\\Internal\\MessageBuilderContext' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/MessageBuilderContext.php'
 	),
 	'Google\\Protobuf\\Internal\\MessageOptions' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/MessageOptions.php'
 	),
 	'Google\\Protobuf\\Internal\\MethodDescriptorProto' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/MethodDescriptorProto.php'
 	),
 	'Google\\Protobuf\\Internal\\MethodOptions' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/MethodOptions.php'
 	),
 	'Google\\Protobuf\\Internal\\MethodOptions\\IdempotencyLevel' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/MethodOptions/IdempotencyLevel.php'
 	),
 	'Google\\Protobuf\\Internal\\OneofDescriptor' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/OneofDescriptor.php'
 	),
 	'Google\\Protobuf\\Internal\\OneofDescriptorProto' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/OneofDescriptorProto.php'
 	),
 	'Google\\Protobuf\\Internal\\OneofField' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/OneofField.php'
 	),
 	'Google\\Protobuf\\Internal\\OneofOptions' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/OneofOptions.php'
 	),
 	'Google\\Protobuf\\Internal\\RawInputStream' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/RawInputStream.php'
 	),
 	'Google\\Protobuf\\Internal\\RepeatedFieldIter' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/RepeatedFieldIter.php'
 	),
 	'Google\\Protobuf\\Internal\\ServiceDescriptorProto' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/ServiceDescriptorProto.php'
 	),
 	'Google\\Protobuf\\Internal\\ServiceOptions' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/ServiceOptions.php'
 	),
 	'Google\\Protobuf\\Internal\\SourceCodeInfo' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/SourceCodeInfo.php'
 	),
 	'Google\\Protobuf\\Internal\\SourceCodeInfo\\Location' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/SourceCodeInfo/Location.php'
 	),
 	'Google\\Protobuf\\Internal\\SymbolVisibility' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/SymbolVisibility.php'
 	),
 	'Google\\Protobuf\\Internal\\TimestampBase' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/TimestampBase.php'
 	),
 	'Google\\Protobuf\\Internal\\UninterpretedOption' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/UninterpretedOption.php'
 	),
 	'Google\\Protobuf\\Internal\\UninterpretedOption\\NamePart' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Internal/UninterpretedOption/NamePart.php'
 	),
 	'Google\\Protobuf\\ListValue' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/ListValue.php'
 	),
 	'Google\\Protobuf\\Method' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Method.php'
 	),
 	'Google\\Protobuf\\Mixin' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Mixin.php'
 	),
 	'Google\\Protobuf\\NullValue' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/NullValue.php'
 	),
 	'Google\\Protobuf\\OneofDescriptor' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/OneofDescriptor.php'
 	),
 	'Google\\Protobuf\\Option' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Option.php'
 	),
 	'Google\\Protobuf\\PrintOptions' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/PrintOptions.php'
 	),
 	'Google\\Protobuf\\RepeatedField' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/RepeatedField.php'
 	),
 	'Google\\Protobuf\\SourceContext' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/SourceContext.php'
 	),
 	'Google\\Protobuf\\StringValue' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/StringValue.php'
 	),
 	'Google\\Protobuf\\Struct' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Struct.php'
 	),
 	'Google\\Protobuf\\Syntax' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Syntax.php'
 	),
 	'Google\\Protobuf\\Timestamp' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Timestamp.php'
 	),
 	'Google\\Protobuf\\Type' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Type.php'
 	),
 	'Google\\Protobuf\\UInt32Value' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/UInt32Value.php'
 	),
 	'Google\\Protobuf\\UInt64Value' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/UInt64Value.php'
 	),
 	'Google\\Protobuf\\Value' => array(
-		'version' => '5.34.1.0',
+		'version' => '5.36.2.0',
 		'path'    => $vendorDir . '/google/protobuf/src/Google/Protobuf/Value.php'
 	),
 	'Google\\Rpc\\BadRequest' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Rpc/BadRequest.php'
 	),
 	'Google\\Rpc\\BadRequest\\FieldViolation' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Rpc/BadRequest/FieldViolation.php'
 	),
 	'Google\\Rpc\\Code' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Rpc/Code.php'
 	),
 	'Google\\Rpc\\Context\\AttributeContext' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Rpc/Context/AttributeContext.php'
 	),
 	'Google\\Rpc\\Context\\AttributeContext\\Api' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Rpc/Context/AttributeContext/Api.php'
 	),
 	'Google\\Rpc\\Context\\AttributeContext\\Auth' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Rpc/Context/AttributeContext/Auth.php'
 	),
 	'Google\\Rpc\\Context\\AttributeContext\\Peer' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Rpc/Context/AttributeContext/Peer.php'
 	),
 	'Google\\Rpc\\Context\\AttributeContext\\Request' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Rpc/Context/AttributeContext/Request.php'
 	),
 	'Google\\Rpc\\Context\\AttributeContext\\Resource' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Rpc/Context/AttributeContext/Resource.php'
 	),
 	'Google\\Rpc\\Context\\AttributeContext\\Response' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Rpc/Context/AttributeContext/Response.php'
 	),
 	'Google\\Rpc\\Context\\AuditContext' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Rpc/Context/AuditContext.php'
 	),
 	'Google\\Rpc\\DebugInfo' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Rpc/DebugInfo.php'
 	),
 	'Google\\Rpc\\ErrorInfo' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Rpc/ErrorInfo.php'
 	),
 	'Google\\Rpc\\Help' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Rpc/Help.php'
 	),
 	'Google\\Rpc\\Help\\Link' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Rpc/Help/Link.php'
 	),
 	'Google\\Rpc\\LocalizedMessage' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Rpc/LocalizedMessage.php'
 	),
 	'Google\\Rpc\\PreconditionFailure' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Rpc/PreconditionFailure.php'
 	),
 	'Google\\Rpc\\PreconditionFailure\\Violation' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Rpc/PreconditionFailure/Violation.php'
 	),
 	'Google\\Rpc\\QuotaFailure' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Rpc/QuotaFailure.php'
 	),
 	'Google\\Rpc\\QuotaFailure\\Violation' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Rpc/QuotaFailure/Violation.php'
 	),
 	'Google\\Rpc\\RequestInfo' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Rpc/RequestInfo.php'
 	),
 	'Google\\Rpc\\ResourceInfo' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Rpc/ResourceInfo.php'
 	),
 	'Google\\Rpc\\RetryInfo' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Rpc/RetryInfo.php'
 	),
 	'Google\\Rpc\\Status' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Rpc/Status.php'
 	),
 	'Google\\Type\\CalendarPeriod' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Type/CalendarPeriod.php'
 	),
 	'Google\\Type\\Color' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Type/Color.php'
 	),
 	'Google\\Type\\Date' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Type/Date.php'
 	),
 	'Google\\Type\\DateTime' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Type/DateTime.php'
 	),
 	'Google\\Type\\DayOfWeek' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Type/DayOfWeek.php'
 	),
 	'Google\\Type\\Decimal' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Type/Decimal.php'
 	),
 	'Google\\Type\\Expr' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Type/Expr.php'
 	),
 	'Google\\Type\\Fraction' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Type/Fraction.php'
 	),
 	'Google\\Type\\Interval' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Type/Interval.php'
 	),
 	'Google\\Type\\LatLng' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Type/LatLng.php'
 	),
 	'Google\\Type\\LocalizedText' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Type/LocalizedText.php'
 	),
 	'Google\\Type\\Money' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Type/Money.php'
 	),
 	'Google\\Type\\Month' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Type/Month.php'
 	),
 	'Google\\Type\\PhoneNumber' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Type/PhoneNumber.php'
 	),
 	'Google\\Type\\PhoneNumber\\ShortCode' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Type/PhoneNumber/ShortCode.php'
 	),
 	'Google\\Type\\PostalAddress' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Type/PostalAddress.php'
 	),
 	'Google\\Type\\Quaternion' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Type/Quaternion.php'
 	),
 	'Google\\Type\\TimeOfDay' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Type/TimeOfDay.php'
 	),
 	'Google\\Type\\TimeZone' => array(
-		'version' => '4.14.0.0',
+		'version' => '4.14.3.0',
 		'path'    => $vendorDir . '/google/common-protos/src/Type/TimeZone.php'
 	),
 	'Grpc\\AbstractCall' => array(
-		'version' => '1.80.0.0',
+		'version' => '1.82.0.0',
 		'path'    => $vendorDir . '/grpc/grpc/src/lib/AbstractCall.php'
 	),
 	'Grpc\\BaseStub' => array(
-		'version' => '1.80.0.0',
+		'version' => '1.82.0.0',
 		'path'    => $vendorDir . '/grpc/grpc/src/lib/BaseStub.php'
 	),
 	'Grpc\\BidiStreamingCall' => array(
-		'version' => '1.80.0.0',
+		'version' => '1.82.0.0',
 		'path'    => $vendorDir . '/grpc/grpc/src/lib/BidiStreamingCall.php'
 	),
 	'Grpc\\CallInvoker' => array(
-		'version' => '1.80.0.0',
+		'version' => '1.82.0.0',
 		'path'    => $vendorDir . '/grpc/grpc/src/lib/CallInvoker.php'
 	),
 	'Grpc\\ClientStreamingCall' => array(
-		'version' => '1.80.0.0',
+		'version' => '1.82.0.0',
 		'path'    => $vendorDir . '/grpc/grpc/src/lib/ClientStreamingCall.php'
 	),
 	'Grpc\\DefaultCallInvoker' => array(
-		'version' => '1.80.0.0',
+		'version' => '1.82.0.0',
 		'path'    => $vendorDir . '/grpc/grpc/src/lib/DefaultCallInvoker.php'
 	),
 	'Grpc\\Gcp\\AffinityConfig' => array(
@@ -4819,1484 +5607,2616 @@ return array(
 		'path'    => $vendorDir . '/google/grpc-gcp/src/generated/Grpc/Gcp/MethodConfig.php'
 	),
 	'Grpc\\Interceptor' => array(
-		'version' => '1.80.0.0',
+		'version' => '1.82.0.0',
 		'path'    => $vendorDir . '/grpc/grpc/src/lib/Interceptor.php'
 	),
 	'Grpc\\Internal\\InterceptorChannel' => array(
-		'version' => '1.80.0.0',
+		'version' => '1.82.0.0',
 		'path'    => $vendorDir . '/grpc/grpc/src/lib/Internal/InterceptorChannel.php'
 	),
 	'Grpc\\MethodDescriptor' => array(
-		'version' => '1.80.0.0',
+		'version' => '1.82.0.0',
 		'path'    => $vendorDir . '/grpc/grpc/src/lib/MethodDescriptor.php'
 	),
 	'Grpc\\RpcServer' => array(
-		'version' => '1.80.0.0',
+		'version' => '1.82.0.0',
 		'path'    => $vendorDir . '/grpc/grpc/src/lib/RpcServer.php'
 	),
 	'Grpc\\ServerCallReader' => array(
-		'version' => '1.80.0.0',
+		'version' => '1.82.0.0',
 		'path'    => $vendorDir . '/grpc/grpc/src/lib/ServerCallReader.php'
 	),
 	'Grpc\\ServerCallWriter' => array(
-		'version' => '1.80.0.0',
+		'version' => '1.82.0.0',
 		'path'    => $vendorDir . '/grpc/grpc/src/lib/ServerCallWriter.php'
 	),
 	'Grpc\\ServerContext' => array(
-		'version' => '1.80.0.0',
+		'version' => '1.82.0.0',
 		'path'    => $vendorDir . '/grpc/grpc/src/lib/ServerContext.php'
 	),
 	'Grpc\\ServerStreamingCall' => array(
-		'version' => '1.80.0.0',
+		'version' => '1.82.0.0',
 		'path'    => $vendorDir . '/grpc/grpc/src/lib/ServerStreamingCall.php'
 	),
 	'Grpc\\Status' => array(
-		'version' => '1.80.0.0',
+		'version' => '1.82.0.0',
 		'path'    => $vendorDir . '/grpc/grpc/src/lib/Status.php'
 	),
 	'Grpc\\UnaryCall' => array(
-		'version' => '1.80.0.0',
+		'version' => '1.82.0.0',
 		'path'    => $vendorDir . '/grpc/grpc/src/lib/UnaryCall.php'
 	),
 	'GuzzleHttp\\BodySummarizer' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/BodySummarizer.php'
 	),
 	'GuzzleHttp\\BodySummarizerInterface' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/BodySummarizerInterface.php'
 	),
 	'GuzzleHttp\\Client' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Client.php'
 	),
 	'GuzzleHttp\\ClientInterface' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/ClientInterface.php'
 	),
 	'GuzzleHttp\\ClientTrait' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/ClientTrait.php'
 	),
 	'GuzzleHttp\\Cookie\\CookieJar' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Cookie/CookieJar.php'
 	),
 	'GuzzleHttp\\Cookie\\CookieJarInterface' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Cookie/CookieJarInterface.php'
 	),
 	'GuzzleHttp\\Cookie\\FileCookieJar' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Cookie/FileCookieJar.php'
 	),
 	'GuzzleHttp\\Cookie\\SessionCookieJar' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Cookie/SessionCookieJar.php'
 	),
 	'GuzzleHttp\\Cookie\\SetCookie' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Cookie/SetCookie.php'
 	),
 	'GuzzleHttp\\Exception\\BadResponseException' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Exception/BadResponseException.php'
 	),
 	'GuzzleHttp\\Exception\\ClientException' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Exception/ClientException.php'
 	),
 	'GuzzleHttp\\Exception\\ConnectException' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Exception/ConnectException.php'
 	),
 	'GuzzleHttp\\Exception\\GuzzleException' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Exception/GuzzleException.php'
 	),
 	'GuzzleHttp\\Exception\\InvalidArgumentException' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Exception/InvalidArgumentException.php'
 	),
 	'GuzzleHttp\\Exception\\RequestException' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Exception/RequestException.php'
 	),
 	'GuzzleHttp\\Exception\\ServerException' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Exception/ServerException.php'
 	),
 	'GuzzleHttp\\Exception\\TooManyRedirectsException' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Exception/TooManyRedirectsException.php'
 	),
 	'GuzzleHttp\\Exception\\TransferException' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Exception/TransferException.php'
 	),
 	'GuzzleHttp\\HandlerStack' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/HandlerStack.php'
 	),
 	'GuzzleHttp\\Handler\\CurlFactory' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Handler/CurlFactory.php'
 	),
 	'GuzzleHttp\\Handler\\CurlFactoryInterface' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Handler/CurlFactoryInterface.php'
 	),
 	'GuzzleHttp\\Handler\\CurlHandler' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Handler/CurlHandler.php'
 	),
 	'GuzzleHttp\\Handler\\CurlMultiHandler' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Handler/CurlMultiHandler.php'
 	),
+	'GuzzleHttp\\Handler\\CurlShareHandleState' => array(
+		'version' => '7.15.5.0',
+		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Handler/CurlShareHandleState.php'
+	),
+	'GuzzleHttp\\Handler\\CurlVersion' => array(
+		'version' => '7.15.5.0',
+		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Handler/CurlVersion.php'
+	),
 	'GuzzleHttp\\Handler\\EasyHandle' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Handler/EasyHandle.php'
 	),
 	'GuzzleHttp\\Handler\\HeaderProcessor' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Handler/HeaderProcessor.php'
 	),
+	'GuzzleHttp\\Handler\\HostValidator' => array(
+		'version' => '7.15.5.0',
+		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Handler/HostValidator.php'
+	),
 	'GuzzleHttp\\Handler\\MockHandler' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Handler/MockHandler.php'
 	),
 	'GuzzleHttp\\Handler\\Proxy' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Handler/Proxy.php'
 	),
+	'GuzzleHttp\\Handler\\ProxyEnvironment' => array(
+		'version' => '7.15.5.0',
+		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Handler/ProxyEnvironment.php'
+	),
 	'GuzzleHttp\\Handler\\StreamHandler' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Handler/StreamHandler.php'
 	),
+	'GuzzleHttp\\Handler\\TlsVersion' => array(
+		'version' => '7.15.5.0',
+		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Handler/TlsVersion.php'
+	),
 	'GuzzleHttp\\MessageFormatter' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/MessageFormatter.php'
 	),
 	'GuzzleHttp\\MessageFormatterInterface' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/MessageFormatterInterface.php'
 	),
 	'GuzzleHttp\\Middleware' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Middleware.php'
 	),
+	'GuzzleHttp\\Multiplexing' => array(
+		'version' => '7.15.5.0',
+		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Multiplexing.php'
+	),
 	'GuzzleHttp\\Pool' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Pool.php'
 	),
 	'GuzzleHttp\\PrepareBodyMiddleware' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/PrepareBodyMiddleware.php'
 	),
 	'GuzzleHttp\\Promise\\AggregateException' => array(
-		'version' => '2.3.0.0',
+		'version' => '2.5.3.0',
 		'path'    => $vendorDir . '/guzzlehttp/promises/src/AggregateException.php'
 	),
 	'GuzzleHttp\\Promise\\CancellationException' => array(
-		'version' => '2.3.0.0',
+		'version' => '2.5.3.0',
 		'path'    => $vendorDir . '/guzzlehttp/promises/src/CancellationException.php'
 	),
 	'GuzzleHttp\\Promise\\Coroutine' => array(
-		'version' => '2.3.0.0',
+		'version' => '2.5.3.0',
 		'path'    => $vendorDir . '/guzzlehttp/promises/src/Coroutine.php'
 	),
 	'GuzzleHttp\\Promise\\Create' => array(
-		'version' => '2.3.0.0',
+		'version' => '2.5.3.0',
 		'path'    => $vendorDir . '/guzzlehttp/promises/src/Create.php'
 	),
 	'GuzzleHttp\\Promise\\Each' => array(
-		'version' => '2.3.0.0',
+		'version' => '2.5.3.0',
 		'path'    => $vendorDir . '/guzzlehttp/promises/src/Each.php'
 	),
 	'GuzzleHttp\\Promise\\EachPromise' => array(
-		'version' => '2.3.0.0',
+		'version' => '2.5.3.0',
 		'path'    => $vendorDir . '/guzzlehttp/promises/src/EachPromise.php'
 	),
 	'GuzzleHttp\\Promise\\FulfilledPromise' => array(
-		'version' => '2.3.0.0',
+		'version' => '2.5.3.0',
 		'path'    => $vendorDir . '/guzzlehttp/promises/src/FulfilledPromise.php'
 	),
 	'GuzzleHttp\\Promise\\Is' => array(
-		'version' => '2.3.0.0',
+		'version' => '2.5.3.0',
 		'path'    => $vendorDir . '/guzzlehttp/promises/src/Is.php'
 	),
 	'GuzzleHttp\\Promise\\Promise' => array(
-		'version' => '2.3.0.0',
+		'version' => '2.5.3.0',
 		'path'    => $vendorDir . '/guzzlehttp/promises/src/Promise.php'
 	),
 	'GuzzleHttp\\Promise\\PromiseInterface' => array(
-		'version' => '2.3.0.0',
+		'version' => '2.5.3.0',
 		'path'    => $vendorDir . '/guzzlehttp/promises/src/PromiseInterface.php'
 	),
 	'GuzzleHttp\\Promise\\PromisorInterface' => array(
-		'version' => '2.3.0.0',
+		'version' => '2.5.3.0',
 		'path'    => $vendorDir . '/guzzlehttp/promises/src/PromisorInterface.php'
 	),
 	'GuzzleHttp\\Promise\\RejectedPromise' => array(
-		'version' => '2.3.0.0',
+		'version' => '2.5.3.0',
 		'path'    => $vendorDir . '/guzzlehttp/promises/src/RejectedPromise.php'
 	),
 	'GuzzleHttp\\Promise\\RejectionException' => array(
-		'version' => '2.3.0.0',
+		'version' => '2.5.3.0',
 		'path'    => $vendorDir . '/guzzlehttp/promises/src/RejectionException.php'
 	),
 	'GuzzleHttp\\Promise\\TaskQueue' => array(
-		'version' => '2.3.0.0',
+		'version' => '2.5.3.0',
 		'path'    => $vendorDir . '/guzzlehttp/promises/src/TaskQueue.php'
 	),
 	'GuzzleHttp\\Promise\\TaskQueueInterface' => array(
-		'version' => '2.3.0.0',
+		'version' => '2.5.3.0',
 		'path'    => $vendorDir . '/guzzlehttp/promises/src/TaskQueueInterface.php'
 	),
 	'GuzzleHttp\\Promise\\Utils' => array(
-		'version' => '2.3.0.0',
+		'version' => '2.5.3.0',
 		'path'    => $vendorDir . '/guzzlehttp/promises/src/Utils.php'
 	),
 	'GuzzleHttp\\Psr7\\AppendStream' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/AppendStream.php'
 	),
 	'GuzzleHttp\\Psr7\\BufferStream' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/BufferStream.php'
 	),
 	'GuzzleHttp\\Psr7\\CachingStream' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/CachingStream.php'
 	),
 	'GuzzleHttp\\Psr7\\DroppingStream' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/DroppingStream.php'
 	),
 	'GuzzleHttp\\Psr7\\Exception\\MalformedUriException' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/Exception/MalformedUriException.php'
 	),
 	'GuzzleHttp\\Psr7\\FnStream' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/FnStream.php'
 	),
 	'GuzzleHttp\\Psr7\\Header' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/Header.php'
 	),
 	'GuzzleHttp\\Psr7\\HttpFactory' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/HttpFactory.php'
 	),
 	'GuzzleHttp\\Psr7\\InflateStream' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/InflateStream.php'
 	),
 	'GuzzleHttp\\Psr7\\LazyOpenStream' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/LazyOpenStream.php'
 	),
 	'GuzzleHttp\\Psr7\\LimitStream' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/LimitStream.php'
 	),
 	'GuzzleHttp\\Psr7\\Message' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/Message.php'
 	),
 	'GuzzleHttp\\Psr7\\MessageTrait' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/MessageTrait.php'
 	),
 	'GuzzleHttp\\Psr7\\MimeType' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/MimeType.php'
 	),
 	'GuzzleHttp\\Psr7\\MultipartStream' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/MultipartStream.php'
 	),
 	'GuzzleHttp\\Psr7\\NoSeekStream' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/NoSeekStream.php'
 	),
 	'GuzzleHttp\\Psr7\\PumpStream' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/PumpStream.php'
 	),
 	'GuzzleHttp\\Psr7\\Query' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/Query.php'
 	),
 	'GuzzleHttp\\Psr7\\Request' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/Request.php'
 	),
 	'GuzzleHttp\\Psr7\\Response' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/Response.php'
 	),
+	'GuzzleHttp\\Psr7\\Rfc3986' => array(
+		'version' => '2.13.1.0',
+		'path'    => $vendorDir . '/guzzlehttp/psr7/src/Rfc3986.php'
+	),
 	'GuzzleHttp\\Psr7\\Rfc7230' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/Rfc7230.php'
 	),
 	'GuzzleHttp\\Psr7\\ServerRequest' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/ServerRequest.php'
 	),
 	'GuzzleHttp\\Psr7\\Stream' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/Stream.php'
 	),
 	'GuzzleHttp\\Psr7\\StreamDecoratorTrait' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/StreamDecoratorTrait.php'
 	),
 	'GuzzleHttp\\Psr7\\StreamWrapper' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/StreamWrapper.php'
 	),
 	'GuzzleHttp\\Psr7\\UploadedFile' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/UploadedFile.php'
 	),
 	'GuzzleHttp\\Psr7\\Uri' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/Uri.php'
 	),
 	'GuzzleHttp\\Psr7\\UriComparator' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/UriComparator.php'
 	),
 	'GuzzleHttp\\Psr7\\UriNormalizer' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/UriNormalizer.php'
 	),
 	'GuzzleHttp\\Psr7\\UriResolver' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/UriResolver.php'
 	),
 	'GuzzleHttp\\Psr7\\Utils' => array(
-		'version' => '2.9.0.0',
+		'version' => '2.13.1.0',
 		'path'    => $vendorDir . '/guzzlehttp/psr7/src/Utils.php'
 	),
 	'GuzzleHttp\\RedirectMiddleware' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/RedirectMiddleware.php'
 	),
 	'GuzzleHttp\\RequestOptions' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/RequestOptions.php'
 	),
 	'GuzzleHttp\\RetryMiddleware' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/RetryMiddleware.php'
 	),
 	'GuzzleHttp\\TransferStats' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/TransferStats.php'
 	),
+	'GuzzleHttp\\TransportSharing' => array(
+		'version' => '7.15.5.0',
+		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/TransportSharing.php'
+	),
 	'GuzzleHttp\\Utils' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/Utils.php'
 	),
 	'Hook_Manager' => array(
 		'version' => '5.0.16',
 		'path'    => $vendorDir . '/automattic/jetpack-autoloader/src/class-hook-manager.php'
 	),
+	'Illuminate\\Contracts\\Auth\\Access\\Authorizable' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Auth/Access/Authorizable.php'
+	),
+	'Illuminate\\Contracts\\Auth\\Access\\Gate' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Auth/Access/Gate.php'
+	),
+	'Illuminate\\Contracts\\Auth\\Authenticatable' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Auth/Authenticatable.php'
+	),
+	'Illuminate\\Contracts\\Auth\\CanResetPassword' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Auth/CanResetPassword.php'
+	),
+	'Illuminate\\Contracts\\Auth\\Factory' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Auth/Factory.php'
+	),
+	'Illuminate\\Contracts\\Auth\\Guard' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Auth/Guard.php'
+	),
+	'Illuminate\\Contracts\\Auth\\Middleware\\AuthenticatesRequests' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Auth/Middleware/AuthenticatesRequests.php'
+	),
+	'Illuminate\\Contracts\\Auth\\MustVerifyEmail' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Auth/MustVerifyEmail.php'
+	),
+	'Illuminate\\Contracts\\Auth\\PasswordBroker' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Auth/PasswordBroker.php'
+	),
+	'Illuminate\\Contracts\\Auth\\PasswordBrokerFactory' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Auth/PasswordBrokerFactory.php'
+	),
+	'Illuminate\\Contracts\\Auth\\StatefulGuard' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Auth/StatefulGuard.php'
+	),
+	'Illuminate\\Contracts\\Auth\\SupportsBasicAuth' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Auth/SupportsBasicAuth.php'
+	),
+	'Illuminate\\Contracts\\Auth\\UserProvider' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Auth/UserProvider.php'
+	),
+	'Illuminate\\Contracts\\Broadcasting\\Broadcaster' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Broadcasting/Broadcaster.php'
+	),
+	'Illuminate\\Contracts\\Broadcasting\\Factory' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Broadcasting/Factory.php'
+	),
+	'Illuminate\\Contracts\\Broadcasting\\HasBroadcastChannel' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Broadcasting/HasBroadcastChannel.php'
+	),
+	'Illuminate\\Contracts\\Broadcasting\\ShouldBeUnique' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Broadcasting/ShouldBeUnique.php'
+	),
+	'Illuminate\\Contracts\\Broadcasting\\ShouldBroadcast' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Broadcasting/ShouldBroadcast.php'
+	),
+	'Illuminate\\Contracts\\Broadcasting\\ShouldBroadcastNow' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Broadcasting/ShouldBroadcastNow.php'
+	),
+	'Illuminate\\Contracts\\Broadcasting\\ShouldRescue' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Broadcasting/ShouldRescue.php'
+	),
+	'Illuminate\\Contracts\\Bus\\Dispatcher' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Bus/Dispatcher.php'
+	),
+	'Illuminate\\Contracts\\Bus\\QueueingDispatcher' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Bus/QueueingDispatcher.php'
+	),
+	'Illuminate\\Contracts\\Cache\\CanFlushLocks' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Cache/CanFlushLocks.php'
+	),
+	'Illuminate\\Contracts\\Cache\\Factory' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Cache/Factory.php'
+	),
+	'Illuminate\\Contracts\\Cache\\Lock' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Cache/Lock.php'
+	),
+	'Illuminate\\Contracts\\Cache\\LockProvider' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Cache/LockProvider.php'
+	),
+	'Illuminate\\Contracts\\Cache\\LockTimeoutException' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Cache/LockTimeoutException.php'
+	),
+	'Illuminate\\Contracts\\Cache\\Repository' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Cache/Repository.php'
+	),
+	'Illuminate\\Contracts\\Cache\\Store' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Cache/Store.php'
+	),
+	'Illuminate\\Contracts\\Concurrency\\Driver' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Concurrency/Driver.php'
+	),
+	'Illuminate\\Contracts\\Config\\Repository' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Config/Repository.php'
+	),
+	'Illuminate\\Contracts\\Console\\Application' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Console/Application.php'
+	),
+	'Illuminate\\Contracts\\Console\\Isolatable' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Console/Isolatable.php'
+	),
+	'Illuminate\\Contracts\\Console\\Kernel' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Console/Kernel.php'
+	),
+	'Illuminate\\Contracts\\Console\\PromptsForMissingInput' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Console/PromptsForMissingInput.php'
+	),
+	'Illuminate\\Contracts\\Container\\BindingResolutionException' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Container/BindingResolutionException.php'
+	),
+	'Illuminate\\Contracts\\Container\\CircularDependencyException' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Container/CircularDependencyException.php'
+	),
+	'Illuminate\\Contracts\\Container\\Container' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Container/Container.php'
+	),
+	'Illuminate\\Contracts\\Container\\ContextualAttribute' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Container/ContextualAttribute.php'
+	),
+	'Illuminate\\Contracts\\Container\\ContextualBindingBuilder' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Container/ContextualBindingBuilder.php'
+	),
+	'Illuminate\\Contracts\\Container\\SelfBuilding' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Container/SelfBuilding.php'
+	),
+	'Illuminate\\Contracts\\Cookie\\Factory' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Cookie/Factory.php'
+	),
+	'Illuminate\\Contracts\\Cookie\\QueueingFactory' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Cookie/QueueingFactory.php'
+	),
+	'Illuminate\\Contracts\\Database\\ConcurrencyErrorDetector' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Database/ConcurrencyErrorDetector.php'
+	),
+	'Illuminate\\Contracts\\Database\\Eloquent\\Builder' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Database/Eloquent/Builder.php'
+	),
+	'Illuminate\\Contracts\\Database\\Eloquent\\Castable' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Database/Eloquent/Castable.php'
+	),
+	'Illuminate\\Contracts\\Database\\Eloquent\\CastsAttributes' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Database/Eloquent/CastsAttributes.php'
+	),
+	'Illuminate\\Contracts\\Database\\Eloquent\\CastsInboundAttributes' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Database/Eloquent/CastsInboundAttributes.php'
+	),
+	'Illuminate\\Contracts\\Database\\Eloquent\\ComparesCastableAttributes' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Database/Eloquent/ComparesCastableAttributes.php'
+	),
+	'Illuminate\\Contracts\\Database\\Eloquent\\DeviatesCastableAttributes' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Database/Eloquent/DeviatesCastableAttributes.php'
+	),
+	'Illuminate\\Contracts\\Database\\Eloquent\\SerializesCastableAttributes' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Database/Eloquent/SerializesCastableAttributes.php'
+	),
+	'Illuminate\\Contracts\\Database\\Eloquent\\SupportsPartialRelations' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Database/Eloquent/SupportsPartialRelations.php'
+	),
+	'Illuminate\\Contracts\\Database\\Events\\MigrationEvent' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Database/Events/MigrationEvent.php'
+	),
+	'Illuminate\\Contracts\\Database\\LostConnectionDetector' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Database/LostConnectionDetector.php'
+	),
+	'Illuminate\\Contracts\\Database\\ModelIdentifier' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Database/ModelIdentifier.php'
+	),
+	'Illuminate\\Contracts\\Database\\Query\\Builder' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Database/Query/Builder.php'
+	),
+	'Illuminate\\Contracts\\Database\\Query\\ConditionExpression' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Database/Query/ConditionExpression.php'
+	),
+	'Illuminate\\Contracts\\Database\\Query\\Expression' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Database/Query/Expression.php'
+	),
+	'Illuminate\\Contracts\\Debug\\ExceptionHandler' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Debug/ExceptionHandler.php'
+	),
+	'Illuminate\\Contracts\\Debug\\ShouldntReport' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Debug/ShouldntReport.php'
+	),
+	'Illuminate\\Contracts\\Encryption\\DecryptException' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Encryption/DecryptException.php'
+	),
+	'Illuminate\\Contracts\\Encryption\\EncryptException' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Encryption/EncryptException.php'
+	),
+	'Illuminate\\Contracts\\Encryption\\Encrypter' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Encryption/Encrypter.php'
+	),
+	'Illuminate\\Contracts\\Encryption\\StringEncrypter' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Encryption/StringEncrypter.php'
+	),
+	'Illuminate\\Contracts\\Events\\Dispatcher' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Events/Dispatcher.php'
+	),
+	'Illuminate\\Contracts\\Events\\ShouldBeDiscovered' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Events/ShouldBeDiscovered.php'
+	),
+	'Illuminate\\Contracts\\Events\\ShouldDispatchAfterCommit' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Events/ShouldDispatchAfterCommit.php'
+	),
+	'Illuminate\\Contracts\\Events\\ShouldHandleEventsAfterCommit' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Events/ShouldHandleEventsAfterCommit.php'
+	),
+	'Illuminate\\Contracts\\Filesystem\\Cloud' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Filesystem/Cloud.php'
+	),
+	'Illuminate\\Contracts\\Filesystem\\Factory' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Filesystem/Factory.php'
+	),
+	'Illuminate\\Contracts\\Filesystem\\FileNotFoundException' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Filesystem/FileNotFoundException.php'
+	),
+	'Illuminate\\Contracts\\Filesystem\\Filesystem' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Filesystem/Filesystem.php'
+	),
+	'Illuminate\\Contracts\\Filesystem\\LockTimeoutException' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Filesystem/LockTimeoutException.php'
+	),
+	'Illuminate\\Contracts\\Foundation\\Application' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Foundation/Application.php'
+	),
+	'Illuminate\\Contracts\\Foundation\\CachesConfiguration' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Foundation/CachesConfiguration.php'
+	),
+	'Illuminate\\Contracts\\Foundation\\CachesRoutes' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Foundation/CachesRoutes.php'
+	),
+	'Illuminate\\Contracts\\Foundation\\ExceptionRenderer' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Foundation/ExceptionRenderer.php'
+	),
+	'Illuminate\\Contracts\\Foundation\\MaintenanceMode' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Foundation/MaintenanceMode.php'
+	),
+	'Illuminate\\Contracts\\Hashing\\Hasher' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Hashing/Hasher.php'
+	),
+	'Illuminate\\Contracts\\Http\\Kernel' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Http/Kernel.php'
+	),
+	'Illuminate\\Contracts\\Image\\Driver' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Image/Driver.php'
+	),
+	'Illuminate\\Contracts\\Image\\Transformation' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Image/Transformation.php'
+	),
+	'Illuminate\\Contracts\\JsonSchema\\JsonSchema' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/JsonSchema/JsonSchema.php'
+	),
+	'Illuminate\\Contracts\\Log\\ContextLogProcessor' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Log/ContextLogProcessor.php'
+	),
+	'Illuminate\\Contracts\\Mail\\Attachable' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Mail/Attachable.php'
+	),
+	'Illuminate\\Contracts\\Mail\\Factory' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Mail/Factory.php'
+	),
+	'Illuminate\\Contracts\\Mail\\MailQueue' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Mail/MailQueue.php'
+	),
+	'Illuminate\\Contracts\\Mail\\Mailable' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Mail/Mailable.php'
+	),
+	'Illuminate\\Contracts\\Mail\\Mailer' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Mail/Mailer.php'
+	),
+	'Illuminate\\Contracts\\Notifications\\Dispatcher' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Notifications/Dispatcher.php'
+	),
+	'Illuminate\\Contracts\\Notifications\\Factory' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Notifications/Factory.php'
+	),
+	'Illuminate\\Contracts\\Pagination\\CursorPaginator' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Pagination/CursorPaginator.php'
+	),
+	'Illuminate\\Contracts\\Pagination\\LengthAwarePaginator' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Pagination/LengthAwarePaginator.php'
+	),
+	'Illuminate\\Contracts\\Pagination\\Paginator' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Pagination/Paginator.php'
+	),
+	'Illuminate\\Contracts\\Pipeline\\Hub' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Pipeline/Hub.php'
+	),
+	'Illuminate\\Contracts\\Pipeline\\Pipeline' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Pipeline/Pipeline.php'
+	),
+	'Illuminate\\Contracts\\Process\\InvokedProcess' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Process/InvokedProcess.php'
+	),
+	'Illuminate\\Contracts\\Process\\ProcessResult' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Process/ProcessResult.php'
+	),
+	'Illuminate\\Contracts\\Queue\\ClearableQueue' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Queue/ClearableQueue.php'
+	),
+	'Illuminate\\Contracts\\Queue\\EntityNotFoundException' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Queue/EntityNotFoundException.php'
+	),
+	'Illuminate\\Contracts\\Queue\\EntityResolver' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Queue/EntityResolver.php'
+	),
+	'Illuminate\\Contracts\\Queue\\Factory' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Queue/Factory.php'
+	),
+	'Illuminate\\Contracts\\Queue\\Interruptible' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Queue/Interruptible.php'
+	),
+	'Illuminate\\Contracts\\Queue\\Job' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Queue/Job.php'
+	),
+	'Illuminate\\Contracts\\Queue\\Monitor' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Queue/Monitor.php'
+	),
+	'Illuminate\\Contracts\\Queue\\PreparesForDispatch' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Queue/PreparesForDispatch.php'
+	),
+	'Illuminate\\Contracts\\Queue\\Queue' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Queue/Queue.php'
+	),
+	'Illuminate\\Contracts\\Queue\\QueueableCollection' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Queue/QueueableCollection.php'
+	),
+	'Illuminate\\Contracts\\Queue\\QueueableEntity' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Queue/QueueableEntity.php'
+	),
+	'Illuminate\\Contracts\\Queue\\ShouldBeEncrypted' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Queue/ShouldBeEncrypted.php'
+	),
+	'Illuminate\\Contracts\\Queue\\ShouldBeUnique' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Queue/ShouldBeUnique.php'
+	),
+	'Illuminate\\Contracts\\Queue\\ShouldBeUniqueUntilProcessing' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Queue/ShouldBeUniqueUntilProcessing.php'
+	),
+	'Illuminate\\Contracts\\Queue\\ShouldQueue' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Queue/ShouldQueue.php'
+	),
+	'Illuminate\\Contracts\\Queue\\ShouldQueueAfterCommit' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Queue/ShouldQueueAfterCommit.php'
+	),
+	'Illuminate\\Contracts\\Redis\\Connection' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Redis/Connection.php'
+	),
+	'Illuminate\\Contracts\\Redis\\Connector' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Redis/Connector.php'
+	),
+	'Illuminate\\Contracts\\Redis\\Factory' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Redis/Factory.php'
+	),
+	'Illuminate\\Contracts\\Redis\\LimiterTimeoutException' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Redis/LimiterTimeoutException.php'
+	),
+	'Illuminate\\Contracts\\Routing\\BindingRegistrar' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Routing/BindingRegistrar.php'
+	),
+	'Illuminate\\Contracts\\Routing\\Registrar' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Routing/Registrar.php'
+	),
+	'Illuminate\\Contracts\\Routing\\ResponseFactory' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Routing/ResponseFactory.php'
+	),
+	'Illuminate\\Contracts\\Routing\\UrlGenerator' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Routing/UrlGenerator.php'
+	),
+	'Illuminate\\Contracts\\Routing\\UrlRoutable' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Routing/UrlRoutable.php'
+	),
+	'Illuminate\\Contracts\\Session\\Middleware\\AuthenticatesSessions' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Session/Middleware/AuthenticatesSessions.php'
+	),
+	'Illuminate\\Contracts\\Session\\Session' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Session/Session.php'
+	),
+	'Illuminate\\Contracts\\Support\\Arrayable' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Support/Arrayable.php'
+	),
+	'Illuminate\\Contracts\\Support\\CanBeEscapedWhenCastToString' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Support/CanBeEscapedWhenCastToString.php'
+	),
+	'Illuminate\\Contracts\\Support\\DeferrableProvider' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Support/DeferrableProvider.php'
+	),
+	'Illuminate\\Contracts\\Support\\DeferringDisplayableValue' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Support/DeferringDisplayableValue.php'
+	),
+	'Illuminate\\Contracts\\Support\\HasOnceHash' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Support/HasOnceHash.php'
+	),
+	'Illuminate\\Contracts\\Support\\Htmlable' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Support/Htmlable.php'
+	),
+	'Illuminate\\Contracts\\Support\\Jsonable' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Support/Jsonable.php'
+	),
+	'Illuminate\\Contracts\\Support\\MessageBag' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Support/MessageBag.php'
+	),
+	'Illuminate\\Contracts\\Support\\MessageProvider' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Support/MessageProvider.php'
+	),
+	'Illuminate\\Contracts\\Support\\Renderable' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Support/Renderable.php'
+	),
+	'Illuminate\\Contracts\\Support\\Responsable' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Support/Responsable.php'
+	),
+	'Illuminate\\Contracts\\Support\\ValidatedData' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Support/ValidatedData.php'
+	),
+	'Illuminate\\Contracts\\Translation\\HasLocalePreference' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Translation/HasLocalePreference.php'
+	),
+	'Illuminate\\Contracts\\Translation\\Loader' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Translation/Loader.php'
+	),
+	'Illuminate\\Contracts\\Translation\\Translator' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Translation/Translator.php'
+	),
+	'Illuminate\\Contracts\\Validation\\CompilableRules' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Validation/CompilableRules.php'
+	),
+	'Illuminate\\Contracts\\Validation\\DataAwareRule' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Validation/DataAwareRule.php'
+	),
+	'Illuminate\\Contracts\\Validation\\Factory' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Validation/Factory.php'
+	),
+	'Illuminate\\Contracts\\Validation\\ImplicitRule' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Validation/ImplicitRule.php'
+	),
+	'Illuminate\\Contracts\\Validation\\InvokableRule' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Validation/InvokableRule.php'
+	),
+	'Illuminate\\Contracts\\Validation\\Rule' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Validation/Rule.php'
+	),
+	'Illuminate\\Contracts\\Validation\\UncompromisedVerifier' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Validation/UncompromisedVerifier.php'
+	),
+	'Illuminate\\Contracts\\Validation\\ValidatesWhenResolved' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Validation/ValidatesWhenResolved.php'
+	),
+	'Illuminate\\Contracts\\Validation\\ValidationRule' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Validation/ValidationRule.php'
+	),
+	'Illuminate\\Contracts\\Validation\\Validator' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Validation/Validator.php'
+	),
+	'Illuminate\\Contracts\\Validation\\ValidatorAwareRule' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/Validation/ValidatorAwareRule.php'
+	),
+	'Illuminate\\Contracts\\View\\Engine' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/View/Engine.php'
+	),
+	'Illuminate\\Contracts\\View\\Factory' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/View/Factory.php'
+	),
+	'Illuminate\\Contracts\\View\\View' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/View/View.php'
+	),
+	'Illuminate\\Contracts\\View\\ViewCompilationException' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/contracts/View/ViewCompilationException.php'
+	),
+	'Illuminate\\Support\\AggregateServiceProvider' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/AggregateServiceProvider.php'
+	),
+	'Illuminate\\Support\\Arr' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/collections/Arr.php'
+	),
+	'Illuminate\\Support\\Benchmark' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Benchmark.php'
+	),
+	'Illuminate\\Support\\BinaryCodec' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/BinaryCodec.php'
+	),
+	'Illuminate\\Support\\Carbon' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Carbon.php'
+	),
+	'Illuminate\\Support\\Collection' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/collections/Collection.php'
+	),
+	'Illuminate\\Support\\Composer' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Composer.php'
+	),
+	'Illuminate\\Support\\ConfigurationUrlParser' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/ConfigurationUrlParser.php'
+	),
+	'Illuminate\\Support\\Contracts\\NodePackageManager' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Contracts/NodePackageManager.php'
+	),
+	'Illuminate\\Support\\DateFactory' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/DateFactory.php'
+	),
+	'Illuminate\\Support\\DefaultProviders' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/DefaultProviders.php'
+	),
+	'Illuminate\\Support\\Defer\\DeferredCallback' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Defer/DeferredCallback.php'
+	),
+	'Illuminate\\Support\\Defer\\DeferredCallbackCollection' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Defer/DeferredCallbackCollection.php'
+	),
+	'Illuminate\\Support\\EncodedHtmlString' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/EncodedHtmlString.php'
+	),
+	'Illuminate\\Support\\Enumerable' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/collections/Enumerable.php'
+	),
+	'Illuminate\\Support\\Env' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Env.php'
+	),
+	'Illuminate\\Support\\Exceptions\\MathException' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Exceptions/MathException.php'
+	),
+	'Illuminate\\Support\\Facades\\App' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/App.php'
+	),
+	'Illuminate\\Support\\Facades\\Artisan' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Artisan.php'
+	),
+	'Illuminate\\Support\\Facades\\Auth' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Auth.php'
+	),
+	'Illuminate\\Support\\Facades\\Blade' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Blade.php'
+	),
+	'Illuminate\\Support\\Facades\\Broadcast' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Broadcast.php'
+	),
+	'Illuminate\\Support\\Facades\\Bus' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Bus.php'
+	),
+	'Illuminate\\Support\\Facades\\Cache' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Cache.php'
+	),
+	'Illuminate\\Support\\Facades\\Cloud' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Cloud.php'
+	),
+	'Illuminate\\Support\\Facades\\Concurrency' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Concurrency.php'
+	),
+	'Illuminate\\Support\\Facades\\Config' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Config.php'
+	),
+	'Illuminate\\Support\\Facades\\Context' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Context.php'
+	),
+	'Illuminate\\Support\\Facades\\Cookie' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Cookie.php'
+	),
+	'Illuminate\\Support\\Facades\\Crypt' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Crypt.php'
+	),
+	'Illuminate\\Support\\Facades\\DB' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/DB.php'
+	),
+	'Illuminate\\Support\\Facades\\Date' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Date.php'
+	),
+	'Illuminate\\Support\\Facades\\Event' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Event.php'
+	),
+	'Illuminate\\Support\\Facades\\Exceptions' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Exceptions.php'
+	),
+	'Illuminate\\Support\\Facades\\Facade' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Facade.php'
+	),
+	'Illuminate\\Support\\Facades\\File' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/File.php'
+	),
+	'Illuminate\\Support\\Facades\\Gate' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Gate.php'
+	),
+	'Illuminate\\Support\\Facades\\Hash' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Hash.php'
+	),
+	'Illuminate\\Support\\Facades\\Http' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Http.php'
+	),
+	'Illuminate\\Support\\Facades\\Image' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Image.php'
+	),
+	'Illuminate\\Support\\Facades\\Lang' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Lang.php'
+	),
+	'Illuminate\\Support\\Facades\\Log' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Log.php'
+	),
+	'Illuminate\\Support\\Facades\\Mail' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Mail.php'
+	),
+	'Illuminate\\Support\\Facades\\MaintenanceMode' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/MaintenanceMode.php'
+	),
+	'Illuminate\\Support\\Facades\\Notification' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Notification.php'
+	),
+	'Illuminate\\Support\\Facades\\ParallelTesting' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/ParallelTesting.php'
+	),
+	'Illuminate\\Support\\Facades\\Password' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Password.php'
+	),
+	'Illuminate\\Support\\Facades\\Pipeline' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Pipeline.php'
+	),
+	'Illuminate\\Support\\Facades\\Process' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Process.php'
+	),
+	'Illuminate\\Support\\Facades\\Queue' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Queue.php'
+	),
+	'Illuminate\\Support\\Facades\\RateLimiter' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/RateLimiter.php'
+	),
+	'Illuminate\\Support\\Facades\\Redirect' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Redirect.php'
+	),
+	'Illuminate\\Support\\Facades\\Redis' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Redis.php'
+	),
+	'Illuminate\\Support\\Facades\\Request' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Request.php'
+	),
+	'Illuminate\\Support\\Facades\\Response' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Response.php'
+	),
+	'Illuminate\\Support\\Facades\\Route' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Route.php'
+	),
+	'Illuminate\\Support\\Facades\\Schedule' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Schedule.php'
+	),
+	'Illuminate\\Support\\Facades\\Schema' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Schema.php'
+	),
+	'Illuminate\\Support\\Facades\\Session' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Session.php'
+	),
+	'Illuminate\\Support\\Facades\\Storage' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Storage.php'
+	),
+	'Illuminate\\Support\\Facades\\URL' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/URL.php'
+	),
+	'Illuminate\\Support\\Facades\\Validator' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Validator.php'
+	),
+	'Illuminate\\Support\\Facades\\View' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/View.php'
+	),
+	'Illuminate\\Support\\Facades\\Vite' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Facades/Vite.php'
+	),
+	'Illuminate\\Support\\Fluent' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Fluent.php'
+	),
+	'Illuminate\\Support\\HigherOrderCollectionProxy' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/collections/HigherOrderCollectionProxy.php'
+	),
+	'Illuminate\\Support\\HigherOrderTapProxy' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/HigherOrderTapProxy.php'
+	),
+	'Illuminate\\Support\\HigherOrderWhenProxy' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/conditionable/HigherOrderWhenProxy.php'
+	),
+	'Illuminate\\Support\\HtmlString' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/HtmlString.php'
+	),
+	'Illuminate\\Support\\InteractsWithTime' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/InteractsWithTime.php'
+	),
+	'Illuminate\\Support\\ItemNotFoundException' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/collections/ItemNotFoundException.php'
+	),
+	'Illuminate\\Support\\Js' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Js.php'
+	),
+	'Illuminate\\Support\\LazyCollection' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/collections/LazyCollection.php'
+	),
+	'Illuminate\\Support\\Lottery' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Lottery.php'
+	),
+	'Illuminate\\Support\\Manager' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Manager.php'
+	),
+	'Illuminate\\Support\\MessageBag' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/MessageBag.php'
+	),
+	'Illuminate\\Support\\MultipleInstanceManager' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/MultipleInstanceManager.php'
+	),
+	'Illuminate\\Support\\MultipleItemsFoundException' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/collections/MultipleItemsFoundException.php'
+	),
+	'Illuminate\\Support\\NamespacedItemResolver' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/NamespacedItemResolver.php'
+	),
+	'Illuminate\\Support\\NodePackageManager' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/NodePackageManager.php'
+	),
+	'Illuminate\\Support\\NodePackageManagers\\Bun' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/NodePackageManagers/Bun.php'
+	),
+	'Illuminate\\Support\\NodePackageManagers\\Npm' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/NodePackageManagers/Npm.php'
+	),
+	'Illuminate\\Support\\NodePackageManagers\\Pnpm' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/NodePackageManagers/Pnpm.php'
+	),
+	'Illuminate\\Support\\NodePackageManagers\\Yarn' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/NodePackageManagers/Yarn.php'
+	),
+	'Illuminate\\Support\\Number' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Number.php'
+	),
+	'Illuminate\\Support\\Once' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Once.php'
+	),
+	'Illuminate\\Support\\Onceable' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Onceable.php'
+	),
+	'Illuminate\\Support\\Optional' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Optional.php'
+	),
+	'Illuminate\\Support\\Pluralizer' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Pluralizer.php'
+	),
+	'Illuminate\\Support\\ProcessUtils' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/ProcessUtils.php'
+	),
+	'Illuminate\\Support\\Queue\\Concerns\\ResolvesQueueRoutes' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Queue/Concerns/ResolvesQueueRoutes.php'
+	),
+	'Illuminate\\Support\\RebindsCallbacksToSelf' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/RebindsCallbacksToSelf.php'
+	),
+	'Illuminate\\Support\\Reflector' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/reflection/Reflector.php'
+	),
+	'Illuminate\\Support\\ServiceProvider' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/ServiceProvider.php'
+	),
+	'Illuminate\\Support\\Sleep' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Sleep.php'
+	),
+	'Illuminate\\Support\\Str' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Str.php'
+	),
+	'Illuminate\\Support\\Stringable' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Stringable.php'
+	),
+	'Illuminate\\Support\\Testing\\Fakes\\BatchFake' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Testing/Fakes/BatchFake.php'
+	),
+	'Illuminate\\Support\\Testing\\Fakes\\BatchRepositoryFake' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Testing/Fakes/BatchRepositoryFake.php'
+	),
+	'Illuminate\\Support\\Testing\\Fakes\\BusFake' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Testing/Fakes/BusFake.php'
+	),
+	'Illuminate\\Support\\Testing\\Fakes\\ChainedBatchTruthTest' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Testing/Fakes/ChainedBatchTruthTest.php'
+	),
+	'Illuminate\\Support\\Testing\\Fakes\\EventFake' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Testing/Fakes/EventFake.php'
+	),
+	'Illuminate\\Support\\Testing\\Fakes\\ExceptionHandlerFake' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Testing/Fakes/ExceptionHandlerFake.php'
+	),
+	'Illuminate\\Support\\Testing\\Fakes\\Fake' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Testing/Fakes/Fake.php'
+	),
+	'Illuminate\\Support\\Testing\\Fakes\\MailFake' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Testing/Fakes/MailFake.php'
+	),
+	'Illuminate\\Support\\Testing\\Fakes\\NotificationFake' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Testing/Fakes/NotificationFake.php'
+	),
+	'Illuminate\\Support\\Testing\\Fakes\\PendingBatchFake' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Testing/Fakes/PendingBatchFake.php'
+	),
+	'Illuminate\\Support\\Testing\\Fakes\\PendingChainFake' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Testing/Fakes/PendingChainFake.php'
+	),
+	'Illuminate\\Support\\Testing\\Fakes\\PendingMailFake' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Testing/Fakes/PendingMailFake.php'
+	),
+	'Illuminate\\Support\\Testing\\Fakes\\QueueFake' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Testing/Fakes/QueueFake.php'
+	),
+	'Illuminate\\Support\\Timebox' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Timebox.php'
+	),
+	'Illuminate\\Support\\Traits\\CapsuleManagerTrait' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Traits/CapsuleManagerTrait.php'
+	),
+	'Illuminate\\Support\\Traits\\Conditionable' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/conditionable/Traits/Conditionable.php'
+	),
+	'Illuminate\\Support\\Traits\\Dumpable' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Traits/Dumpable.php'
+	),
+	'Illuminate\\Support\\Traits\\EnumeratesValues' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/collections/Traits/EnumeratesValues.php'
+	),
+	'Illuminate\\Support\\Traits\\ForwardsCalls' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Traits/ForwardsCalls.php'
+	),
+	'Illuminate\\Support\\Traits\\InteractsWithData' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Traits/InteractsWithData.php'
+	),
+	'Illuminate\\Support\\Traits\\Localizable' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Traits/Localizable.php'
+	),
+	'Illuminate\\Support\\Traits\\Macroable' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/macroable/Traits/Macroable.php'
+	),
+	'Illuminate\\Support\\Traits\\ParsesSqlServerConfigurationUrls' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Traits/ParsesSqlServerConfigurationUrls.php'
+	),
+	'Illuminate\\Support\\Traits\\ReadsClassAttributes' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Traits/ReadsClassAttributes.php'
+	),
+	'Illuminate\\Support\\Traits\\ReflectsClosures' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/reflection/Traits/ReflectsClosures.php'
+	),
+	'Illuminate\\Support\\Traits\\Tappable' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Traits/Tappable.php'
+	),
+	'Illuminate\\Support\\Traits\\TransformsToResourceCollection' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/collections/Traits/TransformsToResourceCollection.php'
+	),
+	'Illuminate\\Support\\Uri' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/Uri.php'
+	),
+	'Illuminate\\Support\\UriQueryString' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/UriQueryString.php'
+	),
+	'Illuminate\\Support\\ValidatedInput' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/ValidatedInput.php'
+	),
+	'Illuminate\\Support\\ViewErrorBag' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/ViewErrorBag.php'
+	),
 	'JmesPath\\AstRuntime' => array(
-		'version' => '2.8.0.0',
+		'version' => '2.9.2.0',
 		'path'    => $vendorDir . '/mtdowling/jmespath.php/src/AstRuntime.php'
 	),
 	'JmesPath\\CompilerRuntime' => array(
-		'version' => '2.8.0.0',
+		'version' => '2.9.2.0',
 		'path'    => $vendorDir . '/mtdowling/jmespath.php/src/CompilerRuntime.php'
 	),
 	'JmesPath\\DebugRuntime' => array(
-		'version' => '2.8.0.0',
+		'version' => '2.9.2.0',
 		'path'    => $vendorDir . '/mtdowling/jmespath.php/src/DebugRuntime.php'
 	),
 	'JmesPath\\Env' => array(
-		'version' => '2.8.0.0',
+		'version' => '2.9.2.0',
 		'path'    => $vendorDir . '/mtdowling/jmespath.php/src/Env.php'
 	),
 	'JmesPath\\FnDispatcher' => array(
-		'version' => '2.8.0.0',
+		'version' => '2.9.2.0',
 		'path'    => $vendorDir . '/mtdowling/jmespath.php/src/FnDispatcher.php'
 	),
 	'JmesPath\\Lexer' => array(
-		'version' => '2.8.0.0',
+		'version' => '2.9.2.0',
 		'path'    => $vendorDir . '/mtdowling/jmespath.php/src/Lexer.php'
 	),
 	'JmesPath\\Parser' => array(
-		'version' => '2.8.0.0',
+		'version' => '2.9.2.0',
 		'path'    => $vendorDir . '/mtdowling/jmespath.php/src/Parser.php'
 	),
 	'JmesPath\\SyntaxErrorException' => array(
-		'version' => '2.8.0.0',
+		'version' => '2.9.2.0',
 		'path'    => $vendorDir . '/mtdowling/jmespath.php/src/SyntaxErrorException.php'
 	),
 	'JmesPath\\TreeCompiler' => array(
-		'version' => '2.8.0.0',
+		'version' => '2.9.2.0',
 		'path'    => $vendorDir . '/mtdowling/jmespath.php/src/TreeCompiler.php'
 	),
 	'JmesPath\\TreeInterpreter' => array(
-		'version' => '2.8.0.0',
+		'version' => '2.9.2.0',
 		'path'    => $vendorDir . '/mtdowling/jmespath.php/src/TreeInterpreter.php'
 	),
 	'JmesPath\\Utils' => array(
-		'version' => '2.8.0.0',
+		'version' => '2.9.2.0',
 		'path'    => $vendorDir . '/mtdowling/jmespath.php/src/Utils.php'
 	),
 	'Kreait\\Firebase\\AppCheck' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/AppCheck.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/AppCheck.php'
 	),
 	'Kreait\\Firebase\\AppCheck\\ApiClient' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/AppCheck/ApiClient.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/AppCheck/ApiClient.php'
 	),
 	'Kreait\\Firebase\\AppCheck\\AppCheckToken' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/AppCheck/AppCheckToken.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/AppCheck/AppCheckToken.php'
 	),
 	'Kreait\\Firebase\\AppCheck\\AppCheckTokenGenerator' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/AppCheck/AppCheckTokenGenerator.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/AppCheck/AppCheckTokenGenerator.php'
 	),
 	'Kreait\\Firebase\\AppCheck\\AppCheckTokenOptions' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/AppCheck/AppCheckTokenOptions.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/AppCheck/AppCheckTokenOptions.php'
 	),
 	'Kreait\\Firebase\\AppCheck\\AppCheckTokenVerifier' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/AppCheck/AppCheckTokenVerifier.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/AppCheck/AppCheckTokenVerifier.php'
 	),
 	'Kreait\\Firebase\\AppCheck\\DecodedAppCheckToken' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/AppCheck/DecodedAppCheckToken.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/AppCheck/DecodedAppCheckToken.php'
 	),
 	'Kreait\\Firebase\\AppCheck\\VerifyAppCheckTokenResponse' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/AppCheck/VerifyAppCheckTokenResponse.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/AppCheck/VerifyAppCheckTokenResponse.php'
 	),
 	'Kreait\\Firebase\\Auth' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth.php'
 	),
 	'Kreait\\Firebase\\Auth\\ActionCodeSettings' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/ActionCodeSettings.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/ActionCodeSettings.php'
 	),
 	'Kreait\\Firebase\\Auth\\ActionCodeSettings\\ValidatedActionCodeSettings' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/ActionCodeSettings/ValidatedActionCodeSettings.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/ActionCodeSettings/ValidatedActionCodeSettings.php'
 	),
 	'Kreait\\Firebase\\Auth\\ApiClient' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/ApiClient.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/ApiClient.php'
 	),
 	'Kreait\\Firebase\\Auth\\AuthResourceUrlBuilder' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/AuthResourceUrlBuilder.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/AuthResourceUrlBuilder.php'
 	),
 	'Kreait\\Firebase\\Auth\\CreateActionLink' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/CreateActionLink.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/CreateActionLink.php'
 	),
 	'Kreait\\Firebase\\Auth\\CreateActionLink\\FailedToCreateActionLink' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/CreateActionLink/FailedToCreateActionLink.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/CreateActionLink/FailedToCreateActionLink.php'
 	),
 	'Kreait\\Firebase\\Auth\\CreateActionLink\\GuzzleApiClientHandler' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/CreateActionLink/GuzzleApiClientHandler.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/CreateActionLink/GuzzleApiClientHandler.php'
 	),
 	'Kreait\\Firebase\\Auth\\CreateSessionCookie' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/CreateSessionCookie.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/CreateSessionCookie.php'
 	),
 	'Kreait\\Firebase\\Auth\\CreateSessionCookie\\FailedToCreateSessionCookie' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/CreateSessionCookie/FailedToCreateSessionCookie.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/CreateSessionCookie/FailedToCreateSessionCookie.php'
 	),
 	'Kreait\\Firebase\\Auth\\CreateSessionCookie\\GuzzleApiClientHandler' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/CreateSessionCookie/GuzzleApiClientHandler.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/CreateSessionCookie/GuzzleApiClientHandler.php'
 	),
 	'Kreait\\Firebase\\Auth\\CustomTokenViaGoogleCredentials' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/CustomTokenViaGoogleCredentials.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/CustomTokenViaGoogleCredentials.php'
 	),
 	'Kreait\\Firebase\\Auth\\DeleteUsersRequest' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/DeleteUsersRequest.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/DeleteUsersRequest.php'
 	),
 	'Kreait\\Firebase\\Auth\\DeleteUsersResult' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/DeleteUsersResult.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/DeleteUsersResult.php'
+	),
+	'Kreait\\Firebase\\Auth\\Event\\CustomUserClaimsChanged' => array(
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/Event/CustomUserClaimsChanged.php'
+	),
+	'Kreait\\Firebase\\Auth\\Event\\EmailActionLinkSent' => array(
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/Event/EmailActionLinkSent.php'
+	),
+	'Kreait\\Firebase\\Auth\\Event\\RefreshTokensRevoked' => array(
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/Event/RefreshTokensRevoked.php'
+	),
+	'Kreait\\Firebase\\Auth\\Event\\UserCreated' => array(
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/Event/UserCreated.php'
+	),
+	'Kreait\\Firebase\\Auth\\Event\\UserDeleted' => array(
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/Event/UserDeleted.php'
+	),
+	'Kreait\\Firebase\\Auth\\Event\\UserUpdated' => array(
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/Event/UserUpdated.php'
+	),
+	'Kreait\\Firebase\\Auth\\Event\\UsersDeleted' => array(
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/Event/UsersDeleted.php'
 	),
 	'Kreait\\Firebase\\Auth\\IsTenantAware' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/IsTenantAware.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/IsTenantAware.php'
 	),
 	'Kreait\\Firebase\\Auth\\MfaInfo' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/MfaInfo.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/MfaInfo.php'
 	),
 	'Kreait\\Firebase\\Auth\\ProjectAwareAuthResourceUrlBuilder' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/ProjectAwareAuthResourceUrlBuilder.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/ProjectAwareAuthResourceUrlBuilder.php'
 	),
 	'Kreait\\Firebase\\Auth\\SendActionLink' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/SendActionLink.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/SendActionLink.php'
 	),
 	'Kreait\\Firebase\\Auth\\SendActionLink\\FailedToSendActionLink' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/SendActionLink/FailedToSendActionLink.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/SendActionLink/FailedToSendActionLink.php'
 	),
 	'Kreait\\Firebase\\Auth\\SendActionLink\\GuzzleApiClientHandler' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/SendActionLink/GuzzleApiClientHandler.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/SendActionLink/GuzzleApiClientHandler.php'
 	),
 	'Kreait\\Firebase\\Auth\\SignIn' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/SignIn.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/SignIn.php'
 	),
 	'Kreait\\Firebase\\Auth\\SignInAnonymously' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/SignInAnonymously.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/SignInAnonymously.php'
 	),
 	'Kreait\\Firebase\\Auth\\SignInResult' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/SignInResult.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/SignInResult.php'
 	),
 	'Kreait\\Firebase\\Auth\\SignInWithCustomToken' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/SignInWithCustomToken.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/SignInWithCustomToken.php'
 	),
 	'Kreait\\Firebase\\Auth\\SignInWithEmailAndOobCode' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/SignInWithEmailAndOobCode.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/SignInWithEmailAndOobCode.php'
 	),
 	'Kreait\\Firebase\\Auth\\SignInWithEmailAndPassword' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/SignInWithEmailAndPassword.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/SignInWithEmailAndPassword.php'
 	),
 	'Kreait\\Firebase\\Auth\\SignInWithIdpCredentials' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/SignInWithIdpCredentials.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/SignInWithIdpCredentials.php'
 	),
 	'Kreait\\Firebase\\Auth\\SignInWithRefreshToken' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/SignInWithRefreshToken.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/SignInWithRefreshToken.php'
 	),
 	'Kreait\\Firebase\\Auth\\SignIn\\FailedToSignIn' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/SignIn/FailedToSignIn.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/SignIn/FailedToSignIn.php'
 	),
 	'Kreait\\Firebase\\Auth\\SignIn\\GuzzleHandler' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/SignIn/GuzzleHandler.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/SignIn/GuzzleHandler.php'
 	),
 	'Kreait\\Firebase\\Auth\\TenantAwareAuthResourceUrlBuilder' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/TenantAwareAuthResourceUrlBuilder.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/TenantAwareAuthResourceUrlBuilder.php'
 	),
 	'Kreait\\Firebase\\Auth\\UserInfo' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/UserInfo.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/UserInfo.php'
 	),
 	'Kreait\\Firebase\\Auth\\UserMetaData' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/UserMetaData.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/UserMetaData.php'
 	),
 	'Kreait\\Firebase\\Auth\\UserQuery' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/UserQuery.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/UserQuery.php'
 	),
 	'Kreait\\Firebase\\Auth\\UserRecord' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Auth/UserRecord.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Auth/UserRecord.php'
 	),
 	'Kreait\\Firebase\\Contract\\AppCheck' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Contract/AppCheck.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Contract/AppCheck.php'
+	),
+	'Kreait\\Firebase\\Contract\\AppCheckWithReplayProtection' => array(
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Contract/AppCheckWithReplayProtection.php'
 	),
 	'Kreait\\Firebase\\Contract\\Auth' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Contract/Auth.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Contract/Auth.php'
 	),
 	'Kreait\\Firebase\\Contract\\Database' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Contract/Database.php'
-	),
-	'Kreait\\Firebase\\Contract\\DynamicLinks' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Contract/DynamicLinks.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Contract/Database.php'
 	),
 	'Kreait\\Firebase\\Contract\\Firestore' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Contract/Firestore.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Contract/Firestore.php'
 	),
 	'Kreait\\Firebase\\Contract\\Messaging' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Contract/Messaging.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Contract/Messaging.php'
 	),
 	'Kreait\\Firebase\\Contract\\RemoteConfig' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Contract/RemoteConfig.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Contract/RemoteConfig.php'
 	),
 	'Kreait\\Firebase\\Contract\\Storage' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Contract/Storage.php'
-	),
-	'Kreait\\Firebase\\Contract\\Transitional\\FederatedUserFetcher' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Contract/Transitional/FederatedUserFetcher.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Contract/Storage.php'
 	),
 	'Kreait\\Firebase\\Database' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Database.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Database.php'
 	),
 	'Kreait\\Firebase\\Database\\ApiClient' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Database/ApiClient.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Database/ApiClient.php'
 	),
 	'Kreait\\Firebase\\Database\\Query' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Database/Query.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Database/Query.php'
 	),
 	'Kreait\\Firebase\\Database\\Query\\Filter' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Database/Query/Filter.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Database/Query/Filter.php'
 	),
 	'Kreait\\Firebase\\Database\\Query\\Filter\\EndAt' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Database/Query/Filter/EndAt.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Database/Query/Filter/EndAt.php'
 	),
 	'Kreait\\Firebase\\Database\\Query\\Filter\\EndBefore' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Database/Query/Filter/EndBefore.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Database/Query/Filter/EndBefore.php'
 	),
 	'Kreait\\Firebase\\Database\\Query\\Filter\\EqualTo' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Database/Query/Filter/EqualTo.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Database/Query/Filter/EqualTo.php'
 	),
 	'Kreait\\Firebase\\Database\\Query\\Filter\\LimitToFirst' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Database/Query/Filter/LimitToFirst.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Database/Query/Filter/LimitToFirst.php'
 	),
 	'Kreait\\Firebase\\Database\\Query\\Filter\\LimitToLast' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Database/Query/Filter/LimitToLast.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Database/Query/Filter/LimitToLast.php'
 	),
 	'Kreait\\Firebase\\Database\\Query\\Filter\\Shallow' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Database/Query/Filter/Shallow.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Database/Query/Filter/Shallow.php'
 	),
 	'Kreait\\Firebase\\Database\\Query\\Filter\\StartAfter' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Database/Query/Filter/StartAfter.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Database/Query/Filter/StartAfter.php'
 	),
 	'Kreait\\Firebase\\Database\\Query\\Filter\\StartAt' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Database/Query/Filter/StartAt.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Database/Query/Filter/StartAt.php'
 	),
 	'Kreait\\Firebase\\Database\\Query\\Modifier' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Database/Query/Modifier.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Database/Query/Modifier.php'
 	),
 	'Kreait\\Firebase\\Database\\Query\\ModifierTrait' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Database/Query/ModifierTrait.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Database/Query/ModifierTrait.php'
 	),
 	'Kreait\\Firebase\\Database\\Query\\Sorter' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Database/Query/Sorter.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Database/Query/Sorter.php'
+	),
+	'Kreait\\Firebase\\Database\\Query\\Sorter\\Noop' => array(
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Database/Query/Sorter/Noop.php'
 	),
 	'Kreait\\Firebase\\Database\\Query\\Sorter\\OrderByChild' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Database/Query/Sorter/OrderByChild.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Database/Query/Sorter/OrderByChild.php'
 	),
 	'Kreait\\Firebase\\Database\\Query\\Sorter\\OrderByKey' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Database/Query/Sorter/OrderByKey.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Database/Query/Sorter/OrderByKey.php'
 	),
 	'Kreait\\Firebase\\Database\\Query\\Sorter\\OrderByValue' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Database/Query/Sorter/OrderByValue.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Database/Query/Sorter/OrderByValue.php'
 	),
 	'Kreait\\Firebase\\Database\\Reference' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Database/Reference.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Database/Reference.php'
 	),
 	'Kreait\\Firebase\\Database\\RuleSet' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Database/RuleSet.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Database/RuleSet.php'
 	),
 	'Kreait\\Firebase\\Database\\Snapshot' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Database/Snapshot.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Database/Snapshot.php'
 	),
 	'Kreait\\Firebase\\Database\\Transaction' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Database/Transaction.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Database/Transaction.php'
 	),
 	'Kreait\\Firebase\\Database\\UrlBuilder' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Database/UrlBuilder.php'
-	),
-	'Kreait\\Firebase\\DynamicLink' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/DynamicLink.php'
-	),
-	'Kreait\\Firebase\\DynamicLink\\AnalyticsInfo' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/DynamicLink/AnalyticsInfo.php'
-	),
-	'Kreait\\Firebase\\DynamicLink\\AnalyticsInfo\\GooglePlayAnalytics' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/DynamicLink/AnalyticsInfo/GooglePlayAnalytics.php'
-	),
-	'Kreait\\Firebase\\DynamicLink\\AnalyticsInfo\\ITunesConnectAnalytics' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/DynamicLink/AnalyticsInfo/ITunesConnectAnalytics.php'
-	),
-	'Kreait\\Firebase\\DynamicLink\\AndroidInfo' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/DynamicLink/AndroidInfo.php'
-	),
-	'Kreait\\Firebase\\DynamicLink\\ApiClient' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/DynamicLink/ApiClient.php'
-	),
-	'Kreait\\Firebase\\DynamicLink\\CreateDynamicLink' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/DynamicLink/CreateDynamicLink.php'
-	),
-	'Kreait\\Firebase\\DynamicLink\\CreateDynamicLink\\FailedToCreateDynamicLink' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/DynamicLink/CreateDynamicLink/FailedToCreateDynamicLink.php'
-	),
-	'Kreait\\Firebase\\DynamicLink\\DynamicLinkStatistics' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/DynamicLink/DynamicLinkStatistics.php'
-	),
-	'Kreait\\Firebase\\DynamicLink\\EventStatistics' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/DynamicLink/EventStatistics.php'
-	),
-	'Kreait\\Firebase\\DynamicLink\\GetStatisticsForDynamicLink' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/DynamicLink/GetStatisticsForDynamicLink.php'
-	),
-	'Kreait\\Firebase\\DynamicLink\\GetStatisticsForDynamicLink\\FailedToGetStatisticsForDynamicLink' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/DynamicLink/GetStatisticsForDynamicLink/FailedToGetStatisticsForDynamicLink.php'
-	),
-	'Kreait\\Firebase\\DynamicLink\\IOSInfo' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/DynamicLink/IOSInfo.php'
-	),
-	'Kreait\\Firebase\\DynamicLink\\NavigationInfo' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/DynamicLink/NavigationInfo.php'
-	),
-	'Kreait\\Firebase\\DynamicLink\\ShortenLongDynamicLink' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/DynamicLink/ShortenLongDynamicLink.php'
-	),
-	'Kreait\\Firebase\\DynamicLink\\ShortenLongDynamicLink\\FailedToShortenLongDynamicLink' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/DynamicLink/ShortenLongDynamicLink/FailedToShortenLongDynamicLink.php'
-	),
-	'Kreait\\Firebase\\DynamicLink\\SocialMetaTagInfo' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/DynamicLink/SocialMetaTagInfo.php'
-	),
-	'Kreait\\Firebase\\DynamicLinks' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/DynamicLinks.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Database/UrlBuilder.php'
 	),
 	'Kreait\\Firebase\\Exception\\AppCheckApiExceptionConverter' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/AppCheckApiExceptionConverter.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/AppCheckApiExceptionConverter.php'
 	),
 	'Kreait\\Firebase\\Exception\\AppCheckException' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/AppCheckException.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/AppCheckException.php'
 	),
 	'Kreait\\Firebase\\Exception\\AppCheck\\ApiConnectionFailed' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/AppCheck/ApiConnectionFailed.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/AppCheck/ApiConnectionFailed.php'
 	),
 	'Kreait\\Firebase\\Exception\\AppCheck\\AppCheckError' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/AppCheck/AppCheckError.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/AppCheck/AppCheckError.php'
+	),
+	'Kreait\\Firebase\\Exception\\AppCheck\\FailedToVerifyAppCheckReplayProtection' => array(
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/AppCheck/FailedToVerifyAppCheckReplayProtection.php'
 	),
 	'Kreait\\Firebase\\Exception\\AppCheck\\FailedToVerifyAppCheckToken' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/AppCheck/FailedToVerifyAppCheckToken.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/AppCheck/FailedToVerifyAppCheckToken.php'
 	),
 	'Kreait\\Firebase\\Exception\\AppCheck\\InvalidAppCheckToken' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/AppCheck/InvalidAppCheckToken.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/AppCheck/InvalidAppCheckToken.php'
 	),
 	'Kreait\\Firebase\\Exception\\AppCheck\\InvalidAppCheckTokenOptions' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/AppCheck/InvalidAppCheckTokenOptions.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/AppCheck/InvalidAppCheckTokenOptions.php'
 	),
 	'Kreait\\Firebase\\Exception\\AppCheck\\PermissionDenied' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/AppCheck/PermissionDenied.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/AppCheck/PermissionDenied.php'
 	),
 	'Kreait\\Firebase\\Exception\\AuthApiExceptionConverter' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/AuthApiExceptionConverter.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/AuthApiExceptionConverter.php'
 	),
 	'Kreait\\Firebase\\Exception\\AuthException' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/AuthException.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/AuthException.php'
 	),
 	'Kreait\\Firebase\\Exception\\Auth\\ApiConnectionFailed' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Auth/ApiConnectionFailed.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Auth/ApiConnectionFailed.php'
 	),
 	'Kreait\\Firebase\\Exception\\Auth\\AuthError' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Auth/AuthError.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Auth/AuthError.php'
 	),
 	'Kreait\\Firebase\\Exception\\Auth\\CredentialsMismatch' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Auth/CredentialsMismatch.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Auth/CredentialsMismatch.php'
 	),
 	'Kreait\\Firebase\\Exception\\Auth\\EmailExists' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Auth/EmailExists.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Auth/EmailExists.php'
 	),
 	'Kreait\\Firebase\\Exception\\Auth\\EmailNotFound' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Auth/EmailNotFound.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Auth/EmailNotFound.php'
 	),
 	'Kreait\\Firebase\\Exception\\Auth\\ExpiredOobCode' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Auth/ExpiredOobCode.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Auth/ExpiredOobCode.php'
 	),
 	'Kreait\\Firebase\\Exception\\Auth\\FailedToVerifySessionCookie' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Auth/FailedToVerifySessionCookie.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Auth/FailedToVerifySessionCookie.php'
 	),
 	'Kreait\\Firebase\\Exception\\Auth\\FailedToVerifyToken' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Auth/FailedToVerifyToken.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Auth/FailedToVerifyToken.php'
 	),
 	'Kreait\\Firebase\\Exception\\Auth\\InvalidCustomToken' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Auth/InvalidCustomToken.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Auth/InvalidCustomToken.php'
 	),
 	'Kreait\\Firebase\\Exception\\Auth\\InvalidOobCode' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Auth/InvalidOobCode.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Auth/InvalidOobCode.php'
 	),
 	'Kreait\\Firebase\\Exception\\Auth\\InvalidPassword' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Auth/InvalidPassword.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Auth/InvalidPassword.php'
 	),
 	'Kreait\\Firebase\\Exception\\Auth\\MissingPassword' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Auth/MissingPassword.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Auth/MissingPassword.php'
 	),
 	'Kreait\\Firebase\\Exception\\Auth\\OperationNotAllowed' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Auth/OperationNotAllowed.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Auth/OperationNotAllowed.php'
 	),
 	'Kreait\\Firebase\\Exception\\Auth\\PhoneNumberExists' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Auth/PhoneNumberExists.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Auth/PhoneNumberExists.php'
 	),
 	'Kreait\\Firebase\\Exception\\Auth\\ProviderLinkFailed' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Auth/ProviderLinkFailed.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Auth/ProviderLinkFailed.php'
 	),
 	'Kreait\\Firebase\\Exception\\Auth\\RevokedIdToken' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Auth/RevokedIdToken.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Auth/RevokedIdToken.php'
 	),
 	'Kreait\\Firebase\\Exception\\Auth\\RevokedSessionCookie' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Auth/RevokedSessionCookie.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Auth/RevokedSessionCookie.php'
 	),
 	'Kreait\\Firebase\\Exception\\Auth\\UserDisabled' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Auth/UserDisabled.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Auth/UserDisabled.php'
 	),
 	'Kreait\\Firebase\\Exception\\Auth\\UserNotFound' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Auth/UserNotFound.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Auth/UserNotFound.php'
 	),
 	'Kreait\\Firebase\\Exception\\Auth\\WeakPassword' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Auth/WeakPassword.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Auth/WeakPassword.php'
 	),
 	'Kreait\\Firebase\\Exception\\DatabaseApiExceptionConverter' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/DatabaseApiExceptionConverter.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/DatabaseApiExceptionConverter.php'
 	),
 	'Kreait\\Firebase\\Exception\\DatabaseException' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/DatabaseException.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/DatabaseException.php'
 	),
 	'Kreait\\Firebase\\Exception\\Database\\ApiConnectionFailed' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Database/ApiConnectionFailed.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Database/ApiConnectionFailed.php'
 	),
 	'Kreait\\Firebase\\Exception\\Database\\DatabaseError' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Database/DatabaseError.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Database/DatabaseError.php'
 	),
 	'Kreait\\Firebase\\Exception\\Database\\DatabaseNotFound' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Database/DatabaseNotFound.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Database/DatabaseNotFound.php'
 	),
 	'Kreait\\Firebase\\Exception\\Database\\PermissionDenied' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Database/PermissionDenied.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Database/PermissionDenied.php'
 	),
 	'Kreait\\Firebase\\Exception\\Database\\PreconditionFailed' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Database/PreconditionFailed.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Database/PreconditionFailed.php'
 	),
 	'Kreait\\Firebase\\Exception\\Database\\ReferenceHasNotBeenSnapshotted' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Database/ReferenceHasNotBeenSnapshotted.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Database/ReferenceHasNotBeenSnapshotted.php'
 	),
 	'Kreait\\Firebase\\Exception\\Database\\TransactionFailed' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Database/TransactionFailed.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Database/TransactionFailed.php'
 	),
 	'Kreait\\Firebase\\Exception\\Database\\UnsupportedQuery' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Database/UnsupportedQuery.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Database/UnsupportedQuery.php'
 	),
 	'Kreait\\Firebase\\Exception\\FirebaseException' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/FirebaseException.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/FirebaseException.php'
 	),
 	'Kreait\\Firebase\\Exception\\HasErrors' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/HasErrors.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/HasErrors.php'
 	),
 	'Kreait\\Firebase\\Exception\\InvalidArgumentException' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/InvalidArgumentException.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/InvalidArgumentException.php'
 	),
 	'Kreait\\Firebase\\Exception\\LogicException' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/LogicException.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/LogicException.php'
 	),
 	'Kreait\\Firebase\\Exception\\MessagingApiExceptionConverter' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/MessagingApiExceptionConverter.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/MessagingApiExceptionConverter.php'
 	),
 	'Kreait\\Firebase\\Exception\\MessagingException' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/MessagingException.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/MessagingException.php'
 	),
 	'Kreait\\Firebase\\Exception\\Messaging\\ApiConnectionFailed' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Messaging/ApiConnectionFailed.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Messaging/ApiConnectionFailed.php'
 	),
 	'Kreait\\Firebase\\Exception\\Messaging\\AuthenticationError' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Messaging/AuthenticationError.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Messaging/AuthenticationError.php'
 	),
 	'Kreait\\Firebase\\Exception\\Messaging\\InvalidArgument' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Messaging/InvalidArgument.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Messaging/InvalidArgument.php'
 	),
 	'Kreait\\Firebase\\Exception\\Messaging\\InvalidMessage' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Messaging/InvalidMessage.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Messaging/InvalidMessage.php'
 	),
 	'Kreait\\Firebase\\Exception\\Messaging\\MessagingError' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Messaging/MessagingError.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Messaging/MessagingError.php'
 	),
 	'Kreait\\Firebase\\Exception\\Messaging\\NotFound' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Messaging/NotFound.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Messaging/NotFound.php'
 	),
 	'Kreait\\Firebase\\Exception\\Messaging\\QuotaExceeded' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Messaging/QuotaExceeded.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Messaging/QuotaExceeded.php'
+	),
+	'Kreait\\Firebase\\Exception\\Messaging\\SenderIdMismatch' => array(
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Messaging/SenderIdMismatch.php'
 	),
 	'Kreait\\Firebase\\Exception\\Messaging\\ServerError' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Messaging/ServerError.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Messaging/ServerError.php'
 	),
 	'Kreait\\Firebase\\Exception\\Messaging\\ServerUnavailable' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/Messaging/ServerUnavailable.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/Messaging/ServerUnavailable.php'
 	),
 	'Kreait\\Firebase\\Exception\\OutOfRangeException' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/OutOfRangeException.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/OutOfRangeException.php'
 	),
 	'Kreait\\Firebase\\Exception\\RemoteConfigApiExceptionConverter' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/RemoteConfigApiExceptionConverter.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/RemoteConfigApiExceptionConverter.php'
 	),
 	'Kreait\\Firebase\\Exception\\RemoteConfigException' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/RemoteConfigException.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/RemoteConfigException.php'
 	),
 	'Kreait\\Firebase\\Exception\\RemoteConfig\\ApiConnectionFailed' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/RemoteConfig/ApiConnectionFailed.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/RemoteConfig/ApiConnectionFailed.php'
 	),
 	'Kreait\\Firebase\\Exception\\RemoteConfig\\OperationAborted' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/RemoteConfig/OperationAborted.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/RemoteConfig/OperationAborted.php'
 	),
 	'Kreait\\Firebase\\Exception\\RemoteConfig\\PermissionDenied' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/RemoteConfig/PermissionDenied.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/RemoteConfig/PermissionDenied.php'
 	),
 	'Kreait\\Firebase\\Exception\\RemoteConfig\\RemoteConfigError' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/RemoteConfig/RemoteConfigError.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/RemoteConfig/RemoteConfigError.php'
 	),
 	'Kreait\\Firebase\\Exception\\RemoteConfig\\ValidationFailed' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/RemoteConfig/ValidationFailed.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/RemoteConfig/ValidationFailed.php'
 	),
 	'Kreait\\Firebase\\Exception\\RemoteConfig\\VersionMismatch' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/RemoteConfig/VersionMismatch.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/RemoteConfig/VersionMismatch.php'
 	),
 	'Kreait\\Firebase\\Exception\\RemoteConfig\\VersionNotFound' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/RemoteConfig/VersionNotFound.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/RemoteConfig/VersionNotFound.php'
 	),
 	'Kreait\\Firebase\\Exception\\RuntimeException' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Exception/RuntimeException.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Exception/RuntimeException.php'
 	),
 	'Kreait\\Firebase\\Factory' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Factory.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Factory.php'
 	),
 	'Kreait\\Firebase\\Firestore' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Firestore.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Firestore.php'
 	),
 	'Kreait\\Firebase\\Http\\ErrorResponseParser' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Http/ErrorResponseParser.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Http/ErrorResponseParser.php'
 	),
 	'Kreait\\Firebase\\Http\\HttpClientOptions' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Http/HttpClientOptions.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Http/HttpClientOptions.php'
 	),
 	'Kreait\\Firebase\\Http\\Middleware' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Http/Middleware.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Http/Middleware.php'
 	),
 	'Kreait\\Firebase\\JWT\\Action\\CreateCustomToken' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Action/CreateCustomToken.php'
 	),
 	'Kreait\\Firebase\\JWT\\Action\\CreateCustomToken\\Handler' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Action/CreateCustomToken/Handler.php'
 	),
 	'Kreait\\Firebase\\JWT\\Action\\CreateCustomToken\\WithLcobucciJWT' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Action/CreateCustomToken/WithLcobucciJWT.php'
 	),
 	'Kreait\\Firebase\\JWT\\Action\\FetchGooglePublicKeys' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Action/FetchGooglePublicKeys.php'
 	),
 	'Kreait\\Firebase\\JWT\\Action\\FetchGooglePublicKeys\\Handler' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Action/FetchGooglePublicKeys/Handler.php'
 	),
 	'Kreait\\Firebase\\JWT\\Action\\FetchGooglePublicKeys\\WithGuzzle' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Action/FetchGooglePublicKeys/WithGuzzle.php'
 	),
 	'Kreait\\Firebase\\JWT\\Action\\FetchGooglePublicKeys\\WithPsr6Cache' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Action/FetchGooglePublicKeys/WithPsr6Cache.php'
 	),
 	'Kreait\\Firebase\\JWT\\Action\\VerifyIdToken' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Action/VerifyIdToken.php'
 	),
 	'Kreait\\Firebase\\JWT\\Action\\VerifyIdToken\\Handler' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Action/VerifyIdToken/Handler.php'
 	),
 	'Kreait\\Firebase\\JWT\\Action\\VerifyIdToken\\WithLcobucciJWT' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Action/VerifyIdToken/WithLcobucciJWT.php'
 	),
 	'Kreait\\Firebase\\JWT\\Action\\VerifySessionCookie' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Action/VerifySessionCookie.php'
 	),
 	'Kreait\\Firebase\\JWT\\Action\\VerifySessionCookie\\Handler' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Action/VerifySessionCookie/Handler.php'
 	),
 	'Kreait\\Firebase\\JWT\\Action\\VerifySessionCookie\\WithLcobucciJWT' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Action/VerifySessionCookie/WithLcobucciJWT.php'
 	),
 	'Kreait\\Firebase\\JWT\\Contract\\Expirable' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Contract/Expirable.php'
 	),
 	'Kreait\\Firebase\\JWT\\Contract\\ExpirableTrait' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Contract/ExpirableTrait.php'
 	),
 	'Kreait\\Firebase\\JWT\\Contract\\Keys' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Contract/Keys.php'
 	),
 	'Kreait\\Firebase\\JWT\\Contract\\KeysTrait' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Contract/KeysTrait.php'
 	),
 	'Kreait\\Firebase\\JWT\\Contract\\Token' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Contract/Token.php'
 	),
 	'Kreait\\Firebase\\JWT\\CustomTokenGenerator' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/CustomTokenGenerator.php'
 	),
 	'Kreait\\Firebase\\JWT\\Error\\CustomTokenCreationFailed' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Error/CustomTokenCreationFailed.php'
 	),
 	'Kreait\\Firebase\\JWT\\Error\\FetchingGooglePublicKeysFailed' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Error/FetchingGooglePublicKeysFailed.php'
 	),
 	'Kreait\\Firebase\\JWT\\Error\\IdTokenVerificationFailed' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Error/IdTokenVerificationFailed.php'
 	),
 	'Kreait\\Firebase\\JWT\\Error\\SessionCookieVerificationFailed' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Error/SessionCookieVerificationFailed.php'
 	),
 	'Kreait\\Firebase\\JWT\\GooglePublicKeys' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/GooglePublicKeys.php'
 	),
 	'Kreait\\Firebase\\JWT\\IdTokenVerifier' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/IdTokenVerifier.php'
 	),
 	'Kreait\\Firebase\\JWT\\InsecureToken' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/InsecureToken.php'
 	),
 	'Kreait\\Firebase\\JWT\\Keys\\ExpiringKeys' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Keys/ExpiringKeys.php'
 	),
 	'Kreait\\Firebase\\JWT\\Keys\\StaticKeys' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Keys/StaticKeys.php'
 	),
 	'Kreait\\Firebase\\JWT\\SecureToken' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/SecureToken.php'
 	),
 	'Kreait\\Firebase\\JWT\\SessionCookieVerifier' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/SessionCookieVerifier.php'
 	),
 	'Kreait\\Firebase\\JWT\\Signer\\None' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Signer/None.php'
 	),
 	'Kreait\\Firebase\\JWT\\Token\\InsecureParser' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Token/InsecureParser.php'
 	),
 	'Kreait\\Firebase\\JWT\\Token\\Parser' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Token/Parser.php'
 	),
 	'Kreait\\Firebase\\JWT\\Util' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Util.php'
 	),
 	'Kreait\\Firebase\\JWT\\Value\\Duration' => array(
-		'version' => '5.3.0.0',
+		'version' => '5.6.0.0',
 		'path'    => $vendorDir . '/kreait/firebase-tokens/src/JWT/Value/Duration.php'
 	),
 	'Kreait\\Firebase\\Messaging' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging.php'
 	),
 	'Kreait\\Firebase\\Messaging\\AndroidConfig' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/AndroidConfig.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/AndroidConfig.php'
 	),
 	'Kreait\\Firebase\\Messaging\\ApiClient' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/ApiClient.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/ApiClient.php'
 	),
 	'Kreait\\Firebase\\Messaging\\ApnsConfig' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/ApnsConfig.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/ApnsConfig.php'
 	),
 	'Kreait\\Firebase\\Messaging\\AppInstance' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/AppInstance.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/AppInstance.php'
 	),
 	'Kreait\\Firebase\\Messaging\\AppInstanceApiClient' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/AppInstanceApiClient.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/AppInstanceApiClient.php'
 	),
 	'Kreait\\Firebase\\Messaging\\CloudMessage' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/CloudMessage.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/CloudMessage.php'
 	),
 	'Kreait\\Firebase\\Messaging\\Condition' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/Condition.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/Condition.php'
+	),
+	'Kreait\\Firebase\\Messaging\\Event\\MessagesSent' => array(
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/Event/MessagesSent.php'
 	),
 	'Kreait\\Firebase\\Messaging\\FcmOptions' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/FcmOptions.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/FcmOptions.php'
 	),
 	'Kreait\\Firebase\\Messaging\\Message' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/Message.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/Message.php'
 	),
 	'Kreait\\Firebase\\Messaging\\MessageData' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/MessageData.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/MessageData.php'
 	),
 	'Kreait\\Firebase\\Messaging\\MessageTarget' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/MessageTarget.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/MessageTarget.php'
 	),
 	'Kreait\\Firebase\\Messaging\\Messages' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/Messages.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/Messages.php'
 	),
 	'Kreait\\Firebase\\Messaging\\MulticastSendReport' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/MulticastSendReport.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/MulticastSendReport.php'
 	),
 	'Kreait\\Firebase\\Messaging\\Notification' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/Notification.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/Notification.php'
 	),
 	'Kreait\\Firebase\\Messaging\\Processor\\SetApnsContentAvailableIfNeeded' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/Processor/SetApnsContentAvailableIfNeeded.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/Processor/SetApnsContentAvailableIfNeeded.php'
 	),
 	'Kreait\\Firebase\\Messaging\\Processor\\SetApnsPushTypeIfNeeded' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/Processor/SetApnsPushTypeIfNeeded.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/Processor/SetApnsPushTypeIfNeeded.php'
 	),
 	'Kreait\\Firebase\\Messaging\\RawMessageFromArray' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/RawMessageFromArray.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/RawMessageFromArray.php'
 	),
 	'Kreait\\Firebase\\Messaging\\RegistrationToken' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/RegistrationToken.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/RegistrationToken.php'
 	),
 	'Kreait\\Firebase\\Messaging\\RegistrationTokens' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/RegistrationTokens.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/RegistrationTokens.php'
 	),
 	'Kreait\\Firebase\\Messaging\\RequestFactory' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/RequestFactory.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/RequestFactory.php'
 	),
 	'Kreait\\Firebase\\Messaging\\SendReport' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/SendReport.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/SendReport.php'
 	),
 	'Kreait\\Firebase\\Messaging\\Topic' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/Topic.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/Topic.php'
 	),
 	'Kreait\\Firebase\\Messaging\\TopicSubscription' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/TopicSubscription.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/TopicSubscription.php'
 	),
 	'Kreait\\Firebase\\Messaging\\TopicSubscriptions' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/TopicSubscriptions.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/TopicSubscriptions.php'
 	),
 	'Kreait\\Firebase\\Messaging\\WebPushConfig' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Messaging/WebPushConfig.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Messaging/WebPushConfig.php'
 	),
 	'Kreait\\Firebase\\RemoteConfig' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/RemoteConfig.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/RemoteConfig.php'
 	),
 	'Kreait\\Firebase\\RemoteConfig\\ApiClient' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/RemoteConfig/ApiClient.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/RemoteConfig/ApiClient.php'
 	),
 	'Kreait\\Firebase\\RemoteConfig\\Condition' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/RemoteConfig/Condition.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/RemoteConfig/Condition.php'
 	),
 	'Kreait\\Firebase\\RemoteConfig\\ConditionalValue' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/RemoteConfig/ConditionalValue.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/RemoteConfig/ConditionalValue.php'
 	),
-	'Kreait\\Firebase\\RemoteConfig\\DefaultValue' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/RemoteConfig/DefaultValue.php'
+	'Kreait\\Firebase\\RemoteConfig\\Event\\TemplatePublished' => array(
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/RemoteConfig/Event/TemplatePublished.php'
 	),
-	'Kreait\\Firebase\\RemoteConfig\\ExplicitValue' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/RemoteConfig/ExplicitValue.php'
+	'Kreait\\Firebase\\RemoteConfig\\Event\\TemplateRolledBack' => array(
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/RemoteConfig/Event/TemplateRolledBack.php'
 	),
 	'Kreait\\Firebase\\RemoteConfig\\FindVersions' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/RemoteConfig/FindVersions.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/RemoteConfig/FindVersions.php'
 	),
 	'Kreait\\Firebase\\RemoteConfig\\Parameter' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/RemoteConfig/Parameter.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/RemoteConfig/Parameter.php'
 	),
 	'Kreait\\Firebase\\RemoteConfig\\ParameterGroup' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/RemoteConfig/ParameterGroup.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/RemoteConfig/ParameterGroup.php'
 	),
 	'Kreait\\Firebase\\RemoteConfig\\ParameterValue' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/RemoteConfig/ParameterValue.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/RemoteConfig/ParameterValue.php'
 	),
 	'Kreait\\Firebase\\RemoteConfig\\ParameterValueType' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/RemoteConfig/ParameterValueType.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/RemoteConfig/ParameterValueType.php'
 	),
 	'Kreait\\Firebase\\RemoteConfig\\PersonalizationValue' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/RemoteConfig/PersonalizationValue.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/RemoteConfig/PersonalizationValue.php'
 	),
 	'Kreait\\Firebase\\RemoteConfig\\RolloutValue' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/RemoteConfig/RolloutValue.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/RemoteConfig/RolloutValue.php'
 	),
 	'Kreait\\Firebase\\RemoteConfig\\TagColor' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/RemoteConfig/TagColor.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/RemoteConfig/TagColor.php'
 	),
 	'Kreait\\Firebase\\RemoteConfig\\Template' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/RemoteConfig/Template.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/RemoteConfig/Template.php'
 	),
 	'Kreait\\Firebase\\RemoteConfig\\UpdateOrigin' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/RemoteConfig/UpdateOrigin.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/RemoteConfig/UpdateOrigin.php'
 	),
 	'Kreait\\Firebase\\RemoteConfig\\UpdateType' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/RemoteConfig/UpdateType.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/RemoteConfig/UpdateType.php'
 	),
 	'Kreait\\Firebase\\RemoteConfig\\User' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/RemoteConfig/User.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/RemoteConfig/User.php'
 	),
 	'Kreait\\Firebase\\RemoteConfig\\Version' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/RemoteConfig/Version.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/RemoteConfig/Version.php'
 	),
 	'Kreait\\Firebase\\RemoteConfig\\VersionNumber' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/RemoteConfig/VersionNumber.php'
-	),
-	'Kreait\\Firebase\\Request' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Request.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/RemoteConfig/VersionNumber.php'
 	),
 	'Kreait\\Firebase\\Request\\CreateUser' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Request/CreateUser.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Request/CreateUser.php'
 	),
 	'Kreait\\Firebase\\Request\\EditUserTrait' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Request/EditUserTrait.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Request/EditUserTrait.php'
 	),
 	'Kreait\\Firebase\\Request\\UpdateUser' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Request/UpdateUser.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Request/UpdateUser.php'
 	),
 	'Kreait\\Firebase\\ServiceAccount' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/ServiceAccount.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/ServiceAccount.php'
 	),
 	'Kreait\\Firebase\\Storage' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Storage.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Storage.php'
 	),
 	'Kreait\\Firebase\\Util' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Util.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Util.php'
 	),
 	'Kreait\\Firebase\\Util\\DT' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Util/DT.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Util/DT.php'
 	),
 	'Kreait\\Firebase\\Valinor\\Converter\\SnakeCaseToCamelCaseConverter' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Valinor/Converter/SnakeCaseToCamelCaseConverter.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Valinor/Converter/SnakeCaseToCamelCaseConverter.php'
+	),
+	'Kreait\\Firebase\\Valinor\\Converter\\UnwrapIterableByKey' => array(
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Valinor/Converter/UnwrapIterableByKey.php'
 	),
 	'Kreait\\Firebase\\Valinor\\Mapper' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Valinor/Mapper.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Valinor/Mapper.php'
 	),
 	'Kreait\\Firebase\\Valinor\\Normalizer' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Valinor/Normalizer.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Valinor/Normalizer.php'
 	),
 	'Kreait\\Firebase\\Valinor\\Source' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Valinor/Source.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Valinor/Source.php'
 	),
 	'Kreait\\Firebase\\Valinor\\Transformer\\CamelToSnakeCaseTransformer' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Valinor/Transformer/CamelToSnakeCaseTransformer.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Valinor/Transformer/CamelToSnakeCaseTransformer.php'
 	),
 	'Kreait\\Firebase\\Value\\ClearTextPassword' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Value/ClearTextPassword.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Value/ClearTextPassword.php'
 	),
 	'Kreait\\Firebase\\Value\\Email' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Value/Email.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Value/Email.php'
 	),
 	'Kreait\\Firebase\\Value\\Uid' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Value/Uid.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Value/Uid.php'
 	),
 	'Kreait\\Firebase\\Value\\Url' => array(
-		'version' => '7.24.1.0',
-		'path'    => $vendorDir . '/kreait/firebase-php/src/Firebase/Value/Url.php'
+		'version' => '8.5.0.0',
+		'path'    => $vendorDir . '/kreait/firebase-php/src/Value/Url.php'
 	),
 	'Latest_Autoloader_Guard' => array(
 		'version' => '5.0.16',
@@ -6595,504 +8515,580 @@ return array(
 		'path'    => $vendorDir . '/automattic/jetpack-autoloader/src/class-manifest-reader.php'
 	),
 	'Monolog\\Attribute\\AsMonologProcessor' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Attribute/AsMonologProcessor.php'
 	),
 	'Monolog\\Attribute\\WithMonologChannel' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Attribute/WithMonologChannel.php'
 	),
 	'Monolog\\DateTimeImmutable' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/DateTimeImmutable.php'
 	),
 	'Monolog\\ErrorHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/ErrorHandler.php'
 	),
 	'Monolog\\Formatter\\ChromePHPFormatter' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/ChromePHPFormatter.php'
 	),
 	'Monolog\\Formatter\\ElasticaFormatter' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/ElasticaFormatter.php'
 	),
 	'Monolog\\Formatter\\ElasticsearchFormatter' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/ElasticsearchFormatter.php'
 	),
 	'Monolog\\Formatter\\FlowdockFormatter' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/FlowdockFormatter.php'
 	),
 	'Monolog\\Formatter\\FluentdFormatter' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/FluentdFormatter.php'
 	),
 	'Monolog\\Formatter\\FormatterInterface' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/FormatterInterface.php'
 	),
 	'Monolog\\Formatter\\GelfMessageFormatter' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/GelfMessageFormatter.php'
 	),
 	'Monolog\\Formatter\\GoogleCloudLoggingFormatter' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/GoogleCloudLoggingFormatter.php'
 	),
 	'Monolog\\Formatter\\HtmlFormatter' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/HtmlFormatter.php'
 	),
 	'Monolog\\Formatter\\JsonFormatter' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/JsonFormatter.php'
 	),
 	'Monolog\\Formatter\\LineFormatter' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/LineFormatter.php'
 	),
 	'Monolog\\Formatter\\LogglyFormatter' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/LogglyFormatter.php'
 	),
 	'Monolog\\Formatter\\LogmaticFormatter' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/LogmaticFormatter.php'
 	),
 	'Monolog\\Formatter\\LogstashFormatter' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/LogstashFormatter.php'
 	),
 	'Monolog\\Formatter\\MongoDBFormatter' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/MongoDBFormatter.php'
 	),
 	'Monolog\\Formatter\\NormalizerFormatter' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/NormalizerFormatter.php'
 	),
+	'Monolog\\Formatter\\RedactingFormatter' => array(
+		'version' => '3.12.0.0',
+		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/RedactingFormatter.php'
+	),
 	'Monolog\\Formatter\\ScalarFormatter' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/ScalarFormatter.php'
 	),
 	'Monolog\\Formatter\\SyslogFormatter' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/SyslogFormatter.php'
 	),
 	'Monolog\\Formatter\\WildfireFormatter' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/WildfireFormatter.php'
 	),
+	'Monolog\\Formatter\\WrappingFormatterInterface' => array(
+		'version' => '3.12.0.0',
+		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/WrappingFormatterInterface.php'
+	),
 	'Monolog\\Handler\\AbstractHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/AbstractHandler.php'
 	),
 	'Monolog\\Handler\\AbstractProcessingHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/AbstractProcessingHandler.php'
 	),
 	'Monolog\\Handler\\AbstractSyslogHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/AbstractSyslogHandler.php'
 	),
 	'Monolog\\Handler\\AmqpHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/AmqpHandler.php'
 	),
 	'Monolog\\Handler\\BrowserConsoleHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/BrowserConsoleHandler.php'
 	),
 	'Monolog\\Handler\\BufferHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/BufferHandler.php'
 	),
 	'Monolog\\Handler\\ChromePHPHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/ChromePHPHandler.php'
 	),
 	'Monolog\\Handler\\CouchDBHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/CouchDBHandler.php'
 	),
 	'Monolog\\Handler\\CubeHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/CubeHandler.php'
 	),
 	'Monolog\\Handler\\Curl\\Util' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/Curl/Util.php'
 	),
 	'Monolog\\Handler\\DeduplicationHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/DeduplicationHandler.php'
 	),
 	'Monolog\\Handler\\DoctrineCouchDBHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/DoctrineCouchDBHandler.php'
 	),
 	'Monolog\\Handler\\DynamoDbHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/DynamoDbHandler.php'
 	),
 	'Monolog\\Handler\\ElasticaHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/ElasticaHandler.php'
 	),
 	'Monolog\\Handler\\ElasticsearchHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/ElasticsearchHandler.php'
 	),
 	'Monolog\\Handler\\ErrorLogHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/ErrorLogHandler.php'
 	),
 	'Monolog\\Handler\\FallbackGroupHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/FallbackGroupHandler.php'
 	),
 	'Monolog\\Handler\\FilterHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/FilterHandler.php'
 	),
 	'Monolog\\Handler\\FingersCrossedHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/FingersCrossedHandler.php'
 	),
 	'Monolog\\Handler\\FingersCrossed\\ActivationStrategyInterface' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/FingersCrossed/ActivationStrategyInterface.php'
 	),
 	'Monolog\\Handler\\FingersCrossed\\ChannelLevelActivationStrategy' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/FingersCrossed/ChannelLevelActivationStrategy.php'
 	),
 	'Monolog\\Handler\\FingersCrossed\\ErrorLevelActivationStrategy' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/FingersCrossed/ErrorLevelActivationStrategy.php'
 	),
 	'Monolog\\Handler\\FirePHPHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/FirePHPHandler.php'
 	),
 	'Monolog\\Handler\\FleepHookHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/FleepHookHandler.php'
 	),
 	'Monolog\\Handler\\FlowdockHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/FlowdockHandler.php'
 	),
 	'Monolog\\Handler\\FormattableHandlerInterface' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/FormattableHandlerInterface.php'
 	),
 	'Monolog\\Handler\\FormattableHandlerTrait' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/FormattableHandlerTrait.php'
 	),
+	'Monolog\\Handler\\FrankenPhpHandler' => array(
+		'version' => '3.12.0.0',
+		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/FrankenPhpHandler.php'
+	),
 	'Monolog\\Handler\\GelfHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/GelfHandler.php'
 	),
 	'Monolog\\Handler\\GroupHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/GroupHandler.php'
 	),
 	'Monolog\\Handler\\Handler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/Handler.php'
 	),
 	'Monolog\\Handler\\HandlerInterface' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/HandlerInterface.php'
 	),
 	'Monolog\\Handler\\HandlerWrapper' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/HandlerWrapper.php'
 	),
 	'Monolog\\Handler\\IFTTTHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/IFTTTHandler.php'
 	),
 	'Monolog\\Handler\\InsightOpsHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/InsightOpsHandler.php'
 	),
 	'Monolog\\Handler\\LogEntriesHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/LogEntriesHandler.php'
 	),
+	'Monolog\\Handler\\LogMonsterHandler' => array(
+		'version' => '3.12.0.0',
+		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/LogMonsterHandler.php'
+	),
 	'Monolog\\Handler\\LogglyHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/LogglyHandler.php'
 	),
 	'Monolog\\Handler\\LogmaticHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/LogmaticHandler.php'
 	),
 	'Monolog\\Handler\\MailHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/MailHandler.php'
 	),
 	'Monolog\\Handler\\MandrillHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/MandrillHandler.php'
 	),
 	'Monolog\\Handler\\MissingExtensionException' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/MissingExtensionException.php'
 	),
 	'Monolog\\Handler\\MongoDBHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/MongoDBHandler.php'
 	),
 	'Monolog\\Handler\\NativeMailerHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/NativeMailerHandler.php'
 	),
 	'Monolog\\Handler\\NewRelicHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/NewRelicHandler.php'
 	),
 	'Monolog\\Handler\\NoopHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/NoopHandler.php'
 	),
 	'Monolog\\Handler\\NullHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/NullHandler.php'
 	),
 	'Monolog\\Handler\\OverflowHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/OverflowHandler.php'
 	),
 	'Monolog\\Handler\\PHPConsoleHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/PHPConsoleHandler.php'
 	),
 	'Monolog\\Handler\\ProcessHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/ProcessHandler.php'
 	),
 	'Monolog\\Handler\\ProcessableHandlerInterface' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/ProcessableHandlerInterface.php'
 	),
 	'Monolog\\Handler\\ProcessableHandlerTrait' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/ProcessableHandlerTrait.php'
 	),
 	'Monolog\\Handler\\PsrHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/PsrHandler.php'
 	),
 	'Monolog\\Handler\\PushoverHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/PushoverHandler.php'
 	),
 	'Monolog\\Handler\\RedisHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/RedisHandler.php'
 	),
 	'Monolog\\Handler\\RedisPubSubHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/RedisPubSubHandler.php'
 	),
 	'Monolog\\Handler\\RollbarHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/RollbarHandler.php'
 	),
 	'Monolog\\Handler\\RotatingFileHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/RotatingFileHandler.php'
 	),
 	'Monolog\\Handler\\SamplingHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/SamplingHandler.php'
 	),
 	'Monolog\\Handler\\SendGridHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/SendGridHandler.php'
 	),
 	'Monolog\\Handler\\SlackHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/SlackHandler.php'
 	),
 	'Monolog\\Handler\\SlackWebhookHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/SlackWebhookHandler.php'
 	),
 	'Monolog\\Handler\\Slack\\SlackRecord' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/Slack/SlackRecord.php'
 	),
 	'Monolog\\Handler\\SocketHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/SocketHandler.php'
 	),
 	'Monolog\\Handler\\SqsHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/SqsHandler.php'
 	),
 	'Monolog\\Handler\\StreamHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/StreamHandler.php'
 	),
 	'Monolog\\Handler\\SymfonyMailerHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/SymfonyMailerHandler.php'
 	),
 	'Monolog\\Handler\\SyslogHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/SyslogHandler.php'
 	),
 	'Monolog\\Handler\\SyslogUdpHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/SyslogUdpHandler.php'
 	),
 	'Monolog\\Handler\\SyslogUdp\\UdpSocket' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/SyslogUdp/UdpSocket.php'
 	),
 	'Monolog\\Handler\\TelegramBotHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/TelegramBotHandler.php'
 	),
 	'Monolog\\Handler\\TestHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/TestHandler.php'
 	),
 	'Monolog\\Handler\\WebRequestRecognizerTrait' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/WebRequestRecognizerTrait.php'
 	),
 	'Monolog\\Handler\\WhatFailureGroupHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/WhatFailureGroupHandler.php'
 	),
 	'Monolog\\Handler\\ZendMonitorHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Handler/ZendMonitorHandler.php'
 	),
 	'Monolog\\JsonSerializableDateTimeImmutable' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/JsonSerializableDateTimeImmutable.php'
 	),
 	'Monolog\\Level' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Level.php'
 	),
 	'Monolog\\LogRecord' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/LogRecord.php'
 	),
 	'Monolog\\Logger' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Logger.php'
 	),
 	'Monolog\\Processor\\ClosureContextProcessor' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Processor/ClosureContextProcessor.php'
 	),
 	'Monolog\\Processor\\GitProcessor' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Processor/GitProcessor.php'
 	),
 	'Monolog\\Processor\\HostnameProcessor' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Processor/HostnameProcessor.php'
 	),
 	'Monolog\\Processor\\IntrospectionProcessor' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Processor/IntrospectionProcessor.php'
 	),
 	'Monolog\\Processor\\LoadAverageProcessor' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Processor/LoadAverageProcessor.php'
 	),
 	'Monolog\\Processor\\MemoryPeakUsageProcessor' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Processor/MemoryPeakUsageProcessor.php'
 	),
 	'Monolog\\Processor\\MemoryProcessor' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Processor/MemoryProcessor.php'
 	),
 	'Monolog\\Processor\\MemoryUsageProcessor' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Processor/MemoryUsageProcessor.php'
 	),
 	'Monolog\\Processor\\MercurialProcessor' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Processor/MercurialProcessor.php'
 	),
 	'Monolog\\Processor\\ProcessIdProcessor' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Processor/ProcessIdProcessor.php'
 	),
 	'Monolog\\Processor\\ProcessorInterface' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Processor/ProcessorInterface.php'
 	),
 	'Monolog\\Processor\\PsrLogMessageProcessor' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Processor/PsrLogMessageProcessor.php'
 	),
 	'Monolog\\Processor\\TagProcessor' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Processor/TagProcessor.php'
 	),
 	'Monolog\\Processor\\UidProcessor' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Processor/UidProcessor.php'
 	),
 	'Monolog\\Processor\\WebProcessor' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Processor/WebProcessor.php'
 	),
 	'Monolog\\Registry' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Registry.php'
 	),
 	'Monolog\\ResettableInterface' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/ResettableInterface.php'
 	),
 	'Monolog\\SignalHandler' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/SignalHandler.php'
 	),
 	'Monolog\\Test\\MonologTestCase' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Test/MonologTestCase.php'
 	),
 	'Monolog\\Test\\TestCase' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Test/TestCase.php'
 	),
 	'Monolog\\Utils' => array(
-		'version' => '3.10.0.0',
+		'version' => '3.12.0.0',
 		'path'    => $vendorDir . '/monolog/monolog/src/Monolog/Utils.php'
+	),
+	'NoDiscard' => array(
+		'version' => '1.41.0.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php85/Resources/stubs/NoDiscard.php'
 	),
 	'PHP_Autoloader' => array(
 		'version' => '5.0.16',
 		'path'    => $vendorDir . '/automattic/jetpack-autoloader/src/class-php-autoloader.php'
 	),
-	'PRC\\BlockUtils\\Lists' => array(
-		'version' => '1.0.0.0',
-		'path'    => $vendorDir . '/prc/block-utils/src/Lists.php'
+	'PRC\\Primitives\\BlockUtils\\Lists' => array(
+		'version' => '2.0.0.0',
+		'path'    => $vendorDir . '/prc/primitives/src/block-utils/Lists.php'
 	),
-	'PRC\\BlockUtils\\Pagination' => array(
-		'version' => '1.0.0.0',
-		'path'    => $vendorDir . '/prc/block-utils/src/Pagination.php'
+	'PRC\\Primitives\\BlockUtils\\Pagination' => array(
+		'version' => '2.0.0.0',
+		'path'    => $vendorDir . '/prc/primitives/src/block-utils/Pagination.php'
+	),
+	'PRC\\Primitives\\DelayedAction\\ActionSchedulerGateway' => array(
+		'version' => '2.0.0.0',
+		'path'    => $vendorDir . '/prc/primitives/src/delayed-action/ActionSchedulerGateway.php'
+	),
+	'PRC\\Primitives\\DelayedAction\\DelayedAction' => array(
+		'version' => '2.0.0.0',
+		'path'    => $vendorDir . '/prc/primitives/src/delayed-action/DelayedAction.php'
+	),
+	'PRC\\Primitives\\DelayedAction\\JobState' => array(
+		'version' => '2.0.0.0',
+		'path'    => $vendorDir . '/prc/primitives/src/delayed-action/JobState.php'
+	),
+	'PRC\\Primitives\\DelayedAction\\Scheduler' => array(
+		'version' => '2.0.0.0',
+		'path'    => $vendorDir . '/prc/primitives/src/delayed-action/Scheduler.php'
+	),
+	'PRC\\Primitives\\HTML_Processors\\ElementFinder' => array(
+		'version' => '2.0.0.0',
+		'path'    => $vendorDir . '/prc/primitives/src/html-processors/ElementFinder.php'
+	),
+	'PRC\\Primitives\\HTML_Processors\\HeadingProcessor' => array(
+		'version' => '2.0.0.0',
+		'path'    => $vendorDir . '/prc/primitives/src/html-processors/HeadingProcessor.php'
+	),
+	'PRC\\Primitives\\HTML_Processors\\TableProcessor' => array(
+		'version' => '2.0.0.0',
+		'path'    => $vendorDir . '/prc/primitives/src/html-processors/TableProcessor.php'
 	),
 	'Path_Processor' => array(
 		'version' => '5.0.16',
 		'path'    => $vendorDir . '/automattic/jetpack-autoloader/src/class-path-processor.php'
+	),
+	'Pdo\\Dblib' => array(
+		'version' => '1.38.1.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php84/Resources/stubs/Pdo/Dblib.php'
+	),
+	'Pdo\\Firebird' => array(
+		'version' => '1.38.1.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php84/Resources/stubs/Pdo/Firebird.php'
+	),
+	'Pdo\\Mysql' => array(
+		'version' => '1.38.1.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php84/Resources/stubs/Pdo/Mysql.php'
+	),
+	'Pdo\\Odbc' => array(
+		'version' => '1.38.1.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php84/Resources/stubs/Pdo/Odbc.php'
+	),
+	'Pdo\\Pgsql' => array(
+		'version' => '1.38.1.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php84/Resources/stubs/Pdo/Pgsql.php'
+	),
+	'Pdo\\Sqlite' => array(
+		'version' => '1.38.1.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php84/Resources/stubs/Pdo/Sqlite.php'
+	),
+	'PhpToken' => array(
+		'version' => '1.37.0.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php'
 	),
 	'Plugin_Locator' => array(
 		'version' => '5.0.16',
@@ -7121,6 +9117,30 @@ return array(
 	'Psr\\Clock\\ClockInterface' => array(
 		'version' => '1.0.0.0',
 		'path'    => $vendorDir . '/psr/clock/src/ClockInterface.php'
+	),
+	'Psr\\Container\\ContainerExceptionInterface' => array(
+		'version' => '2.0.2.0',
+		'path'    => $vendorDir . '/psr/container/src/ContainerExceptionInterface.php'
+	),
+	'Psr\\Container\\ContainerInterface' => array(
+		'version' => '2.0.2.0',
+		'path'    => $vendorDir . '/psr/container/src/ContainerInterface.php'
+	),
+	'Psr\\Container\\NotFoundExceptionInterface' => array(
+		'version' => '2.0.2.0',
+		'path'    => $vendorDir . '/psr/container/src/NotFoundExceptionInterface.php'
+	),
+	'Psr\\EventDispatcher\\EventDispatcherInterface' => array(
+		'version' => '1.0.0.0',
+		'path'    => $vendorDir . '/psr/event-dispatcher/src/EventDispatcherInterface.php'
+	),
+	'Psr\\EventDispatcher\\ListenerProviderInterface' => array(
+		'version' => '1.0.0.0',
+		'path'    => $vendorDir . '/psr/event-dispatcher/src/ListenerProviderInterface.php'
+	),
+	'Psr\\EventDispatcher\\StoppableEventInterface' => array(
+		'version' => '1.0.0.0',
+		'path'    => $vendorDir . '/psr/event-dispatcher/src/StoppableEventInterface.php'
 	),
 	'Psr\\Http\\Client\\ClientExceptionInterface' => array(
 		'version' => '1.0.3.0',
@@ -7221,6 +9241,18 @@ return array(
 	'Psr\\Log\\NullLogger' => array(
 		'version' => '3.0.2.0',
 		'path'    => $vendorDir . '/psr/log/src/NullLogger.php'
+	),
+	'Psr\\SimpleCache\\CacheException' => array(
+		'version' => '3.0.0.0',
+		'path'    => $vendorDir . '/psr/simple-cache/src/CacheException.php'
+	),
+	'Psr\\SimpleCache\\CacheInterface' => array(
+		'version' => '3.0.0.0',
+		'path'    => $vendorDir . '/psr/simple-cache/src/CacheInterface.php'
+	),
+	'Psr\\SimpleCache\\InvalidArgumentException' => array(
+		'version' => '3.0.0.0',
+		'path'    => $vendorDir . '/psr/simple-cache/src/InvalidArgumentException.php'
 	),
 	'Ramsey\\Collection\\AbstractArray' => array(
 		'version' => '2.1.1.0',
@@ -7343,500 +9375,1008 @@ return array(
 		'path'    => $vendorDir . '/ramsey/collection/src/Tool/ValueToStringTrait.php'
 	),
 	'Ramsey\\Uuid\\BinaryUtils' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/BinaryUtils.php'
 	),
 	'Ramsey\\Uuid\\Builder\\BuilderCollection' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Builder/BuilderCollection.php'
 	),
 	'Ramsey\\Uuid\\Builder\\DefaultUuidBuilder' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Builder/DefaultUuidBuilder.php'
 	),
 	'Ramsey\\Uuid\\Builder\\DegradedUuidBuilder' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Builder/DegradedUuidBuilder.php'
 	),
 	'Ramsey\\Uuid\\Builder\\FallbackBuilder' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Builder/FallbackBuilder.php'
 	),
 	'Ramsey\\Uuid\\Builder\\UuidBuilderInterface' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Builder/UuidBuilderInterface.php'
 	),
 	'Ramsey\\Uuid\\Codec\\CodecInterface' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Codec/CodecInterface.php'
 	),
 	'Ramsey\\Uuid\\Codec\\GuidStringCodec' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Codec/GuidStringCodec.php'
 	),
 	'Ramsey\\Uuid\\Codec\\OrderedTimeCodec' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Codec/OrderedTimeCodec.php'
 	),
 	'Ramsey\\Uuid\\Codec\\StringCodec' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Codec/StringCodec.php'
 	),
 	'Ramsey\\Uuid\\Codec\\TimestampFirstCombCodec' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Codec/TimestampFirstCombCodec.php'
 	),
 	'Ramsey\\Uuid\\Codec\\TimestampLastCombCodec' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Codec/TimestampLastCombCodec.php'
 	),
 	'Ramsey\\Uuid\\Converter\\NumberConverterInterface' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Converter/NumberConverterInterface.php'
 	),
 	'Ramsey\\Uuid\\Converter\\Number\\BigNumberConverter' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Converter/Number/BigNumberConverter.php'
 	),
 	'Ramsey\\Uuid\\Converter\\Number\\DegradedNumberConverter' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Converter/Number/DegradedNumberConverter.php'
 	),
 	'Ramsey\\Uuid\\Converter\\Number\\GenericNumberConverter' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Converter/Number/GenericNumberConverter.php'
 	),
 	'Ramsey\\Uuid\\Converter\\TimeConverterInterface' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Converter/TimeConverterInterface.php'
 	),
 	'Ramsey\\Uuid\\Converter\\Time\\BigNumberTimeConverter' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Converter/Time/BigNumberTimeConverter.php'
 	),
 	'Ramsey\\Uuid\\Converter\\Time\\DegradedTimeConverter' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Converter/Time/DegradedTimeConverter.php'
 	),
 	'Ramsey\\Uuid\\Converter\\Time\\GenericTimeConverter' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Converter/Time/GenericTimeConverter.php'
 	),
 	'Ramsey\\Uuid\\Converter\\Time\\PhpTimeConverter' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Converter/Time/PhpTimeConverter.php'
 	),
 	'Ramsey\\Uuid\\Converter\\Time\\UnixTimeConverter' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Converter/Time/UnixTimeConverter.php'
 	),
 	'Ramsey\\Uuid\\DegradedUuid' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/DegradedUuid.php'
 	),
 	'Ramsey\\Uuid\\DeprecatedUuidInterface' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/DeprecatedUuidInterface.php'
 	),
 	'Ramsey\\Uuid\\DeprecatedUuidMethodsTrait' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/DeprecatedUuidMethodsTrait.php'
 	),
 	'Ramsey\\Uuid\\Exception\\BuilderNotFoundException' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Exception/BuilderNotFoundException.php'
 	),
 	'Ramsey\\Uuid\\Exception\\DateTimeException' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Exception/DateTimeException.php'
 	),
 	'Ramsey\\Uuid\\Exception\\DceSecurityException' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Exception/DceSecurityException.php'
 	),
 	'Ramsey\\Uuid\\Exception\\InvalidArgumentException' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Exception/InvalidArgumentException.php'
 	),
 	'Ramsey\\Uuid\\Exception\\InvalidBytesException' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Exception/InvalidBytesException.php'
 	),
 	'Ramsey\\Uuid\\Exception\\InvalidUuidStringException' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Exception/InvalidUuidStringException.php'
 	),
 	'Ramsey\\Uuid\\Exception\\NameException' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Exception/NameException.php'
 	),
 	'Ramsey\\Uuid\\Exception\\NodeException' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Exception/NodeException.php'
 	),
 	'Ramsey\\Uuid\\Exception\\RandomSourceException' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Exception/RandomSourceException.php'
 	),
 	'Ramsey\\Uuid\\Exception\\TimeSourceException' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Exception/TimeSourceException.php'
 	),
 	'Ramsey\\Uuid\\Exception\\UnableToBuildUuidException' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Exception/UnableToBuildUuidException.php'
 	),
 	'Ramsey\\Uuid\\Exception\\UnsupportedOperationException' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Exception/UnsupportedOperationException.php'
 	),
 	'Ramsey\\Uuid\\Exception\\UuidExceptionInterface' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Exception/UuidExceptionInterface.php'
 	),
 	'Ramsey\\Uuid\\FeatureSet' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/FeatureSet.php'
 	),
 	'Ramsey\\Uuid\\Fields\\FieldsInterface' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Fields/FieldsInterface.php'
 	),
 	'Ramsey\\Uuid\\Fields\\SerializableFieldsTrait' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Fields/SerializableFieldsTrait.php'
 	),
 	'Ramsey\\Uuid\\Generator\\CombGenerator' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Generator/CombGenerator.php'
 	),
 	'Ramsey\\Uuid\\Generator\\DceSecurityGenerator' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Generator/DceSecurityGenerator.php'
 	),
 	'Ramsey\\Uuid\\Generator\\DceSecurityGeneratorInterface' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Generator/DceSecurityGeneratorInterface.php'
 	),
 	'Ramsey\\Uuid\\Generator\\DefaultNameGenerator' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Generator/DefaultNameGenerator.php'
 	),
 	'Ramsey\\Uuid\\Generator\\DefaultTimeGenerator' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Generator/DefaultTimeGenerator.php'
 	),
 	'Ramsey\\Uuid\\Generator\\NameGeneratorFactory' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Generator/NameGeneratorFactory.php'
 	),
 	'Ramsey\\Uuid\\Generator\\NameGeneratorInterface' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Generator/NameGeneratorInterface.php'
 	),
 	'Ramsey\\Uuid\\Generator\\PeclUuidNameGenerator' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Generator/PeclUuidNameGenerator.php'
 	),
 	'Ramsey\\Uuid\\Generator\\PeclUuidRandomGenerator' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Generator/PeclUuidRandomGenerator.php'
 	),
 	'Ramsey\\Uuid\\Generator\\PeclUuidTimeGenerator' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Generator/PeclUuidTimeGenerator.php'
 	),
 	'Ramsey\\Uuid\\Generator\\RandomBytesGenerator' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Generator/RandomBytesGenerator.php'
 	),
 	'Ramsey\\Uuid\\Generator\\RandomGeneratorFactory' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Generator/RandomGeneratorFactory.php'
 	),
 	'Ramsey\\Uuid\\Generator\\RandomGeneratorInterface' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Generator/RandomGeneratorInterface.php'
 	),
 	'Ramsey\\Uuid\\Generator\\RandomLibAdapter' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Generator/RandomLibAdapter.php'
 	),
 	'Ramsey\\Uuid\\Generator\\TimeGeneratorFactory' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Generator/TimeGeneratorFactory.php'
 	),
 	'Ramsey\\Uuid\\Generator\\TimeGeneratorInterface' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Generator/TimeGeneratorInterface.php'
 	),
 	'Ramsey\\Uuid\\Generator\\UnixTimeGenerator' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Generator/UnixTimeGenerator.php'
 	),
 	'Ramsey\\Uuid\\Guid\\Fields' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Guid/Fields.php'
 	),
 	'Ramsey\\Uuid\\Guid\\Guid' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Guid/Guid.php'
 	),
 	'Ramsey\\Uuid\\Guid\\GuidBuilder' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Guid/GuidBuilder.php'
 	),
 	'Ramsey\\Uuid\\Lazy\\LazyUuidFromString' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Lazy/LazyUuidFromString.php'
 	),
 	'Ramsey\\Uuid\\Math\\BrickMathCalculator' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Math/BrickMathCalculator.php'
 	),
+	'Ramsey\\Uuid\\Math\\BrickMathRoundingMode' => array(
+		'version' => '4.9.4.0',
+		'path'    => $vendorDir . '/ramsey/uuid/src/Math/BrickMathRoundingMode.php'
+	),
 	'Ramsey\\Uuid\\Math\\CalculatorInterface' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Math/CalculatorInterface.php'
 	),
 	'Ramsey\\Uuid\\Math\\RoundingMode' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Math/RoundingMode.php'
 	),
 	'Ramsey\\Uuid\\Nonstandard\\Fields' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Nonstandard/Fields.php'
 	),
 	'Ramsey\\Uuid\\Nonstandard\\Uuid' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Nonstandard/Uuid.php'
 	),
 	'Ramsey\\Uuid\\Nonstandard\\UuidBuilder' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Nonstandard/UuidBuilder.php'
 	),
 	'Ramsey\\Uuid\\Nonstandard\\UuidV6' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Nonstandard/UuidV6.php'
 	),
 	'Ramsey\\Uuid\\Provider\\DceSecurityProviderInterface' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Provider/DceSecurityProviderInterface.php'
 	),
 	'Ramsey\\Uuid\\Provider\\Dce\\SystemDceSecurityProvider' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Provider/Dce/SystemDceSecurityProvider.php'
 	),
 	'Ramsey\\Uuid\\Provider\\NodeProviderInterface' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Provider/NodeProviderInterface.php'
 	),
 	'Ramsey\\Uuid\\Provider\\Node\\FallbackNodeProvider' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Provider/Node/FallbackNodeProvider.php'
 	),
 	'Ramsey\\Uuid\\Provider\\Node\\NodeProviderCollection' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Provider/Node/NodeProviderCollection.php'
 	),
 	'Ramsey\\Uuid\\Provider\\Node\\RandomNodeProvider' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Provider/Node/RandomNodeProvider.php'
 	),
 	'Ramsey\\Uuid\\Provider\\Node\\StaticNodeProvider' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Provider/Node/StaticNodeProvider.php'
 	),
 	'Ramsey\\Uuid\\Provider\\Node\\SystemNodeProvider' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Provider/Node/SystemNodeProvider.php'
 	),
 	'Ramsey\\Uuid\\Provider\\TimeProviderInterface' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Provider/TimeProviderInterface.php'
 	),
 	'Ramsey\\Uuid\\Provider\\Time\\FixedTimeProvider' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Provider/Time/FixedTimeProvider.php'
 	),
 	'Ramsey\\Uuid\\Provider\\Time\\SystemTimeProvider' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Provider/Time/SystemTimeProvider.php'
 	),
 	'Ramsey\\Uuid\\Rfc4122\\Fields' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Rfc4122/Fields.php'
 	),
 	'Ramsey\\Uuid\\Rfc4122\\FieldsInterface' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Rfc4122/FieldsInterface.php'
 	),
 	'Ramsey\\Uuid\\Rfc4122\\MaxTrait' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Rfc4122/MaxTrait.php'
 	),
 	'Ramsey\\Uuid\\Rfc4122\\MaxUuid' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Rfc4122/MaxUuid.php'
 	),
 	'Ramsey\\Uuid\\Rfc4122\\NilTrait' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Rfc4122/NilTrait.php'
 	),
 	'Ramsey\\Uuid\\Rfc4122\\NilUuid' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Rfc4122/NilUuid.php'
 	),
 	'Ramsey\\Uuid\\Rfc4122\\TimeTrait' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Rfc4122/TimeTrait.php'
 	),
 	'Ramsey\\Uuid\\Rfc4122\\UuidBuilder' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Rfc4122/UuidBuilder.php'
 	),
 	'Ramsey\\Uuid\\Rfc4122\\UuidInterface' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Rfc4122/UuidInterface.php'
 	),
 	'Ramsey\\Uuid\\Rfc4122\\UuidV1' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Rfc4122/UuidV1.php'
 	),
 	'Ramsey\\Uuid\\Rfc4122\\UuidV2' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Rfc4122/UuidV2.php'
 	),
 	'Ramsey\\Uuid\\Rfc4122\\UuidV3' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Rfc4122/UuidV3.php'
 	),
 	'Ramsey\\Uuid\\Rfc4122\\UuidV4' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Rfc4122/UuidV4.php'
 	),
 	'Ramsey\\Uuid\\Rfc4122\\UuidV5' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Rfc4122/UuidV5.php'
 	),
 	'Ramsey\\Uuid\\Rfc4122\\UuidV6' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Rfc4122/UuidV6.php'
 	),
 	'Ramsey\\Uuid\\Rfc4122\\UuidV7' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Rfc4122/UuidV7.php'
 	),
 	'Ramsey\\Uuid\\Rfc4122\\UuidV8' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Rfc4122/UuidV8.php'
 	),
 	'Ramsey\\Uuid\\Rfc4122\\Validator' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Rfc4122/Validator.php'
 	),
 	'Ramsey\\Uuid\\Rfc4122\\VariantTrait' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Rfc4122/VariantTrait.php'
 	),
 	'Ramsey\\Uuid\\Rfc4122\\VersionTrait' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Rfc4122/VersionTrait.php'
 	),
 	'Ramsey\\Uuid\\Type\\Decimal' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Type/Decimal.php'
 	),
 	'Ramsey\\Uuid\\Type\\Hexadecimal' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Type/Hexadecimal.php'
 	),
 	'Ramsey\\Uuid\\Type\\Integer' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Type/Integer.php'
 	),
 	'Ramsey\\Uuid\\Type\\NumberInterface' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Type/NumberInterface.php'
 	),
 	'Ramsey\\Uuid\\Type\\Time' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Type/Time.php'
 	),
 	'Ramsey\\Uuid\\Type\\TypeInterface' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Type/TypeInterface.php'
 	),
 	'Ramsey\\Uuid\\Uuid' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Uuid.php'
 	),
 	'Ramsey\\Uuid\\UuidFactory' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/UuidFactory.php'
 	),
 	'Ramsey\\Uuid\\UuidFactoryInterface' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/UuidFactoryInterface.php'
 	),
 	'Ramsey\\Uuid\\UuidInterface' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/UuidInterface.php'
 	),
 	'Ramsey\\Uuid\\Validator\\GenericValidator' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Validator/GenericValidator.php'
 	),
 	'Ramsey\\Uuid\\Validator\\ValidatorInterface' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/Validator/ValidatorInterface.php'
 	),
+	'ReflectionConstant' => array(
+		'version' => '1.38.1.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php84/Resources/stubs/ReflectionConstant.php'
+	),
+	'Rinvex\\Country\\Country' => array(
+		'version' => '9.1.0.0',
+		'path'    => $vendorDir . '/rinvex/countries/src/Country.php'
+	),
+	'Rinvex\\Country\\CountryLoader' => array(
+		'version' => '9.1.0.0',
+		'path'    => $vendorDir . '/rinvex/countries/src/CountryLoader.php'
+	),
+	'Rinvex\\Country\\CountryLoaderException' => array(
+		'version' => '9.1.0.0',
+		'path'    => $vendorDir . '/rinvex/countries/src/CountryLoaderException.php'
+	),
+	'Rinvex\\Country\\CurrencyLoader' => array(
+		'version' => '9.1.0.0',
+		'path'    => $vendorDir . '/rinvex/countries/src/CurrencyLoader.php'
+	),
+	'Rinvex\\Country\\Providers\\CountryServiceProvider' => array(
+		'version' => '9.1.0.0',
+		'path'    => $vendorDir . '/rinvex/countries/src/Providers/CountryServiceProvider.php'
+	),
 	'Rize\\UriTemplate' => array(
-		'version' => '0.4.1.0',
+		'version' => '0.4.2.0',
 		'path'    => $vendorDir . '/rize/uri-template/src/Rize/UriTemplate.php'
 	),
 	'Rize\\UriTemplate\\Node\\Abstraction' => array(
-		'version' => '0.4.1.0',
+		'version' => '0.4.2.0',
 		'path'    => $vendorDir . '/rize/uri-template/src/Rize/UriTemplate/Node/Abstraction.php'
 	),
 	'Rize\\UriTemplate\\Node\\Expression' => array(
-		'version' => '0.4.1.0',
+		'version' => '0.4.2.0',
 		'path'    => $vendorDir . '/rize/uri-template/src/Rize/UriTemplate/Node/Expression.php'
 	),
 	'Rize\\UriTemplate\\Node\\Literal' => array(
-		'version' => '0.4.1.0',
+		'version' => '0.4.2.0',
 		'path'    => $vendorDir . '/rize/uri-template/src/Rize/UriTemplate/Node/Literal.php'
 	),
 	'Rize\\UriTemplate\\Node\\Variable' => array(
-		'version' => '0.4.1.0',
+		'version' => '0.4.2.0',
 		'path'    => $vendorDir . '/rize/uri-template/src/Rize/UriTemplate/Node/Variable.php'
 	),
 	'Rize\\UriTemplate\\Operator\\Abstraction' => array(
-		'version' => '0.4.1.0',
+		'version' => '0.4.2.0',
 		'path'    => $vendorDir . '/rize/uri-template/src/Rize/UriTemplate/Operator/Abstraction.php'
 	),
 	'Rize\\UriTemplate\\Operator\\Named' => array(
-		'version' => '0.4.1.0',
+		'version' => '0.4.2.0',
 		'path'    => $vendorDir . '/rize/uri-template/src/Rize/UriTemplate/Operator/Named.php'
 	),
 	'Rize\\UriTemplate\\Operator\\UnNamed' => array(
-		'version' => '0.4.1.0',
+		'version' => '0.4.2.0',
 		'path'    => $vendorDir . '/rize/uri-template/src/Rize/UriTemplate/Operator/UnNamed.php'
 	),
 	'Rize\\UriTemplate\\Parser' => array(
-		'version' => '0.4.1.0',
+		'version' => '0.4.2.0',
 		'path'    => $vendorDir . '/rize/uri-template/src/Rize/UriTemplate/Parser.php'
 	),
 	'Rize\\UriTemplate\\UriTemplate' => array(
-		'version' => '0.4.1.0',
+		'version' => '0.4.2.0',
 		'path'    => $vendorDir . '/rize/uri-template/src/Rize/UriTemplate/UriTemplate.php'
+	),
+	'RoundingMode' => array(
+		'version' => '1.38.1.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php84/Resources/stubs/RoundingMode.php'
 	),
 	'Shutdown_Handler' => array(
 		'version' => '5.0.16',
 		'path'    => $vendorDir . '/automattic/jetpack-autoloader/src/class-shutdown-handler.php'
 	),
+	'SortDirection' => array(
+		'version' => '1.41.0.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php86/Resources/stubs/SortDirection.php'
+	),
+	'Stringable' => array(
+		'version' => '1.37.0.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Stringable.php'
+	),
+	'Symfony\\Component\\Clock\\Clock' => array(
+		'version' => '8.0.8.0',
+		'path'    => $vendorDir . '/symfony/clock/Clock.php'
+	),
+	'Symfony\\Component\\Clock\\ClockAwareTrait' => array(
+		'version' => '8.0.8.0',
+		'path'    => $vendorDir . '/symfony/clock/ClockAwareTrait.php'
+	),
+	'Symfony\\Component\\Clock\\ClockInterface' => array(
+		'version' => '8.0.8.0',
+		'path'    => $vendorDir . '/symfony/clock/ClockInterface.php'
+	),
+	'Symfony\\Component\\Clock\\DatePoint' => array(
+		'version' => '8.0.8.0',
+		'path'    => $vendorDir . '/symfony/clock/DatePoint.php'
+	),
+	'Symfony\\Component\\Clock\\MockClock' => array(
+		'version' => '8.0.8.0',
+		'path'    => $vendorDir . '/symfony/clock/MockClock.php'
+	),
+	'Symfony\\Component\\Clock\\MonotonicClock' => array(
+		'version' => '8.0.8.0',
+		'path'    => $vendorDir . '/symfony/clock/MonotonicClock.php'
+	),
+	'Symfony\\Component\\Clock\\NativeClock' => array(
+		'version' => '8.0.8.0',
+		'path'    => $vendorDir . '/symfony/clock/NativeClock.php'
+	),
+	'Symfony\\Component\\Clock\\Test\\ClockSensitiveTrait' => array(
+		'version' => '8.0.8.0',
+		'path'    => $vendorDir . '/symfony/clock/Test/ClockSensitiveTrait.php'
+	),
+	'Symfony\\Component\\Translation\\CatalogueMetadataAwareInterface' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/CatalogueMetadataAwareInterface.php'
+	),
+	'Symfony\\Component\\Translation\\Catalogue\\AbstractOperation' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Catalogue/AbstractOperation.php'
+	),
+	'Symfony\\Component\\Translation\\Catalogue\\MergeOperation' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Catalogue/MergeOperation.php'
+	),
+	'Symfony\\Component\\Translation\\Catalogue\\OperationInterface' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Catalogue/OperationInterface.php'
+	),
+	'Symfony\\Component\\Translation\\Catalogue\\TargetOperation' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Catalogue/TargetOperation.php'
+	),
+	'Symfony\\Component\\Translation\\Command\\TranslationLintCommand' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Command/TranslationLintCommand.php'
+	),
+	'Symfony\\Component\\Translation\\Command\\TranslationPullCommand' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Command/TranslationPullCommand.php'
+	),
+	'Symfony\\Component\\Translation\\Command\\TranslationPushCommand' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Command/TranslationPushCommand.php'
+	),
+	'Symfony\\Component\\Translation\\Command\\TranslationTrait' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Command/TranslationTrait.php'
+	),
+	'Symfony\\Component\\Translation\\Command\\XliffLintCommand' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Command/XliffLintCommand.php'
+	),
+	'Symfony\\Component\\Translation\\DataCollectorTranslator' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/DataCollectorTranslator.php'
+	),
+	'Symfony\\Component\\Translation\\DataCollector\\TranslationDataCollector' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/DataCollector/TranslationDataCollector.php'
+	),
+	'Symfony\\Component\\Translation\\DependencyInjection\\DataCollectorTranslatorPass' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/DependencyInjection/DataCollectorTranslatorPass.php'
+	),
+	'Symfony\\Component\\Translation\\DependencyInjection\\LoggingTranslatorPass' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/DependencyInjection/LoggingTranslatorPass.php'
+	),
+	'Symfony\\Component\\Translation\\DependencyInjection\\TranslationDumperPass' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/DependencyInjection/TranslationDumperPass.php'
+	),
+	'Symfony\\Component\\Translation\\DependencyInjection\\TranslationExtractorPass' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/DependencyInjection/TranslationExtractorPass.php'
+	),
+	'Symfony\\Component\\Translation\\DependencyInjection\\TranslatorPass' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/DependencyInjection/TranslatorPass.php'
+	),
+	'Symfony\\Component\\Translation\\DependencyInjection\\TranslatorPathsPass' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/DependencyInjection/TranslatorPathsPass.php'
+	),
+	'Symfony\\Component\\Translation\\Dumper\\CsvFileDumper' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Dumper/CsvFileDumper.php'
+	),
+	'Symfony\\Component\\Translation\\Dumper\\DumperInterface' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Dumper/DumperInterface.php'
+	),
+	'Symfony\\Component\\Translation\\Dumper\\FileDumper' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Dumper/FileDumper.php'
+	),
+	'Symfony\\Component\\Translation\\Dumper\\IcuResFileDumper' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Dumper/IcuResFileDumper.php'
+	),
+	'Symfony\\Component\\Translation\\Dumper\\IniFileDumper' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Dumper/IniFileDumper.php'
+	),
+	'Symfony\\Component\\Translation\\Dumper\\JsonFileDumper' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Dumper/JsonFileDumper.php'
+	),
+	'Symfony\\Component\\Translation\\Dumper\\MoFileDumper' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Dumper/MoFileDumper.php'
+	),
+	'Symfony\\Component\\Translation\\Dumper\\PhpFileDumper' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Dumper/PhpFileDumper.php'
+	),
+	'Symfony\\Component\\Translation\\Dumper\\PoFileDumper' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Dumper/PoFileDumper.php'
+	),
+	'Symfony\\Component\\Translation\\Dumper\\QtFileDumper' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Dumper/QtFileDumper.php'
+	),
+	'Symfony\\Component\\Translation\\Dumper\\XliffFileDumper' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Dumper/XliffFileDumper.php'
+	),
+	'Symfony\\Component\\Translation\\Dumper\\YamlFileDumper' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Dumper/YamlFileDumper.php'
+	),
+	'Symfony\\Component\\Translation\\Exception\\ExceptionInterface' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Exception/ExceptionInterface.php'
+	),
+	'Symfony\\Component\\Translation\\Exception\\IncompleteDsnException' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Exception/IncompleteDsnException.php'
+	),
+	'Symfony\\Component\\Translation\\Exception\\InvalidArgumentException' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Exception/InvalidArgumentException.php'
+	),
+	'Symfony\\Component\\Translation\\Exception\\InvalidResourceException' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Exception/InvalidResourceException.php'
+	),
+	'Symfony\\Component\\Translation\\Exception\\LogicException' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Exception/LogicException.php'
+	),
+	'Symfony\\Component\\Translation\\Exception\\MissingRequiredOptionException' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Exception/MissingRequiredOptionException.php'
+	),
+	'Symfony\\Component\\Translation\\Exception\\NotFoundResourceException' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Exception/NotFoundResourceException.php'
+	),
+	'Symfony\\Component\\Translation\\Exception\\ProviderException' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Exception/ProviderException.php'
+	),
+	'Symfony\\Component\\Translation\\Exception\\ProviderExceptionInterface' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Exception/ProviderExceptionInterface.php'
+	),
+	'Symfony\\Component\\Translation\\Exception\\RuntimeException' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Exception/RuntimeException.php'
+	),
+	'Symfony\\Component\\Translation\\Exception\\UnsupportedSchemeException' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Exception/UnsupportedSchemeException.php'
+	),
+	'Symfony\\Component\\Translation\\Extractor\\AbstractFileExtractor' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Extractor/AbstractFileExtractor.php'
+	),
+	'Symfony\\Component\\Translation\\Extractor\\ChainExtractor' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Extractor/ChainExtractor.php'
+	),
+	'Symfony\\Component\\Translation\\Extractor\\ExtractorInterface' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Extractor/ExtractorInterface.php'
+	),
+	'Symfony\\Component\\Translation\\Extractor\\PhpAstExtractor' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Extractor/PhpAstExtractor.php'
+	),
+	'Symfony\\Component\\Translation\\Extractor\\Visitor\\AbstractVisitor' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Extractor/Visitor/AbstractVisitor.php'
+	),
+	'Symfony\\Component\\Translation\\Extractor\\Visitor\\ConstraintVisitor' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Extractor/Visitor/ConstraintVisitor.php'
+	),
+	'Symfony\\Component\\Translation\\Extractor\\Visitor\\TransMethodVisitor' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Extractor/Visitor/TransMethodVisitor.php'
+	),
+	'Symfony\\Component\\Translation\\Extractor\\Visitor\\TranslatableMessageVisitor' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Extractor/Visitor/TranslatableMessageVisitor.php'
+	),
+	'Symfony\\Component\\Translation\\Formatter\\IntlFormatter' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Formatter/IntlFormatter.php'
+	),
+	'Symfony\\Component\\Translation\\Formatter\\IntlFormatterInterface' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Formatter/IntlFormatterInterface.php'
+	),
+	'Symfony\\Component\\Translation\\Formatter\\MessageFormatter' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Formatter/MessageFormatter.php'
+	),
+	'Symfony\\Component\\Translation\\Formatter\\MessageFormatterInterface' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Formatter/MessageFormatterInterface.php'
+	),
+	'Symfony\\Component\\Translation\\IdentityTranslator' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/IdentityTranslator.php'
+	),
+	'Symfony\\Component\\Translation\\Loader\\ArrayLoader' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Loader/ArrayLoader.php'
+	),
+	'Symfony\\Component\\Translation\\Loader\\CsvFileLoader' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Loader/CsvFileLoader.php'
+	),
+	'Symfony\\Component\\Translation\\Loader\\FileLoader' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Loader/FileLoader.php'
+	),
+	'Symfony\\Component\\Translation\\Loader\\IcuDatFileLoader' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Loader/IcuDatFileLoader.php'
+	),
+	'Symfony\\Component\\Translation\\Loader\\IcuResFileLoader' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Loader/IcuResFileLoader.php'
+	),
+	'Symfony\\Component\\Translation\\Loader\\IniFileLoader' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Loader/IniFileLoader.php'
+	),
+	'Symfony\\Component\\Translation\\Loader\\JsonFileLoader' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Loader/JsonFileLoader.php'
+	),
+	'Symfony\\Component\\Translation\\Loader\\LoaderInterface' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Loader/LoaderInterface.php'
+	),
+	'Symfony\\Component\\Translation\\Loader\\MoFileLoader' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Loader/MoFileLoader.php'
+	),
+	'Symfony\\Component\\Translation\\Loader\\PhpFileLoader' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Loader/PhpFileLoader.php'
+	),
+	'Symfony\\Component\\Translation\\Loader\\PoFileLoader' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Loader/PoFileLoader.php'
+	),
+	'Symfony\\Component\\Translation\\Loader\\QtFileLoader' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Loader/QtFileLoader.php'
+	),
+	'Symfony\\Component\\Translation\\Loader\\XliffFileLoader' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Loader/XliffFileLoader.php'
+	),
+	'Symfony\\Component\\Translation\\Loader\\YamlFileLoader' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Loader/YamlFileLoader.php'
+	),
+	'Symfony\\Component\\Translation\\LocaleSwitcher' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/LocaleSwitcher.php'
+	),
+	'Symfony\\Component\\Translation\\LoggingTranslator' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/LoggingTranslator.php'
+	),
+	'Symfony\\Component\\Translation\\MessageCatalogue' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/MessageCatalogue.php'
+	),
+	'Symfony\\Component\\Translation\\MessageCatalogueInterface' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/MessageCatalogueInterface.php'
+	),
+	'Symfony\\Component\\Translation\\MetadataAwareInterface' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/MetadataAwareInterface.php'
+	),
+	'Symfony\\Component\\Translation\\Provider\\AbstractProviderFactory' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Provider/AbstractProviderFactory.php'
+	),
+	'Symfony\\Component\\Translation\\Provider\\Dsn' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Provider/Dsn.php'
+	),
+	'Symfony\\Component\\Translation\\Provider\\FilteringProvider' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Provider/FilteringProvider.php'
+	),
+	'Symfony\\Component\\Translation\\Provider\\NullProvider' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Provider/NullProvider.php'
+	),
+	'Symfony\\Component\\Translation\\Provider\\NullProviderFactory' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Provider/NullProviderFactory.php'
+	),
+	'Symfony\\Component\\Translation\\Provider\\ProviderFactoryInterface' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Provider/ProviderFactoryInterface.php'
+	),
+	'Symfony\\Component\\Translation\\Provider\\ProviderInterface' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Provider/ProviderInterface.php'
+	),
+	'Symfony\\Component\\Translation\\Provider\\TranslationProviderCollection' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Provider/TranslationProviderCollection.php'
+	),
+	'Symfony\\Component\\Translation\\Provider\\TranslationProviderCollectionFactory' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Provider/TranslationProviderCollectionFactory.php'
+	),
+	'Symfony\\Component\\Translation\\PseudoLocalizationTranslator' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/PseudoLocalizationTranslator.php'
+	),
+	'Symfony\\Component\\Translation\\Reader\\TranslationReader' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Reader/TranslationReader.php'
+	),
+	'Symfony\\Component\\Translation\\Reader\\TranslationReaderInterface' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Reader/TranslationReaderInterface.php'
+	),
+	'Symfony\\Component\\Translation\\StaticMessage' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/StaticMessage.php'
+	),
+	'Symfony\\Component\\Translation\\Test\\AbstractProviderFactoryTestCase' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Test/AbstractProviderFactoryTestCase.php'
+	),
+	'Symfony\\Component\\Translation\\Test\\IncompleteDsnTestTrait' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Test/IncompleteDsnTestTrait.php'
+	),
+	'Symfony\\Component\\Translation\\Test\\ProviderTestCase' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Test/ProviderTestCase.php'
+	),
+	'Symfony\\Component\\Translation\\TranslatableMessage' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/TranslatableMessage.php'
+	),
+	'Symfony\\Component\\Translation\\Translator' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Translator.php'
+	),
+	'Symfony\\Component\\Translation\\TranslatorBag' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/TranslatorBag.php'
+	),
+	'Symfony\\Component\\Translation\\TranslatorBagInterface' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/TranslatorBagInterface.php'
+	),
+	'Symfony\\Component\\Translation\\Util\\ArrayConverter' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Util/ArrayConverter.php'
+	),
+	'Symfony\\Component\\Translation\\Util\\XliffUtils' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Util/XliffUtils.php'
+	),
+	'Symfony\\Component\\Translation\\Writer\\TranslationWriter' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Writer/TranslationWriter.php'
+	),
+	'Symfony\\Component\\Translation\\Writer\\TranslationWriterInterface' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Writer/TranslationWriterInterface.php'
+	),
+	'Symfony\\Contracts\\Translation\\LocaleAwareInterface' => array(
+		'version' => '3.7.1.0',
+		'path'    => $vendorDir . '/symfony/translation-contracts/LocaleAwareInterface.php'
+	),
+	'Symfony\\Contracts\\Translation\\Test\\TranslatorTest' => array(
+		'version' => '3.7.1.0',
+		'path'    => $vendorDir . '/symfony/translation-contracts/Test/TranslatorTest.php'
+	),
+	'Symfony\\Contracts\\Translation\\TranslatableInterface' => array(
+		'version' => '3.7.1.0',
+		'path'    => $vendorDir . '/symfony/translation-contracts/TranslatableInterface.php'
+	),
+	'Symfony\\Contracts\\Translation\\TranslatorInterface' => array(
+		'version' => '3.7.1.0',
+		'path'    => $vendorDir . '/symfony/translation-contracts/TranslatorInterface.php'
+	),
+	'Symfony\\Contracts\\Translation\\TranslatorTrait' => array(
+		'version' => '3.7.1.0',
+		'path'    => $vendorDir . '/symfony/translation-contracts/TranslatorTrait.php'
+	),
 	'Symfony\\Polyfill\\Mbstring\\Mbstring' => array(
-		'version' => '1.36.0.0',
+		'version' => '1.38.2.0',
 		'path'    => $vendorDir . '/symfony/polyfill-mbstring/Mbstring.php'
+	),
+	'Symfony\\Polyfill\\Php80\\Php80' => array(
+		'version' => '1.37.0.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php80/Php80.php'
+	),
+	'Symfony\\Polyfill\\Php80\\PhpToken' => array(
+		'version' => '1.37.0.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php80/PhpToken.php'
+	),
+	'Symfony\\Polyfill\\Php84\\Php84' => array(
+		'version' => '1.38.1.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php84/Php84.php'
+	),
+	'Symfony\\Polyfill\\Php85\\Php85' => array(
+		'version' => '1.41.0.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php85/Php85.php'
+	),
+	'Symfony\\Polyfill\\Php86\\Php86' => array(
+		'version' => '1.41.0.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php86/Php86.php'
+	),
+	'UnhandledMatchError' => array(
+		'version' => '1.37.0.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php'
+	),
+	'ValueError' => array(
+		'version' => '1.37.0.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/ValueError.php'
 	),
 	'Version_Loader' => array(
 		'version' => '5.0.16',
@@ -7845,5 +10385,9 @@ return array(
 	'Version_Selector' => array(
 		'version' => '5.0.16',
 		'path'    => $vendorDir . '/automattic/jetpack-autoloader/src/class-version-selector.php'
+	),
+	'voku\\helper\\ASCII' => array(
+		'version' => '2.1.1.0',
+		'path'    => $vendorDir . '/voku/portable-ascii/src/voku/helper/ASCII.php'
 	),
 );

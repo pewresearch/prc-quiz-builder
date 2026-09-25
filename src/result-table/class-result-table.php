@@ -14,6 +14,20 @@ namespace PRC\Platform\Quiz;
  */
 class Result_Table {
 	/**
+	 * Class name WordPress adds when the Complex style is selected.
+	 *
+	 * @var string
+	 */
+	public const COMPLEX_STYLE_CLASS = 'is-style-complex';
+
+	/**
+	 * Class name the community-group Complex variation adds.
+	 *
+	 * @var string
+	 */
+	public const COMMUNITY_GROUP_STYLE_CLASS = 'is-prc-quiz-community-group';
+
+	/**
 	 * Constructor.
 	 *
 	 * @param object $loader The loader.
@@ -40,6 +54,57 @@ class Result_Table {
 	}
 
 	/**
+	 * Whether the block uses the Complex style.
+	 *
+	 * @param array $attributes Block attributes.
+	 * @return bool
+	 */
+	private function is_complex_style( array $attributes ): bool {
+		$class_name = $attributes['className'] ?? '';
+		return is_string( $class_name ) && str_contains( $class_name, self::COMPLEX_STYLE_CLASS );
+	}
+
+	/**
+	 * Whether the block is the community-group Complex variation.
+	 *
+	 * @param array $attributes Block attributes.
+	 * @return bool
+	 */
+	private function is_community_group_style( array $attributes ): bool {
+		$class_name = $attributes['className'] ?? '';
+		return is_string( $class_name ) && str_contains( $class_name, self::COMMUNITY_GROUP_STYLE_CLASS );
+	}
+
+	/**
+	 * Render check / xmark icons for a results row.
+	 *
+	 * Simple tables apply the author-selected icon color inline.
+	 * Complex tables omit inline color so CSS can use green check / gray x.
+	 *
+	 * @param float  $icon_size          Icon size in em.
+	 * @param string $icon_color_css     Resolved CSS color.
+	 * @param bool   $apply_inline_color Whether to set inline color.
+	 * @return void
+	 */
+	private function render_row_icons( $icon_size, $icon_color_css, $apply_inline_color = true ) {
+		$icon_style_attr = '';
+		if ( $apply_inline_color ) {
+			$icon_style_attr = sprintf(
+				' style="%s"',
+				esc_attr( 'color: ' . $icon_color_css . ';' )
+			);
+		}
+		?>
+		<span class="prc-quiz-result-table__icon is-correct"<?php echo $icon_style_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above ?> data-wp-bind--hidden="!context.row.showCorrectIcon">
+			<?php echo \PRC\Platform\Icons\render( 'prc', 'check', $icon_size ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Icons::render escapes href; wp_kses_post strips <use>. ?>
+		</span>
+		<span class="prc-quiz-result-table__icon is-incorrect"<?php echo $icon_style_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above ?> data-wp-bind--hidden="!context.row.showIncorrectIcon">
+			<?php echo \PRC\Platform\Icons\render( 'prc', 'xmark', $icon_size ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Icons::render escapes href; wp_kses_post strips <use>. ?>
+		</span>
+		<?php
+	}
+
+	/**
 	 * Renders the simple results.
 	 *
 	 * @param string $block_attrs The block attributes.
@@ -48,7 +113,6 @@ class Result_Table {
 	 * @return string The rendered HTML.
 	 */
 	public function render_simple_results( $block_attrs, $icon_size = 1, $icon_color_css = 'currentColor' ) {
-		$icon_style = sprintf( 'color: %s;', esc_attr( $icon_color_css ) );
 		ob_start();
 		?>
 		<div <?php echo $block_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built via get_block_wrapper_attributes ?>>
@@ -58,20 +122,15 @@ class Result_Table {
 						<tr>
 							<th></th>
 							<th></th>
-							<th class="center aligned">Your Answer</th>
-							<th class="center aligned">Correct Answer</th>
+							<th class="center aligned"><?php echo esc_html__( 'Your Answer', 'prc-quiz' ); ?></th>
+							<th class="center aligned"><?php echo esc_html__( 'Correct Answer', 'prc-quiz' ); ?></th>
 						</tr>
 					</thead>
 					<tbody>
 						<template data-wp-each--row="state.resultsTableRows">
 							<tr data-wp-key="context.row.uuid" class="prc-quiz-result-table__row">
 								<td>
-									<span class="prc-quiz-result-table__icon" style="<?php echo esc_attr( $icon_style ); ?>" data-wp-bind--hidden="!context.row.showCorrectIcon">
-										<?php echo \PRC\Platform\Icons\render( 'light', 'check', $icon_size ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Icons::render escapes href; wp_kses_post strips <use>. ?>
-									</span>
-									<span class="prc-quiz-result-table__icon" style="<?php echo esc_attr( $icon_style ); ?>" data-wp-bind--hidden="!context.row.showIncorrectIcon">
-										<?php echo \PRC\Platform\Icons\render( 'light', 'xmark', $icon_size ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Icons::render escapes href; wp_kses_post strips <use>. ?>
-									</span>
+									<?php $this->render_row_icons( $icon_size, $icon_color_css, true ); ?>
 								</td>
 								<td>
 									<span class="prc-quiz-result-table__question" data-wp-watch="callbacks.renderQuestionHtml"></span>
@@ -93,56 +152,83 @@ class Result_Table {
 	}
 
 	/**
-	 * Renders the demo break results.
+	 * Renders the complex results table.
 	 *
-	 * @param string $block_attrs The block attributes.
-	 * @param float  $icon_size Icon size in em.
-	 * @param string $icon_color_css Resolved CSS color.
+	 * @param string $block_attrs         The block attributes.
+	 * @param float  $icon_size           Icon size in em.
+	 * @param string $icon_color_css      Resolved CSS color.
+	 * @param bool   $is_community_group  Whether this is the community-group variation.
 	 * @return string The rendered HTML.
 	 */
-	public function render_demo_break_results( $block_attrs, $icon_size = 1, $icon_color_css = 'currentColor' ) {
-		$icon_style = sprintf( 'color: %s;', esc_attr( $icon_color_css ) );
+	public function render_complex_results( $block_attrs, $icon_size = 1, $icon_color_css = 'currentColor', $is_community_group = false ) {
+		$choice_heading = $is_community_group
+			? __( "Your group's answers", 'prc-quiz' )
+			: __( 'Your answer', 'prc-quiz' );
 		ob_start();
 		?>
 		<div <?php echo $block_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built via get_block_wrapper_attributes ?>>
 			<div class="prc-quiz-result-table__scroll">
-				<table>
+				<table class="prc-quiz-result-table__complex">
 					<thead>
 						<tr>
-							<th></th>
-							<th></th>
-							<template data-wp-each="state.demoBreakHeaders">
-								<th class="center aligned">
-									<span data-wp-text="context.item"></span>
+							<th><?php echo esc_html__( 'Question', 'prc-quiz' ); ?></th>
+							<th><?php echo esc_html__( 'Answers', 'prc-quiz' ); ?></th>
+							<th><?php echo esc_html( $choice_heading ); ?></th>
+							<th><?php echo esc_html__( '% who selected each option', 'prc-quiz' ); ?></th>
+							<?php if ( $is_community_group ) : ?>
+								<th><?php echo esc_html__( '% of your group', 'prc-quiz' ); ?></th>
+							<?php endif; ?>
+							<template data-wp-each--header="state.demoBreakHeaders">
+								<th>
+									<span data-wp-text="context.header"></span>
 								</th>
 							</template>
 						</tr>
 					</thead>
 					<tbody>
-						<template data-wp-each--row="state.resultsTableRows">
-							<tr class="prc-quiz-result-table__row" data-wp-key="context.row.uuid">
-								<td>
-									<span class="prc-quiz-result-table__icon" style="<?php echo esc_attr( $icon_style ); ?>" data-wp-bind--hidden="!context.row.showCorrectIcon">
-										<?php echo \PRC\Platform\Icons\render( 'light', 'check', $icon_size ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Icons::render escapes href; wp_kses_post strips <use>. ?>
-									</span>
-									<span class="prc-quiz-result-table__icon" style="<?php echo esc_attr( $icon_style ); ?>" data-wp-bind--hidden="!context.row.showIncorrectIcon">
-										<?php echo \PRC\Platform\Icons\render( 'light', 'xmark', $icon_size ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Icons::render escapes href; wp_kses_post strips <use>. ?>
+						<template data-wp-each--row="state.complexTableRows">
+							<tr
+								data-wp-key="context.row.uuid"
+								class="prc-quiz-result-table__row"
+								data-wp-class--is-first-answer="context.row.isFirst"
+								data-wp-class--is-last-answer="context.row.isLast"
+								data-wp-class--is-correct-selection="context.row.isCorrectSelection"
+								data-wp-class--is-incorrect-selection="context.row.isIncorrectSelection"
+								data-wp-class--is-group-plurality="context.row.isGroupPlurality"
+							>
+								<td class="prc-quiz-result-table__question-cell">
+									<span data-wp-bind--hidden="!context.row.isFirst">
+										<span class="prc-quiz-result-table__question" data-wp-watch="callbacks.renderQuestionHtml"></span>
 									</span>
 								</td>
-								<td>
-									<span class="prc-quiz-result-table__question" data-wp-watch="callbacks.renderQuestionHtml"></span>
-									<div>
-										<span>You answered:</span>
-										<span><strong data-wp-text="context.row.selectedAnswer"></strong></span>
-									</div>
-									<div>
-										<span>The correct answer:</span>
-										<span><strong data-wp-text="context.row.correctAnswer"></strong></span>
-									</div>
+								<td class="prc-quiz-result-table__answer-cell">
+									<span data-wp-text="context.row.answerText"></span>
 								</td>
-								<template data-wp-each="context.row.demoBreakValues">
-									<td class="center aligned">
-										<span data-wp-text="context.item"></span>
+								<td class="prc-quiz-result-table__choice-cell">
+									<?php if ( $is_community_group ) : ?>
+										<span class="prc-quiz-result-table__icon is-correct" data-wp-bind--hidden="!context.row.showGroupAnswerIcon">
+											<?php echo \PRC\Platform\Icons\render( 'prc', 'check', $icon_size ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Icons::render escapes href; wp_kses_post strips <use>. ?>
+										</span>
+									<?php else : ?>
+										<?php $this->render_row_icons( $icon_size, $icon_color_css, false ); ?>
+									<?php endif; ?>
+								</td>
+								<td class="prc-quiz-result-table__percent-cell">
+									<?php if ( $is_community_group ) : ?>
+										<span class="prc-quiz-result-table__demo-label"><?php echo esc_html__( '% who selected each option', 'prc-quiz' ); ?></span>
+									<?php endif; ?>
+									<span data-wp-text="context.row.populationPercent"></span>
+								</td>
+								<?php if ( $is_community_group ) : ?>
+									<td class="prc-quiz-result-table__percent-cell prc-quiz-result-table__group-percent-cell">
+										<span class="prc-quiz-result-table__demo-label"><?php echo esc_html__( '% of your group', 'prc-quiz' ); ?></span>
+										<span data-wp-text="context.row.groupPercent"></span>
+									</td>
+								<?php endif; ?>
+								<template data-wp-each--demo="context.row.demoBreakValues">
+									<td class="prc-quiz-result-table__percent-cell prc-quiz-result-table__demo-cell">
+										<span class="prc-quiz-result-table__demo-label" data-wp-text="context.demo.label"></span>
+										<span data-wp-text="context.demo.value"></span>
 									</td>
 								</template>
 							</tr>
@@ -164,32 +250,35 @@ class Result_Table {
 	 * @return string The rendered HTML.
 	 */
 	public function render_block_callback( $attributes, $content, $block ) {
-		$demo_breaks = array_key_exists( 'prc-quiz/demo-break-labels', $block->context ) ? $block->context['prc-quiz/demo-break-labels'] : false;
+		unset( $content, $block );
 
-		$icon_size      = array_key_exists( 'iconSize', $attributes ) ? (float) $attributes['iconSize'] : 1;
-		$icon_color     = array_key_exists( 'iconColor', $attributes ) ? $attributes['iconColor'] : 'ui-black';
-		$icon_color_css = $this->resolve_icon_color( $icon_color );
+		$icon_size          = array_key_exists( 'iconSize', $attributes ) ? (float) $attributes['iconSize'] : 1;
+		$icon_color         = array_key_exists( 'iconColor', $attributes ) ? $attributes['iconColor'] : 'ui-black';
+		$icon_color_css     = $this->resolve_icon_color( $icon_color );
+		$is_community_group = $this->is_community_group_style( $attributes );
+		$is_complex         = $this->is_complex_style( $attributes ) || $is_community_group;
 
 		$classnames = array(
-			'is-demo-break-table' => false !== $demo_breaks,
+			'is-style-complex'                => $is_complex,
+			self::COMMUNITY_GROUP_STYLE_CLASS => $is_community_group,
 		);
 
 		$block_attrs = get_block_wrapper_attributes(
 			array(
-				'class'               => \PRC\BlockUtils\classNames( $classnames ),
+				'class'               => \PRC\Primitives\BlockUtils\classNames( $classnames ),
 				'data-wp-interactive' => 'prc-quiz/controller',
+				'data-wp-context'     => wp_json_encode(
+					array(
+						'resultTableMode' => $is_community_group ? 'community-group' : 'personal',
+					)
+				),
 				'style'               => sprintf( '--prc-quiz-result-table-icon-color: %s;', esc_attr( $icon_color_css ) ),
 			)
 		);
 
-		/*
-		 * @TODO: This needs more work, not working correctly.
-		 * if ( false !== $demo_breaks ) {
-		 *     return $this->render_demo_break_results( $block_attrs, $icon_size, $icon_color_css );
-		 * } else {
-		 *     return $this->render_simple_results( $block_attrs, $icon_size, $icon_color_css );
-		 * }
-		 */
+		if ( $is_complex ) {
+			return $this->render_complex_results( $block_attrs, $icon_size, $icon_color_css, $is_community_group );
+		}
 
 		return $this->render_simple_results( $block_attrs, $icon_size, $icon_color_css );
 	}

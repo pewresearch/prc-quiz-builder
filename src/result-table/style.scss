@@ -1,8 +1,5 @@
 /**
- * The following styles get applied both on the front of your site
- * and in the editor.
- *
- * Replace them with your own styles or remove the file completely.
+ * Shared editor and frontend styles for the quiz result table.
  */
 
 .wp-block-prc-quiz-result-table {
@@ -36,6 +33,18 @@
 		&[hidden] {
 			display: none !important;
 		}
+
+		&.is-correct {
+			color: var(--wp--preset--color--ui-success, #5cb85c);
+		}
+
+		&.is-incorrect {
+			color: var(--wp--preset--color--ui-gray, #9aa0a6);
+		}
+	}
+
+	[hidden] {
+		display: none !important;
 	}
 
 	.prc-quiz-result-table__row {
@@ -43,6 +52,74 @@
 			padding: 0.5em 1em;
 			border-bottom: 1px dotted #ccc;
 			vertical-align: top;
+		}
+	}
+
+	&.is-style-complex {
+		table {
+			width: 100%;
+		}
+
+		thead th {
+			padding: 0.75em 1em;
+			font-weight: 700;
+			text-align: left;
+			border-bottom: 1px solid
+				var(--wp--preset--color--ui-gray-light, #e0e0e0);
+		}
+
+		.prc-quiz-result-table__row td {
+			padding: 0.75em 1em;
+			border-bottom: none;
+			vertical-align: top;
+		}
+
+		.prc-quiz-result-table__question-cell {
+			font-weight: 600;
+			width: 32%;
+		}
+
+		.prc-quiz-result-table__answer-cell {
+			width: 28%;
+		}
+
+		.prc-quiz-result-table__choice-cell {
+			width: 8%;
+			text-align: center;
+		}
+
+		.prc-quiz-result-table__percent-cell {
+			text-align: right;
+			font-variant-numeric: tabular-nums;
+			white-space: nowrap;
+		}
+
+		.prc-quiz-result-table__demo-label {
+			display: none;
+		}
+
+		.prc-quiz-result-table__icon.is-correct {
+			color: var(--wp--preset--color--ui-success, #5cb85c);
+		}
+
+		.prc-quiz-result-table__icon.is-incorrect {
+			color: var(--wp--preset--color--ui-gray, #9aa0a6);
+		}
+
+		.prc-quiz-result-table__row.is-last-answer td {
+			border-bottom: 1px solid
+				var(--wp--preset--color--ui-gray-light, #ddd);
+		}
+
+		.prc-quiz-result-table__row.is-correct-selection
+			td:not(.prc-quiz-result-table__question-cell),
+		.prc-quiz-result-table__row.is-group-plurality
+			td:not(.prc-quiz-result-table__question-cell) {
+			background-color: color-mix(
+				in srgb,
+				var(--wp--preset--color--ui-success, #5cb85c) 18%,
+				transparent
+			);
 		}
 	}
 }
@@ -53,6 +130,143 @@
 			td {
 				padding: 0.4em 0.6em;
 				font-size: 0.95em;
+			}
+		}
+
+		&.is-style-complex {
+			.prc-quiz-result-table__scroll {
+				overflow: visible;
+			}
+
+			table,
+			thead,
+			tbody,
+			tr,
+			th,
+			td {
+				display: block;
+				width: 100%;
+			}
+
+			thead {
+				position: absolute;
+				width: 1px;
+				height: 1px;
+				padding: 0;
+				margin: -1px;
+				overflow: hidden;
+				clip: rect(0, 0, 0, 0);
+				white-space: nowrap;
+				border: 0;
+			}
+
+			table {
+				width: 100%;
+			}
+
+			.prc-quiz-result-table__row {
+				display: grid;
+				grid-template-columns: 1fr auto auto;
+				gap: 0.35em 0.75em;
+				padding: 0.65em 1em;
+				background: var(--wp--preset--color--ui-white, #fff);
+				border-left: 1px solid
+					var(--wp--preset--color--ui-gray-light, #ddd);
+				border-right: 1px solid
+					var(--wp--preset--color--ui-gray-light, #ddd);
+				border-bottom: 1px solid
+					var(--wp--preset--color--ui-gray-light, #eee);
+
+				td {
+					padding: 0;
+					border: 0;
+					width: auto;
+				}
+			}
+
+			.prc-quiz-result-table__row.is-first-answer {
+				margin-top: 1em;
+				border-top: 1px solid
+					var(--wp--preset--color--ui-gray-light, #ddd);
+				border-top-left-radius: 8px;
+				border-top-right-radius: 8px;
+			}
+
+			.prc-quiz-result-table__row.is-last-answer {
+				margin-bottom: 1em;
+				border-bottom: 1px solid
+					var(--wp--preset--color--ui-gray-light, #ddd);
+				border-bottom-left-radius: 8px;
+				border-bottom-right-radius: 8px;
+			}
+
+			.prc-quiz-result-table__question-cell {
+				grid-column: 1 / -1;
+				width: 100%;
+				padding-bottom: 0.35em;
+			}
+
+			.prc-quiz-result-table__row:not(.is-first-answer)
+				.prc-quiz-result-table__question-cell {
+				display: none;
+			}
+
+			.prc-quiz-result-table__answer-cell {
+				grid-column: 1;
+			}
+
+			.prc-quiz-result-table__choice-cell {
+				grid-column: 2;
+				text-align: right;
+			}
+
+			.prc-quiz-result-table__percent-cell {
+				grid-column: 3;
+				text-align: right;
+			}
+
+			.prc-quiz-result-table__group-percent-cell {
+				grid-column: 1 / -1;
+				display: flex;
+				justify-content: space-between;
+				gap: 0.75em;
+				padding-top: 0.15em;
+				font-size: 0.9em;
+				color: var(--wp--preset--color--ui-gray-dark, #555);
+			}
+
+			&.is-prc-quiz-community-group
+				.prc-quiz-result-table__percent-cell:not(
+					.prc-quiz-result-table__group-percent-cell
+				):not(.prc-quiz-result-table__demo-cell) {
+				grid-column: 1 / -1;
+				display: flex;
+				justify-content: space-between;
+				gap: 0.75em;
+				padding-top: 0.15em;
+				font-size: 0.9em;
+			}
+
+			&.is-prc-quiz-community-group
+				.prc-quiz-result-table__percent-cell
+				.prc-quiz-result-table__demo-label {
+				display: inline;
+				font-weight: 600;
+			}
+
+			.prc-quiz-result-table__demo-cell {
+				grid-column: 1 / -1;
+				display: flex;
+				justify-content: space-between;
+				gap: 0.75em;
+				padding-top: 0.15em;
+				font-size: 0.9em;
+				color: var(--wp--preset--color--ui-gray-dark, #555);
+			}
+
+			.prc-quiz-result-table__demo-label {
+				display: inline;
+				font-weight: 600;
 			}
 		}
 	}

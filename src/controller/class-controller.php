@@ -7,7 +7,7 @@
 
 namespace PRC\Platform\Quiz;
 
-use WP_Block_Parser_Block, WP_Error, WP_HTML_Tag_Processor;
+use WP_Block, WP_Block_Parser_Block, WP_Error, WP_HTML_Tag_Processor;
 
 /**
  * Controller class.
@@ -36,8 +36,10 @@ class Controller {
 	 */
 	public function __construct( $loader ) {
 		$loader->add_action( 'init', $this, 'block_init' );
+		$loader->add_filter( 'render_block_data', $this, 'gate_groups_enabled_attribute' );
 		$loader->add_filter( 'render_block_context', $this, 'set_quiz_id_in_context', 10, 2 );
-		$loader->add_filter( 'render_block_context', $this, 'set_group_bindings_context', 10, 2 );
+		$loader->add_filter( 'render_block_context', $this, 'apply_group_capability_context', 11, 2 );
+		$loader->add_filter( 'render_block_context', $this, 'set_group_bindings_context', 12, 2 );
 		$loader->add_filter( 'render_block_core/buttons', $this, 'modify_buttons', 10, 2 );
 		$loader->add_filter( 'render_block_core/button', $this, 'modify_share_buttons', 10, 2 );
 	}
@@ -61,6 +63,30 @@ class Controller {
 	}
 
 	/**
+	 * Force the saved groupsEnabled attribute off when capability is none.
+	 *
+	 * `providesContext` copies the attribute onto child blocks. Mutating the
+	 * parsed block here stops stale published markup from leaking groups.
+	 *
+	 * @hook render_block_data
+	 *
+	 * @param array $parsed_block Parsed block.
+	 * @return array
+	 */
+	public function gate_groups_enabled_attribute( $parsed_block ) {
+		if ( 'prc-quiz/controller' !== ( $parsed_block['blockName'] ?? '' ) ) {
+			return $parsed_block;
+		}
+
+		$capability = Group_Capability::resolve_from_attributes( $parsed_block['attrs'] ?? array() );
+		if ( empty( $capability['allowed'] ) ) {
+			$parsed_block['attrs']['groupsEnabled'] = false;
+		}
+
+		return $parsed_block;
+	}
+
+	/**
 	 * Provide community group binding context to all blocks under the controller.
 	 *
 	 * @hook render_block_context
@@ -74,7 +100,8 @@ class Controller {
 			return $context;
 		}
 
-		$groups_enabled = $parsed_block['attrs']['groupsEnabled'] ?? false;
+		$capability     = Group_Capability::resolve_from_attributes( $parsed_block['attrs'] ?? array() );
+		$groups_enabled = ! empty( $parsed_block['attrs']['groupsEnabled'] ) && ! empty( $capability['allowed'] );
 		if ( ! $groups_enabled ) {
 			return $context;
 		}
@@ -93,6 +120,50 @@ class Controller {
 			$context,
 			Group_Results::get_group_bindings_context( $quiz_id, $group_id )
 		);
+	}
+
+	/**
+	 * Gate community groups on typology or a non-empty score-bucket catalog.
+	 *
+	 * When the source is buckets, seed `quiz_{id}.clusters` before inner blocks
+	 * render so group-results can read the map without a typology results block.
+	 *
+	 * @hook render_block_context
+	 *
+	 * @param array $context      Block context.
+	 * @param array $parsed_block Parsed block.
+	 * @return array
+	 */
+	public function apply_group_capability_context( $context, $parsed_block ) {
+		if ( 'prc-quiz/controller' !== ( $parsed_block['blockName'] ?? '' ) ) {
+			return $context;
+		}
+
+		$capability = Group_Capability::resolve_from_attributes( $parsed_block['attrs'] ?? array() );
+		if ( empty( $capability['allowed'] ) ) {
+			$context['prc-quiz/groupsEnabled'] = false;
+			return $context;
+		}
+
+		if ( 'buckets' !== $capability['source'] ) {
+			return $context;
+		}
+
+		$quiz_id = $context['prc-quiz/id'] ?? get_the_ID();
+		if ( ! $quiz_id ) {
+			return $context;
+		}
+
+		$state                = wp_interactivity_state( 'prc-quiz/controller', array() );
+		$quiz_key             = 'quiz_' . $quiz_id;
+		$existing             = isset( $state[ $quiz_key ] ) && is_array( $state[ $quiz_key ] )
+			? $state[ $quiz_key ]
+			: array();
+		$existing['clusters'] = $capability['clusters'];
+		$state[ $quiz_key ]   = $existing;
+		wp_interactivity_state( 'prc-quiz/controller', $state );
+
+		return $context;
 	}
 
 	/**
@@ -191,11 +262,12 @@ class Controller {
 	/**
 	 * Render quiz controller block.
 	 *
-	 * @param array  $attributes The attributes.
-	 * @param string $content The content.
+	 * @param array         $attributes The attributes.
+	 * @param string        $content    The content.
+	 * @param WP_Block|null $block      The block instance.
 	 * @return string
 	 */
-	public function render_block_callback( $attributes, $content ) {
+	public function render_block_callback( $attributes, $content, ?WP_Block $block = null ) {
 		// Enqueue some additional non-module scripts.
 		wp_enqueue_script( 'wp-url' );
 		wp_enqueue_script( 'wp-api-fetch' );
@@ -205,8 +277,8 @@ class Controller {
 		// Get the post id.
 		$post_id = $post->ID;
 
-		// This is a flag to determine if the quiz has support for community groups.
-		$groups_enabled = $attributes['groupsEnabled'];
+		$capability     = Group_Capability::resolve_from_attributes( $attributes );
+		$groups_enabled = ! empty( $attributes['groupsEnabled'] ) && ! empty( $capability['allowed'] );
 
 		// This is a flag to exeplicitly display the results if the user is entering through a link.
 		$show_results = get_query_var( 'quizShowResults', false );
@@ -241,6 +313,9 @@ class Controller {
 					'quizUrl'                => get_permalink( $post_id ),
 					'displayType'            => $attributes['displayType'],    
 					'configuredDisplayType'  => $attributes['displayType'], // Immutable copy for client logic; onInit may rewrite displayType (e.g. fluid -> scrollable on narrow viewports).
+					'pageTransition'         => $attributes['pageTransition'] ?? 'none',
+					'parallaxStrength'       => self::clamp_parallax_strength( $attributes['parallaxStrength'] ?? null ),
+					'scrollOnPageChange'     => (bool) ( $attributes['scrollOnPageChange'] ?? true ),
 					'groupsEnabled'          => $groups_enabled,
 					'groupId'                => $group_id,
 					'groupDomain'            => $group_domain,
@@ -252,7 +327,8 @@ class Controller {
 						'incorrect' => ! empty( $attributes['incorrectOutcomeLabel'] ) ? $attributes['incorrectOutcomeLabel'] : __( 'Incorrect', 'prc-quiz-builder' ),
 						'unsure'    => ! empty( $attributes['unsureOutcomeLabel'] ) ? $attributes['unsureOutcomeLabel'] : __( 'Not sure', 'prc-quiz-builder' ),
 					),
-					'scoreBuckets'           => $this->parse_score_buckets( $attributes['scoreBuckets'] ?? '[]' ),
+					'scoreBuckets'           => Group_Capability::parse_score_buckets( $attributes['scoreBuckets'] ?? '[]' ),
+					'histogramPopulation'    => Histogram_Population::resolve_from_controller( $attributes, $block ),
 					'isEmbedded'             => $is_embedded,
 					'processing'             => false,
 					'loaded'                 => false,
@@ -262,10 +338,10 @@ class Controller {
 					'pendingSubmissionHash'  => '',
 					'submissionErrorMessage' => '',
 					'displayResults'         => $show_results && $archetype, // If the user is entering through a link and explicitly requesting to view results and has an archetype, we want to display the results. (If there is no archetype then we can not display the results.).
-					'displayGroupResults'    => $group_id && $show_results && $groups_enabled && ! $archetype, // If the user is entering through a group link with a show results flag BUT NO archetype, we want to display the group's aggregate results.
-					'selectedAnswers'        => array(), // A nested array of user selected answers uuid matched to the question uuid. questionUuid: [answerUuid1, answerUuid2, ...].
+					'displayGroupResults'    => Group_Results::is_group_results_request( $groups_enabled ),
+					'selectedAnswers'        => (object) array(), // questionUuid => [answerUuid, ...]. Object so empty JSON is {}, not [].
 					'userSubmission'         => array(), // A flat array of user selected answers uuid. Constructed by callback.
-					'userScore'              => array(), // An array of the user's score data. This includes the final score, as well as some other resultsData.
+					'userScore'              => (object) array(), // Object so empty JSON is {}, not [].
 					'allowSubmissions'       => $allow_submissions,
 					'isPreview'              => is_preview(),
 					'shareText'              => 'I scored %score% on the "%title%" quiz',
@@ -279,6 +355,7 @@ class Controller {
 		if ( 'fluid' === $attributes['displayType'] ) {
 			$tag->set_attribute( 'data-wp-on-async-window--resize', 'callbacks.onFluidViewportChange' );
 		}
+		$tag->set_attribute( 'data-wp-class--is-horizontal-parallax', 'state.isHorizontalParallax' );
 		// Apply a class to the block if it is processing. Mainly used to show/hide the loading spinner.
 		$tag->set_attribute( 'data-wp-class--is-processing', 'context.processing' );
 		// Update's the user's submission data as they answer questions.
@@ -299,47 +376,50 @@ class Controller {
 		// Add the loading spinner to inside the very last </div> tag.
 		$content = preg_replace( '/<\/div>$/', $submission_error . $loading . '</div>', $content );
 
+		$this->seed_demo_break_labels( $post_id, $attributes );
+
 		return $content;
 	}
 
 	/**
-	 * Parse the scoreBuckets JSON attribute into a list of exclusive ranges.
+	 * Clamp the parallax strength attribute to its supported range.
 	 *
-	 * @param string|array $raw Raw attribute value.
-	 * @return array<int, array{id: string, label: string, min: int|float, max: int|float}>
+	 * Keep in sync with PARALLAX_STRENGTH_* in src/controller/page-transition.js.
+	 *
+	 * @param mixed $value Raw attribute value.
+	 * @return float
 	 */
-	private function parse_score_buckets( $raw ): array {
-		if ( is_array( $raw ) ) {
-			$decoded = $raw;
-		} elseif ( is_string( $raw ) && '' !== $raw ) {
-			$decoded = json_decode( $raw, true );
-		} else {
-			$decoded = array();
+	public static function clamp_parallax_strength( $value ) {
+		if ( ! is_numeric( $value ) ) {
+			return 0.5;
 		}
-		if ( ! is_array( $decoded ) ) {
-			return array();
+		return max( 0.1, min( 0.9, (float) $value ) );
+	}
+
+	/**
+	 * Store demographic column labels on quiz interactivity state.
+	 *
+	 * @param int   $post_id    Quiz post ID.
+	 * @param array $attributes Block attributes.
+	 * @return void
+	 */
+	private function seed_demo_break_labels( $post_id, $attributes ) {
+		$demo_break_labels = array();
+		if ( ! empty( $attributes['demoBreakLabels'] ) ) {
+			$parsed = json_decode( $attributes['demoBreakLabels'], true );
+			if ( is_array( $parsed ) ) {
+				$demo_break_labels = $parsed;
+			}
 		}
 
-		$buckets = array();
-		foreach ( $decoded as $index => $item ) {
-			if ( ! is_array( $item ) ) {
-				continue;
-			}
-			if ( ! isset( $item['min'], $item['max'] ) ) {
-				continue;
-			}
-			$min   = (float) $item['min'];
-			$max   = (float) $item['max'];
-			$label = isset( $item['label'] ) ? (string) $item['label'] : '';
-			$buckets[] = array(
-				'id'    => isset( $item['id'] ) ? (string) $item['id'] : 'bucket-' . $index,
-				// Match JS parseScoreBuckets: empty labels fall back to "Group N".
-				'label' => '' !== $label ? $label : 'Group ' . ( $index + 1 ),
-				'min'   => min( $min, $max ),
-				'max'   => max( $min, $max ),
-			);
-		}
-		return $buckets;
+		$state                       = wp_interactivity_state( 'prc-quiz/controller', array() );
+		$quiz_key                    = 'quiz_' . $post_id;
+		$existing                    = isset( $state[ $quiz_key ] ) && is_array( $state[ $quiz_key ] )
+			? $state[ $quiz_key ]
+			: array();
+		$existing['demoBreakLabels'] = $demo_break_labels;
+		$state[ $quiz_key ]          = $existing;
+		wp_interactivity_state( 'prc-quiz/controller', $state );
 	}
 
 	/**

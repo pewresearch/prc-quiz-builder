@@ -3,8 +3,8 @@ import { __ } from '@wordpress/i18n';
 
 import registerQuizBuilderBindings from './quiz-builder-bindings';
 import {
-	QUIZ_BUILDER_SOURCE,
 	isQuizBuilderBindingActive,
+	quizBuilderBinding,
 } from './binding-fields';
 
 export default function registerAnswerBinding() {
@@ -15,18 +15,15 @@ export default function registerAnswerBinding() {
 		title: __('Answer Text', 'prc-quiz'),
 		description: __('Displays the answer text.', 'prc-quiz'),
 		attributes: {
-			placeholder: __('Start typing your answer here...', 'prc-quiz'),
+			placeholder: __('Start typing your answer here…', 'prc-quiz'),
 			metadata: {
 				bindings: {
-					content: {
-						source: QUIZ_BUILDER_SOURCE,
-						args: { field: 'answer-text' },
-					},
+					content: quizBuilderBinding('answer-text'),
 				},
 			},
 		},
 		ancestor: ['prc-quiz/answer'],
-		isActive: (blockAttributes, variationAttributes) => {
+		isActive: (blockAttributes) => {
 			const binding = blockAttributes.metadata?.bindings?.content;
 			return isQuizBuilderBindingActive(
 				binding,

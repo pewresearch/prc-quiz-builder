@@ -1,0 +1,91 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Kreait\Firebase\Auth\CreateSessionCookie;
+
+use Beste\Json;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Utils;
+use InvalidArgumentException;
+use Kreait\Firebase\Auth\CreateSessionCookie;
+use Kreait\Firebase\Auth\ProjectAwareAuthResourceUrlBuilder;
+use Kreait\Firebase\Auth\TenantAwareAuthResourceUrlBuilder;
+use Psr\Http\Client\ClientExceptionInterface;
+use SensitiveParameter;
+
+use function array_filter;
+
+use const JSON_FORCE_OBJECT;
+
+/**
+ * @internal
+ */
+final readonly class GuzzleApiClientHandler
+{
+    /**
+     * @param non-empty-string $projectId
+     */
+    public function __construct(
+        private ClientInterface $client,
+        private string $projectId,
+    ) {
+    }
+
+    public function handle(#[SensitiveParameter] CreateSessionCookie $action): string
+    {
+        $request = $this->createRequest($action);
+
+        try {
+            $response = $this->client->send($request, ['http_errors' => false]);
+        } catch (ClientExceptionInterface $e) {
+            throw new FailedToCreateSessionCookie($action, null, 'Connection error', 0, $e);
+        }
+
+        if ($response->getStatusCode() !== 200) {
+            throw FailedToCreateSessionCookie::withActionAndResponse($action, $response);
+        }
+
+        try {
+            /** @var array{sessionCookie?: string|null} $data */
+            $data = Json::decode((string) $response->getBody(), true);
+        } catch (InvalidArgumentException $e) {
+            throw new FailedToCreateSessionCookie($action, $response, 'Unable to parse the response data: '.$e->getMessage(), 0, $e);
+        }
+
+        $sessionCookie = $data['sessionCookie'] ?? null;
+
+        if ($sessionCookie !== null) {
+            return $sessionCookie;
+        }
+
+        throw new FailedToCreateSessionCookie($action, $response, 'The response did not contain a session cookie');
+    }
+
+    private function createRequest(#[SensitiveParameter] CreateSessionCookie $action): Request
+    {
+        $data = [
+            'idToken' => $action->idToken(),
+            'validDuration' => $action->ttlInSeconds(),
+        ];
+
+        $tenantId = $action->tenantId();
+        if (is_string($tenantId) && $tenantId !== '') {
+            $urlBuilder = TenantAwareAuthResourceUrlBuilder::forProjectAndTenant($this->projectId, $tenantId);
+        } else {
+            $urlBuilder = ProjectAwareAuthResourceUrlBuilder::forProject($this->projectId);
+        }
+
+        $url = $urlBuilder->getUrl(':createSessionCookie');
+
+        $body = Utils::streamFor(Json::encode($data, JSON_FORCE_OBJECT));
+
+        $headers = array_filter([
+            'Content-Type' => 'application/json; charset=UTF-8',
+            'Content-Length' => (string) ($body->getSize() ?? ''),
+        ], fn(mixed $value): bool => $value !== '' && $value !== '0');
+
+        return new Request('POST', $url, $headers, $body);
+    }
+}

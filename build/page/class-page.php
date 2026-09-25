@@ -75,6 +75,101 @@ class Page {
 	}
 
 	/**
+	 * The page's background image attribute, normalized.
+	 *
+	 * @param array $attributes Page block attributes.
+	 * @return array{id: int, url: string}|null Null when the page has no background image.
+	 */
+	public static function get_background_image( $attributes ) {
+		$image = $attributes['style']['background']['backgroundImage'] ?? null;
+		if ( is_string( $image ) ) {
+			$image = array( 'url' => $image );
+		}
+		if ( ! is_array( $image ) || empty( $image['url'] ) || ! is_string( $image['url'] ) ) {
+			return null;
+		}
+		return array(
+			'id'  => isset( $image['id'] ) ? (int) $image['id'] : 0,
+			'url' => $image['url'],
+		);
+	}
+
+	/**
+	 * Identity used to decide whether two pages share a background image.
+	 *
+	 * Attachment id when known, otherwise the URL. Empty when there is no image.
+	 *
+	 * @param array $attributes Page block attributes.
+	 * @return string
+	 */
+	public static function get_background_key( $attributes ) {
+		$image = self::get_background_image( $attributes );
+		if ( null === $image ) {
+			return '';
+		}
+		return $image['id'] ? 'id:' . $image['id'] : 'url:' . $image['url'];
+	}
+
+	/**
+	 * Markup for the page background layer.
+	 *
+	 * Background serialization is skipped in block.json so the image does not
+	 * paint on the wrapper; it lives on its own layer so the page transition can
+	 * move it independently of the page content.
+	 *
+	 * @param array $attributes Page block attributes.
+	 * @return string Empty when the page has no background image.
+	 */
+	public static function get_background_layer_markup( $attributes ) {
+		$image = self::get_background_image( $attributes );
+		if ( null === $image ) {
+			return '';
+		}
+		$background = $attributes['style']['background'];
+		$styles     = array(
+			'backgroundImage'      => array( 'url' => $image['url'] ),
+			'backgroundSize'       => $background['backgroundSize'] ?? 'cover',
+			'backgroundPosition'   => $background['backgroundPosition'] ?? null,
+			'backgroundRepeat'     => $background['backgroundRepeat'] ?? null,
+			'backgroundAttachment' => $background['backgroundAttachment'] ?? null,
+		);
+		if ( 'contain' === $styles['backgroundSize'] && ! $styles['backgroundPosition'] ) {
+			$styles['backgroundPosition'] = '50% 50%';
+		}
+		$css = wp_style_engine_get_styles( array( 'background' => $styles ) );
+		if ( empty( $css['css'] ) ) {
+			return '';
+		}
+		return '<div class="wp-block-prc-quiz-page__background" aria-hidden="true" style="' . esc_attr( $css['css'] ) . '"></div>';
+	}
+
+	/**
+	 * Insert the background layer as the first child of the page wrapper.
+	 *
+	 * @param string $block_content Rendered page markup.
+	 * @param array  $attributes    Page block attributes.
+	 * @return string
+	 */
+	public static function inject_background_layer( $block_content, $attributes ) {
+		$layer = self::get_background_layer_markup( $attributes );
+		if ( '' === $layer ) {
+			return $block_content;
+		}
+		$tag = new WP_HTML_Tag_Processor( $block_content );
+		if ( ! $tag->next_tag() ) {
+			return $block_content;
+		}
+		$tag->add_class( 'has-background-image' );
+		$block_content = $tag->get_updated_html();
+		// Serialized attribute values escape ">", so the first ">" closes the wrapper tag.
+		$wrapper_end = strpos( $block_content, '>' );
+		if ( false === $wrapper_end ) {
+			return $block_content;
+		}
+		return substr_replace( $block_content, $layer, $wrapper_end + 1, 0 );
+	}
+
+	/**
 	 * Render block callback.
 	 *
 	 * @param array  $attributes The block attributes.
@@ -102,6 +197,8 @@ class Page {
 			)
 		);
 		$tag->set_attribute( 'data-wp-class--is-visible', 'state.isPageVisible' );
+		$tag->set_attribute( 'data-wp-bind--inert', 'state.isPageLeaving' );
+		$tag->set_attribute( 'tabindex', '-1' );
 		$tag->set_attribute( 'data-wp-watch--is-visible', 'callbacks.onPageVisibleChange' );
 		$tag->set_attribute( 'data-wp-bind--data-page-uuid', 'context.uuid' );
 
@@ -117,6 +214,7 @@ class Page {
 			}
 		}
 		$content = $tag->get_updated_html();
+		$content = self::inject_background_layer( $content, $attributes );
 		$content = $this->strip_embedded_form_redirect_urls( $content );
 		$content = $this->find_dialog_and_remove_if_group_quiz( $content );
 		return $content;

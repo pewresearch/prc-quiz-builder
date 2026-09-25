@@ -13,11 +13,14 @@ import {
  * Internal Dependencies
  */
 import scoreQuiz from './scoring';
+import { shouldDisplayPages } from './display-pages';
 import { scrollToElement } from './scroll-utils';
 import './progress-storage';
 import './submission-recovery';
 import './share';
 import './run-animation';
+import './page-navigation';
+import './submission-sync';
 
 const FLUID_BREAKPOINT_PX = 782;
 
@@ -101,17 +104,18 @@ const { state, actions } = store('prc-quiz/controller', {
 			return displayResults;
 		},
 		get displayPages() {
-			const { displayType, configuredDisplayType } = getContext();
-			// Native scrollable quizzes always show pages (submit-as-you-go, inline results).
-			// Fluid quizzes that resolved to scrollable should hide pages when results are
-			// shown (e.g. landing on a results URL), matching paged behavior.
-			if (
-				'scrollable' === displayType &&
-				'fluid' !== configuredDisplayType
-			) {
-				return true;
-			}
-			return !state.displayResults && !state.displayGroupResults;
+			const {
+				displayType,
+				configuredDisplayType,
+				displayResults,
+				displayGroupResults,
+			} = getContext();
+			return shouldDisplayPages({
+				displayType,
+				configuredDisplayType,
+				displayResults,
+				displayGroupResults,
+			});
 		},
 		get displayGroupResults() {
 			const { displayGroupResults } = getContext();
@@ -164,8 +168,7 @@ const { state, actions } = store('prc-quiz/controller', {
 						? 'scrollable'
 						: 'paged';
 			}
-			// Set the current page uuid to the next page uuid.
-			context.currentPageUuid = pages[1];
+			actions.goToPage(pages[1]);
 			actions.saveQuizProgress();
 			if ('paged' !== resolvedDisplayType) {
 				const firstPage = root?.querySelector(
@@ -179,8 +182,7 @@ const { state, actions } = store('prc-quiz/controller', {
 			const { currentPageUuid, pages } = context;
 			// Find the index of the current page in the pages array.
 			const currentPageIndex = pages.indexOf(currentPageUuid);
-			// Set the current page uuid to the next page uuid.
-			context.currentPageUuid = pages[currentPageIndex + 1];
+			actions.goToPage(pages[currentPageIndex + 1]);
 			actions.saveQuizProgress();
 		}),
 		onPreviousPageClick: withSyncEvent(() => {
@@ -188,8 +190,7 @@ const { state, actions } = store('prc-quiz/controller', {
 			const { currentPageUuid, pages } = context;
 			// Find the index of the current page in the pages array.
 			const currentPageIndex = pages.indexOf(currentPageUuid);
-			// Set the current page uuid to the previous page uuid.
-			context.currentPageUuid = pages[currentPageIndex - 1];
+			actions.goToPage(pages[currentPageIndex - 1]);
 			actions.saveQuizProgress();
 		}),
 		onSubmitQuizClick: withSyncEvent(() => {
@@ -230,7 +231,7 @@ const { state, actions } = store('prc-quiz/controller', {
 			context.displayResults = false;
 			context.readyForSubmission = false;
 			context.selectedAnswers = {};
-			context.userSubmission = {};
+			context.userSubmission = [];
 			context.userScore = {};
 			context.currentPageUuid = context.firstPageUuid;
 			if (pendingSubmission) {
@@ -276,6 +277,9 @@ const { state, actions } = store('prc-quiz/controller', {
 			};
 
 			context.processing = true;
+			if (undefined !== score && null !== score) {
+				actions.saveQuizProgress(score);
+			}
 
 			// If the user has not answered enough questions we prompt them to reset the quiz, or in the case
 			// of paginated quizzes, go back to the first page.
@@ -518,24 +522,8 @@ const { state, actions } = store('prc-quiz/controller', {
 				1200
 			);
 		}),
-		/**
-		 * Constructs a flat array of the user's selected answers for submission.
-		 */
 		updateUserSubmission: () => {
-			const context = getContext();
-			const { selectedAnswers, answerThreshold } = context;
-
-			// selectedAnswers structure: { questionUuid: [answerUuid1, answerUuid2, ...], ... }
-			// API expects: { answers: [answerUuid1, answerUuid2, answerUuid3, ...] }
-			// Flatten all selected answers from all questions into a single array
-			const answersArray = Object.values(selectedAnswers || {}).flat();
-
-			context.userSubmission = answersArray;
-
-			// If the user has exceeded or met the answerThreshold we want to signal readyForSubmission.
-			if (answersArray.length >= answerThreshold) {
-				context.readyForSubmission = true;
-			}
+			actions.syncUserSubmission();
 		},
 		/**
 		 * As the user updates their answers, we calculate a new score.

@@ -1,13 +1,13 @@
 /**
  * External Dependencies
  */
-import { Icon } from '@prc/icons';
+import { SyncedEntityPlaceholder } from '@prc/components';
 
 /**
  * WordPress Dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { SyncedEntityPlaceholder } from '@prc/components';
+import { Icon, help } from '@wordpress/icons';
 
 /**
  * Internal Dependencies
@@ -18,7 +18,7 @@ import { POST_TYPE_LABEL } from './constants';
 
 const PlaceholderIcon = () => (
 	<div style={{ marginRight: '4px' }}>
-		<Icon icon="block-question" library="light" size={1.5} />
+		<Icon icon={help} />
 	</div>
 );
 

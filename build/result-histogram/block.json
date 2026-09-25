@@ -2,10 +2,10 @@
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
   "name": "prc-quiz/result-histogram",
-  "version": "4.1",
+  "version": "4.2",
   "title": "Result Histogram",
   "category": "prc-quiz",
-  "description": "Histogram representing distribution of scores.",
+  "description": "Chart of how many people received each score. Edit the data on the Quiz Controller.",
   "attributes": {
     "message": {
       "type": "string"
@@ -33,9 +33,15 @@
       "type": "string",
       "default": "oatmeal"
     },
+    "customBarColor": {
+      "type": "string"
+    },
     "isHighlightedColor": {
       "type": "string",
       "default": "mustard"
+    },
+    "customIsHighlightedColor": {
+      "type": "string"
     },
     "yAxisDomain": {
       "type": "number",
@@ -46,6 +52,10 @@
       "default": "Score"
     },
     "showScoreSummary": {
+      "type": "boolean",
+      "default": true
+    },
+    "showChart": {
       "type": "boolean",
       "default": true
     },
@@ -87,6 +97,14 @@
     "typography": {
       "fontSize": true,
       "__experimentalFontFamily": true
+    },
+    "color": {
+      "background": false,
+      "text": false,
+      "heading": false,
+      "button": false,
+      "link": false,
+      "enableContrastChecker": false
     }
   },
   "ancestor": [
@@ -94,7 +112,8 @@
   ],
   "usesContext": [
     "prc-quiz/id",
-    "prc-quiz/type"
+    "prc-quiz/type",
+    "prc-quiz/histogram-population"
   ],
   "textdomain": "result-histogram",
   "editorScript": "file:./index.js",

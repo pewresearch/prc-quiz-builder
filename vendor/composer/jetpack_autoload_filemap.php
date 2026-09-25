@@ -6,40 +6,100 @@ $vendorDir = dirname(__DIR__);
 $baseDir   = dirname($vendorDir);
 
 return array(
+	'6e3fae29631ef280660b3cdad06f25a8' => array(
+		'version' => '3.7.1.0',
+		'path'    => $vendorDir . '/symfony/deprecation-contracts/function.php'
+	),
+	'a4a119a56e50fbb293281d9a48007e0e' => array(
+		'version' => '1.37.0.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php80/bootstrap.php'
+	),
 	'7b11c4dc42b3b3023073cb14e519683c' => array(
 		'version' => '3.0.3.0',
 		'path'    => $vendorDir . '/ralouphie/getallheaders/src/getallheaders.php'
 	),
-	'6e3fae29631ef280660b3cdad06f25a8' => array(
-		'version' => '3.6.0.0',
-		'path'    => $vendorDir . '/symfony/deprecation-contracts/function.php'
-	),
 	'37a3dc5111fe8f707ab4c132ef1dbc62' => array(
-		'version' => '7.10.0.0',
+		'version' => '7.15.5.0',
 		'path'    => $vendorDir . '/guzzlehttp/guzzle/src/functions_include.php'
 	),
+	'0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => array(
+		'version' => '1.38.2.0',
+		'path'    => $vendorDir . '/symfony/polyfill-mbstring/bootstrap.php'
+	),
+	'606a39d89246991a373564698c2d8383' => array(
+		'version' => '1.41.0.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php85/bootstrap.php'
+	),
+	'9d2b9fc6db0f153a0a149fefb182415e' => array(
+		'version' => '1.38.1.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php84/bootstrap.php'
+	),
+	'2c2415ec15363ede1bff13a287462ba1' => array(
+		'version' => '1.41.0.0',
+		'path'    => $vendorDir . '/symfony/polyfill-php86/bootstrap.php'
+	),
+	'23f09fe3194f8c2f70923f90d6702129' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/collections/functions.php'
+	),
+	'60799491728b879e74601d83e38b2cad' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/collections/helpers.php'
+	),
 	'e39a8b23c42d4e1452234d762b03835a' => array(
-		'version' => '4.9.2.0',
+		'version' => '4.9.4.0',
 		'path'    => $vendorDir . '/ramsey/uuid/src/functions.php'
 	),
-	'1232758e40b1d31bb295b6907de02c63' => array(
-		'version' => '3.0.0.0',
-		'path'    => $vendorDir . '/beste/clock/src/Clock.php'
+	'2203a247e6fda86070a5e4e07aed533a' => array(
+		'version' => '8.0.8.0',
+		'path'    => $vendorDir . '/symfony/clock/Resources/now.php'
 	),
-	'0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => array(
-		'version' => '1.36.0.0',
-		'path'    => $vendorDir . '/symfony/polyfill-mbstring/bootstrap.php'
+	'a1105708a18b76903365ca1c4aa61b02' => array(
+		'version' => '8.0.14.0',
+		'path'    => $vendorDir . '/symfony/translation/Resources/functions.php'
+	),
+	'19e6faa27d773988183e0f384143fcad' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/reflection/helpers.php'
+	),
+	'f625ee536139dfb962a398b200bdb2bd' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/functions.php'
+	),
+	'72579e7bd17821bb1321b87411366eae' => array(
+		'version' => '13.32.0.0',
+		'path'    => $vendorDir . '/illuminate/support/helpers.php'
+	),
+	'3c3a02bc9945aa3571024986c07a1e55' => array(
+		'version' => '9.1.0.0',
+		'path'    => $vendorDir . '/rinvex/countries/src/helpers.php'
 	),
 	'06b8a576aaa70a8517a94b7ff6b37e5c' => array(
 		'version' => '1.7.0.0',
 		'path'    => $vendorDir . '/beste/json/src/Json.php'
 	),
+	'd05682204a32a3fc131bd951fefa8238' => array(
+		'version' => '2.6.0.0',
+		'path'    => $vendorDir . '/cuyz/valinor/src/Compiler/node-functions.php'
+	),
 	'b067bc7112e384b61c701452d53a14a8' => array(
-		'version' => '2.8.0.0',
+		'version' => '2.9.2.0',
 		'path'    => $vendorDir . '/mtdowling/jmespath.php/src/JmesPath.php'
 	),
-	'6b97f44a4c79d1c06822c8f6351a0f4e' => array(
-		'version' => '1.0.0.0',
-		'path'    => $vendorDir . '/prc/block-utils/src/functions.php'
+	'152652665b20977abdd2f757f4ca19d4' => array(
+		'version' => '2.0.0.0',
+		'path'    => $vendorDir . '/prc/primitives/src/block-utils/functions.php'
+	),
+	'646031b73df34ef9b67a1d70c16c67ee' => array(
+		'version' => '2.0.0.0',
+		'path'    => $vendorDir . '/prc/primitives/src/html-processors/functions.php'
+	),
+	'9548c27ea0a43fb8113fc559facb2477' => array(
+		'version' => '2.0.0.0',
+		'path'    => $vendorDir . '/prc/primitives/src/url-helper/url-helper.php'
+	),
+	'a973b381bd3a06d58223a84663a6e6bf' => array(
+		'version' => '2.0.0.0',
+		'path'    => $vendorDir . '/prc/primitives/src/term-data-store/term-data-store.php'
 	),
 );

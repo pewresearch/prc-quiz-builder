@@ -270,10 +270,29 @@ class Archetypes {
 	}
 
 	/**
+	 * Whether a submit payload includes a score.
+	 *
+	 * Knowledge quizzes award 0 when every answer is Not sure. PHP empty( 0 )
+	 * is true, so callers must not use empty() for this check.
+	 *
+	 * @param mixed $score Score from the submit payload.
+	 * @return bool
+	 */
+	public static function is_provided_score( $score ): bool {
+		if ( null === $score || false === $score ) {
+			return false;
+		}
+		if ( is_string( $score ) ) {
+			return '' !== trim( $score );
+		}
+		return true;
+	}
+
+	/**
 	 * Create an archetype.
 	 *
-	 * @param array $submission The submission.
-	 * @param int   $score      The score.
+	 * @param array      $submission The submission.
+	 * @param int|string $score      The score. Zero is valid.
 	 * @return array|WP_Error
 	 */
 	public function create_archetype(
@@ -286,7 +305,7 @@ class Archetypes {
 		if ( empty( $submission ) ) {
 			return new WP_Error( 'no-submission', 'No submission provided.' );
 		}
-		if ( empty( $score ) ) {
+		if ( ! self::is_provided_score( $score ) ) {
 			return new WP_Error( 'no-score', 'No score provided.' );
 		}
 		// Create a new archetype.

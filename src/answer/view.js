@@ -12,6 +12,8 @@ import {
  * Internal Dependencies
  */
 import { getQuestionOutcome } from '../controller/question-outcome';
+import { shouldRevealCorrectAnswer } from './live-feedback';
+import '../controller/submission-sync';
 
 function isLiveFeedbackActive(context) {
 	return !!context.liveFeedback && context.quizType === 'quiz';
@@ -67,6 +69,33 @@ const { state, actions } = store('prc-quiz/controller', {
 					uuid
 				];
 			return false === answer?.correct;
+		},
+		get isFeedbackCorrectRevealed() {
+			const context = getContext();
+			if (!isLiveFeedbackActive(context)) {
+				return false;
+			}
+			const {
+				uuid,
+				questionUuid,
+				quizId,
+				questionType,
+				selectedAnswers,
+			} = context;
+			const question = state[`quiz_${quizId}`]?.questions?.[questionUuid];
+			const selected = selectedAnswers[questionUuid] || [];
+			const answer = question?.answers?.[uuid];
+			return shouldRevealCorrectAnswer({
+				liveFeedback: context.liveFeedback,
+				quizType: context.quizType,
+				questionType,
+				hasSelection: selected.length > 0,
+				questionOutcome: getQuestionOutcome(question, selected),
+				answerCorrect: answer?.correct,
+			});
+		},
+		get isFeedbackCorrectHighlight() {
+			return state.isFeedbackCorrect || state.isFeedbackCorrectRevealed;
 		},
 		get questionOutcome() {
 			const context = getContext();
@@ -158,6 +187,7 @@ const { state, actions } = store('prc-quiz/controller', {
 				];
 			}
 
+			actions.syncUserSubmission();
 			actions.saveQuizProgress();
 		}),
 	},

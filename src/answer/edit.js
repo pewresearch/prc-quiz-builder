@@ -8,7 +8,7 @@ import clsx from 'clsx';
  */
 import { __ } from '@wordpress/i18n';
 import { useEffect } from '@wordpress/element';
-import { useSelect, useDispatch, select } from '@wordpress/data';
+import { useDispatch, select } from '@wordpress/data';
 import {
 	useBlockProps,
 	useInnerBlocksProps,
@@ -21,6 +21,7 @@ import {
 // eslint-disable-next-line import/no-relative-packages
 import Controls from './controls';
 import { CorrectToolbar } from './correct-toggle';
+import { quizBuilderBinding } from '../bindings/binding-fields';
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -28,16 +29,15 @@ import { CorrectToolbar } from './correct-toggle';
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
  *
- * @param {Object}   props                   Properties passed to the function.
- * @param {Object}   props.attributes        Available block attributes.
- * @param            props.className
- * @param            props.clientId
- * @param            props.context
- * @param            props.isSelected
- * @param            props.insertBlocksAfter
- * @param {Function} props.setAttributes     Function that updates individual attributes.
+ * @param {Object}   props                            Properties passed to the function.
+ * @param {Object}   props.attributes                 Available block attributes.
+ * @param {Function} props.setAttributes              Function that updates individual attributes.
+ * @param {string}   props.className                  Block class name.
+ * @param {string}   props.clientId                   Block client ID.
+ * @param {Object}   props.context                    Block context from parent blocks.
+ * @param {string}   props.__unstableLayoutClassNames Layout class names from the block editor.
  *
- * @return {WPElement} Element to render.
+ * @return {Element} Element to render.
  */
 export default function Edit({
 	attributes,
@@ -45,12 +45,10 @@ export default function Edit({
 	clientId,
 	context,
 	setAttributes,
-	isSelected,
-	insertBlocksAfter,
 	__unstableLayoutClassNames: layoutClassNames,
 }) {
-	const { correct, uuid, conditionalDisplay } = attributes;
-	const existingUuids = context['prc-quiz/uuids'] || [];
+	const { correct, uuid } = attributes;
+	const existingUuids = context['prc-quiz/uuids'];
 
 	// Determine quiz and question types from context (stable across renders)
 	const quizType = context['prc-quiz/type'];
@@ -128,14 +126,12 @@ export default function Edit({
 				'core/paragraph',
 				{
 					placeholder: __(
-						'Start typing your answer here...',
+						'Start typing your answer here…',
 						'prc-quiz'
 					),
 					metadata: {
 						bindings: {
-							content: {
-								source: 'prc-quiz/answer',
-							},
+							content: quizBuilderBinding('answer-text'),
 						},
 					},
 				},
@@ -147,11 +143,12 @@ export default function Edit({
 	 * Iniitalize a uuid for the answer block.
 	 */
 	useEffect(() => {
+		const uuids = existingUuids || {};
 		// If a uuid is already set, check if existinguuids includes it, and if it does does it have this clientId? If not then lets set a new uuid using this clientId.
 		if (
 			uuid &&
-			Object.keys(existingUuids).includes(uuid) &&
-			existingUuids[uuid] !== clientId
+			Object.keys(uuids).includes(uuid) &&
+			uuids[uuid] !== clientId
 		) {
 			setAttributes({
 				uuid: clientId,
@@ -163,7 +160,7 @@ export default function Edit({
 				uuid: clientId,
 			});
 		}
-	}, [existingUuids]);
+	}, [clientId, existingUuids, setAttributes, uuid]);
 
 	/**
 	 * If the quiz type changes to freeform, remove the correct attribute from the answer.
@@ -174,7 +171,7 @@ export default function Edit({
 				correct: undefined,
 			});
 		}
-	}, [quizType]);
+	}, [quizType, setAttributes]);
 
 	/**
 	 * Enforce 1|0 point value for correct|incorrect answers.

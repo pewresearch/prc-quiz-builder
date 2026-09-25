@@ -1,16 +1,10 @@
 /**
- * External Dependencies
- */
-import classNames from 'classnames';
-
-/**
  * WordPress Dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { useEffect } from '@wordpress/element';
 import {
 	useBlockProps,
-	RichText,
 	useInnerBlocksProps,
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
@@ -19,8 +13,7 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal Dependencies
  */
-// eslint-disable-next-line import/no-relative-packages
-import NewPageKeyboardHandler from './new-page-keyboard-handler';
+import { quizBuilderBinding } from '../bindings/binding-fields';
 
 const TEMPLATE = [
 	[
@@ -29,9 +22,7 @@ const TEMPLATE = [
 			placeholder: __('Enter page title', 'prc-quiz'),
 			metadata: {
 				bindings: {
-					content: {
-						source: 'prc-quiz/page-title',
-					},
+					content: quizBuilderBinding('page-title-text'),
 				},
 			},
 		},
@@ -45,34 +36,25 @@ const TEMPLATE = [
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
  *
- * @param            attributes.attributes
- * @param {Object}   attributes               Available block attributes.
- * @param {Function} setAttributes            Function that updates individual attributes.
- * @param {string}   className                Class name.
- * @param {Object}   context                  Context.
- * @param            attributes.setAttributes
- * @param            attributes.className
- * @param            attributes.context
- * @param            attributes.clientId
- * @param            attributes.isSelected
- * @param {string}   clientId                 Client ID.
+ * @param {Object}   props                            Properties passed to the function.
+ * @param {Object}   props.attributes                 Available block attributes.
+ * @param {Function} props.setAttributes              Function that updates individual attributes.
+ * @param {Object}   props.context                    Block context from parent blocks.
+ * @param {string}   props.clientId                   Block client ID.
+ * @param {string}   props.__unstableLayoutClassNames Layout class names from the block editor.
  *
- * @return {WPElement} Element to render.
+ * @return {Element} Element to render.
  */
 export default function Edit({
 	attributes,
 	setAttributes,
-	className,
 	context,
 	clientId,
-	isSelected,
 	__unstableLayoutClassNames: layoutClassNames,
 }) {
 	const { title, uuid } = attributes;
 
-	const groupsEnabled = context['prc-quiz/groupsEnabled'] || false;
-	const quizType = context['prc-quiz/type'] || 'quiz';
-	const existingUuids = context['prc-quiz/uuids'] || [];
+	const existingUuids = context['prc-quiz/uuids'];
 
 	const blockProps = useBlockProps({
 		className: layoutClassNames,
@@ -95,11 +77,12 @@ export default function Edit({
 
 	// When the block is created, set the initial uuid and the title.
 	useEffect(() => {
+		const uuids = existingUuids || {};
 		// If a uuid is already set, check if existinguuids includes it, and if it does does it have this clientId? If not then lets set a new uuid using this clientId.
 		if (
 			uuid &&
-			Object.keys(existingUuids).includes(uuid) &&
-			existingUuids[uuid] !== clientId
+			Object.keys(uuids).includes(uuid) &&
+			uuids[uuid] !== clientId
 		) {
 			setAttributes({
 				uuid: clientId,
@@ -117,7 +100,7 @@ export default function Edit({
 				title: sprintf('Question %1$d of X', pageIndex - 1),
 			});
 		}
-	}, [existingUuids]);
+	}, [clientId, existingUuids, pageIndex, setAttributes, title, uuid]);
 
 	return <div {...innerBlocksProps}></div>;
 }

@@ -1,0 +1,107 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Kreait\Firebase\AppCheck;
+
+use Firebase\JWT\CachedKeySet;
+use Firebase\JWT\JWT;
+use Kreait\Firebase\Exception\AppCheck\FailedToVerifyAppCheckReplayProtection;
+use Kreait\Firebase\Exception\AppCheck\FailedToVerifyAppCheckToken;
+use Kreait\Firebase\Exception\AppCheck\InvalidAppCheckToken;
+use LogicException;
+use SensitiveParameter;
+use Throwable;
+
+use function in_array;
+use function str_starts_with;
+
+/**
+ * @internal
+ *
+ * @phpstan-import-type DecodedAppCheckTokenShape from DecodedAppCheckToken
+ */
+final readonly class AppCheckTokenVerifier
+{
+    private const string APP_CHECK_ISSUER_PREFIX = 'https://firebaseappcheck.googleapis.com/';
+
+    /**
+     * @param non-empty-string $projectId
+     */
+    public function __construct(
+        private string $projectId,
+        private CachedKeySet $keySet,
+        private ApiClient $apiClient,
+    ) {
+    }
+
+    /**
+     * Verifies the format and signature of a Firebase App Check token.
+     *
+     * @param string $token the Firebase Auth JWT token to verify
+     * @param bool $consume whether the token should be consumed for replay protection
+     *
+     * @throws FailedToVerifyAppCheckToken if the token could not be verified
+     * @throws FailedToVerifyAppCheckReplayProtection if replay protection could not be verified
+     * @throws InvalidAppCheckToken if the token is invalid
+     */
+    public function verifyToken(#[SensitiveParameter] string $token, bool $consume = false): VerifyAppCheckTokenResponse
+    {
+        $decodedToken = $this->decodeJwt($token);
+
+        $this->verifyContent($decodedToken);
+
+        $alreadyConsumed = null;
+
+        if ($consume) {
+            try {
+                $alreadyConsumed = $this->apiClient->verifyReplayProtection($token, $this->projectId);
+            } catch (Throwable $e) {
+                throw new FailedToVerifyAppCheckReplayProtection(
+                    message: 'Unable to verify App Check token replay protection: '.$e->getMessage(),
+                    previous: $e,
+                );
+            }
+        }
+
+        return new VerifyAppCheckTokenResponse($decodedToken->app_id, $decodedToken, $alreadyConsumed);
+    }
+
+    /**
+     * @param string $token the Firebase App Check JWT token to decode
+     *
+     * @throws FailedToVerifyAppCheckToken if the token could not be verified
+     * @throws InvalidAppCheckToken if the token is invalid
+     */
+    private function decodeJwt(#[SensitiveParameter] string $token): DecodedAppCheckToken
+    {
+        try {
+            /** @var DecodedAppCheckTokenShape $payload */
+            $payload = (array) JWT::decode($token, $this->keySet);
+        } catch (LogicException $e) {
+            throw new InvalidAppCheckToken(message: $e->getMessage(), previous: $e);
+        } catch (Throwable $e) {
+            throw new FailedToVerifyAppCheckToken(message: $e->getMessage(), previous: $e);
+        }
+
+        return DecodedAppCheckToken::fromArray($payload);
+    }
+
+    /**
+     * Verifies the content of a Firebase App Check JWT.
+     *
+     * @param DecodedAppCheckToken $token the decoded Firebase App Check token to verify
+     *
+     * @throws FailedToVerifyAppCheckToken if the token could not be verified
+     */
+    private function verifyContent(DecodedAppCheckToken $token): void
+    {
+        if (!in_array('projects/'.$this->projectId, $token->aud, true)) {
+            throw new FailedToVerifyAppCheckToken('The "aud" claim must include the project ID.');
+        }
+
+        if (!str_starts_with($token->iss, self::APP_CHECK_ISSUER_PREFIX)) {
+            throw new FailedToVerifyAppCheckToken('The provided App Check token has incorrect "iss" (issuer) claim.');
+        }
+    }
+}

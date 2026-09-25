@@ -11,7 +11,8 @@
 /**
  * WordPress Dependencies
  */
-import { registerBlockType } from '@wordpress/blocks';
+import { registerBlockType, registerBlockVariation } from '@wordpress/blocks';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal Dependencies
@@ -23,6 +24,7 @@ import edit from './edit';
 import icon from './icon';
 
 import metadata from './block.json';
+import { COMMUNITY_GROUP_STYLE_CLASS, communityGroupClassName } from './utils';
 
 const { name } = metadata;
 
@@ -32,3 +34,19 @@ const settings = {
 };
 
 registerBlockType(name, { ...metadata, ...settings });
+
+registerBlockVariation(name, {
+	name: 'community-group',
+	title: __('Community Group Complex', 'prc-quiz'),
+	description: __(
+		"Complex results table with general-population percentages and your group's answers.",
+		'prc-quiz'
+	),
+	attributes: {
+		className: communityGroupClassName(),
+	},
+	isActive: (blockAttributes) =>
+		typeof blockAttributes?.className === 'string' &&
+		blockAttributes.className.includes(COMMUNITY_GROUP_STYLE_CLASS),
+	scope: ['inserter', 'transform'],
+});

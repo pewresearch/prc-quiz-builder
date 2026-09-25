@@ -1,0 +1,78 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Kreait\Firebase;
+
+use GuzzleHttp\Psr7\Uri;
+use Kreait\Firebase\Database\ApiClient;
+use Kreait\Firebase\Database\Reference;
+use Kreait\Firebase\Database\RuleSet;
+use Kreait\Firebase\Database\Transaction;
+use Kreait\Firebase\Exception\InvalidArgumentException;
+use Psr\Http\Message\UriInterface;
+
+use function ltrim;
+use function sprintf;
+use function trim;
+
+/**
+ * @internal
+ */
+final readonly class Database implements Contract\Database
+{
+    public function __construct(
+        private UriInterface $uri,
+        private ApiClient $client,
+    ) {
+    }
+
+    public function getReference(?string $path = null): Reference
+    {
+        if ($path === null || trim($path) === '') {
+            $path = '/';
+        }
+
+        $path = '/'.ltrim($path, '/');
+
+        try {
+            return new Reference($this->uri->withPath($path), $this->client);
+        } catch (\InvalidArgumentException $e) {
+            throw new InvalidArgumentException(message: $e->getMessage(), previous: $e);
+        }
+    }
+
+    public function getReferenceFromUrl(UriInterface|string $uri): Reference
+    {
+        $uri = $uri instanceof UriInterface ? $uri : new Uri($uri);
+
+        if (($givenHost = $uri->getHost()) !== ($dbHost = $this->uri->getHost())) {
+            throw new InvalidArgumentException(sprintf(
+                'The given URI\'s host "%s" is not covered by the database for the host "%s".',
+                $givenHost,
+                $dbHost,
+            ));
+        }
+
+        return $this->getReference($uri->getPath());
+    }
+
+    public function getRuleSet(): RuleSet
+    {
+        $rules = $this->client->get('/.settings/rules');
+
+        return RuleSet::fromArray($rules);
+    }
+
+    public function updateRules(RuleSet $ruleSet): void
+    {
+        $this->client->updateRules('/.settings/rules', $ruleSet);
+    }
+
+    public function runTransaction(callable $callable): mixed
+    {
+        $transaction = new Transaction($this->client);
+
+        return $callable($transaction);
+    }
+}

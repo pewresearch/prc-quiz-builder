@@ -67,6 +67,34 @@ const { state, actions } = store('prc-quiz/controller', {
 			document.cookie =
 				name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 		},
+		/**
+		 * Drop in-progress answers after a persisted submit. Keep `score` when
+		 * groups are on so a later group-results visit can hydrate the viewer.
+		 *
+		 * @param {unknown} [score]   Score from this submission.
+		 * @param {Object}  [context] Interactivity context captured before any await.
+		 * @return {boolean|undefined} Whether a cookie was written.
+		 */
+		saveSubmittedScore: (score = null, context = getContext()) => {
+			const { quizId, groupsEnabled } = context;
+			const resolvedScore =
+				undefined !== score && null !== score
+					? score
+					: state.quizProgress?.score;
+			if (
+				groupsEnabled &&
+				undefined !== resolvedScore &&
+				null !== resolvedScore &&
+				'' !== resolvedScore
+			) {
+				return actions.setCookie({
+					quiz_id: quizId,
+					score: resolvedScore,
+					timestamp: Date.now(),
+				});
+			}
+			return actions.clearCookie();
+		},
 		setCookie: (value) => {
 			if (!state.hasConsentForCookies) {
 				return false;
@@ -94,8 +122,16 @@ const { state, actions } = store('prc-quiz/controller', {
 				currentPageUuid,
 				timestamp: Date.now(),
 			};
-			if (score) {
-				quizData.score = score;
+			const resolvedScore =
+				undefined !== score && null !== score
+					? score
+					: state.quizProgress?.score;
+			if (
+				undefined !== resolvedScore &&
+				null !== resolvedScore &&
+				'' !== resolvedScore
+			) {
+				quizData.score = resolvedScore;
 			}
 			return actions.setCookie(quizData);
 		},

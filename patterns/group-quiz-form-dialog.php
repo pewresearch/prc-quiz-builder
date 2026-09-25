@@ -3,8 +3,10 @@
  * Title: Group Quiz Form
  * Slug: prc-quiz-builder/group-quiz-form-dialog
  * Categories: prc-quiz-builder
- * Description: Create a group quiz form dialog.
+ * Description: Create group form dialog for quizzes.
  * Block Types: prc-block/dialog
+ * Post Types: quiz
+ * Viewport Width: 320
  *
  * @package PRC\Platform\Quiz
  */

@@ -1,91 +1,59 @@
 /**
- * External Dependencies
- */
-
-/**
  * WordPress Dependencies
  */
-import { useEffect } from '@wordpress/element';
-import {
-	useBlockProps,
-	useInnerBlocksProps,
-	withColors,
-} from '@wordpress/block-editor';
-import { useSelect } from '@wordpress/data';
+import { useBlockProps, withColors } from '@wordpress/block-editor';
 
 /**
  * Internal Dependencies
  */
 import Controls from './controls';
+import { resolveHistogramBins } from '../controller/histogram-population';
 
-const DEFAULT_COMPARISON =
-	'You scored better than {betterThan} of the public, below {lowerThan} of the public and the same as {sameAs}.';
+const DEFAULT_BAR_COLOR = 'var(--wp--preset--color--oatmeal, #c8b8a0)';
+const DEFAULT_HIGHLIGHT_COLOR = 'var(--wp--preset--color--mustard, #e0b500)';
 
-// Simple editor-only histogram preview (no external chart lib)
-function HistogramPreview({ attributes, barColor, isHighlightedColor }) {
-	const {
-		histogramData,
-		height,
-		barLabelCutoff = 0,
-		barWidth,
-		xAxisLabel,
-	} = attributes;
-	let bins = [];
-	try {
-		const parsed =
-			typeof histogramData === 'string'
-				? JSON.parse(histogramData || '[]')
-				: histogramData;
-		bins = Array.isArray(parsed)
-			? parsed
-					.map((d) => ({ x: Number(d.x), y: Number(d.y) }))
-					.filter((d) => Number.isFinite(d.x) && Number.isFinite(d.y))
-			: [];
-	} catch (e) {
-		bins = [];
-	}
+function hasChartData(bins) {
+	return (bins || []).some((bin) => Number(bin?.percent) > 0);
+}
 
-	// Pad contiguous 0..max for preview parity with frontend.
-	if (bins.length) {
-		const byX = new Map(bins.map((b) => [b.x, b.y]));
-		const maxX = Math.max(...bins.map((b) => b.x));
-		bins = [];
-		for (let x = 0; x <= maxX; x += 1) {
-			bins.push({ x, y: byX.has(x) ? byX.get(x) : 0 });
-		}
-	}
-
-	const maxY = Math.max(1, ...bins.map((b) => b.y));
-	const guessed = bins.length
-		? bins.reduce((m, b) => (b.y > m.y ? b : m), bins[0]).x
+function HistogramPreview({ bins, attributes, barColor, isHighlightedColor }) {
+	const { height, barLabelCutoff = 0, barWidth, xAxisLabel } = attributes;
+	const padded = bins || [];
+	const maxY = Math.max(1, ...padded.map((bin) => bin.percent));
+	const guessed = padded.length
+		? padded.reduce(
+				(max, bin) => (bin.percent > max.percent ? bin : max),
+				padded[0]
+			).correct
 		: null;
 
 	return (
 		<div className="histogram-preview">
 			<div className="bars" style={{ height }}>
-				{bins.map((b) => {
-					const heightPct = (b.y / maxY) * 100;
-					const isHighlighted = guessed !== null && b.x === guessed;
-					let label = `${Math.round(b.y)}%`;
-					if (b.y <= 0) {
+				{padded.map((bin) => {
+					const heightPct = (bin.percent / maxY) * 100;
+					const isHighlighted =
+						guessed !== null && bin.correct === guessed;
+					let label = `${Math.round(bin.percent)}%`;
+					if (bin.percent <= 0) {
 						label = '';
-					} else if (b.y < 1) {
+					} else if (bin.percent < 1) {
 						label = '<1%';
 					}
 					const backgroundColor = isHighlighted
-						? isHighlightedColor?.color || '#e0b500'
-						: barColor?.color || '#c8b8a0';
+						? isHighlightedColor?.color || DEFAULT_HIGHLIGHT_COLOR
+						: barColor?.color || DEFAULT_BAR_COLOR;
 					const labelStyle = {};
-					if (b.y <= barLabelCutoff) {
+					if (bin.percent <= barLabelCutoff) {
 						labelStyle.top = '-22px';
 						labelStyle.color = '#000';
 					}
 					return (
 						<div
-							key={b.x}
+							key={bin.correct}
 							className={`bar${isHighlighted ? ' is-highlighted' : ''}`}
 							style={{
-								height: `${Math.max(heightPct, b.y > 0 ? 4 : 2)}%`,
+								height: `${Math.max(heightPct, bin.percent > 0 ? 4 : 2)}%`,
 								backgroundColor,
 								width: `${barWidth}px`,
 							}}
@@ -93,7 +61,9 @@ function HistogramPreview({ attributes, barColor, isHighlightedColor }) {
 							<span className="bar__label" style={labelStyle}>
 								{label}
 							</span>
-							<span className="bar__x">{String(b.x)}</span>
+							<span className="bar__x">
+								{String(bin.correct)}
+							</span>
 						</div>
 					);
 				})}
@@ -103,120 +73,31 @@ function HistogramPreview({ attributes, barColor, isHighlightedColor }) {
 	);
 }
 
-const TABLE_TEMPLATE = [
-	[
-		'prc-block/table',
-		{
-			className: 'histogram-data-table test-class',
-			head: [
-				{
-					cells: [
-						{ content: '# of Correct Answers', tag: 'th' },
-						{ content: '% of Public', tag: 'th' },
-					],
-				},
-			],
-			body: [
-				{
-					cells: [
-						{ content: '0', tag: 'td' },
-						{ content: '10', tag: 'td' },
-					],
-				},
-				{
-					cells: [
-						{ content: '1', tag: 'td' },
-						{ content: '20', tag: 'td' },
-					],
-				},
-				{
-					cells: [
-						{ content: '2', tag: 'td' },
-						{ content: '30', tag: 'td' },
-					],
-				},
-				{
-					cells: [
-						{ content: '3', tag: 'td' },
-						{ content: '20', tag: 'td' },
-					],
-				},
-			],
-		},
-	],
-];
-
-/**
- * The edit function describes the structure of your block in the context of the
- * editor. This represents what the editor will render when the block is used.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
- *
- * @param {Object}   props                       Properties passed to the function.
- * @param {Object}   props.attributes            Available block attributes.
- * @param {string}   props.clientId              Block client ID.
- * @param {Object}   props.barColor              Bar color object from withColors.
- * @param {Function} props.setBarColor           Bar color setter.
- * @param {Object}   props.isHighlightedColor    Highlight color object from withColors.
- * @param {Function} props.setIsHighlightedColor Highlight color setter.
- * @param {Function} props.setAttributes         Function that updates individual attributes.
- *
- * @return {Element} Element to render.
- */
 function Edit({
 	attributes,
 	setAttributes,
-	clientId,
+	context,
 	barColor,
 	setBarColor,
 	isHighlightedColor,
 	setIsHighlightedColor,
 }) {
-	const {
-		message,
-		histogramData,
-		showScoreSummary = true,
-		comparisonText = DEFAULT_COMPARISON,
-	} = attributes;
-
-	const blockProps = useBlockProps();
-
-	const innerBlocksProps = useInnerBlocksProps(
-		{ className: 'histogram-data-table-wrapper' },
-		{
-			template: TABLE_TEMPLATE,
-			templateLock: 'all',
-			allowedBlocks: ['prc-block/table'],
-		}
+	const { height } = attributes;
+	const bins = resolveHistogramBins(
+		context['prc-quiz/histogram-population'],
+		attributes.histogramData
 	);
-
-	const tableBlock = useSelect(
-		(select) =>
-			select('core/block-editor')
-				.getBlocks(clientId)
-				.find((block) => 'prc-block/table' === block.name),
-		[clientId]
-	);
-
-	useEffect(() => {
-		if (tableBlock) {
-			const tableData = tableBlock.attributes.body;
-			const obj = tableData.map((row) => ({
-				x: row.cells[0].content,
-				y: row.cells[1].content,
-			}));
-			if (histogramData !== JSON.stringify(obj)) {
-				setAttributes({
-					histogramData: JSON.stringify(obj),
-				});
-			}
-		}
-	}, [tableBlock]);
-
-	const previewComparison = String(comparisonText || DEFAULT_COMPARISON)
-		.replace('{betterThan}', 'x%')
-		.replace('{lowerThan}', 'y%')
-		.replace('{sameAs}', 'z%');
+	const displayChart = hasChartData(bins);
+	const barCss = barColor?.color || DEFAULT_BAR_COLOR;
+	const highlightCss = isHighlightedColor?.color || DEFAULT_HIGHLIGHT_COLOR;
+	const blockProps = useBlockProps({
+		className: displayChart ? 'has-chart' : 'has-no-chart',
+		style: {
+			'--prc-quiz-histogram-bar-color': barCss,
+			'--prc-quiz-histogram-highlight-color': highlightCss,
+			...(displayChart ? { '--histogram-height': `${height}px` } : {}),
+		},
+	});
 
 	return (
 		<>
@@ -233,33 +114,27 @@ function Edit({
 				}}
 			/>
 			<div {...blockProps}>
-				<p>{message}</p>
-
-				<div {...innerBlocksProps} />
-
-				<div id="score">
-					{showScoreSummary && (
-						<h2>
-							You answered <span>X</span> questions correctly
-						</h2>
-					)}
-					<h3>{previewComparison}</h3>
-				</div>
-				<div id="bar-chart">
-					<HistogramPreview
-						{...{
-							attributes,
-							barColor,
-							isHighlightedColor,
-						}}
-					/>
-				</div>
+				{displayChart ? (
+					<div id="bar-chart">
+						<HistogramPreview
+							bins={bins}
+							attributes={attributes}
+							barColor={barColor}
+							isHighlightedColor={isHighlightedColor}
+						/>
+					</div>
+				) : (
+					<p className="histogram-empty">
+						Edit histogram data on the Quiz Controller to show the
+						chart.
+					</p>
+				)}
 			</div>
 		</>
 	);
 }
 
 export default withColors(
-	{ barColor: 'color' },
-	{ isHighlightedColor: 'color' }
+	{ barColor: 'bar-color' },
+	{ isHighlightedColor: 'highlight-color' }
 )(Edit);

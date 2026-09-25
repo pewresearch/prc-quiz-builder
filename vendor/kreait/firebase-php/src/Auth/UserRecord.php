@@ -1,0 +1,154 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Kreait\Firebase\Auth;
+
+use Beste\Json;
+use DateTimeImmutable;
+use Kreait\Firebase\Util\DT;
+
+use function array_key_exists;
+use function array_map;
+
+/**
+ * @phpstan-import-type ProviderUserInfoResponseShape from UserInfo
+ * @phpstan-import-type UserMetadataResponseShape from UserMetaData
+ * @phpstan-import-type MfaInfoResponseShape from MfaInfo
+ *
+ * @phpstan-type UserRecordResponseShape array{
+ *     localId: non-empty-string,
+ *     email?: non-empty-string,
+ *     emailVerified?: bool,
+ *     displayName?: non-empty-string,
+ *     photoUrl?: non-empty-string,
+ *     phoneNumber?: non-empty-string,
+ *     disabled?: bool,
+ *     passwordHash?: non-empty-string,
+ *     salt?: non-empty-string,
+ *     customAttributes?: non-empty-string,
+ *     tenantId?: non-empty-string,
+ *     providerUserInfo?: list<ProviderUserInfoResponseShape>,
+ *     mfaInfo?: list<MfaInfoResponseShape>,
+ *     createdAt: non-empty-string,
+ *     lastLoginAt?: non-empty-string,
+ *     passwordUpdatedAt?: non-empty-string,
+ *     lastRefreshAt?: non-empty-string,
+ *     validSince?: non-empty-string
+ * }
+ */
+final readonly class UserRecord
+{
+    /**
+     * @param non-empty-string $uid
+     * @param non-empty-string|null $email
+     * @param non-empty-string|null $displayName
+     * @param non-empty-string|null $phoneNumber
+     * @param non-empty-string|null $photoUrl
+     * @param list<UserInfo> $providerData
+     * @param non-empty-string|null $passwordHash
+     * @param non-empty-string|null $passwordSalt
+     * @param array<non-empty-string, mixed> $customClaims
+     * @param non-empty-string|null $tenantId
+     */
+    public function __construct(
+        public string $uid,
+        public ?string $email,
+        public bool $emailVerified,
+        public ?string $displayName,
+        public ?string $phoneNumber,
+        public ?string $photoUrl,
+        public bool $disabled,
+        public UserMetaData $metadata,
+        public array $providerData,
+        public ?MfaInfo $mfaInfo,
+        public ?string $passwordHash,
+        public ?string $passwordSalt,
+        public array $customClaims,
+        public ?string $tenantId,
+        public ?DateTimeImmutable $tokensValidAfterTime,
+    ) {
+    }
+
+    /**
+     * @internal
+     *
+     * @param UserRecordResponseShape $data
+     */
+    public static function fromResponseData(array $data): self
+    {
+        $validSince = array_key_exists('validSince', $data)
+            ? DT::toUTCDateTimeImmutable($data['validSince'])
+            : null;
+
+        $customClaims = array_key_exists('customAttributes', $data)
+            ? Json::decode($data['customAttributes'], true)
+            : [];
+
+        $providerUserInfo = array_key_exists('providerUserInfo', $data)
+            ? self::userInfoFromResponseData($data)
+            : [];
+
+        return new self(
+            $data['localId'],
+            $data['email'] ?? null,
+            $data['emailVerified'] ?? false,
+            $data['displayName'] ?? null,
+            $data['phoneNumber'] ?? null,
+            $data['photoUrl'] ?? null,
+            $data['disabled'] ?? false,
+            self::userMetaDataFromResponseData($data),
+            $providerUserInfo,
+            self::mfaInfoFromResponseData($data),
+            $data['passwordHash'] ?? null,
+            $data['salt'] ?? null,
+            $customClaims,
+            $data['tenantId'] ?? null,
+            $validSince,
+        );
+    }
+
+    /**
+     * @param UserMetadataResponseShape $data
+     */
+    private static function userMetaDataFromResponseData(array $data): UserMetaData
+    {
+        return UserMetaData::fromResponseData($data);
+    }
+
+    /**
+     * @param UserRecordResponseShape $data
+     */
+    private static function mfaInfoFromResponseData(array $data): ?MfaInfo
+    {
+        $mfaInfo = $data['mfaInfo'] ?? null;
+
+        if ($mfaInfo === null) {
+            return null;
+        }
+
+        $firstItem = array_shift($mfaInfo);
+
+        if ($firstItem === null) {
+            return null;
+        }
+
+        return MfaInfo::fromResponseData($firstItem);
+    }
+
+    /**
+     * @param UserRecordResponseShape $data
+     *
+     * @return list<UserInfo>
+     */
+    private static function userInfoFromResponseData(array $data): array
+    {
+        $userInfo = $data['providerUserInfo'] ?? null;
+
+        if (is_array($userInfo)) {
+            return array_map(UserInfo::fromResponseData(...), $userInfo);
+        }
+
+        return [];
+    }
+}

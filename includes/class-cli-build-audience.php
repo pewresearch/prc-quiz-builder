@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 /**
  * WP-CLI command: wp prc quiz build-group-owners-audience
  *
@@ -8,6 +7,8 @@ declare(strict_types=1);
  *
  * @package PRC\Platform\Quiz
  */
+
+declare(strict_types=1);
 
 namespace PRC\Platform\Quiz;
 
@@ -80,19 +81,23 @@ class CLI_Build_Audience extends WP_CLI_Command {
 
 		$quiz = get_post( $quiz_id );
 		if ( ! $quiz || Plugin::$post_type !== $quiz->post_type ) {
-			WP_CLI::error( sprintf(
-				'Post %d does not exist or is not a "%s" post type.',
-				$quiz_id,
-				Plugin::$post_type
-			) );
+			WP_CLI::error(
+				sprintf(
+					'Post %d does not exist or is not a "%s" post type.',
+					$quiz_id,
+					Plugin::$post_type
+				)
+			);
 		}
 
-		WP_CLI::line( sprintf(
-			'Calling buildQuizGroupOwnersAudience for quiz %d ("%s", verification=%s)…',
-			$quiz_id,
-			$quiz->post_title,
-			$verification
-		) );
+		WP_CLI::line(
+			sprintf(
+				'Starting quiz group-creators audience job for quiz %d ("%s", verification=%s)…',
+				$quiz_id,
+				$quiz->post_title,
+				$verification
+			)
+		);
 
 		$result = Audience_Service::build(
 			$quiz_id,
@@ -108,14 +113,16 @@ class CLI_Build_Audience extends WP_CLI_Command {
 		}
 
 		$stats = $result['stats'] ?? array();
-		WP_CLI::line( sprintf(
-			'Scanned %s groups → %s v2 → %s unique owners → %s email(s) (%s).',
-			number_format( (int) ( $stats['scanned'] ?? $result['scanned'] ?? 0 ) ),
-			number_format( (int) ( $stats['v2Groups'] ?? $result['v2_groups'] ?? 0 ) ),
-			number_format( (int) ( $stats['matched'] ?? $result['matched'] ?? 0 ) ),
-			number_format( (int) ( $result['count'] ?? 0 ) ),
-			$result['verification'] ?? $verification
-		) );
+		WP_CLI::line(
+			sprintf(
+				'Scanned %s groups → %s v2 → %s unique owners → %s email(s) (%s).',
+				number_format( (int) ( $stats['scanned'] ?? $result['scanned'] ?? 0 ) ),
+				number_format( (int) ( $stats['v2Groups'] ?? $result['v2_groups'] ?? 0 ) ),
+				number_format( (int) ( $stats['matched'] ?? $result['matched'] ?? 0 ) ),
+				number_format( (int) ( $result['count'] ?? 0 ) ),
+				$result['verification'] ?? $verification
+			)
+		);
 
 		if ( $dry_run ) {
 			WP_CLI::success( 'Dry-run complete. No data written.' );
@@ -126,63 +133,61 @@ class CLI_Build_Audience extends WP_CLI_Command {
 		WP_CLI::line( sprintf( 'Audience saved → option key: %s', $audience_key ) );
 
 		if ( $no_create_post ) {
-			WP_CLI::success( sprintf(
-				'Done. Audience option: %s  |  %s email(s)',
-				$audience_key,
-				number_format( (int) $result['count'] )
-			) );
+			WP_CLI::success(
+				sprintf(
+					'Done. Audience option: %s  |  %s email(s)',
+					$audience_key,
+					number_format( (int) $result['count'] )
+				)
+			);
 			return;
 		}
 
-		if ( ! post_type_exists( 'prc_email_txn' ) ) {
+		if ( ! class_exists( \PRC\Platform\Email_Builder\Transactional_Draft::class ) ) {
 			WP_CLI::warning(
-				'The "prc_email_txn" post type is not registered. ' .
-				'Ensure prc-email-builder is active. Skipping post creation.'
+				'Email Builder is not active. Skipping transactional draft creation.'
 			);
-			WP_CLI::success( sprintf(
-				'Done. Audience option: %s  |  %s email(s)',
-				$audience_key,
-				number_format( (int) $result['count'] )
-			) );
+			WP_CLI::success(
+				sprintf(
+					'Done. Audience option: %s  |  %s email(s)',
+					$audience_key,
+					number_format( (int) $result['count'] )
+				)
+			);
 			return;
 		}
 
 		$mode_title = self::verification_title_fragment( $result['verification'] ?? $verification );
-
-		$post_id = wp_insert_post(
+		$draft      = \PRC\Platform\Email_Builder\Transactional_Draft::create_from_audience(
+			$audience_key,
 			array(
-				'post_type'   => 'prc_email_txn',
-				'post_status' => 'draft',
-				'post_title'  => sprintf(
+				'title'   => sprintf(
 					'Update for %s group creators%s',
 					$quiz->post_title,
 					$mode_title
 				),
-				'meta_input'  => array(
-					'prc_email_delivery_mode'       => 'mandrill',
-					'prc_email_audience_option_key' => $audience_key,
-					'prc_email_subject'             => sprintf(
-						'Update: %s%s',
-						$quiz->post_title,
-						$mode_title
-					),
+				'subject' => sprintf(
+					'Update: %s%s',
+					$quiz->post_title,
+					$mode_title
 				),
-			),
-			true
+				'quiz_id' => $quiz_id,
+			)
 		);
 
-		if ( is_wp_error( $post_id ) ) {
-			WP_CLI::warning( 'Could not create newsletter draft: ' . $post_id->get_error_message() );
+		if ( is_wp_error( $draft ) ) {
+			WP_CLI::warning( 'Could not create newsletter draft: ' . $draft->get_error_message() );
 		} else {
-			$edit_url = admin_url( "post.php?post={$post_id}&action=edit" );
-			WP_CLI::line( sprintf( 'Newsletter draft created → %s', $edit_url ) );
+			WP_CLI::line( sprintf( 'Newsletter draft created → %s', $draft['edit_url'] ) );
 		}
 
-		WP_CLI::success( sprintf(
-			'Done. Audience option: %s  |  %s email(s)',
-			$audience_key,
-			number_format( (int) $result['count'] )
-		) );
+		WP_CLI::success(
+			sprintf(
+				'Done. Audience option: %s  |  %s email(s)',
+				$audience_key,
+				number_format( (int) $result['count'] )
+			)
+		);
 	}
 }
 

@@ -2,11 +2,13 @@
  * Quiz group-creators audience panel — wires AudienceBuildPanel to quiz REST.
  */
 
-import { useCallback, useEffect, useState } from '@wordpress/element';
+import { useCallback, useEffect, useRef, useState } from '@wordpress/element';
 import { PanelBody } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
 import { AudienceBuildPanel } from '@prc/components';
+
+const JOB_POLL_MS = 4000;
 
 /**
  * Normalize a REST audience row into the shared snapshot shape.
@@ -26,6 +28,10 @@ function normalizeAudience(row) {
 	};
 }
 
+function getErrorMessage(error) {
+	return error?.message || __('Audience build failed.', 'prc-quiz-builder');
+}
+
 /**
  * @param {Object}  props
  * @param {number}  props.postId        Quiz post ID.
@@ -34,13 +40,17 @@ function normalizeAudience(row) {
 export default function AudiencePanel({ postId, groupsEnabled }) {
 	const [audiences, setAudiences] = useState([]);
 	const [status, setStatus] = useState(
-		/** @type {'idle' | 'loading' | 'building' | 'deleting' | 'error'} */ (
+		/** @type {'idle' | 'loading' | 'queued' | 'scanning' | 'deleting' | 'creating-draft' | 'error'} */ (
 			'loading'
 		)
 	);
 	const [errorMessage, setErrorMessage] = useState(
 		/** @type {string|null} */ (null)
 	);
+	const [jobStats, setJobStats] = useState(
+		/** @type {{ scanned?: number|null, matched?: number|null, v2Groups?: number|null }} */ ({})
+	);
+	const pollToken = useRef(0);
 
 	const loadAudiences = useCallback(async () => {
 		if (!postId) {
@@ -72,10 +82,12 @@ export default function AudiencePanel({ postId, groupsEnabled }) {
 
 	const runBuild = useCallback(
 		async ({ verification }) => {
-			setStatus('building');
+			const token = ++pollToken.current;
+			setStatus('queued');
 			setErrorMessage(null);
+			setJobStats({});
 			try {
-				await apiFetch({
+				let view = await apiFetch({
 					path: '/prc-api/v3/quiz/build-audience',
 					method: 'POST',
 					data: {
@@ -83,12 +95,41 @@ export default function AudiencePanel({ postId, groupsEnabled }) {
 						verification,
 					},
 				});
+				while (
+					token === pollToken.current &&
+					(view?.phase === 'queued' || view?.phase === 'scanning')
+				) {
+					setStatus(view.phase);
+					setJobStats({
+						scanned: view.scannedGroups ?? null,
+						matched: view.matchedUsers ?? null,
+						v2Groups: view.v2Groups ?? null,
+					});
+					await new Promise((resolve) =>
+						window.setTimeout(resolve, JOB_POLL_MS)
+					);
+					if (token !== pollToken.current) {
+						return;
+					}
+					view = await apiFetch({
+						path: `/prc-email-builder/v1/audience-jobs/${view.jobId}`,
+					});
+				}
+				if (token !== pollToken.current) {
+					return;
+				}
+				if (view?.phase === 'failed') {
+					throw new Error(
+						view.error?.message ||
+							__('Audience build failed.', 'prc-quiz-builder')
+					);
+				}
 				await loadAudiences();
 			} catch (error) {
-				setErrorMessage(
-					error?.message ||
-						__('Audience build failed.', 'prc-quiz-builder')
-				);
+				if (token !== pollToken.current) {
+					return;
+				}
+				setErrorMessage(getErrorMessage(error));
 				setStatus('error');
 			}
 		},
@@ -121,6 +162,41 @@ export default function AudiencePanel({ postId, groupsEnabled }) {
 		[loadAudiences, postId]
 	);
 
+	const runCreateDraft = useCallback(
+		async ({ key }) => {
+			setStatus('creating-draft');
+			setErrorMessage(null);
+			try {
+				const result = await apiFetch({
+					path: '/prc-email-builder/v1/transactional/create-from-audience',
+					method: 'POST',
+					data: {
+						audience_key: key,
+						quiz_id: postId,
+					},
+				});
+				if (result?.edit_url) {
+					window.location.href = result.edit_url;
+					return;
+				}
+				setErrorMessage(
+					__(
+						'Draft created but no editor URL was returned.',
+						'prc-quiz-builder'
+					)
+				);
+				setStatus('error');
+			} catch (error) {
+				setErrorMessage(
+					error?.message ||
+						__('Could not create email draft.', 'prc-quiz-builder')
+				);
+				setStatus('error');
+			}
+		},
+		[postId]
+	);
+
 	return (
 		<PanelBody
 			title={__('Group creators audience', 'prc-quiz-builder')}
@@ -128,12 +204,13 @@ export default function AudiencePanel({ postId, groupsEnabled }) {
 		>
 			<AudienceBuildPanel
 				helpText={__(
-					'Build a Mandrill recipient list from users who created groups for this quiz. The list is saved for transactional email; no draft email is created here.',
+					'Build a Mandrill recipient list from users who created groups for this quiz. Rebuild the list when membership changes, or create a transactional email draft for that audience. You can leave this screen while a build runs.',
 					'prc-quiz-builder'
 				)}
 				audiences={audiences}
 				status={status}
 				errorMessage={errorMessage}
+				jobStats={jobStats}
 				disabled={!groupsEnabled && audiences.length === 0}
 				disabledHelpText={
 					!groupsEnabled && audiences.length === 0
@@ -146,6 +223,7 @@ export default function AudiencePanel({ postId, groupsEnabled }) {
 				onBuild={runBuild}
 				onRebuild={runBuild}
 				onDelete={runDelete}
+				onCreateDraft={runCreateDraft}
 			/>
 		</PanelBody>
 	);

@@ -16,6 +16,7 @@ import {
 	getUsesContextForField,
 	legacyFieldForSource,
 } from './binding-fields';
+import { toHtmlString } from '../../includes/shared-components/src/to-html-string';
 
 let registered = false;
 
@@ -27,15 +28,15 @@ let registered = false;
  */
 export function formatCommunityGroupResponseCount(count) {
 	const total = Number(count) || 0;
-	return `**${total}** responses`;
+	return `${total} responses`;
 }
 
 /**
  * Map field preview values to the bound attribute keys Gutenberg passes in.
  *
- * @param {Record<string, {args?: {field?: string}}>} bindings Active bindings.
- * @param {Record<string, string>} fieldValues Preview values from getValuesForField.
- * @return {Record<string, string>}
+ * @param {Record<string, {args?: {field?: string}}>} bindings    Active bindings.
+ * @param {Record<string, string>}                    fieldValues Preview values from getValuesForField.
+ * @return {Record<string, string>} Values keyed by bound attribute name.
  */
 function mapFieldValuesToBindings(bindings, fieldValues) {
 	const values = {};
@@ -58,20 +59,20 @@ function mapFieldValuesToBindings(bindings, fieldValues) {
 /**
  * Resolve editor preview values for a consolidated quiz field.
  *
- * @param {string} field Consolidated field key.
+ * @param {string}                  field   Consolidated field key.
  * @param {Record<string, unknown>} context Block context.
- * @return {Record<string, string>}
+ * @return {Record<string, string>} Preview values for the bound attributes.
  */
 function getValuesForField(field, context) {
 	switch (field) {
 		case 'question-text': {
-			const question = context['prc-quiz/question/text'];
+			const question = toHtmlString(context['prc-quiz/question/text']);
 			return question
 				? { content: question }
 				: { placeholder: __('Enter question text', 'prc-quiz') };
 		}
 		case 'answer-text': {
-			const answer = context['prc-quiz/answer/text'];
+			const answer = toHtmlString(context['prc-quiz/answer/text']);
 			return answer
 				? { content: answer }
 				: {
@@ -82,7 +83,7 @@ function getValuesForField(field, context) {
 					};
 		}
 		case 'page-title-text': {
-			const pageTitle = context['prc-quiz/page/title'];
+			const pageTitle = toHtmlString(context['prc-quiz/page/title']);
 			return pageTitle
 				? { content: pageTitle }
 				: { placeholder: __('Enter page title', 'prc-quiz') };
@@ -119,6 +120,10 @@ function getValuesForField(field, context) {
 			return {
 				placeholder: __('Quiz URL (resolved on render)', 'prc-quiz'),
 			};
+		case 'adults-receiving-this-score':
+			return {
+				content: __('X% of U.S. adults receive this score', 'prc-quiz'),
+			};
 		default:
 			return {};
 	}
@@ -127,8 +132,11 @@ function getValuesForField(field, context) {
 /**
  * Write editor binding values back to the parent quiz block.
  *
- * @param {string} field Consolidated field key.
- * @param {Object} args setValues callback args.
+ * @param {string}   field         Consolidated field key.
+ * @param {Object}   args          setValues callback args.
+ * @param {Function} args.select   Data select.
+ * @param {Function} args.dispatch Data dispatch.
+ * @param {Object}   args.bindings Binding values including newValue.
  */
 function setValuesForField(field, { select, dispatch, bindings }) {
 	const { newValue } = bindings.content ?? {};
@@ -138,7 +146,6 @@ function setValuesForField(field, { select, dispatch, bindings }) {
 
 	const { getSelectedBlockClientId, getBlockRootClientId } =
 		select(blockEditorStore);
-	const { updateBlockAttributes } = dispatch(blockEditorStore);
 	const selectedBlockClientId = getSelectedBlockClientId();
 	const rootClientId = getBlockRootClientId(selectedBlockClientId);
 
@@ -146,18 +153,21 @@ function setValuesForField(field, { select, dispatch, bindings }) {
 		return;
 	}
 
+	const { updateBlockAttributes } = dispatch(blockEditorStore);
+	const html = toHtmlString(newValue);
+
 	if (field === 'question-text') {
-		updateBlockAttributes(rootClientId, { question: newValue });
+		updateBlockAttributes(rootClientId, { question: html });
 		return;
 	}
 
 	if (field === 'answer-text') {
-		updateBlockAttributes(rootClientId, { answer: newValue });
+		updateBlockAttributes(rootClientId, { answer: html });
 		return;
 	}
 
 	if (field === 'page-title-text') {
-		updateBlockAttributes(rootClientId, { title: newValue });
+		updateBlockAttributes(rootClientId, { title: html });
 	}
 }
 

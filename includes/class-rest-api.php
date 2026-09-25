@@ -71,6 +71,20 @@ class Rest_API {
 	}
 
 	/**
+	 * Resolve community-group capability from a quiz post.
+	 *
+	 * @param int $quiz_id Quiz post ID.
+	 * @return array
+	 */
+	private function get_group_capability( int $quiz_id ): array {
+		$post = get_post( $quiz_id );
+		if ( ! $post instanceof \WP_Post ) {
+			return Group_Capability::none();
+		}
+		return Group_Capability::from_content( (string) $post->post_content );
+	}
+
+	/**
 	 * Register REST endpoints.
 	 *
 	 * @hook rest_api_init
@@ -102,6 +116,11 @@ class Rest_API {
 					'groupId' => array(
 						'validate_callback' => function ( $param ) {
 							return is_string( $param );
+						},
+					),
+					'quizId'  => array(
+						'validate_callback' => function ( $param ) {
+							return $this->is_valid_quiz_id( $param );
 						},
 					),
 				),
@@ -206,6 +225,16 @@ class Rest_API {
 						'default'           => '',
 						'sanitize_callback' => 'sanitize_text_field',
 					),
+					'watchingOnly'   => array(
+						'type'              => 'string',
+						'default'           => '',
+						'sanitize_callback' => 'sanitize_key',
+					),
+					'activeEditors'  => array(
+						'type'              => 'string',
+						'default'           => '',
+						'sanitize_callback' => 'sanitize_key',
+					),
 				),
 				'permission_callback' => function () {
 					return current_user_can( Quiz_List::get_capability() );
@@ -268,6 +297,22 @@ class Rest_API {
 				'permission_callback' => array( $this, 'can_edit_quiz_from_request' ),
 			)
 		);
+		register_rest_route(
+			'prc-api/v3',
+			'quiz/audience-jobs/(?P<job_id>qz_[a-z0-9]{13,32})',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'restfully_get_audience_job' ),
+				'args'                => array(
+					'job_id' => array(
+						'required'          => true,
+						'type'              => 'string',
+						'sanitize_callback' => 'sanitize_key',
+					),
+				),
+				'permission_callback' => array( $this, 'can_access_audience_job' ),
+			)
+		);
 	}
 
 	/**
@@ -302,21 +347,67 @@ class Rest_API {
 	}
 
 	/**
-	 * POST quiz/build-audience
+	 * POST quiz/build-audience — start an async audience job.
 	 *
 	 * @param WP_REST_Request $request Request.
 	 * @return \WP_REST_Response|WP_Error
 	 */
 	public function restfully_build_audience( WP_REST_Request $request ) {
-		$quiz_id      = (int) $request->get_param( 'quiz_id' );
-		$verification = (string) ( $request->get_param( 'verification' ) ?: 'verified' );
+		$quiz_id          = (int) $request->get_param( 'quiz_id' );
+		$raw_verification = $request->get_param( 'verification' );
+		$verification     = is_string( $raw_verification ) && '' !== $raw_verification
+			? $raw_verification
+			: 'verified';
 
-		$result = Audience_Service::build( $quiz_id, $verification );
+		$result = Audience_Service::start_job( $quiz_id, $verification );
 		if ( is_wp_error( $result ) ) {
 			return $result;
 		}
 
-		return rest_ensure_response( $result );
+		return new \WP_REST_Response( $result, 202 );
+	}
+
+	/**
+	 * GET quiz/audience-jobs/{job_id}
+	 *
+	 * @param WP_REST_Request $request Request.
+	 * @return \WP_REST_Response|WP_Error
+	 */
+	public function restfully_get_audience_job( WP_REST_Request $request ) {
+		if ( ! class_exists( '\PRC\Platform\Email_Builder\Audience_Job' ) ) {
+			return new WP_Error(
+				'missing_email_builder',
+				'Email Builder is required to poll quiz audience jobs.',
+				array( 'status' => 500 )
+			);
+		}
+
+		$view = \PRC\Platform\Email_Builder\Audience_Job::status( (string) $request['job_id'] );
+		if ( is_wp_error( $view ) ) {
+			return $view;
+		}
+
+		return rest_ensure_response( $view );
+	}
+
+	/**
+	 * Whether the current user can poll the named quiz audience job.
+	 *
+	 * @param WP_REST_Request $request Request.
+	 */
+	public function can_access_audience_job( WP_REST_Request $request ): bool {
+		if ( ! class_exists( '\PRC\Platform\Email_Builder\Audience_Job' ) ) {
+			return false;
+		}
+		$job = get_option(
+			\PRC\Platform\Email_Builder\Audience_Job::job_option_key( (string) $request['job_id'] ),
+			null
+		);
+		if ( ! is_array( $job ) ) {
+			return current_user_can( 'edit_posts' );
+		}
+
+		return \PRC\Platform\Email_Builder\Audience_Job::current_user_can_access( $job );
 	}
 
 	/**
@@ -674,9 +765,21 @@ class Rest_API {
 			);
 		}
 
+		$capability = $this->get_group_capability( $quiz_id );
+		if ( empty( $capability['allowed'] ) ) {
+			return new \WP_Error(
+				'groups_not_allowed',
+				'ERROR: group_create/403. This quiz cannot use community groups. Use a typology quiz or add score buckets first.',
+				array( 'status' => 403 )
+			);
+		}
+
 		$group_name = $data['groupName'];
 		$answers    = $data['answers'];
-		$clusters   = $data['clusters'];
+		$clusters   = isset( $data['clusters'] ) && is_array( $data['clusters'] ) ? $data['clusters'] : array();
+		if ( array() === $clusters && 'buckets' === $capability['source'] ) {
+			$clusters = $capability['clusters'];
+		}
 
 		$result = $this->create_group(
 			$group_name,
@@ -695,9 +798,12 @@ class Rest_API {
 		$owner_submission = isset( $data['ownerSubmission'] ) && is_array( $data['ownerSubmission'] ) ? $data['ownerSubmission'] : null;
 		$owner_score      = isset( $data['ownerScore'] ) ? $data['ownerScore'] : null;
 
-		if ( ! empty( $owner_submission ) && ! empty( $owner_score ) ) {
-			$group_cluster = is_string( $owner_score ) ? $owner_score : (string) $result['group_id'];
-			$this->update_group( $quiz_id, $result['group_id'], $owner_submission, $group_cluster );
+		if ( ! empty( $owner_submission ) && null !== $owner_score && '' !== $owner_score ) {
+			$fallback      = is_string( $owner_score ) ? $owner_score : (string) $result['group_id'];
+			$group_cluster = Group_Capability::resolve_cluster_key( $owner_score, $capability, $fallback );
+			if ( is_string( $group_cluster ) && '' !== $group_cluster ) {
+				$this->update_group( $quiz_id, $result['group_id'], $owner_submission, $group_cluster );
+			}
 		}
 
 		return $result;
@@ -845,8 +951,16 @@ class Rest_API {
 
 			// If the quiz is a group quiz, we need to update the group results.
 			if ( $is_group ) {
-				$group_cluster = is_string( $score ) ? $score : $archetype_hash;
-				$updated       = $this->update_group( $quiz_id, $group_id, $submission, $group_cluster );
+				$capability    = $this->get_group_capability( $quiz_id );
+				$group_cluster = Group_Capability::resolve_cluster_key( $score, $capability, $archetype_hash );
+				if ( ! is_string( $group_cluster ) || '' === $group_cluster ) {
+					return new \WP_Error(
+						'group-submission-error',
+						'An error occurred when updating this group. The submission score could not be matched to a result group.',
+						array( 'status' => 400 )
+					);
+				}
+				$updated = $this->update_group( $quiz_id, $group_id, $submission, $group_cluster );
 				if ( true !== $updated ) {
 					if ( is_wp_error( $updated ) ) {
 						return $updated;
@@ -917,7 +1031,8 @@ class Rest_API {
 	 */
 	public function restfully_get_quiz_group( WP_REST_Request $request ) {
 		$group_id = $request->get_param( 'groupId' );
-		$group    = $this->get_group( $group_id );
+		$quiz_id  = absint( $request->get_param( 'quizId' ) );
+		$group    = $this->get_group( $group_id, $quiz_id > 0 ? $quiz_id : null );
 
 		return rest_ensure_response( $group );
 	}
@@ -940,15 +1055,19 @@ class Rest_API {
 	/**
 	 * Get a group.
 	 *
-	 * @param string $group_id The group id.
-	 * @return string|WP_Error
+	 * @param string   $group_id The group id.
+	 * @param int|null $quiz_id  Optional quiz post ID. Required for Firebase RTDB lookup under quiz/{id}/groups/{group}.
+	 * @return array|WP_Error
 	 */
-	public function get_group( $group_id ) {
-		$groups = new Groups(
-			array(
-				'group_id' => $group_id,
-			)
+	public function get_group( $group_id, $quiz_id = null ) {
+		$args = array(
+			'group_id' => $group_id,
 		);
+		if ( null !== $quiz_id && (int) $quiz_id > 0 ) {
+			$args['quiz_id'] = (int) $quiz_id;
+		}
+
+		$groups = new Groups( $args );
 		$group  = $groups->get_group();
 		if ( is_wp_error( $group ) ) {
 			return $group;
@@ -957,30 +1076,67 @@ class Rest_API {
 			return new \WP_Error( 'group_not_found', 'ERROR: group_get/404. GROUP_ID: ' . $group_id . '. Group not found, please check the url you were given by your group administrator.', array( 'status' => 404 ) );
 		}
 		// Ensure group is cast as an object.
-
 		$group = (object) $group;
-		if ( null === get_post( $group->quiz_id ) ) {
-			return new \WP_Error( 'quiz_not_found', 'ERROR: group_get/404. QUIZ_ID: ' . $group->quiz_id . '. Quiz not found, please contact technical support.', array( 'status' => 404 ) );
+
+		// Guard against malformed Firebase payloads missing quiz_id (PRC-PLATFORM-PHP-RG).
+		$resolved_quiz_id = null;
+		if ( isset( $group->quiz_id ) && '' !== $group->quiz_id && null !== $group->quiz_id ) {
+			$resolved_quiz_id = (int) $group->quiz_id;
+		} elseif ( null !== $quiz_id && (int) $quiz_id > 0 ) {
+			$resolved_quiz_id = (int) $quiz_id;
 		}
 
-		$typology_groups = json_decode( $group->typology_groups, true );
-		$answers         = json_decode( $group->answers, true );
+		if ( null === $resolved_quiz_id || $resolved_quiz_id <= 0 ) {
+			return new \WP_Error(
+				'quiz_not_found',
+				'ERROR: group_get/404. GROUP_ID: ' . $group_id . '. Group is missing quiz_id; pass quizId or contact technical support.',
+				array( 'status' => 404 )
+			);
+		}
 
-		$group_results_url = $this->get_group_results_url( $group_id, $group->quiz_id );
+		if ( null === get_post( $resolved_quiz_id ) ) {
+			return new \WP_Error( 'quiz_not_found', 'ERROR: group_get/404. QUIZ_ID: ' . $resolved_quiz_id . '. Quiz not found, please contact technical support.', array( 'status' => 404 ) );
+		}
+
+		$typology_groups = self::decode_group_field( $group->typology_groups ?? null );
+		if ( empty( $typology_groups ) && isset( $group->clusters ) ) {
+			$typology_groups = self::decode_group_field( $group->clusters );
+		}
+		$answers = self::decode_group_field( $group->answers ?? null );
+
+		$group_results_url = $this->get_group_results_url( $group_id, $resolved_quiz_id );
+		$resolved_group_id = isset( $group->group_id ) ? $group->group_id : $group_id;
 
 		return array(
-			'group_id'        => $group->group_id,
-			'name'            => $group->name,
-			'quiz_id'         => $group->quiz_id,
-			'created'         => $group->created,
-			'owner'           => $group->owner,
+			'group_id'        => $resolved_group_id,
+			'name'            => $group->name ?? '',
+			'quiz_id'         => $resolved_quiz_id,
+			'created'         => $group->created ?? '',
+			'owner'           => $group->owner ?? null,
 			'typology_groups' => $typology_groups,
 			'answers'         => $answers,
-			'total'           => $group->total,
+			'total'           => isset( $group->total ) ? (int) $group->total : 0,
 			'results_url'     => is_wp_error( $group_results_url ) ? null : $group_results_url,
-			'group_url'       => get_permalink( $group->quiz_id ) . '?group=' . $group->group_id,
-			'quiz_name'       => get_the_title( $group->quiz_id ),
+			'group_url'       => get_permalink( $resolved_quiz_id ) . '?group=' . $resolved_group_id,
+			'quiz_name'       => get_the_title( $resolved_quiz_id ),
 		);
+	}
+
+	/**
+	 * Decode a group field that may already be an array (Firebase) or a JSON string (legacy).
+	 *
+	 * @param mixed $value Raw field value.
+	 * @return array
+	 */
+	private static function decode_group_field( $value ): array {
+		if ( is_array( $value ) ) {
+			return $value;
+		}
+		if ( is_string( $value ) && '' !== $value ) {
+			$decoded = json_decode( $value, true );
+			return is_array( $decoded ) ? $decoded : array();
+		}
+		return array();
 	}
 
 	/**
@@ -1105,6 +1261,14 @@ class Rest_API {
 			}
 		}
 
+		// Shell providers (Working on / Active editors / Workflow) map request args → WP_Query.
+		$query_args = apply_filters(
+			'prc_wp_admin_dataview_query_args',
+			$query_args,
+			$request,
+			Plugin::$post_type
+		);
+
 		$search = (string) $request->get_param( 'search' );
 		if ( class_exists( '\PRC\Platform\Wp_Admin_Dataview\Search_Query' ) ) {
 			$query_args = \PRC\Platform\Wp_Admin_Dataview\Search_Query::apply( $query_args, $search, $statuses );
@@ -1115,7 +1279,14 @@ class Rest_API {
 		$query = new \WP_Query( $query_args );
 
 		$rows = array_map(
-			array( $this, 'shape_library_row' ),
+			function ( $post ) {
+				return apply_filters(
+					'prc_wp_admin_dataview_shape_row',
+					$this->shape_library_row( $post ),
+					$post,
+					Plugin::$post_type
+				);
+			},
 			$query->posts
 		);
 

@@ -14,6 +14,7 @@ import { createBlock } from '@wordpress/blocks';
  * Internal Dependencies
  */
 import { useQuizDataModel } from '@prc/quiz-components';
+import { quizBuilderBinding } from '../../bindings/binding-fields';
 
 /**
  * Builds a prc-quiz/page block containing one question with the given
@@ -33,7 +34,7 @@ function buildQuestionPage(quizType, questionNum, answerCount = 3) {
 			createBlock('core/paragraph', {
 				metadata: {
 					bindings: {
-						content: { source: 'prc-quiz/answer' },
+						content: quizBuilderBinding('answer-text'),
 					},
 				},
 			}),
@@ -45,7 +46,7 @@ function buildQuestionPage(quizType, questionNum, answerCount = 3) {
 			fontSize: 'medium',
 			metadata: {
 				bindings: {
-					content: { source: 'prc-quiz/question' },
+					content: quizBuilderBinding('question-text'),
 				},
 			},
 		}),

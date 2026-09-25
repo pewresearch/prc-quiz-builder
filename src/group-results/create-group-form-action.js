@@ -100,6 +100,9 @@ export default async function createGroupFormAction(
 				} else if ('captcha_failed' === errorCode) {
 					errorMessage =
 						'Captcha verification failed. Please try again.';
+				} else if ('groups_not_allowed' === errorCode) {
+					errorMessage =
+						'This quiz cannot use community groups. Use a typology quiz or add score buckets first.';
 				}
 				return reject({
 					message: errorMessage,

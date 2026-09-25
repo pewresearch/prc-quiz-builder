@@ -39,7 +39,23 @@ class Group_Results {
 	 * @return string
 	 */
 	public static function format_response_count( $count ) {
-		return sprintf( '**%d** responses', (int) $count );
+		return sprintf( '%d responses', (int) $count );
+	}
+
+	/**
+	 * Whether the current request is a group-results landing (no archetype).
+	 *
+	 * @param bool $groups_enabled Whether community groups are enabled for this quiz.
+	 * @return bool
+	 */
+	public static function is_group_results_request( $groups_enabled ) {
+		if ( empty( $groups_enabled ) ) {
+			return false;
+		}
+		$group_id     = get_query_var( 'quizGroup', false );
+		$show_results = get_query_var( 'quizShowResults', false );
+		$archetype    = get_query_var( 'quizArchetype', false );
+		return (bool) ( $group_id && $show_results && ! $archetype );
 	}
 
 	/**

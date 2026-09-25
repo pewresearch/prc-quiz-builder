@@ -1,0 +1,75 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Kreait\Firebase\Exception;
+
+use GuzzleHttp\Exception\RequestException;
+use Kreait\Firebase\Exception\RemoteConfig\ApiConnectionFailed;
+use Kreait\Firebase\Exception\RemoteConfig\OperationAborted;
+use Kreait\Firebase\Exception\RemoteConfig\PermissionDenied;
+use Kreait\Firebase\Exception\RemoteConfig\RemoteConfigError;
+use Kreait\Firebase\Exception\RemoteConfig\ValidationFailed;
+use Kreait\Firebase\Exception\RemoteConfig\VersionMismatch;
+use Kreait\Firebase\Http\ErrorResponseParser;
+use Psr\Http\Client\NetworkExceptionInterface;
+use Psr\Http\Message\ResponseInterface;
+use Throwable;
+
+use function mb_stripos;
+
+/**
+ * @internal
+ */
+final readonly class RemoteConfigApiExceptionConverter
+{
+    public function __construct(private ErrorResponseParser $responseParser)
+    {
+    }
+
+    public function convertException(Throwable $exception): RemoteConfigException
+    {
+        if ($exception instanceof RequestException) {
+            return $this->convertGuzzleRequestException($exception);
+        }
+
+        if ($exception instanceof NetworkExceptionInterface) {
+            return new ApiConnectionFailed(
+                message: 'Unable to connect to the API: '.$exception->getMessage(),
+                previous: $exception
+            );
+        }
+
+        return new RemoteConfigError(message: $exception->getMessage(), previous: $exception);
+    }
+
+    private function convertGuzzleRequestException(RequestException $e): RemoteConfigException
+    {
+        $message = $e->getMessage();
+        $code = $e->getCode();
+        $response = method_exists($e, 'getResponse') ? $e->getResponse() : null;
+
+        if ($response instanceof ResponseInterface) {
+            $message = $this->responseParser->getErrorReasonFromResponse($response);
+            $code = $response->getStatusCode();
+        }
+
+        if (mb_stripos($message, 'permission_denied') !== false) {
+            return new PermissionDenied($message, $code, $e);
+        }
+
+        if (mb_stripos($message, 'aborted') !== false) {
+            return new OperationAborted($message, $code, $e);
+        }
+
+        if (mb_stripos($message, 'version_mismatch') !== false) {
+            return new VersionMismatch($message, $code, $e);
+        }
+
+        if (mb_stripos($message, 'validation_error') !== false) {
+            return new ValidationFailed($message, $code, $e);
+        }
+
+        return new RemoteConfigError($message, $code, $e);
+    }
+}

@@ -4,5 +4,5 @@
 import { Icon } from '@prc/icons';
 
 export default function () {
-	return <Icon icon="table-pivot" library="solid" />;
+	return <Icon icon="table" library="prc" />;
 }
