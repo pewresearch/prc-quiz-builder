@@ -46,4 +46,4 @@ src/analytics-panel.scss 3:9  root stylesheet
  @ ./src/analytics-panel.js 6:0-32
  @ ./src/index.js 20:0-47 68:34-48
 
-webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 2298 ms
+webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 7350 ms
