@@ -125,6 +125,15 @@ export default function TableComplex({
 										<Icon icon="xmark" />
 									</span>
 								)}
+								{!isCommunityGroup && row.showNotSureIcon && (
+									<span
+										className="prc-quiz-result-table__icon is-not-sure"
+										role="img"
+										aria-label={__('Not sure', 'prc-quiz')}
+									>
+										❓
+									</span>
+								)}
 							</td>
 							<td className="prc-quiz-result-table__percent-cell">
 								{isCommunityGroup && (

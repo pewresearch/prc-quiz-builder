@@ -3,6 +3,14 @@
  */
 import { store, getContext, withScope } from '@wordpress/interactivity';
 
+/**
+ * Internal Dependencies
+ */
+import {
+	markSkipResultsSpinner,
+	revealResults,
+} from '../results/results-countdown';
+
 const { wp, localStorage } = window;
 const { apiFetch } = wp;
 
@@ -201,7 +209,7 @@ const { state, actions } = store('prc-quiz/controller', {
 			}
 			actions.scheduleSilentRetry(pendingSubmission);
 		},
-		handleUnpersistedSubmission: (
+		handleUnpersistedSubmission: async (
 			pendingSubmission,
 			newScore = null,
 			context = getContext()
@@ -212,8 +220,7 @@ const { state, actions } = store('prc-quiz/controller', {
 					score: newScore,
 				};
 			}
-			context.displayResults = true;
-			context.processing = false;
+			await revealResults(context);
 			context.readyForSubmission = false;
 			context.submissionPending = false;
 			context.submissionErrorMessage = '';
@@ -227,7 +234,7 @@ const { state, actions } = store('prc-quiz/controller', {
 			// Keep pending for a silent retry so a later Firebase recovery can persist.
 			actions.scheduleSilentRetry(pendingSubmission);
 		},
-		handleRateLimitedSubmission: (
+		handleRateLimitedSubmission: async (
 			pendingSubmission,
 			newScore = null,
 			context = getContext()
@@ -238,8 +245,7 @@ const { state, actions } = store('prc-quiz/controller', {
 					score: newScore,
 				};
 			}
-			context.displayResults = true;
-			context.processing = false;
+			await revealResults(context);
 			context.readyForSubmission = false;
 			context.submissionPending = false;
 			context.submissionErrorMessage = '';
@@ -414,8 +420,6 @@ const { state, actions } = store('prc-quiz/controller', {
 						score: newScore,
 					};
 				}
-				context.displayResults = true;
-				context.processing = false;
 				context.readyForSubmission = false;
 				actions.clearPendingSubmission(nextPendingSubmission, context);
 				actions.saveSubmittedScore(
@@ -432,6 +436,11 @@ const { state, actions } = store('prc-quiz/controller', {
 					state.currentSessionArchetypes.push(
 						nextPendingSubmission.hash
 					);
+				}
+
+				const playedCountdown = await revealResults(context);
+				if (playedCountdown) {
+					markSkipResultsSpinner(context.quizId);
 				}
 
 				if (hasClientRenderedScore(context, newScore)) {

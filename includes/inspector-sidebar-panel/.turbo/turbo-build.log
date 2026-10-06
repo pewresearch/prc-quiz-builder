@@ -2,6 +2,9 @@
 > @prc/quiz-builder-inspector-sidebar-panel@1.0.0 build
 > wp-scripts build --webpack-copy-php
 
+Browserslist: browsers data (caniuse-lite) is 6 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
 assets by path [1m[32m*.css[39m[22m 180 KiB
   asset [1m[32mindex-rtl.css[39m[22m 90.2 KiB [1m[32m[emitted][39m[22m (name: index)
   asset [1m[32mindex.css[39m[22m 90.2 KiB [1m[32m[emitted][39m[22m (name: index)
@@ -46,4 +49,4 @@ src/analytics-panel.scss 3:9  root stylesheet
  @ ./src/analytics-panel.js 6:0-32
  @ ./src/index.js 20:0-47 68:34-48
 
-webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 7350 ms
+webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 1543 ms

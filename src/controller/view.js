@@ -15,6 +15,11 @@ import {
 import scoreQuiz from './scoring';
 import { shouldDisplayPages } from './display-pages';
 import { scrollToElement } from './scroll-utils';
+import {
+	consumeSkipResultsSpinner,
+	revealResults,
+} from '../results/results-countdown';
+import { SOUND_EFFECT, playQuizSound } from './sound-effects';
 import './progress-storage';
 import './submission-recovery';
 import './share';
@@ -155,9 +160,10 @@ const { state, actions } = store('prc-quiz/controller', {
 				}
 			});
 		},
-		onStartQuizClick: withSyncEvent(() => {
+		onStartQuizClick: withSyncEvent((event) => {
 			const context = getContext();
 			const { ref } = getElement();
+			playQuizSound(context, SOUND_EFFECT.start, event.target);
 			const { pages, displayType, configuredDisplayType } = context;
 			const root = ref?.closest('.wp-block-prc-quiz-controller') || ref;
 			let resolvedDisplayType = displayType;
@@ -177,9 +183,10 @@ const { state, actions } = store('prc-quiz/controller', {
 				scrollToElement(firstPage);
 			}
 		}),
-		onNextPageClick: withSyncEvent(() => {
+		onNextPageClick: withSyncEvent((event) => {
 			const context = getContext();
 			const { currentPageUuid, pages } = context;
+			playQuizSound(context, SOUND_EFFECT.nextPage, event.target);
 			// Find the index of the current page in the pages array.
 			const currentPageIndex = pages.indexOf(currentPageUuid);
 			actions.goToPage(pages[currentPageIndex + 1]);
@@ -193,16 +200,19 @@ const { state, actions } = store('prc-quiz/controller', {
 			actions.goToPage(pages[currentPageIndex - 1]);
 			actions.saveQuizProgress();
 		}),
-		onSubmitQuizClick: withSyncEvent(() => {
+		onSubmitQuizClick: withSyncEvent((event) => {
+			const context = getContext();
+			playQuizSound(context, SOUND_EFFECT.submit, event.target);
 			actions.submitQuiz({ triggerMailchimp: true });
 		}),
 		onRetryPendingSubmissionClick: withSyncEvent((event) => {
 			event.preventDefault();
 			actions.retryPendingSubmission();
 		}),
-		onResetQuizClick: withSyncEvent(() => {
+		onResetQuizClick: withSyncEvent((event) => {
 			const context = getContext();
 			const { quizUrl, displayResults } = context;
+			playQuizSound(context, SOUND_EFFECT.reset, event.target);
 			// If the user is on the results page, we should just go back to the quiz url.
 			if (displayResults) {
 				window.location.href = quizUrl;
@@ -229,6 +239,7 @@ const { state, actions } = store('prc-quiz/controller', {
 			context.submitted = false;
 			context.processing = false;
 			context.displayResults = false;
+			context.resultsCountdown = null;
 			context.readyForSubmission = false;
 			context.selectedAnswers = {};
 			context.userSubmission = [];
@@ -379,9 +390,8 @@ const { state, actions } = store('prc-quiz/controller', {
 				withScope(function* () {
 					// If this is a preview, we don't want to submit the quiz.
 					if (isPreview) {
-						context.displayResults = true;
+						yield revealResults(context);
 						context.readyForSubmission = false;
-						context.processing = false;
 						if (newScore) {
 							context.userScore = {
 								...context.userScore,
@@ -397,9 +407,8 @@ const { state, actions } = store('prc-quiz/controller', {
 						state.currentSessionArchetypes.includes(hash) ||
 						!allowSubmissions
 					) {
-						context.displayResults = true;
+						yield revealResults(context);
 						context.readyForSubmission = false;
-						context.processing = false;
 						if (newScore) {
 							context.userScore = {
 								...context.userScore,
@@ -435,7 +444,14 @@ const { state, actions } = store('prc-quiz/controller', {
 		onInit: () => {
 			const { ref } = getElement();
 			const context = getContext();
-			context.processing = true;
+			// The countdown already played before this results page opened.
+			// Always consume the flag so a later visit cannot skip the spinner.
+			const skipResultsSpinner = consumeSkipResultsSpinner(
+				context.quizId
+			);
+			if (!context.displayResults || !skipResultsSpinner) {
+				context.processing = true;
+			}
 
 			const root =
 				ref?.closest('.wp-block-prc-quiz-controller') || document;
@@ -455,6 +471,12 @@ const { state, actions } = store('prc-quiz/controller', {
 			}
 
 			actions.applyDisplayType();
+
+			if (context.displayResults && skipResultsSpinner) {
+				actions.restorePendingSubmission();
+				context.loaded = true;
+				return;
+			}
 
 			// Check if the user has a cookie for this quiz, and if so check if currentPageUuid is set, if so, set context to it.
 			setTimeout(

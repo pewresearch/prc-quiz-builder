@@ -92,6 +92,7 @@ export function buildSimpleTableRows({
 			correct,
 			showCorrectIcon: true === correct,
 			showIncorrectIcon: false === correct,
+			showNotSureIcon: null === correct,
 			question: sanitizeQuestion(questionText(question)),
 			selectedAnswer: formatAnswerList(userSelectedAnswers),
 			correctAnswer: formatAnswerList(correctAnswers, true),
@@ -200,6 +201,8 @@ export function buildComplexTableRows({
 				!isCommunityGroup && isSelected && true === answer.correct;
 			const isIncorrectSelection =
 				!isCommunityGroup && isSelected && false === answer.correct;
+			const isNotSureSelection =
+				!isCommunityGroup && isSelected && null === answer.correct;
 			const count = isCommunityGroup
 				? groupAnswerCount(groupTally, answer.uuid)
 				: 0;
@@ -220,6 +223,7 @@ export function buildComplexTableRows({
 				isIncorrectSelection,
 				showCorrectIcon: isCorrectSelection,
 				showIncorrectIcon: isIncorrectSelection,
+				showNotSureIcon: isNotSureSelection,
 				questionCorrect,
 				populationPercent: formatPercent(answer.populationPercent),
 				demoBreakValues: padDemoBreakValues(

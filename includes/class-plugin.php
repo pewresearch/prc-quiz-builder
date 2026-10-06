@@ -266,6 +266,7 @@ class Plugin {
 		new Page( $this->get_loader() );
 		new Pages( $this->get_loader() );
 		new Progress_Bar( $this->get_loader() );
+		new Mute_Audio( $this->get_loader() );
 		// Results blocks.
 		new Group_Results( $this->get_loader() );
 		new Results( $this->get_loader() );

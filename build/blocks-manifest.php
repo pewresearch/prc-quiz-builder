@@ -218,6 +218,22 @@ return array(
 			'histogramPopulation' => array(
 				'type' => 'string',
 				'default' => '[]'
+			),
+			'soundSettings' => array(
+				'type' => 'object',
+				'default' => array(
+					'start' => false,
+					'nextPage' => false,
+					'submit' => false,
+					'reset' => false,
+					'hoverResponse' => false,
+					'clickResponse' => false,
+					'correctResponse' => false,
+					'incorrectResponse' => false,
+					'notSureResponse' => false,
+					'countdown' => false,
+					'volume' => 100
+				)
 			)
 		),
 		'providesContext' => array(
@@ -314,6 +330,66 @@ return array(
 			'prc-quiz/quizId'
 		),
 		'textdomain' => 'group-results',
+		'editorScript' => 'file:./index.js',
+		'editorStyle' => 'file:./index.css',
+		'style' => 'file:./style-index.css',
+		'viewScriptModule' => 'file:./view.js'
+	),
+	'mute-audio' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'prc-quiz/mute-audio',
+		'version' => '1.0.0',
+		'title' => 'Mute audio',
+		'description' => 'Mute or unmute all audio on the page.',
+		'category' => 'prc-quiz',
+		'keywords' => array(
+			'mute',
+			'audio',
+			'sound',
+			'speaker'
+		),
+		'parent' => array(
+			'prc-quiz/pages'
+		),
+		'attributes' => array(
+			'startMuted' => array(
+				'type' => 'boolean',
+				'default' => false
+			)
+		),
+		'styles' => array(
+			array(
+				'name' => 'icon-and-text',
+				'label' => 'Icon with text',
+				'isDefault' => true
+			),
+			array(
+				'name' => 'icon-only',
+				'label' => 'Icon only'
+			)
+		),
+		'supports' => array(
+			'anchor' => true,
+			'html' => false,
+			'interactivity' => true,
+			'color' => array(
+				'background' => true,
+				'text' => true
+			),
+			'spacing' => array(
+				'margin' => array(
+					'top',
+					'bottom'
+				),
+				'padding' => true
+			),
+			'typography' => array(
+				'fontSize' => true,
+				'__experimentalFontFamily' => true
+			)
+		),
+		'textdomain' => 'prc-quiz',
 		'editorScript' => 'file:./index.js',
 		'editorStyle' => 'file:./index.css',
 		'style' => 'file:./style-index.css',
@@ -434,6 +510,7 @@ return array(
 		'category' => 'prc-quiz',
 		'allowedBlocks' => array(
 			'prc-quiz/progress-bar',
+			'prc-quiz/mute-audio',
 			'prc-quiz/page'
 		),
 		'attributes' => array(
@@ -861,7 +938,14 @@ return array(
 		'title' => 'Results',
 		'category' => 'prc-quiz',
 		'attributes' => array(
-			
+			'resultsTransition' => array(
+				'type' => 'string',
+				'enum' => array(
+					'default',
+					'countdown'
+				),
+				'default' => 'default'
+			)
 		),
 		'supports' => array(
 			'anchor' => true,

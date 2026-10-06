@@ -7,6 +7,7 @@
   "category": "prc-quiz",
   "allowedBlocks": [
     "prc-quiz/progress-bar",
+    "prc-quiz/mute-audio",
     "prc-quiz/page"
   ],
   "attributes": {},

@@ -210,8 +210,12 @@ class Results {
 	 * @return string The block content.
 	 */
 	public function render_block_callback( $attributes, $content, $block ) {
-		$error_message = null;
-		$quiz_id       = $block->context['prc-quiz/id'] ?? null;
+		$error_message      = null;
+		$quiz_id            = $block->context['prc-quiz/id'] ?? null;
+		$results_transition = $attributes['resultsTransition'] ?? 'default';
+		if ( ! in_array( $results_transition, array( 'default', 'countdown' ), true ) ) {
+			$results_transition = 'default';
+		}
 		// First we check if the user is requesting an archetype.
 		$archetype_id = get_query_var( 'quizArchetype', false );
 		// Then we look for the archetype data. If none can be found, we show an error message.
@@ -250,10 +254,12 @@ class Results {
 		);
 		$tag->set_attribute( 'data-wp-interactive', 'prc-quiz/controller' );
 		$tag->set_attribute( 'data-wp-bind--hidden', '!state.displayResults' );
+		$tag->set_attribute( 'data-results-transition', $results_transition );
 		$tag->set_attribute(
 			'data-wp-context',
 			wp_json_encode(
 				array(
+					'resultsTransition' => $results_transition,
 					...$archetype_context,
 				)
 			)

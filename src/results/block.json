@@ -5,18 +5,20 @@
 	"version": "4.0",
 	"title": "Results",
 	"category": "prc-quiz",
-	"attributes": {},
+	"attributes": {
+		"resultsTransition": {
+			"type": "string",
+			"enum": ["default", "countdown"],
+			"default": "default"
+		}
+	},
 	"supports": {
 		"anchor": true,
 		"html": false,
 		"multiple": false,
 		"interactivity": true,
 		"animations": true,
-		"align": [
-			"wide",
-			"full",
-			"center"
-		],
+		"align": ["wide", "full", "center"],
 		"color": {
 			"background": true,
 			"text": true,
@@ -36,10 +38,7 @@
 		},
 		"spacing": {
 			"blockGap": true,
-			"margin": [
-				"top",
-				"bottom"
-			],
+			"margin": ["top", "bottom"],
 			"padding": true
 		},
 		"typography": {
@@ -47,13 +46,8 @@
 			"__experimentalFontFamily": true
 		}
 	},
-	"parent": [
-		"prc-quiz/controller"
-	],
-	"usesContext": [
-		"prc-quiz/type",
-		"prc-quiz/id"
-	],
+	"parent": ["prc-quiz/controller"],
+	"usesContext": ["prc-quiz/type", "prc-quiz/id"],
 	"textdomain": "results",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",

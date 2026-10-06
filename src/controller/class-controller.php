@@ -30,6 +30,14 @@ class Controller {
 	public const SHARE_RESULTS_BUTTON_CLASS = 'prc-quiz-share-results-button';
 
 	/**
+	 * Sprite sheet path, relative to the plugin root.
+	 * Timing values live in src/controller/sound-effects.js.
+	 *
+	 * @var string
+	 */
+	public const SOUND_SPRITE_PATH = 'assets/quiz_sound_sprite.mp3';
+
+	/**
 	 * Constructor.
 	 *
 	 * @param object $loader The loader.
@@ -331,6 +339,7 @@ class Controller {
 					'histogramPopulation'    => Histogram_Population::resolve_from_controller( $attributes, $block ),
 					'isEmbedded'             => $is_embedded,
 					'processing'             => false,
+					'resultsCountdown'       => null,
 					'loaded'                 => false,
 					'readyForSubmission'     => false,
 					'submitted'              => false,
@@ -346,6 +355,8 @@ class Controller {
 					'isPreview'              => is_preview(),
 					'shareText'              => 'I scored %score% on the "%title%" quiz',
 					'shareData'              => $this->get_share_data( $post_id ), // Social share metadata sourced from prc-schema-seo.
+					'soundSettings'          => self::normalize_sound_settings( $attributes['soundSettings'] ?? array() ),
+					'soundSpriteUrl'         => plugins_url( self::SOUND_SPRITE_PATH, PRC_QUIZ_FILE ),
 				)
 			)
 		);
@@ -358,6 +369,7 @@ class Controller {
 		$tag->set_attribute( 'data-wp-class--is-horizontal-parallax', 'state.isHorizontalParallax' );
 		// Apply a class to the block if it is processing. Mainly used to show/hide the loading spinner.
 		$tag->set_attribute( 'data-wp-class--is-processing', 'context.processing' );
+		$tag->set_attribute( 'data-wp-class--is-results-countdown', 'context.resultsCountdown' );
 		// Update's the user's submission data as they answer questions.
 		$tag->set_attribute( 'data-wp-watch--update-user-submission', 'callbacks.updateUserSubmission' );
 		// Update's the user's score data as we update their submission data.
@@ -373,12 +385,67 @@ class Controller {
 		// Add a loading spinner to the block.
 		$submission_error = '<div class="wp-block-prc-quiz-controller-submission-error" role="alert" data-wp-bind--hidden="!context.submissionErrorMessage"><p data-wp-text="context.submissionErrorMessage"></p><button type="button" class="ui button wp-element-button" data-wp-on--click="actions.onRetryPendingSubmissionClick">Try saving again</button></div>';
 		$loading          = '<div class="wp-block-prc-quiz-controller-processing"><div class="wp-block-prc-quiz-controller-processing_spinner"><span>Loading...</span></div></div>';
+		$countdown        = '<div class="wp-block-prc-quiz-controller-results-countdown" hidden data-wp-bind--hidden="!context.resultsCountdown" role="status" aria-live="polite"><span class="wp-block-prc-quiz-controller-results-countdown__count" data-wp-text="context.resultsCountdown"></span><p class="wp-block-prc-quiz-controller-results-countdown__message">' . esc_html__( 'Finding your best fit', 'prc-quiz-builder' ) . '</p></div>';
 		// Add the loading spinner to inside the very last </div> tag.
-		$content = preg_replace( '/<\/div>$/', $submission_error . $loading . '</div>', $content );
+		$content = preg_replace( '/<\/div>$/', $submission_error . $loading . $countdown . '</div>', $content );
 
 		$this->seed_demo_break_labels( $post_id, $attributes );
 
 		return $content;
+	}
+
+	/**
+	 * Normalize saved sound settings for the frontend context.
+	 *
+	 * Keep the keys in sync with DEFAULT_SOUND_SETTINGS in src/controller/sound-effects.js.
+	 *
+	 * @param mixed $settings Raw soundSettings attribute.
+	 * @return array
+	 */
+	public static function normalize_sound_settings( $settings ) {
+		$keys       = array(
+			'start',
+			'nextPage',
+			'submit',
+			'reset',
+			'hoverResponse',
+			'clickResponse',
+			'correctResponse',
+			'incorrectResponse',
+			'notSureResponse',
+			'countdown',
+		);
+		$normalized = array(
+			'volume' => 100,
+		);
+		foreach ( $keys as $key ) {
+			$normalized[ $key ] = false;
+		}
+		if ( ! is_array( $settings ) ) {
+			return $normalized;
+		}
+		foreach ( $keys as $key ) {
+			if ( array_key_exists( $key, $settings ) ) {
+				$normalized[ $key ] = (bool) $settings[ $key ];
+			}
+		}
+		if ( array_key_exists( 'volume', $settings ) ) {
+			$normalized['volume'] = self::clamp_sound_volume( $settings['volume'] );
+		}
+		return $normalized;
+	}
+
+	/**
+	 * Clamp the global sound volume to 0-100.
+	 *
+	 * @param mixed $value Raw volume.
+	 * @return int
+	 */
+	public static function clamp_sound_volume( $value ) {
+		if ( ! is_numeric( $value ) ) {
+			return 100;
+		}
+		return (int) max( 0, min( 100, (int) round( (float) $value ) ) );
 	}
 
 	/**

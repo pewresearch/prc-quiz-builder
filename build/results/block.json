@@ -5,7 +5,16 @@
   "version": "4.0",
   "title": "Results",
   "category": "prc-quiz",
-  "attributes": {},
+  "attributes": {
+    "resultsTransition": {
+      "type": "string",
+      "enum": [
+        "default",
+        "countdown"
+      ],
+      "default": "default"
+    }
+  },
   "supports": {
     "anchor": true,
     "html": false,

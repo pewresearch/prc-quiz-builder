@@ -98,6 +98,7 @@ class Answer {
 			)
 		);
 		$tag->set_attribute( 'data-wp-on--click', 'actions.onAnswerClick' );
+		$tag->set_attribute( 'data-wp-on--mouseenter', 'actions.onAnswerMouseEnter' );
 		$tag->set_attribute( 'data-wp-class--is-active', 'state.isAnswerSelected' );
 		$tag->set_attribute( 'data-wp-class--is-feedback-correct', 'state.isFeedbackCorrectHighlight' );
 		$tag->set_attribute( 'data-wp-class--is-feedback-incorrect', 'state.isFeedbackIncorrect' );

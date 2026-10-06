@@ -101,6 +101,7 @@ class Result_Table {
 		<span class="prc-quiz-result-table__icon is-incorrect"<?php echo $icon_style_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above ?> data-wp-bind--hidden="!context.row.showIncorrectIcon">
 			<?php echo \PRC\Platform\Icons\render( 'prc', 'xmark', $icon_size ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Icons::render escapes href; wp_kses_post strips <use>. ?>
 		</span>
+		<span class="prc-quiz-result-table__icon is-not-sure" style="<?php echo esc_attr( 'font-size: ' . \PRC\Platform\Icons\format_icon_size_css( $icon_size ) . ';' ); ?>" role="img" aria-label="<?php echo esc_attr__( 'Not sure', 'prc-quiz' ); ?>" data-wp-bind--hidden="!context.row.showNotSureIcon">❓</span>
 		<?php
 	}
 

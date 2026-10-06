@@ -74,4 +74,44 @@
 			}
 		}
 	}
+
+	// Countdown replaces the loading spinner when results are about to appear.
+	.wp-block-prc-quiz-controller-results-countdown {
+		display: none;
+	}
+
+	&.is-results-countdown {
+		position: relative;
+
+		.wp-block-prc-quiz-controller-processing {
+			display: none;
+		}
+
+		.wp-block-prc-quiz-controller-results-countdown:not([hidden]) {
+			align-items: center;
+			background: rgba(255, 255, 255, 0.94);
+			display: flex;
+			flex-direction: column;
+			gap: 0.75rem;
+			inset: 0;
+			justify-content: center;
+			margin: 0;
+			position: fixed;
+			text-align: center;
+			z-index: 100;
+		}
+	}
+}
+
+.wp-block-prc-quiz-controller-results-countdown__count {
+	font-size: 4.5rem;
+	font-weight: 700;
+	line-height: 1;
+	font-family: var(--wp--preset--font-family--serif);
+}
+
+.wp-block-prc-quiz-controller-results-countdown__message {
+	font-size: 1.25rem;
+	margin: 0;
+	font-family: var(--wp--preset--font-family--sans-serif);
 }

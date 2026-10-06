@@ -38,6 +38,7 @@ import ScoreBucketsControl from './score-buckets-control';
 import { resolveGroupCapability } from './group-capability';
 import CommunityGroupsPanel from './community-groups-panel';
 import PageTransitionControls from './page-transition-controls';
+import SoundSettingsControls from './sound-settings-controls';
 
 function Controls({
 	attributes,
@@ -263,6 +264,10 @@ function Controls({
 						</>
 					)}
 				</PanelBody>
+				<SoundSettingsControls
+					attributes={attributes}
+					setAttributes={setAttributes}
+				/>
 				<CommunityGroupsPanel
 					groupsEnabled={groupsEnabled}
 					groupCapability={groupCapability}

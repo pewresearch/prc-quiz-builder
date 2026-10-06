@@ -77,6 +77,22 @@
 		"histogramPopulation": {
 			"type": "string",
 			"default": "[]"
+		},
+		"soundSettings": {
+			"type": "object",
+			"default": {
+				"start": false,
+				"nextPage": false,
+				"submit": false,
+				"reset": false,
+				"hoverResponse": false,
+				"clickResponse": false,
+				"correctResponse": false,
+				"incorrectResponse": false,
+				"notSureResponse": false,
+				"countdown": false,
+				"volume": 100
+			}
 		}
 	},
 	"providesContext": {

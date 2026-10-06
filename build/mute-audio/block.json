@@ -1,0 +1,60 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "prc-quiz/mute-audio",
+  "version": "1.0.0",
+  "title": "Mute audio",
+  "description": "Mute or unmute all audio on the page.",
+  "category": "prc-quiz",
+  "keywords": [
+    "mute",
+    "audio",
+    "sound",
+    "speaker"
+  ],
+  "parent": [
+    "prc-quiz/pages"
+  ],
+  "attributes": {
+    "startMuted": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "styles": [
+    {
+      "name": "icon-and-text",
+      "label": "Icon with text",
+      "isDefault": true
+    },
+    {
+      "name": "icon-only",
+      "label": "Icon only"
+    }
+  ],
+  "supports": {
+    "anchor": true,
+    "html": false,
+    "interactivity": true,
+    "color": {
+      "background": true,
+      "text": true
+    },
+    "spacing": {
+      "margin": [
+        "top",
+        "bottom"
+      ],
+      "padding": true
+    },
+    "typography": {
+      "fontSize": true,
+      "__experimentalFontFamily": true
+    }
+  },
+  "textdomain": "prc-quiz",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "viewScriptModule": "file:./view.js"
+}

@@ -12,6 +12,11 @@ import {
  * Internal Dependencies
  */
 import { getQuestionOutcome } from '../controller/question-outcome';
+import {
+	playAnswerInteractionSounds,
+	playQuizSound,
+	SOUND_EFFECT,
+} from '../controller/sound-effects';
 import { shouldRevealCorrectAnswer } from './live-feedback';
 import '../controller/submission-sync';
 
@@ -169,6 +174,15 @@ const { state, actions } = store('prc-quiz/controller', {
 
 			const currentAnswers = selectedAnswers[questionUuid] || [];
 			const isAlreadySelected = currentAnswers.includes(uuid);
+			const answer =
+				state[`quiz_${context.quizId}`]?.questions?.[questionUuid]
+					?.answers?.[uuid];
+			playAnswerInteractionSounds({
+				context,
+				element: event.target,
+				selecting: !isAlreadySelected,
+				correct: answer?.correct,
+			});
 
 			if (questionType === 'single' || questionType === 'thermometer') {
 				if (isAlreadySelected) {
@@ -189,6 +203,26 @@ const { state, actions } = store('prc-quiz/controller', {
 
 			actions.syncUserSubmission();
 			actions.saveQuizProgress();
+		}),
+		/**
+		 * Play the hover effect when the pointer enters a response.
+		 */
+		onAnswerMouseEnter: withSyncEvent((event) => {
+			const { ref } = getElement();
+			if (ref?.hasAttribute('disabled') || state.isAnswerDisabled) {
+				return;
+			}
+			if (
+				window.matchMedia &&
+				window.matchMedia('(pointer: coarse)').matches
+			) {
+				return;
+			}
+			playQuizSound(
+				getContext(),
+				SOUND_EFFECT.hoverResponse,
+				event.target
+			);
 		}),
 	},
 });

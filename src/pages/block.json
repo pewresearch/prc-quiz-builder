@@ -5,7 +5,11 @@
 	"version": "4.0",
 	"title": "Pages",
 	"category": "prc-quiz",
-	"allowedBlocks": ["prc-quiz/progress-bar", "prc-quiz/page"],
+	"allowedBlocks": [
+		"prc-quiz/progress-bar",
+		"prc-quiz/mute-audio",
+		"prc-quiz/page"
+	],
 	"attributes": {},
 	"supports": {
 		"anchor": false,

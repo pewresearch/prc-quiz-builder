@@ -13,10 +13,11 @@ import { Placeholder } from '@wordpress/components';
 /**
  * Internal Dependencies
  */
-import Icon from './icon';
+import Controls from './controls';
 
 export default function Edit({
-	isSelected,
+	attributes,
+	setAttributes,
 	__unstableLayoutClassNames: layoutClassNames,
 }) {
 	const blockProps = useBlockProps({
@@ -25,15 +26,18 @@ export default function Edit({
 	const innerBlocksProps = useInnerBlocksProps(blockProps, {});
 
 	return (
-		<div {...blockProps}>
-			<Placeholder
-				label={__('Results', 'prc-quiz')}
-				instructions={__(
-					'Contains the results of the users awarded archetype for this quiz. This is the final page of the quiz.',
-					'prc-quiz'
-				)}
-			/>
-			{innerBlocksProps.children}
-		</div>
+		<>
+			<Controls attributes={attributes} setAttributes={setAttributes} />
+			<div {...blockProps}>
+				<Placeholder
+					label={__('Results', 'prc-quiz')}
+					instructions={__(
+						'Contains the results of the users awarded archetype for this quiz. This is the final page of the quiz.',
+						'prc-quiz'
+					)}
+				/>
+				{innerBlocksProps.children}
+			</div>
+		</>
 	);
 }
