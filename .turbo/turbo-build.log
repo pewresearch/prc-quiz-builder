@@ -1,5 +1,5 @@
 
-> @prc/quiz-builder@4.8.0 build
+> @prc/quiz-builder@4.7.0 build
 > wp-scripts build --webpack-copy-php && wp-scripts build --experimental-modules --webpack-copy-php && wp-scripts build-blocks-manifest && wp-scripts build --source-path=src/admin-dataview/ --output-path=build/admin-dataview/
 
 Browserslist: browsers data (caniuse-lite) is 6 months old. Please run:
@@ -64,7 +64,7 @@ Entrypoints:
 You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
 For more info visit https://webpack.js.org/guides/code-splitting/[39m[22m
 
-webpack 5.106.2 compiled with [1m[33m3 warnings[39m[22m in 12694 ms
+webpack 5.106.2 compiled with [1m[33m3 warnings[39m[22m in 14142 ms
 Browserslist: browsers data (caniuse-lite) is 6 months old. Please run:
   npx update-browserslist-db@latest
   Why you should do it regularly: https://github.com/browserslist/update-db#readme
@@ -127,7 +127,7 @@ Entrypoints:
 You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
 For more info visit https://webpack.js.org/guides/code-splitting/[39m[22m
 
-webpack 5.106.2 compiled with [1m[33m3 warnings[39m[22m in 6898 ms
+webpack 5.106.2 compiled with [1m[33m3 warnings[39m[22m in 11785 ms
 
 assets by path [1m[32mcontroller/[39m[22m 29.1 KiB 2 assets
 assets by path [1m[32manswer/[39m[22m 13.6 KiB 2 assets
@@ -155,7 +155,7 @@ built modules 257 KiB [1m[33m[built][39m[22m
     [1m../../node_modules/charenc/charenc.js[39m[22m 850 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
     [1m../../node_modules/is-buffer/index.js[39m[22m 698 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
   [1mexternal "@wordpress/interactivity-router"[39m[22m 42 bytes [1m[33m[optional][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 1377 ms
+webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 2590 ms
 Block metadata PHP file generated at: build/blocks-manifest.php
 Browserslist: browsers data (caniuse-lite) is 6 months old. Please run:
   npx update-browserslist-db@latest
@@ -203,4 +203,4 @@ src/admin-dataview/style.scss 2:9  root stylesheet
  @ ./src/admin-dataview/style.scss
  @ ./src/admin-dataview/index.jsx 15:0-22
 
-webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 725 ms
+webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 783 ms
