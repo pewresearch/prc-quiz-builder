@@ -16,6 +16,10 @@
 	margin: 2px 0 10px 0;
 	// End of values that can be overriden in the editor.
 
+	// No double-tap zoom, so taps are never held back. Ancestors such as the
+	// horizontal parallax pages still narrow this.
+	touch-action: manipulation;
+
 	&:hover {
 		background-color: var(--quiz-answer-active-background-color, #eaeaea);
 		color: var(--quiz-answer-active-color, black);

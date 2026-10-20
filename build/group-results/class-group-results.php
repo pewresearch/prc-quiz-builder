@@ -211,14 +211,14 @@ class Group_Results {
 
 		$block_wrapper_attrs = get_block_wrapper_attributes(
 			array(
-				'data-wp-interactive'          => 'prc-quiz/controller',
-				'data-wp-context'              => wp_json_encode(
+				'data-wp-interactive'           => 'prc-quiz/controller',
+				'data-wp-context'               => wp_json_encode(
 					array(
 						'groupData' => $group,
 					)
 				),
-				'data-wp-init--on-groups-init' => 'callbacks.onGroupsInit',
-				'data-wp-bind--hidden'         => '!state.displayGroupResults',
+				'data-wp-init---on-groups-init' => 'callbacks.onGroupsInit',
+				'data-wp-bind--hidden'          => '!state.displayGroupResults',
 			)
 		);
 

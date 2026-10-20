@@ -70,6 +70,7 @@ class Answer {
 			'uuid'                  => $attributes['uuid'],
 			'text'                  => wp_strip_all_tags( $attributes['answer'] ),
 			'correct'               => $correct,
+			'notSure'               => array_key_exists( 'correct', $attributes ) && null === $attributes['correct'],
 			'points'                => array_key_exists( 'points', $attributes ) ? $attributes['points'] : 0,
 			'resultsLabel'          => array_key_exists( 'resultsLabel', $attributes ) ? $attributes['resultsLabel'] : null,
 			'populationPercent'     => $population_percent,
@@ -98,6 +99,7 @@ class Answer {
 			)
 		);
 		$tag->set_attribute( 'data-wp-on--click', 'actions.onAnswerClick' );
+		$tag->set_attribute( 'data-wp-on--pointerdown', 'actions.onAnswerPointerDown' );
 		$tag->set_attribute( 'data-wp-on--mouseenter', 'actions.onAnswerMouseEnter' );
 		$tag->set_attribute( 'data-wp-class--is-active', 'state.isAnswerSelected' );
 		$tag->set_attribute( 'data-wp-class--is-feedback-correct', 'state.isFeedbackCorrectHighlight' );

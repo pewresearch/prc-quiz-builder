@@ -1,10 +1,11 @@
 <?php
-declare(strict_types=1);
 /**
  * Analytics class.
  *
  * @package PRC\Platform\Quiz
  */
+
+declare(strict_types=1);
 
 namespace PRC\Platform\Quiz;
 
@@ -56,29 +57,9 @@ class Analytics {
 	 * Initialize analytics.
 	 */
 	public function init_analytics() {
-		$properties = array(
-			'first_24_hours' => array(
-				'type' => 'integer',
-			),
-			'first_week'     => array(
-				'type' => 'integer',
-			),
-			'total'          => array(
-				'type' => 'integer',
-			),
-		);
-
-		// Dynamically generate year properties from 2021 to current year + 5 years.
-		$current_year = (int) gmdate( 'Y' );
-		$start_year   = 2021;
-		$end_year     = $current_year + 5;
-
-		for ( $year = $start_year; $year <= $end_year; $year++ ) {
-			$properties[ (string) $year ] = array(
-				'type' => 'array',
-			);
-		}
-
+		// Server-owned counters. Keep this out of REST meta: the editor writes back every
+		// exposed key on save, which clobbers live counts and fails once the stored value
+		// stops matching a schema. Read it through the `_submissions` REST field instead.
 		register_post_meta(
 			'quiz',
 			'_report',
@@ -86,17 +67,7 @@ class Analytics {
 				'single'       => true,
 				'type'         => 'array',
 				'description'  => 'Audience performance metrics for this quiz post, provides a report of the number of completions by time period.',
-				'show_in_rest' => array(
-					'schema'        => array(
-						'items' => array(
-							'type'       => 'object',
-							'properties' => $properties,
-						),
-					),
-					'auth_callback' => function () {
-						return current_user_can( 'edit_posts' );
-					},
-				),
+				'show_in_rest' => false,
 			),
 		);
 	}

@@ -64,6 +64,7 @@ The Controller block's `render_callback` is the key server/client bridge: it wri
 | Group Results    | `prc-quiz/group-results`    | Community group aggregate results; required to enable group creation   |
 | Progress Bar     | `prc-quiz/progress-bar`     | Linear bar or per-question circles showing completion and outcomes     |
 | Embeddable       | `prc-quiz/embeddable`       | Reuse a quiz across other posts; edits propagate to all embeds         |
+| Mute Audio       | `prc-quiz/mute-audio`       | Button (child of Pages) that mutes quiz sounds and page audio/video    |
 
 Quiz blocks appear in the block inserter only when editing the `quiz` post type, grouped under the **Quiz Builder** category (`prc-quiz` slug). The **Quiz** embeddable block (`prc-quiz/embeddable`) remains available on other post types for synced cross-post reuse.
 
@@ -186,6 +187,14 @@ When submissions are enabled, scrollable and fluid-on-mobile quizzes require a `
 
 When results become visible, `onResultsDisplay` in `src/results/view.js` scrolls the results block into view (`scrollIntoView` with `block: 'start'`). This applies to all display types, including fluid quizzes on mobile: after submit, question pages hide and the viewport moves to the top of the results block so users are not left scrolled to the middle of the page.
 
+### Sound effects, mute, and results countdown
+
+- **Sound settings** (Controller attribute `soundSettings`): one toggle per effect (`start`, `nextPage`, `submit`, `reset`, `hoverResponse`, `clickResponse`, `correctResponse`, `incorrectResponse`, `notSureResponse`, `countdown`), all off by default, plus `volume` (0–100). `Controller::normalize_sound_settings()` writes the normalized value and `soundSpriteUrl` into the controller context. Timing for each effect lives in `SOUND_SPRITE_MAP` in `src/controller/sound-effects.js` (seconds into `assets/quiz_sound_sprite.mp3`). A block with the `no-sound` class stays silent. Add a new effect in both `sound-effects.js` and `normalize_sound_settings()`.
+- **Mute Audio** (`prc-quiz/mute-audio`, parent `prc-quiz/pages`): `startMuted` attribute; `setPageAudioMuted()` zeroes the master gain and mutes all `<audio>`/`<video>` elements, restoring their prior state on unmute.
+- **Results transition** (Results attribute `resultsTransition`: `default` or `countdown`): Countdown runs `revealResults()` in `src/results/results-countdown.js` (3, 2, 1 at 1 s steps, message "Finding your best fit") once after submit, then sets a `sessionStorage` flag (`prc-quiz-builder__skip-results-spinner:{quizId}`) so the archetype results page skips its spinner.
+
+Details: `docs/plugins/prc-quiz-builder/architecture.md`.
+
 ## Hooks & Filters
 
 | Hook                                | Type   | Description                                                                                                |
@@ -214,7 +223,7 @@ All endpoints are registered through the platform's `prc_api_endpoints` filter. 
 | `GET`  | `quiz/get-group`        | Public                                 | Returns full group data including typology clusters, answer tallies, and result/group URLs                                                                                    |
 | `POST` | `quiz/purge-archetypes` | `manage_options`                       | Admin-only; wipes all archetypes for a quiz from Firebase                                                                                                                     |
 
-The `quiz` REST resource also exposes a `_submissions` field containing the `_report` post meta (requires `edit_posts` capability).
+The `quiz` REST resource also exposes a `_submissions` field containing the `_report` post meta (requires `edit_posts` capability). `_report` itself is not registered in REST meta, so the editor never reads or writes it.
 
 ## WP Abilities API
 

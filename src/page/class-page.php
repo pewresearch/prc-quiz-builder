@@ -199,7 +199,7 @@ class Page {
 		$tag->set_attribute( 'data-wp-class--is-visible', 'state.isPageVisible' );
 		$tag->set_attribute( 'data-wp-bind--inert', 'state.isPageLeaving' );
 		$tag->set_attribute( 'tabindex', '-1' );
-		$tag->set_attribute( 'data-wp-watch--is-visible', 'callbacks.onPageVisibleChange' );
+		$tag->set_attribute( 'data-wp-watch---is-visible', 'callbacks.onPageVisibleChange' );
 		$tag->set_attribute( 'data-wp-bind--data-page-uuid', 'context.uuid' );
 
 		// If the quiz is scrollable, add a scroll event listener to the last page.

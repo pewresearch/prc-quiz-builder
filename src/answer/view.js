@@ -13,8 +13,11 @@ import {
  */
 import { getQuestionOutcome } from '../controller/question-outcome';
 import {
+	consumePointerDownSound,
+	getAnswerSoundOutcome,
 	playAnswerInteractionSounds,
 	playQuizSound,
+	playQuizSoundOnPointerDown,
 	SOUND_EFFECT,
 } from '../controller/sound-effects';
 import { shouldRevealCorrectAnswer } from './live-feedback';
@@ -181,7 +184,12 @@ const { state, actions } = store('prc-quiz/controller', {
 				context,
 				element: event.target,
 				selecting: !isAlreadySelected,
-				correct: answer?.correct,
+				correct: getAnswerSoundOutcome(answer),
+				clickPlayed: consumePointerDownSound(
+					ref,
+					SOUND_EFFECT.clickResponse,
+					event
+				),
 			});
 
 			if (questionType === 'single' || questionType === 'thermometer') {
@@ -203,6 +211,23 @@ const { state, actions } = store('prc-quiz/controller', {
 
 			actions.syncUserSubmission();
 			actions.saveQuizProgress();
+		}),
+		/**
+		 * Play the click effect as soon as a touch lands. The outcome effect
+		 * waits for click, so a scroll that starts on a response cannot
+		 * reveal whether it is correct.
+		 */
+		onAnswerPointerDown: withSyncEvent((event) => {
+			const { ref } = getElement();
+			if (ref?.hasAttribute('disabled') || state.isAnswerDisabled) {
+				return;
+			}
+			playQuizSoundOnPointerDown({
+				event,
+				context: getContext(),
+				key: SOUND_EFFECT.clickResponse,
+				element: ref,
+			});
 		}),
 		/**
 		 * Play the hover effect when the pointer enters a response.

@@ -97,11 +97,11 @@ class Pages {
 				)
 			)
 		);
-		$tag->set_attribute( 'data-wp-init--on-pages-init', 'callbacks.onPagesInit' );
+		$tag->set_attribute( 'data-wp-init---on-pages-init', 'callbacks.onPagesInit' );
 		$tag->set_attribute( 'data-wp-class--is-page-transitioning', 'state.isPageTransitioning' );
 		$tag->set_attribute( 'data-wp-on-async--touchstart', 'actions.onPagesTouchStart' );
 		$tag->set_attribute( 'data-wp-on-async--touchend', 'actions.onPagesTouchEnd' );
-		$tag->set_attribute( 'data-wp-watch--store-current-page-uuid', 'callbacks.storeCurrentPageUuid' );
+		$tag->set_attribute( 'data-wp-watch---store-current-page-uuid', 'callbacks.storeCurrentPageUuid' );
 		$tag->set_attribute( 'data-wp-bind--hidden', '!state.displayPages' );
 		$groups_enabled = $block->context['prc-quiz/groupsEnabled'] ?? false;
 		if ( Group_Results::is_group_results_request( $groups_enabled ) ) {

@@ -10,6 +10,16 @@
 		display: none;
 	}
 
+	// No double-tap zoom on quiz controls, so taps are never held back.
+	// Ancestors such as the horizontal parallax pages still narrow this.
+	.prc-quiz-start-button,
+	.prc-quiz-next-page-button,
+	.prc-quiz-previous-page-button,
+	.prc-quiz-submit-button,
+	.prc-quiz-reset-button {
+		touch-action: manipulation;
+	}
+
 	/* Host paragraph/heading for the Correct / Incorrect bit — hidden until selection. */
 	.has-prc-quiz-question-outcome.is-awaiting-selection {
 		display: none;
@@ -80,7 +90,10 @@
 		display: none;
 	}
 
+	// is-processing stays on during the countdown. Its 0.5 opacity would fade
+	// the overlay, which is a descendant of the controller.
 	&.is-results-countdown {
+		opacity: 1;
 		position: relative;
 
 		.wp-block-prc-quiz-controller-processing {

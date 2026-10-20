@@ -119,9 +119,9 @@ class Progress_Bar {
 		$wrapper_attrs = get_block_wrapper_attributes(
 			array_merge(
 				array(
-					'class'                           => 'wp-block-prc-quiz-progress-bar is-style-circles',
-					'data-wp-interactive'             => 'prc-quiz/controller',
-					'data-wp-init--observe-last-page' => 'callbacks.onProgressBarInit',
+					'class'                            => 'wp-block-prc-quiz-progress-bar is-style-circles',
+					'data-wp-interactive'              => 'prc-quiz/controller',
+					'data-wp-init---observe-last-page' => 'callbacks.onProgressBarInit',
 				),
 				$this->get_pages_visibility_attributes( $context )
 			)

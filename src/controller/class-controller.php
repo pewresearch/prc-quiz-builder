@@ -189,18 +189,22 @@ class Controller {
 		while ( $tag->next_tag() ) {
 			if ( $tag->has_class( 'prc-quiz-next-page-button' ) ) {
 				$tag->set_attribute( 'data-wp-on--click', 'actions.onNextPageClick' );
+				$tag->set_attribute( 'data-wp-on--pointerdown', 'actions.onQuizButtonPointerDown' );
 			}
 			if ( $tag->has_class( 'prc-quiz-previous-page-button' ) ) {
 				$tag->set_attribute( 'data-wp-on--click', 'actions.onPreviousPageClick' );
 			}
 			if ( $tag->has_class( 'prc-quiz-start-button' ) ) {
 				$tag->set_attribute( 'data-wp-on--click', 'actions.onStartQuizClick' );
+				$tag->set_attribute( 'data-wp-on--pointerdown', 'actions.onQuizButtonPointerDown' );
 			}
 			if ( $tag->has_class( 'prc-quiz-submit-button' ) ) {
 				$tag->set_attribute( 'data-wp-on--click', 'actions.onSubmitQuizClick' );
+				$tag->set_attribute( 'data-wp-on--pointerdown', 'actions.onQuizButtonPointerDown' );
 			}
 			if ( $tag->has_class( 'prc-quiz-reset-button' ) ) {
 				$tag->set_attribute( 'data-wp-on--click', 'actions.onResetQuizClick' );
+				$tag->set_attribute( 'data-wp-on--pointerdown', 'actions.onQuizButtonPointerDown' );
 			}
 		}
 		return $tag->get_updated_html();
@@ -371,11 +375,11 @@ class Controller {
 		$tag->set_attribute( 'data-wp-class--is-processing', 'context.processing' );
 		$tag->set_attribute( 'data-wp-class--is-results-countdown', 'context.resultsCountdown' );
 		// Update's the user's submission data as they answer questions.
-		$tag->set_attribute( 'data-wp-watch--update-user-submission', 'callbacks.updateUserSubmission' );
+		$tag->set_attribute( 'data-wp-watch---update-user-submission', 'callbacks.updateUserSubmission' );
 		// Update's the user's score data as we update their submission data.
-		$tag->set_attribute( 'data-wp-watch--update-user-score', 'callbacks.updateUserScore' );
+		$tag->set_attribute( 'data-wp-watch---update-user-score', 'callbacks.updateUserScore' );
 		// On scrollable quizzes, watch for the user reaching the answerThreshold, then submit the quiz.
-		$tag->set_attribute( 'data-wp-watch--on-scrollable-submit', 'callbacks.onScrollableSubmit' );
+		$tag->set_attribute( 'data-wp-watch---on-scrollable-submit', 'callbacks.onScrollableSubmit' );
 		// These data attributes are used in internal analytics tools.
 		$tag->set_attribute( 'data-wp-bind--threshold', 'context.answerThreshold' );
 		$tag->set_attribute( 'data-wp-bind--quiz-id', 'context.quizId' );

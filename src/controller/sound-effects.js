@@ -2,11 +2,31 @@
  * Quiz sound effects.
  *
  * Effects play from one sprite sheet:
- * plugins/prc-quiz-builder/assets/quiz-sound-sprite.mp3
+ * plugins/prc-quiz-builder/assets/quiz_sound_sprite.mp3
  *
  * Each entry's start and duration are seconds. A duration of 0 keeps that
- * effect silent until timing values are filled in.
+ * effect silent until timing values are filled in. Silence at the start of a
+ * region is skipped at play time (see findSoundOnset), so a start value may
+ * sit a little before the sound itself.
  */
+
+import {
+	getAudioContext,
+	installAudioUnlock,
+	isSoundEngineRunning,
+	loadSpriteBuffer,
+	resumeAudioContext,
+	startSpritePlayback,
+	warmAudioContext,
+} from './sound-engine';
+
+export {
+	SOUND_ONSET_THRESHOLD,
+	findSoundOnset,
+	isSoundEngineRunning,
+	setPageAudioMuted,
+	syncHtmlMediaMuted,
+} from './sound-engine';
 
 export const SOUND_SPRITE_FILE = 'assets/quiz_sound_sprite.mp3';
 
@@ -30,15 +50,15 @@ export const SOUND_EFFECT = {
 };
 
 export const SOUND_SPRITE_MAP = {
-	[SOUND_EFFECT.start]: { start: 2.38, duration: 1 },
+	[SOUND_EFFECT.start]: { start: 2.525, duration: 0.855 },
 	[SOUND_EFFECT.nextPage]: { start: 0, duration: 0.5 },
-	[SOUND_EFFECT.submit]: { start: 5, duration: 1 },
-	[SOUND_EFFECT.reset]: { start: 17.9, duration: 0.6 },
-	[SOUND_EFFECT.hoverResponse]: { start: 19.9, duration: 0.5 },
-	[SOUND_EFFECT.clickResponse]: { start: 22.68, duration: 0.5 },
-	[SOUND_EFFECT.correctResponse]: { start: 7.7, duration: 1 },
-	[SOUND_EFFECT.incorrectResponse]: { start: 22, duration: 0.5 },
-	[SOUND_EFFECT.notSureResponse]: { start: 22, duration: 0.5 },
+	[SOUND_EFFECT.submit]: { start: 5.15, duration: 0.85 },
+	[SOUND_EFFECT.reset]: { start: 18.02, duration: 0.48 },
+	[SOUND_EFFECT.hoverResponse]: { start: 19.92, duration: 0.48 },
+	[SOUND_EFFECT.clickResponse]: { start: 22.7, duration: 0.48 },
+	[SOUND_EFFECT.correctResponse]: { start: 7.725, duration: 0.975 },
+	[SOUND_EFFECT.incorrectResponse]: { start: 22.095, duration: 0.405 },
+	[SOUND_EFFECT.notSureResponse]: { start: 22.095, duration: 0.405 },
 	[SOUND_EFFECT.countdown]: { start: 27.34, duration: 8.9 },
 };
 
@@ -56,37 +76,21 @@ export const DEFAULT_SOUND_SETTINGS = {
 	volume: SOUND_VOLUME_DEFAULT,
 };
 
-const SOUND_ENGINE_KEY = '__prcQuizBuilderSound';
+/**
+ * A touch that moves farther than this is a scroll or swipe, not a tap.
+ */
+const TAP_SLOP_PX = 10;
 
 /**
- * One engine for every copy of this module. The answer and controller view
- * scripts can each bundle this file.
- *
- * @return {Object} Shared playback state.
+ * A click later than this after pointerdown plays its own sound again.
  */
-function getSoundEngine() {
-	if ('undefined' === typeof window) {
-		return {
-			audioContext: null,
-			masterGain: null,
-			muted: false,
-			mediaMuteReady: false,
-			spritePromise: null,
-			spriteUrl: '',
-		};
-	}
-	if (!window[SOUND_ENGINE_KEY]) {
-		window[SOUND_ENGINE_KEY] = {
-			audioContext: null,
-			masterGain: null,
-			muted: false,
-			mediaMuteReady: false,
-			spritePromise: null,
-			spriteUrl: '',
-		};
-	}
-	return window[SOUND_ENGINE_KEY];
-}
+const POINTER_DOWN_SOUND_TTL_MS = 1500;
+
+/**
+ * A sound that is ready later than this after the tap is dropped. Late
+ * feedback feels worse than none.
+ */
+const MAX_SOUND_LATENCY_MS = 150;
 
 /**
  * @param {number|string|null|undefined} value Raw volume.
@@ -167,7 +171,28 @@ export function getResponseSoundKey(correct) {
 	if (false === correct) {
 		return SOUND_EFFECT.incorrectResponse;
 	}
+	if (null === correct) {
+		return SOUND_EFFECT.notSureResponse;
+	}
 	return null;
+}
+
+/**
+ * The correct flag to pass to getResponseSoundKey for an answer in quiz
+ * state. State stores null both for Not sure and for answers with no
+ * correct value, so the notSure flag tells them apart.
+ *
+ * @param {Object|null|undefined} answer Answer from quiz state.
+ * @return {boolean|null|undefined} true, false, null for Not sure, or undefined.
+ */
+export function getAnswerSoundOutcome(answer) {
+	if (answer?.notSure) {
+		return null;
+	}
+	if ('boolean' === typeof answer?.correct) {
+		return answer.correct;
+	}
+	return undefined;
 }
 
 /**
@@ -218,7 +243,24 @@ export function resolveSoundPlayback({
 }
 
 /**
- * Create the shared audio context during a user gesture.
+ * Fetch and decode the sprite, create the audio context, and unlock audio on
+ * the first gesture.
+ * Call this when the quiz loads so that the first tap does not wait for the
+ * download and the decode.
+ *
+ * @param {Object|null|undefined} context Controller context.
+ */
+export function preloadSoundEffects(context) {
+	if (!hasEnabledSound(context?.soundSettings) || !context?.soundSpriteUrl) {
+		return;
+	}
+	installAudioUnlock();
+	warmAudioContext();
+	loadSpriteBuffer(context.soundSpriteUrl);
+}
+
+/**
+ * Create or resume the shared audio context during a user gesture.
  *
  * @param {Object|null|undefined} context Controller context.
  */
@@ -226,13 +268,12 @@ export function primeSoundEffects(context) {
 	if (!hasEnabledSound(context?.soundSettings)) {
 		return;
 	}
+	installAudioUnlock();
 	const contextNode = getAudioContext();
 	if (!contextNode) {
 		return;
 	}
-	if ('suspended' === contextNode.state) {
-		contextNode.resume();
-	}
+	resumeAudioContext(contextNode);
 	if (context?.soundSpriteUrl) {
 		loadSpriteBuffer(context.soundSpriteUrl);
 	}
@@ -246,6 +287,7 @@ export function primeSoundEffects(context) {
  * @param {string}       key               Sprite key.
  * @param {Element|null} element           Interacted element.
  * @param {boolean}      countdownSelected Results block uses Countdown.
+ * @return {{stop: Function}|null} Voice handle, or null when nothing plays.
  */
 export function playQuizSound(
 	context,
@@ -261,27 +303,136 @@ export function playQuizSound(
 		countdownSelected,
 	});
 	if (!playback || playback.gain <= 0 || !context?.soundSpriteUrl) {
+		return null;
+	}
+	// Countdown runs with the results animation, so it keeps its authored
+	// start and still plays when the sprite is slow to load.
+	const isTapFeedback = SOUND_EFFECT.countdown !== key;
+	return startSpritePlayback(context.soundSpriteUrl, {
+		...playback,
+		trimSilence: isTapFeedback,
+		maxLatencyMs: isTapFeedback ? MAX_SOUND_LATENCY_MS : Infinity,
+	});
+}
+
+const pointerDownSounds = new WeakMap();
+
+/**
+ * Play an effect when a touch or pen lands, instead of waiting for the
+ * click that follows the lift. The sound stops when the touch turns into a
+ * scroll or swipe. Mouse input, and touches before audio is unlocked, wait
+ * for click as before.
+ *
+ * @param {Object}       args
+ * @param {PointerEvent} args.event   Pointer down event.
+ * @param {Object}       args.context Controller context.
+ * @param {string}       args.key     Sprite key.
+ * @param {Element}      args.element Element that owns the click handler.
+ */
+export function playQuizSoundOnPointerDown({ event, context, key, element }) {
+	if (!event || !element || 'mouse' === event.pointerType) {
 		return;
 	}
-	startSpritePlayback(context.soundSpriteUrl, playback);
+	if (false === event.isPrimary) {
+		return;
+	}
+	// A touch pointerdown cannot unlock audio. Until a lift has resumed the
+	// context, leave the sound to the click.
+	if (!isSoundEngineRunning()) {
+		return;
+	}
+	const voice = playQuizSound(context, key, event.target);
+	if (!voice) {
+		return;
+	}
+	pointerDownSounds.set(element, { key, time: event.timeStamp });
+	stopOnTapCancel(element, event, voice);
+}
+
+/**
+ * True when pointerdown already played this effect for the click that
+ * follows it. Each pointerdown sound is consumed once.
+ *
+ * @param {Element} element Element that owns the click handler.
+ * @param {string}  key     Sprite key.
+ * @param {Event}   event   Click event.
+ * @return {boolean} True when the click should not play the effect again.
+ */
+export function consumePointerDownSound(element, key, event) {
+	const entry = element ? pointerDownSounds.get(element) : null;
+	if (!entry || entry.key !== key) {
+		return false;
+	}
+	pointerDownSounds.delete(element);
+	const elapsed = (event?.timeStamp ?? entry.time) - entry.time;
+	return elapsed >= 0 && elapsed <= POINTER_DOWN_SOUND_TTL_MS;
+}
+
+/**
+ * @param {Element}          element Element that received pointerdown.
+ * @param {PointerEvent}     event   Pointer down event.
+ * @param {{stop: Function}} voice   Playing voice.
+ */
+function stopOnTapCancel(element, event, voice) {
+	if ('function' !== typeof element.addEventListener) {
+		return;
+	}
+	const { pointerId, clientX, clientY } = event;
+	const cleanup = () => {
+		element.removeEventListener('pointermove', onMove);
+		element.removeEventListener('pointercancel', onCancel);
+		element.removeEventListener('pointerup', onUp);
+	};
+	const cancel = () => {
+		cleanup();
+		pointerDownSounds.delete(element);
+		voice.stop();
+	};
+	function onMove(moveEvent) {
+		if (moveEvent.pointerId !== pointerId) {
+			return;
+		}
+		const dx = moveEvent.clientX - clientX;
+		const dy = moveEvent.clientY - clientY;
+		if (Math.hypot(dx, dy) > TAP_SLOP_PX) {
+			cancel();
+		}
+	}
+	function onCancel(cancelEvent) {
+		if (cancelEvent.pointerId === pointerId) {
+			cancel();
+		}
+	}
+	function onUp(upEvent) {
+		if (upEvent.pointerId === pointerId) {
+			cleanup();
+		}
+	}
+	element.addEventListener('pointermove', onMove, { passive: true });
+	element.addEventListener('pointercancel', onCancel);
+	element.addEventListener('pointerup', onUp);
 }
 
 /**
  * Play the click effect, and the outcome effect when a response is selected.
  *
  * @param {Object}                 args
- * @param {Object}                 args.context   Controller context.
- * @param {Element|null}           args.element   Interacted element.
- * @param {boolean}                args.selecting True when this click selects the response.
- * @param {boolean|null|undefined} args.correct   Answer correct flag.
+ * @param {Object}                 args.context       Controller context.
+ * @param {Element|null}           args.element       Interacted element.
+ * @param {boolean}                args.selecting     True when this click selects the response.
+ * @param {boolean|null|undefined} args.correct       Answer correct flag.
+ * @param {boolean}                [args.clickPlayed] True when pointerdown already played the click effect.
  */
 export function playAnswerInteractionSounds({
 	context,
 	element,
 	selecting,
 	correct,
+	clickPlayed = false,
 }) {
-	playQuizSound(context, SOUND_EFFECT.clickResponse, element);
+	if (!clickPlayed) {
+		playQuizSound(context, SOUND_EFFECT.clickResponse, element);
+	}
 	if (!selecting) {
 		return;
 	}
@@ -290,206 +441,4 @@ export function playAnswerInteractionSounds({
 		return;
 	}
 	playQuizSound(context, outcomeKey, element);
-}
-
-/**
- * @return {AudioContext|null} Shared audio context.
- */
-function getAudioContext() {
-	if ('undefined' === typeof window) {
-		return null;
-	}
-	const AudioContext = window.AudioContext || window.webkitAudioContext;
-	if (!AudioContext) {
-		return null;
-	}
-	const engine = getSoundEngine();
-	if (!engine.audioContext) {
-		engine.audioContext = new AudioContext();
-	}
-	return engine.audioContext;
-}
-
-/**
- * @param {string} url Sprite file URL.
- * @return {Promise<AudioBuffer|null>} Decoded buffer, or null when the file is missing.
- */
-function loadSpriteBuffer(url) {
-	if (!url || 'function' !== typeof fetch) {
-		return Promise.resolve(null);
-	}
-	const engine = getSoundEngine();
-	if (engine.spritePromise && engine.spriteUrl === url) {
-		return engine.spritePromise;
-	}
-	const contextNode = getAudioContext();
-	if (!contextNode) {
-		return Promise.resolve(null);
-	}
-	engine.spriteUrl = url;
-	engine.spritePromise = fetch(url)
-		.then((response) => {
-			if (!response.ok) {
-				throw new Error('Quiz sound sprite is unavailable.');
-			}
-			return response.arrayBuffer();
-		})
-		.then((data) => contextNode.decodeAudioData(data))
-		.catch(() => null);
-	return engine.spritePromise;
-}
-
-const PRIOR_MUTED_ATTR = 'data-prc-quiz-prior-muted';
-
-/**
- * @param {EventTarget|null|undefined} target Event target.
- * @return {boolean} True for audio and video elements.
- */
-function isMediaElement(target) {
-	const tag = target?.tagName;
-	return 'AUDIO' === tag || 'VIDEO' === tag;
-}
-
-/**
- * @param {HTMLMediaElement} element Media element.
- * @return {boolean} True when the element is already muted.
- */
-function isMediaMuted(element) {
-	return !!element.muted;
-}
-
-/**
- * Remember each element's previous muted state, then mute or restore it.
- *
- * @param {boolean} muted True to mute page media.
- */
-export function syncHtmlMediaMuted(muted) {
-	if ('undefined' === typeof document) {
-		return;
-	}
-	document.querySelectorAll('audio, video').forEach((element) => {
-		if (muted) {
-			if (!element.hasAttribute(PRIOR_MUTED_ATTR)) {
-				element.setAttribute(
-					PRIOR_MUTED_ATTR,
-					isMediaMuted(element) ? '1' : '0'
-				);
-			}
-			element.muted = true;
-			return;
-		}
-		if (!element.hasAttribute(PRIOR_MUTED_ATTR)) {
-			return;
-		}
-		element.muted = '1' === element.getAttribute(PRIOR_MUTED_ATTR);
-		element.removeAttribute(PRIOR_MUTED_ATTR);
-	});
-}
-
-/**
- * Keep media that starts while the page is muted silent.
- *
- * @param {Event} event Play event.
- */
-function onMediaPlay(event) {
-	const engine = getSoundEngine();
-	const target = event.target;
-	if (!engine.muted || !isMediaElement(target)) {
-		return;
-	}
-	if (!target.hasAttribute(PRIOR_MUTED_ATTR)) {
-		target.setAttribute(PRIOR_MUTED_ATTR, isMediaMuted(target) ? '1' : '0');
-	}
-	target.muted = true;
-}
-
-/**
- * @return {void}
- */
-function ensureMediaMuteListener() {
-	const engine = getSoundEngine();
-	if (engine.mediaMuteReady || 'undefined' === typeof document) {
-		return;
-	}
-	engine.mediaMuteReady = true;
-	document.addEventListener('play', onMediaPlay, true);
-}
-
-/**
- * Master gain for every quiz effect. Mute sets this to 0.
- *
- * @param {AudioContext} contextNode Audio context.
- * @return {GainNode} Master gain.
- */
-function getMasterGain(contextNode) {
-	const engine = getSoundEngine();
-	if (!engine.masterGain || engine.masterGain.context !== contextNode) {
-		engine.masterGain = contextNode.createGain();
-		engine.masterGain.connect(contextNode.destination);
-	}
-	const now = contextNode.currentTime;
-	engine.masterGain.gain.cancelScheduledValues(now);
-	engine.masterGain.gain.setValueAtTime(engine.muted ? 0 : 1, now);
-	return engine.masterGain;
-}
-
-/**
- * Mute or unmute quiz effects and every audio or video element on the page.
- *
- * @param {boolean} muted True to mute.
- */
-export function setPageAudioMuted(muted) {
-	const engine = getSoundEngine();
-	engine.muted = !!muted;
-	ensureMediaMuteListener();
-	syncHtmlMediaMuted(engine.muted);
-	const contextNode = getAudioContext();
-	if (!contextNode) {
-		return;
-	}
-	getMasterGain(contextNode);
-}
-
-/**
- * @param {string} url               Sprite file URL.
- * @param {Object} playback          Resolved playback.
- * @param {number} playback.start    Offset in seconds.
- * @param {number} playback.duration Length in seconds.
- * @param {number} playback.gain     Gain from 0 to 1.
- */
-function startSpritePlayback(url, playback) {
-	const contextNode = getAudioContext();
-	if (!contextNode) {
-		return;
-	}
-	loadSpriteBuffer(url).then((buffer) => {
-		if (!buffer) {
-			return;
-		}
-		const offset = Math.min(playback.start, buffer.duration);
-		const duration = Math.min(
-			playback.duration,
-			Math.max(0, buffer.duration - offset)
-		);
-		if (duration <= 0) {
-			return;
-		}
-		if ('suspended' === contextNode.state) {
-			contextNode.resume();
-		}
-		// Start at the clock's current time. start(0) plays from time 0 and
-		// keeps the default full gain instead of the slider value.
-		const now = contextNode.currentTime;
-		const source = contextNode.createBufferSource();
-		const voiceGain = contextNode.createGain();
-		source.buffer = buffer;
-		voiceGain.gain.setValueAtTime(playback.gain, now);
-		source.connect(voiceGain);
-		voiceGain.connect(getMasterGain(contextNode));
-		try {
-			source.start(now, offset, duration);
-		} catch {
-			// Autoplay policy or a detached buffer. The quiz continues.
-		}
-	});
 }

@@ -161,8 +161,8 @@ CONTROLLER STORE: 'prc-quiz/controller'
 │ • updateUserSubmission: Format for API submission                  │
 │                                                                     │
 │ WATCH DIRECTIVES:                                                   │
-│ • data-wp-watch--store-selected-answers                            │
-│ • data-wp-watch--update-user-submission                            │
+│ • data-wp-watch---store-selected-answers                            │
+│ • data-wp-watch---update-user-submission                            │
 └─────────────────────────────────────────────────────────────────────┘
 
 ANSWER INTERACTION:

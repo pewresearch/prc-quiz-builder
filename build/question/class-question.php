@@ -75,7 +75,7 @@ class Question {
 				)
 			)
 		);
-		$tag->set_attribute( 'data-wp-init--on-question-init', 'callbacks.onQuestionInit' );
+		$tag->set_attribute( 'data-wp-init---on-question-init', 'callbacks.onQuestionInit' );
 		if ( array_key_exists( 'conditionalDisplay', $attributes ) && $attributes['conditionalDisplay'] ) {
 			$tag->add_class( 'is-conditional' );
 			$tag->set_attribute( 'data-wp-bind--hidden', '!state.isConditionalAnswerSelected' );

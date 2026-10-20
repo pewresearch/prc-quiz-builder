@@ -19,7 +19,8 @@ import {
 	consumeSkipResultsSpinner,
 	revealResults,
 } from '../results/results-countdown';
-import { SOUND_EFFECT, playQuizSound } from './sound-effects';
+import { SOUND_EFFECT, preloadSoundEffects } from './sound-effects';
+import { playButtonClickSound } from './button-sounds';
 import './progress-storage';
 import './submission-recovery';
 import './share';
@@ -163,7 +164,7 @@ const { state, actions } = store('prc-quiz/controller', {
 		onStartQuizClick: withSyncEvent((event) => {
 			const context = getContext();
 			const { ref } = getElement();
-			playQuizSound(context, SOUND_EFFECT.start, event.target);
+			playButtonClickSound(event, SOUND_EFFECT.start);
 			const { pages, displayType, configuredDisplayType } = context;
 			const root = ref?.closest('.wp-block-prc-quiz-controller') || ref;
 			let resolvedDisplayType = displayType;
@@ -186,7 +187,7 @@ const { state, actions } = store('prc-quiz/controller', {
 		onNextPageClick: withSyncEvent((event) => {
 			const context = getContext();
 			const { currentPageUuid, pages } = context;
-			playQuizSound(context, SOUND_EFFECT.nextPage, event.target);
+			playButtonClickSound(event, SOUND_EFFECT.nextPage);
 			// Find the index of the current page in the pages array.
 			const currentPageIndex = pages.indexOf(currentPageUuid);
 			actions.goToPage(pages[currentPageIndex + 1]);
@@ -201,8 +202,7 @@ const { state, actions } = store('prc-quiz/controller', {
 			actions.saveQuizProgress();
 		}),
 		onSubmitQuizClick: withSyncEvent((event) => {
-			const context = getContext();
-			playQuizSound(context, SOUND_EFFECT.submit, event.target);
+			playButtonClickSound(event, SOUND_EFFECT.submit);
 			actions.submitQuiz({ triggerMailchimp: true });
 		}),
 		onRetryPendingSubmissionClick: withSyncEvent((event) => {
@@ -212,7 +212,7 @@ const { state, actions } = store('prc-quiz/controller', {
 		onResetQuizClick: withSyncEvent((event) => {
 			const context = getContext();
 			const { quizUrl, displayResults } = context;
-			playQuizSound(context, SOUND_EFFECT.reset, event.target);
+			playButtonClickSound(event, SOUND_EFFECT.reset);
 			// If the user is on the results page, we should just go back to the quiz url.
 			if (displayResults) {
 				window.location.href = quizUrl;
@@ -471,6 +471,7 @@ const { state, actions } = store('prc-quiz/controller', {
 			}
 
 			actions.applyDisplayType();
+			preloadSoundEffects(context);
 
 			if (context.displayResults && skipResultsSpinner) {
 				actions.restorePendingSubmission();
