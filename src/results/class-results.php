@@ -118,6 +118,29 @@ class Results {
 	}
 
 	/**
+	 * Archetype lookup temporarily unavailable markup.
+	 *
+	 * Shown when RTDB failed or timed out, as opposed to a confirmed missing archetype.
+	 * The results are very likely saved, so this offers a reload instead of a resubmit.
+	 *
+	 * @param int $quiz_id The quiz ID.
+	 * @return string
+	 */
+	public function archetype_unavailable( $quiz_id ) {
+		global $wp;
+		$results_url = isset( $wp->request ) ? trailingslashit( home_url( $wp->request ) ) : get_permalink( $quiz_id );
+		ob_start();
+		?>
+		<div class="prc-quiz__no-archetype-found">
+			<h2>We are having trouble loading these results.</h2>
+			<p>Your results should be saved. Please try again in a moment.</p>
+			<a href="<?php echo esc_url( $results_url ); ?>" class="prc-quiz__no-archetype-found__button ui button">Try again</a>
+		</div>
+		<?php
+		return ob_get_clean();
+	}
+
+	/**
 	 * Wraps inner results blocks with display logic dependent on score.
 	 *
 	 * @hook render_block
@@ -189,7 +212,7 @@ class Results {
 	 *
 	 * @param int    $quiz_id The quiz ID.
 	 * @param string $hash The hash.
-	 * @return array The archetype data.
+	 * @return object|false|WP_Error The archetype data, false when missing, WP_Error when RTDB failed.
 	 */
 	public function get_archetype_data( $quiz_id, $hash ) {
 		$archetypes = new Archetypes(
@@ -198,7 +221,7 @@ class Results {
 				'hash'    => $hash,
 			)
 		);
-		return $archetypes->get_archetype();
+		return $archetypes->get_archetype( false, false, true );
 	}
 
 	/**
@@ -221,12 +244,15 @@ class Results {
 		// Then we look for the archetype data. If none can be found, we show an error message.
 		$archetype         = $archetype_id ? $this->get_archetype_data( $quiz_id, $archetype_id ) : null;
 		$archetype_context = array();
-		// Treat RTDB failures like a miss for results rendering.
+		// An RTDB failure or timeout is not a miss: show a retry message and keep this degraded page out of the page cache.
 		if ( is_wp_error( $archetype ) ) {
-			$archetype = false;
-		}
-		// If an archetype is being requested but none found, we return back an error message.
-		if ( false === $archetype ) {
+			$archetype     = false;
+			$error_message = $this->archetype_unavailable( $quiz_id );
+			if ( ! headers_sent() ) {
+				nocache_headers();
+			}
+		} elseif ( false === $archetype ) {
+			// If an archetype is being requested but none found, we return back an error message.
 			$error_message = $this->no_archetype_found( $quiz_id );
 		}
 

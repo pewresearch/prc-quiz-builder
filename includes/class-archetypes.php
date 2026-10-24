@@ -229,15 +229,27 @@ class Archetypes {
 	}
 
 	/**
+	 * Get the object-cache key for the short-lived "RTDB unavailable" marker.
+	 *
+	 * @return string
+	 */
+	protected function get_unavailable_cache_key() {
+		return $this->get_cache_key() . '_unavailable';
+	}
+
+	/**
 	 * Get an archetype for a quiz by hash from Firebase.
 	 * If the archetype does not exist, return false.
 	 * RTDB connection failures return WP_Error (distinct from missing).
 	 *
-	 * @param bool $return_as_array Whether to return the archetype as an array.
-	 * @param bool $force_refresh Whether to force a refresh of the cache.
+	 * @param bool $return_as_array         Whether to return the archetype as an array.
+	 * @param bool $force_refresh           Whether to force a refresh of the cache.
+	 * @param bool $use_unavailable_marker  Whether to short-circuit with a WP_Error while a recent RTDB failure
+	 *                                      is marked in the object cache. For read-only display paths. Write
+	 *                                      paths leave it off so they always try RTDB.
 	 * @return array|object|false|WP_Error
 	 */
-	public function get_archetype( $return_as_array = false, $force_refresh = false ) {
+	public function get_archetype( $return_as_array = false, $force_refresh = false, $use_unavailable_marker = false ) {
 		if ( ! $this->is_available() ) {
 			return false;
 		}
@@ -248,9 +260,18 @@ class Archetypes {
 			return false === $return_as_array ? (object) $cache : $cache;
 		}
 
+		if ( $use_unavailable_marker && false === $force_refresh && false !== wp_cache_get( $this->get_unavailable_cache_key(), Object_Cache::ARCHETYPES_GROUP ) ) {
+			return new WP_Error(
+				'firebase_error',
+				'Archetype lookup recently failed.',
+				array( 'status' => 503 )
+			);
+		}
+
 		try {
 			$existing_archetype = $this->db->getReference( $this->archetype_ref() )->getValue();
 		} catch ( \Kreait\Firebase\Exception\DatabaseException $e ) {
+			wp_cache_set( $this->get_unavailable_cache_key(), 1, Object_Cache::ARCHETYPES_GROUP, Object_Cache::ARCHETYPES_UNAVAILABLE_TTL );
 			return new WP_Error(
 				'firebase_error',
 				'Archetype lookup failed.',
@@ -323,7 +344,8 @@ class Archetypes {
 				array( 'status' => 503 )
 			);
 		}
-		wp_cache_delete( $this->get_cache_key(), Object_Cache::ARCHETYPES_GROUP );
+		// Prime the cache with the payload just written so the creator's own redirect to the results page is a hit.
+		wp_cache_set( $this->get_cache_key(), $new_archetype, Object_Cache::ARCHETYPES_GROUP, Object_Cache::ARCHETYPES_TTL );
 		return $new_archetype;
 	}
 

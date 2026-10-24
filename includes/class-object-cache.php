@@ -58,6 +58,14 @@ class Object_Cache {
 	public const ARCHETYPES_TTL = DAY_IN_SECONDS;
 
 	/**
+	 * TTL for the "RTDB unavailable" marker on an archetype read (seconds).
+	 *
+	 * Short on purpose: it only stops a burst of viewers of one result link
+	 * from each waiting on a failing RTDB read, and clears itself quickly.
+	 */
+	public const ARCHETYPES_UNAVAILABLE_TTL = 15;
+
+	/**
 	 * Cache group for submission idempotency markers and processing locks.
 	 */
 	public const SUBMISSIONS_GROUP = 'prc_quiz_submissions';

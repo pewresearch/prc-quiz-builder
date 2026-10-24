@@ -32,6 +32,16 @@ class Plugin {
 	public static $post_type = 'quiz';
 
 	/**
+	 * Maximum number of revisions kept per quiz.
+	 *
+	 * Quiz content is a large block tree copied into every revision, so an
+	 * unbounded history makes the editor's revisions REST request very slow.
+	 *
+	 * @var int
+	 */
+	public const REVISIONS_TO_KEEP = 25;
+
+	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
 	 * the plugin.
 	 *
@@ -190,6 +200,8 @@ class Plugin {
 		$this->loader->add_action( 'init', $this, 'register_rewrite_rules' );
 		$this->loader->add_filter( 'query_vars', $this, 'register_query_vars' );
 		$this->loader->add_filter( 'prc_research_teams_rewrite_config', $this, 'register_research_teams_config' );
+		$this->loader->add_filter( 'wp_' . self::$post_type . '_revisions_to_keep', $this, 'limit_revisions_to_keep' );
+		$this->loader->add_filter( 'rest_revision_query', $this, 'default_revisions_per_page', 10, 2 );
 		$this->loader->add_action( 'init', $this, 'init_quiz_block_on_new_post' );
 		$this->loader->add_filter( 'prc_iframe_content', $this, 'filter_iframe_content' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $this, 'register_quiz_components', 0 );
@@ -441,6 +453,49 @@ class Plugin {
 		if ( function_exists( 'wp_presence_post_room' ) ) {
 			add_post_type_support( self::$post_type, 'presence' );
 		}
+	}
+
+	/**
+	 * Cap the number of revisions stored for a quiz.
+	 *
+	 * Only lowers the limit: an unlimited setting (-1) or a higher one becomes
+	 * REVISIONS_TO_KEEP, and 0 (revisions disabled) is left alone. Existing
+	 * revisions beyond the cap are trimmed by core on the next save of each quiz.
+	 *
+	 * @hook wp_quiz_revisions_to_keep
+	 *
+	 * @param int $num Number of revisions to keep.
+	 * @return int
+	 */
+	public function limit_revisions_to_keep( $num ) {
+		$num = (int) $num;
+		if ( 0 === $num ) {
+			return $num;
+		}
+		return ( $num < 0 || $num > self::REVISIONS_TO_KEEP ) ? self::REVISIONS_TO_KEEP : $num;
+	}
+
+	/**
+	 * Default quiz revision REST collections to a bounded page size.
+	 *
+	 * Core returns every revision when `per_page` is omitted. Requests that
+	 * send `per_page` (the block editor does) are untouched.
+	 *
+	 * @hook rest_revision_query
+	 *
+	 * @param array           $args    WP_Query arguments.
+	 * @param WP_REST_Request $request The REST request.
+	 * @return array
+	 */
+	public function default_revisions_per_page( $args, $request ) {
+		if ( $request->has_param( 'per_page' ) ) {
+			return $args;
+		}
+		$parent_post_type = get_post_type( (int) $request->get_param( 'parent' ) );
+		if ( self::$post_type === $parent_post_type ) {
+			$args['posts_per_page'] = self::REVISIONS_TO_KEEP;
+		}
+		return $args;
 	}
 
 	/**
