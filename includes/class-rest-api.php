@@ -31,6 +31,13 @@ class Rest_API {
 	public static $rest_disabled = false;
 
 	/**
+	 * Quizzes loaded per query when collecting IDs for the Submissions sort.
+	 *
+	 * @var int
+	 */
+	private const LIBRARY_ID_BATCH_SIZE = 500;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param object $loader The loader.
@@ -1000,7 +1007,16 @@ class Rest_API {
 			} elseif ( false === $existing_archetype ) {
 				$success = $archetypes->create_archetype( $submission, $score );
 			} else {
-				$success = $archetypes->log_archetype_hit();
+				// Atomic increment, sent after the response is flushed. A failure is logged, not shown to the visitor.
+				Submission_Counts::after_response(
+					static function () use ( $archetypes, $quiz_id ): void {
+						$hit = $archetypes->log_archetype_hit();
+						if ( is_wp_error( $hit ) ) {
+							Submission_Counts::log_failure( 'archetype hit quiz ' . $quiz_id, $hit );
+						}
+					}
+				);
+				$success = true;
 			}
 
 			if ( is_wp_error( $success ) ) {
@@ -1214,10 +1230,13 @@ class Rest_API {
 		$order   = 'asc' === strtolower( (string) $request->get_param( 'order' ) ) ? 'ASC' : 'DESC';
 		$orderby = (string) $request->get_param( 'orderby' );
 
+		// Counts live in Firebase, so this sort cannot be a SQL ORDER BY. It runs
+		// after the filtered query, in PHP, on cached totals.
+		$sort_by_submissions = 'submissions' === $orderby;
+
 		switch ( $orderby ) {
 			case 'submissions':
-				$query_args['orderby']  = 'meta_value_num';
-				$query_args['meta_key'] = Analytics::META_SUBMISSIONS_TOTAL; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+				$query_args['orderby'] = 'date';
 				break;
 			case 'questions':
 				$query_args['orderby']  = 'meta_value_num';
@@ -1276,13 +1295,17 @@ class Rest_API {
 			$query_args['s'] = $search;
 		}
 
-		$query = new \WP_Query( $query_args );
+		$query = $sort_by_submissions
+			? $this->query_library_sorted_by_submissions( $query_args, $order, $per_page, $page )
+			: new \WP_Query( $query_args );
+
+		$summaries = Submission_Counts::get_summaries( wp_list_pluck( $query->posts, 'ID' ) );
 
 		$rows = array_map(
-			function ( $post ) {
+			function ( $post ) use ( $summaries ) {
 				return apply_filters(
 					'prc_wp_admin_dataview_shape_row',
-					$this->shape_library_row( $post ),
+					$this->shape_library_row( $post, $summaries[ (int) $post->ID ] ?? array() ),
 					$post,
 					Plugin::$post_type
 				);
@@ -1295,6 +1318,83 @@ class Rest_API {
 		$response->header( 'X-WP-TotalPages', (string) (int) $query->max_num_pages );
 
 		return $response;
+	}
+
+	/**
+	 * Run the library query sorted by total submissions, then paginate.
+	 *
+	 * Runs the fully filtered query for IDs only, sorts the IDs in PHP on the
+	 * cached Firebase totals, slices the requested page, and loads just that
+	 * page's posts. Paging stays correct because the total and page count come
+	 * from the full filtered ID list. Fine at quiz-library scale (wp-admin only).
+	 *
+	 * @param array  $query_args Fully built, filtered WP_Query args for the list.
+	 * @param string $order      ASC or DESC.
+	 * @param int    $per_page   Page size.
+	 * @param int    $page       1-based page number.
+	 * @return \WP_Query Page query with `found_posts` and `max_num_pages` set for the full list.
+	 */
+	private function query_library_sorted_by_submissions( array $query_args, string $order, int $per_page, int $page ): \WP_Query {
+		$ids   = $this->get_all_library_ids( $query_args );
+		$ids   = Submission_Counts::sort_ids_by_total( $ids, $order );
+		$total = count( $ids );
+
+		$page_ids = array_slice( $ids, ( $page - 1 ) * $per_page, $per_page );
+
+		$page_query = new \WP_Query(
+			array(
+				'post_type'              => $query_args['post_type'],
+				'post_status'            => $query_args['post_status'],
+				'post__in'               => array() === $page_ids ? array( 0 ) : $page_ids,
+				'orderby'                => 'post__in',
+				'posts_per_page'         => max( 1, count( $page_ids ) ),
+				'ignore_sticky_posts'    => true,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => true,
+				'update_post_term_cache' => true,
+			)
+		);
+
+		$page_query->found_posts   = $total;
+		$page_query->max_num_pages = (int) ceil( $total / $per_page );
+
+		return $page_query;
+	}
+
+	/**
+	 * Load every quiz ID matching the filtered library query, in bounded pages.
+	 *
+	 * @param array $query_args Fully built, filtered WP_Query args for the list.
+	 * @return int[]
+	 */
+	private function get_all_library_ids( array $query_args ): array {
+		$batch_args = array_merge(
+			$query_args,
+			array(
+				'fields'                 => 'ids',
+				'posts_per_page'         => self::LIBRARY_ID_BATCH_SIZE,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+			)
+		);
+		// Date or search relevance ties would otherwise reorder between batches and drop or repeat IDs.
+		// Callers re-sort the IDs, so a unique order is all the batches need.
+		$batch_args['orderby'] = array( 'ID' => 'DESC' );
+		unset( $batch_args['order'] );
+
+		$ids      = array();
+		$paged    = 1;
+		$has_more = true;
+		while ( $has_more ) {
+			$batch_args['paged'] = $paged;
+			$batch               = array_map( 'intval', ( new \WP_Query( $batch_args ) )->posts );
+			$ids                 = array_merge( $ids, $batch );
+			$has_more            = count( $batch ) === self::LIBRARY_ID_BATCH_SIZE;
+			++$paged;
+		}
+
+		return $ids;
 	}
 
 	/**
@@ -1346,10 +1446,11 @@ class Rest_API {
 	 * Falls back to parsing block markup when the list meta has not been synced
 	 * yet, and stores the result so later requests read it from meta.
 	 *
-	 * @param \WP_Post $post The quiz post.
+	 * @param \WP_Post $post    The quiz post.
+	 * @param array    $summary Submission summary (`total`, `first_24_hours`, `first_week`) from `Submission_Counts::get_summaries()`.
 	 * @return array
 	 */
-	private function shape_library_row( \WP_Post $post ): array {
+	private function shape_library_row( \WP_Post $post, array $summary = array() ): array {
 		$type = (string) get_post_meta( $post->ID, Quiz_List::META_TYPE, true );
 
 		if ( '' === $type ) {
@@ -1364,8 +1465,6 @@ class Rest_API {
 			$groups_enabled = (bool) get_post_meta( $post->ID, Quiz_List::META_GROUPS_ENABLED, true );
 			$question_count = (int) get_post_meta( $post->ID, Quiz_List::META_QUESTION_COUNT, true );
 		}
-
-		$report = Analytics::get_report_data( $post->ID );
 
 		$research_teams = array();
 		if ( taxonomy_exists( 'research-teams' ) ) {
@@ -1395,9 +1494,9 @@ class Rest_API {
 			'display_type'   => $display_type,
 			'groups_enabled' => $groups_enabled,
 			'question_count' => $question_count,
-			'submissions'    => (int) ( $report['total'] ?? 0 ),
-			'first_24_hours' => (int) ( $report['first_24_hours'] ?? 0 ),
-			'first_week'     => (int) ( $report['first_week'] ?? 0 ),
+			'submissions'    => (int) ( $summary['total'] ?? 0 ),
+			'first_24_hours' => (int) ( $summary['first_24_hours'] ?? 0 ),
+			'first_week'     => (int) ( $summary['first_week'] ?? 0 ),
 			'research_teams' => $research_teams,
 		);
 	}

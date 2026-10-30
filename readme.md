@@ -32,10 +32,12 @@ The Controller block's `render_callback` is the key server/client bridge: it wri
 | `includes/class-archetypes.php`         | Firebase CRUD for archetype (result hash) records; object-cache layer                                    |
 | `includes/class-groups.php`             | Firebase CRUD for community groups                                                                       |
 | `includes/class-rest-api.php`           | REST endpoint registration and handlers; contains the `$rest_disabled` kill switch                       |
-| `includes/class-analytics.php`          | `_report` post meta schema and submission counter; exposes `_submissions` REST field                     |
+| `includes/class-analytics.php`          | `_submissions` REST field and the submit hook; counts are stored by `Submission_Counts`                  |
+| `includes/class-submission-counts.php`  | Firebase submission counts: atomic deferred writes, cached reads, PHP-side sort                          |
 | `includes/class-ability-categories.php` | Registers the `quiz` WP Abilities category for MCP discovery                                             |
 | `includes/class-ability.php`            | WP Abilities API `prc-quiz-builder/get-analytics` tool (submissions + groups; MCP + REST)                |
-| `includes/class-cli-report.php`         | WP-CLI `wp prc quiz report` — ad hoc read/update of `_report` meta                                       |
+| `includes/class-cli-report.php`         | WP-CLI `wp prc quiz report` — ad hoc read/update of submission counts                                    |
+| `includes/class-cli-counts.php`         | WP-CLI `wp prc quiz counts migrate\|verify\|cleanup` — one-time postmeta to Firebase migration           |
 | `includes/class-cli-build-audience.php` | WP-CLI `wp prc quiz build-group-owners-audience` — thin wrapper around Audience_Service                  |
 | `includes/class-audience-service.php`   | Shared build / list / delete for quiz group-owners audiences (CLI + REST)                                |
 | `includes/class-loader.php`             | Hook registration queue                                                                                  |
@@ -197,20 +199,20 @@ Details: `docs/plugins/prc-quiz-builder/architecture.md`.
 
 ## Hooks & Filters
 
-| Hook                                | Type   | Description                                                                                                |
-| ----------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------- |
-| `allowed_block_types_all`           | filter | Hides `prc-quiz/*` blocks outside the `quiz` CPT editor (except `prc-quiz/embeddable`)                     |
-| `block_categories_all`              | filter | Appends the `prc-quiz` block category on the `quiz` CPT editor only                                        |
-| `prc_api_endpoints`                 | filter | Registers `quiz/create-group`, `quiz/get-group`, `quiz/submit`, and `quiz/purge-archetypes` REST routes    |
-| `init`                              | action | Registers all quiz URL patterns (results, group, embed) via `add_rewrite_rule`                             |
-| `query_vars`                        | filter | Registers `quizArchetype`, `quizGroup`, `quizGroupDomain`, `quizShowResults`, `quizShareQuiz`, `quizEmbed` |
-| `prc_research_teams_rewrite_config` | filter | Injects quiz URL patterns for research-team-prefixed routes (e.g. `/politics/quiz/...`)                    |
-| `prc_platform_on_post_init`         | action | Creates the Firebase quiz entry when a new `quiz` post is initialized                                      |
-| `prc_iframe_content`                | filter | Wraps quiz content with a PRC-branded header in iframe/embed views                                         |
-| `render_block_context`              | filter | Injects `prc-quiz/id` into block context for `prc-quiz/controller` on singular quiz pages                  |
-| `render_block_core/buttons`         | filter | Patches Interactivity API `data-wp-on--click` onto quiz action buttons by CSS class                        |
-| `prc_quiz_log_submission`           | action | Fired on quiz submit; consumed internally by `Analytics` to increment `_report` post meta                  |
-| `enqueue_block_editor_assets`       | action | Enqueues editor-support outside the quiz CPT and the inspector sidebar panel on quiz CPT only              |
+| Hook                                | Type   | Description                                                                                                                               |
+| ----------------------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `allowed_block_types_all`           | filter | Hides `prc-quiz/*` blocks outside the `quiz` CPT editor (except `prc-quiz/embeddable`)                                                    |
+| `block_categories_all`              | filter | Appends the `prc-quiz` block category on the `quiz` CPT editor only                                                                       |
+| `prc_api_endpoints`                 | filter | Registers `quiz/create-group`, `quiz/get-group`, `quiz/submit`, and `quiz/purge-archetypes` REST routes                                   |
+| `init`                              | action | Registers all quiz URL patterns (results, group, embed) via `add_rewrite_rule`                                                            |
+| `query_vars`                        | filter | Registers `quizArchetype`, `quizGroup`, `quizGroupDomain`, `quizShowResults`, `quizShareQuiz`, `quizEmbed`                                |
+| `prc_research_teams_rewrite_config` | filter | Injects quiz URL patterns for research-team-prefixed routes (e.g. `/politics/quiz/...`)                                                   |
+| `prc_platform_on_post_init`         | action | Creates the Firebase quiz entry when a new `quiz` post is initialized                                                                     |
+| `prc_iframe_content`                | filter | Wraps quiz content with a PRC-branded header in iframe/embed views                                                                        |
+| `render_block_context`              | filter | Injects `prc-quiz/id` into block context for `prc-quiz/controller` on singular quiz pages                                                 |
+| `render_block_core/buttons`         | filter | Patches Interactivity API `data-wp-on--click` onto quiz action buttons by CSS class                                                       |
+| `prc_quiz_log_submission`           | action | Fired on quiz submit; consumed internally by `Analytics`; sends one atomic Firebase increment after the response is flushed (no postmeta) |
+| `enqueue_block_editor_assets`       | action | Enqueues editor-support outside the quiz CPT and the inspector sidebar panel on quiz CPT only                                             |
 
 ## REST API
 
@@ -223,26 +225,27 @@ All endpoints are registered through the platform's `prc_api_endpoints` filter. 
 | `GET`  | `quiz/get-group`        | Public                                 | Returns full group data including typology clusters, answer tallies, and result/group URLs                                                                                    |
 | `POST` | `quiz/purge-archetypes` | `manage_options`                       | Admin-only; wipes all archetypes for a quiz from Firebase                                                                                                                     |
 
-The `quiz` REST resource also exposes a `_submissions` field containing the `_report` post meta (requires `edit_posts` capability). `_report` itself is not registered in REST meta, so the editor never reads or writes it.
+The `quiz` REST resource also exposes a `_submissions` field containing the submission report in the legacy `_report` shape (legacy + live counts from Firebase; requires `edit_posts` capability). The old `_report` meta is frozen, not registered in REST meta, and only read as a fallback until `wp prc quiz counts cleanup` removes it.
 
 ## WP Abilities API
 
-| Ability ID                       | Input                         | Description                                                                                                                                                                                                                                                                              |
-| -------------------------------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `prc-quiz-builder/get-analytics` | `post_id` (integer, required) | Returns `{ post_id, title, submissions, groups }` — submission report from `_report` meta plus community group analytics. Requires `edit_post` on that quiz. If Firebase is unavailable, `groups` includes an `error` field while `submissions` still returns. Exposed via REST and MCP. |
+| Ability ID                       | Input                         | Description                                                                                                                                                                                                                                                                            |
+| -------------------------------- | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `prc-quiz-builder/get-analytics` | `post_id` (integer, required) | Returns `{ post_id, title, submissions, groups }` — submission report (Firebase counts) plus community group analytics. Requires `edit_post` on that quiz. If Firebase is unavailable, `groups` includes an `error` field while `submissions` still returns. Exposed via REST and MCP. |
 
 ## WP-CLI
 
 Requires `manage_options`. All mutation subcommands support `--dry-run`.
 
-| Subcommand                         | Description                                                                                          |
-| ---------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `wp prc quiz report get`           | Print current `_report` for a quiz (`--format=table\|json`)                                          |
-| `wp prc quiz report set`           | Set absolute month or day counts (`--year`, `--month`, optional `--day`, `--month-count`, `--total`) |
-| `wp prc quiz report add`           | Add a delta to month or day counts (same flags as `set`)                                             |
-| `wp prc quiz report set`           | Set absolute month and/or `total` counts                                                             |
-| `wp prc quiz report add`           | Add a delta to month and/or `total` counts                                                           |
-| `wp prc quiz report sync-firebase` | Sum Firebase archetype `hits` and apply to month + `total` (`--mode=delta\|set`, default `delta`)    |
+| Subcommand                                    | Description                                                                                             |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `wp prc quiz counts migrate\|verify\|cleanup` | One-time postmeta to Firebase migration; all take `--quiz-id`, `migrate` and `cleanup` take `--dry-run` |
+| `wp prc quiz report get`                      | Print current submission report (legacy + live) for a quiz (`--format=table\|json`)                     |
+| `wp prc quiz report set`                      | Set absolute month or day counts (`--year`, `--month`, optional `--day`, `--month-count`, `--total`)    |
+| `wp prc quiz report add`                      | Add a delta to month or day counts (same flags as `set`)                                                |
+| `wp prc quiz report set`                      | Set absolute month and/or `total` counts                                                                |
+| `wp prc quiz report add`                      | Add a delta to month and/or `total` counts                                                              |
+| `wp prc quiz report sync-firebase`            | Sum Firebase archetype `hits` and apply to month + `total` (`--mode=delta\|set`, default `delta`)       |
 
 ```bash
 # Inspect report
@@ -275,13 +278,14 @@ Research-team-prefixed variants (e.g. `/politics/quiz/{slug}/...`) follow the sa
 
 ## Data Storage
 
-| Store           | Key / Path                           | Contents                                                                                                           |
-| --------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
-| Firebase        | `quiz/{quiz_id}/archetypes/{hash}`   | `{ score, submission, hits }`                                                                                      |
-| Firebase        | `quiz/{quiz_id}/groups/{group_id}`   | Group metadata, cluster tallies, answer tallies, total                                                             |
-| Firebase        | `users/{owner_id}/groups/{group_id}` | Group index per user                                                                                               |
-| WP post meta    | `_report`                            | Submission counts: first 24 hrs, first week, total, by year/month, and (from 2026-08-01) day buckets under `_days` |
-| WP object cache | MD5 of `{quiz_id, hash}`             | Cached archetype lookup; group `prc_quiz_builder_archetypes`; TTL 1 day                                            |
+| Store           | Key / Path                                           | Contents                                                                                                           |
+| --------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Firebase        | `quiz/{quiz_id}/archetypes/{hash}`                   | `{ score, submission, hits }`                                                                                      |
+| Firebase        | `quiz/{quiz_id}/groups/{group_id}`                   | Group metadata, cluster tallies, answer tallies, total                                                             |
+| Firebase        | `users/{owner_id}/groups/{group_id}`                 | Group index per user                                                                                               |
+| Firebase        | `quiz/{id}/counts/{legacy\|live}`, `quizTotals/{id}` | Submission counts: first 24 hrs, first week, total, by year/month, and (from 2026-08-01) day buckets under `_days` |
+| WP post meta    | `_report` (frozen)                                   | Old counts; read-only fallback until `wp prc quiz counts cleanup`                                                  |
+| WP object cache | MD5 of `{quiz_id, hash}`                             | Cached archetype lookup; group `prc_quiz_builder_archetypes`; TTL 1 day                                            |
 
 ## Cookies
 

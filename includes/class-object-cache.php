@@ -96,6 +96,27 @@ class Object_Cache {
 	public const GROUP_ANALYTICS_TTL = 300;
 
 	/**
+	 * Cache group for submission-count reads (per-quiz reports and the totals index).
+	 */
+	public const SUBMISSION_COUNTS_GROUP = 'prc_quiz_submission_counts';
+
+	/**
+	 * TTL for submission-count reads (seconds).
+	 *
+	 * Counts are advisory analytics; 90s keeps editor polling and DataViews
+	 * paging off Firebase without hiding a submit for long.
+	 */
+	public const SUBMISSION_COUNTS_TTL = 90;
+
+	/**
+	 * TTL for the "counts store unavailable" marker (seconds).
+	 *
+	 * Short on purpose so a Firebase blip does not pin readers to the
+	 * postmeta fallback, while still stopping a burst of failing reads.
+	 */
+	public const SUBMISSION_COUNTS_UNAVAILABLE_TTL = 15;
+
+	/**
 	 * Whether a cached value is the typed missing-group sentinel.
 	 *
 	 * @param mixed $value Cached value.

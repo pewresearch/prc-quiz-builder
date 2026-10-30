@@ -24,10 +24,15 @@ class Analytics {
 	public const DAY_LOGGING_START_DATE = '2026-08-01';
 
 	/**
-	 * Scalar mirror of `_report['total']`.
+	 * Legacy report meta key. Frozen: nothing writes it any more.
 	 *
-	 * `_report` is an array, so `orderby => meta_value_num` cannot sort on it.
-	 * The DataViews list sorts its Submissions column on this key instead.
+	 * Submission counts live in Firebase (see `Submission_Counts`). This key is
+	 * only read as the fallback until `wp prc quiz counts cleanup` removes it.
+	 */
+	public const META_REPORT = '_report';
+
+	/**
+	 * Legacy scalar mirror of `_report['total']`. Frozen like `META_REPORT`.
 	 */
 	public const META_SUBMISSIONS_TOTAL = '_prc_quiz_submissions_total';
 
@@ -57,12 +62,13 @@ class Analytics {
 	 * Initialize analytics.
 	 */
 	public function init_analytics() {
-		// Server-owned counters. Keep this out of REST meta: the editor writes back every
-		// exposed key on save, which clobbers live counts and fails once the stored value
-		// stops matching a schema. Read it through the `_submissions` REST field instead.
+		// Frozen legacy counters, kept registered only until `wp prc quiz counts cleanup`
+		// has run everywhere. Keep this out of REST meta: the editor writes back every
+		// exposed key on save, which clobbers values and fails once the stored value
+		// stops matching a schema. Read counts through the `_submissions` REST field.
 		register_post_meta(
 			'quiz',
-			'_report',
+			self::META_REPORT,
 			array(
 				'single'       => true,
 				'type'         => 'array',
@@ -170,40 +176,16 @@ class Analytics {
 	}
 
 	/**
-	 * Get normalized quiz report data from post meta.
+	 * Get quiz submission report data.
+	 *
+	 * Reads Firebase through the cached `Submission_Counts` layer and returns
+	 * the same shape the `_report` meta used to have.
 	 *
 	 * @param int $quiz_id Quiz post ID.
 	 * @return array
 	 */
 	public static function get_report_data( int $quiz_id ): array {
-		$data = get_post_meta( $quiz_id, '_report', true );
-
-		if ( ! is_array( $data ) ) {
-			$data = array();
-		}
-
-		if ( ! array_key_exists( 'first_24_hours', $data ) ) {
-			$data['first_24_hours'] = 0;
-		}
-		if ( ! array_key_exists( 'first_week', $data ) ) {
-			$data['first_week'] = 0;
-		}
-		if ( ! array_key_exists( 'total', $data ) ) {
-			$data['total'] = 0;
-		}
-
-		return $data;
-	}
-
-	/**
-	 * Persist quiz report data to post meta.
-	 *
-	 * @param int   $quiz_id Quiz post ID.
-	 * @param array $data    Report data.
-	 */
-	public static function save_report_data( int $quiz_id, array $data ): void {
-		update_post_meta( $quiz_id, '_report', $data );
-		update_post_meta( $quiz_id, self::META_SUBMISSIONS_TOTAL, (int) ( $data['total'] ?? 0 ) );
+		return Submission_Counts::get_report( $quiz_id );
 	}
 
 	/**
@@ -260,52 +242,13 @@ class Analytics {
 	/**
 	 * Log quiz submission.
 	 *
+	 * Sends one atomic Firebase update after the response is flushed. Writes no
+	 * postmeta and no posts, so it never bumps core's `posts` last_changed salt.
+	 *
 	 * @param int $quiz_id The quiz id.
 	 */
 	public function log_quiz_submission( $quiz_id ) {
-		$date  = wp_date( 'Y-m-d' );
-		$month = wp_date( 'm' );
-		$year  = wp_date( 'Y' );
-		$day   = wp_date( 'd' );
-
-		$quiz_pub_date = get_the_date( 'Y-m-d', $quiz_id );
-
-		$data = self::get_report_data( $quiz_id );
-
-		// If the quiz was published within the last 24 hours, increment the first_24_hours counter.
-		if ( $quiz_pub_date >= $date ) {
-			++$data['first_24_hours'];
-		}
-		// If the quiz was published within the last week, increment the first_week counter.
-		if ( $quiz_pub_date >= wp_date( 'Y-m-d', strtotime( '-1 week' ) ) ) {
-			++$data['first_week'];
-		}
-
-		if ( ! array_key_exists( $year, $data ) ) {
-			$data[ $year ] = array();
-		}
-		if ( ! array_key_exists( $month, $data[ $year ] ) ) {
-			$data[ $year ][ $month ] = 1;
-		} else {
-			++$data[ $year ][ $month ];
-		}
-
-		if ( self::is_day_logging_enabled() ) {
-			if ( ! isset( $data[ $year ]['_days'] ) || ! is_array( $data[ $year ]['_days'] ) ) {
-				$data[ $year ]['_days'] = array();
-			}
-			if ( ! isset( $data[ $year ]['_days'][ $month ] ) || ! is_array( $data[ $year ]['_days'][ $month ] ) ) {
-				$data[ $year ]['_days'][ $month ] = array();
-			}
-			if ( ! array_key_exists( $day, $data[ $year ]['_days'][ $month ] ) ) {
-				$data[ $year ]['_days'][ $month ][ $day ] = 0;
-			}
-			++$data[ $year ]['_days'][ $month ][ $day ];
-		}
-
-		++$data['total'];
-
-		self::save_report_data( $quiz_id, $data );
+		Submission_Counts::defer_increment( (int) $quiz_id );
 	}
 
 	// @TODO: Rest endpoint integration into prc-analytics to offer up and endpoint for Ash to get quiz analytics. We should funnel Ash functionality to prc-analytics whenever possible so these endpoints are stable and consistent.

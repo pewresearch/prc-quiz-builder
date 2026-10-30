@@ -1,12 +1,13 @@
 <?php
-declare(strict_types=1);
 /**
  * WP-CLI command: wp prc quiz report
  *
- * Ad hoc read/update of quiz `_report` post meta (submission analytics).
+ * Ad hoc read/update of quiz submission counts (Firebase; see Submission_Counts).
  *
  * @package PRC\Platform\Quiz
  */
+
+declare(strict_types=1);
 
 namespace PRC\Platform\Quiz;
 
@@ -19,12 +20,16 @@ if ( ! defined( 'WP_CLI' ) || ! WP_CLI ) {
 }
 
 /**
- * Manage quiz submission analytics stored in `_report` post meta.
+ * Manage quiz submission analytics.
+ *
+ * Reads show the effective counts (legacy + live). Writes adjust the legacy
+ * baseline in Firebase so live submit counts are never overwritten, and write
+ * no postmeta.
  */
 class CLI_Report extends WP_CLI_Command {
 
 	/**
-	 * Show the current `_report` data for a quiz.
+	 * Show the current submission report (legacy + live) for a quiz.
 	 *
 	 * ## OPTIONS
 	 *
@@ -153,12 +158,12 @@ class CLI_Report extends WP_CLI_Command {
 			WP_CLI::error( 'Provide at least one of --month-count or --total.' );
 		}
 
-		$data = Analytics::get_report_data( $quiz_id );
+		$data   = self::get_fresh_report( $quiz_id );
 		$before = $data;
 
 		if ( null !== $month_count ) {
 			list( $year, $month ) = self::resolve_year_month( $assoc_args );
-			$value = self::parse_non_negative_int( $month_count, 'month-count' );
+			$value                = self::parse_non_negative_int( $month_count, 'month-count' );
 			if ( ! isset( $data[ $year ] ) || ! is_array( $data[ $year ] ) ) {
 				$data[ $year ] = array();
 			}
@@ -233,12 +238,12 @@ class CLI_Report extends WP_CLI_Command {
 			WP_CLI::error( 'Provide at least one of --month-count or --total.' );
 		}
 
-		$data   = Analytics::get_report_data( $quiz_id );
+		$data   = self::get_fresh_report( $quiz_id );
 		$before = $data;
 
 		if ( null !== $month_count ) {
 			list( $year, $month ) = self::resolve_year_month( $assoc_args );
-			$delta = self::parse_signed_int( $month_count, 'month-count' );
+			$delta                = self::parse_signed_int( $month_count, 'month-count' );
 			if ( ! isset( $data[ $year ] ) || ! is_array( $data[ $year ] ) ) {
 				$data[ $year ] = array();
 			}
@@ -253,16 +258,16 @@ class CLI_Report extends WP_CLI_Command {
 				if ( ! isset( $data[ $year ]['_days'][ $month ] ) || ! is_array( $data[ $year ]['_days'][ $month ] ) ) {
 					$data[ $year ]['_days'][ $month ] = array();
 				}
-				$current = (int) ( $data[ $year ]['_days'][ $month ][ $day ] ?? 0 );
+				$current                                  = (int) ( $data[ $year ]['_days'][ $month ][ $day ] ?? 0 );
 				$data[ $year ]['_days'][ $month ][ $day ] = $current + $delta;
 			} else {
-				$current = (int) ( $data[ $year ][ $month ] ?? 0 );
+				$current                 = (int) ( $data[ $year ][ $month ] ?? 0 );
 				$data[ $year ][ $month ] = $current + $delta;
 			}
 		}
 
 		if ( null !== $total ) {
-			$delta           = self::parse_signed_int( $total, 'total' );
+			$delta         = self::parse_signed_int( $total, 'total' );
 			$data['total'] = (int) ( $data['total'] ?? 0 ) + $delta;
 		}
 
@@ -324,7 +329,7 @@ class CLI_Report extends WP_CLI_Command {
 			WP_CLI::error( $firebase_hits->get_error_message() );
 		}
 
-		$data          = Analytics::get_report_data( $quiz_id );
+		$data          = self::get_fresh_report( $quiz_id );
 		$before        = $data;
 		$current_total = (int) ( $data['total'] ?? 0 );
 		$current_month = (int) ( ( $data[ $year ][ $month ] ?? 0 ) );
@@ -356,6 +361,21 @@ class CLI_Report extends WP_CLI_Command {
 		}
 
 		self::commit_report( $quiz_id, $before, $data, $dry_run );
+	}
+
+	/**
+	 * Read the report fresh from Firebase for a write, or exit with an error.
+	 *
+	 * @param int $quiz_id Quiz post ID.
+	 * @return array
+	 */
+	private static function get_fresh_report( int $quiz_id ): array {
+		$report = Submission_Counts::get_fresh_report( $quiz_id );
+		if ( is_wp_error( $report ) ) {
+			WP_CLI::error( $report->get_error_message() );
+		}
+
+		return $report;
 	}
 
 	/**
@@ -394,7 +414,7 @@ class CLI_Report extends WP_CLI_Command {
 	 * @return array{0: string, 1: string}
 	 */
 	private static function resolve_year_month( array $assoc_args ): array {
-		$year = Utils\get_flag_value( $assoc_args, 'year', null );
+		$year  = Utils\get_flag_value( $assoc_args, 'year', null );
 		$month = Utils\get_flag_value( $assoc_args, 'month', null );
 
 		if ( null === $year || null === $month ) {
@@ -491,6 +511,9 @@ class CLI_Report extends WP_CLI_Command {
 	/**
 	 * Print before/after summary and optionally persist report data.
 	 *
+	 * Persists by adjusting the Firebase legacy baseline so the effective
+	 * (legacy + live) report matches `$after`.
+	 *
 	 * @param int   $quiz_id Quiz post ID.
 	 * @param array $before  Report before changes.
 	 * @param array $after   Report after changes.
@@ -530,8 +553,11 @@ class CLI_Report extends WP_CLI_Command {
 			return;
 		}
 
-		Analytics::save_report_data( $quiz_id, $after );
-		WP_CLI::success( sprintf( 'Updated _report on quiz %d.', $quiz_id ) );
+		$saved = Submission_Counts::save_effective_report( $quiz_id, $after );
+		if ( is_wp_error( $saved ) ) {
+			WP_CLI::error( $saved->get_error_message() );
+		}
+		WP_CLI::success( sprintf( 'Updated submission counts on quiz %d.', $quiz_id ) );
 	}
 }
 

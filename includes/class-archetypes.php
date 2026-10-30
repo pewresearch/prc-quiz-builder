@@ -351,25 +351,26 @@ class Archetypes {
 
 	/**
 	 * Log an archetype hit.
-	 * These requests bypass the cache.
 	 *
-	 * @return array|object|WP_Error
+	 * Uses a server-side increment on `hits` only, so concurrent submits never
+	 * lose a hit and no read is needed first. Callers must have confirmed the
+	 * archetype exists (the submit routes do, via `get_archetype()`); an
+	 * increment on a purged archetype would recreate a bare `{ hits }` node.
+	 *
+	 * @return true|WP_Error
 	 */
 	public function log_archetype_hit() {
 		if ( ! $this->is_available() ) {
 			return $this->firebase_unavailable_error();
 		}
+		if ( empty( $this->hash ) ) {
+			return new WP_Error( 'no-archetype', 'No archetype hash provided.' );
+		}
 
-		$existing_archetype = $this->get_archetype( false, true );
-		if ( is_wp_error( $existing_archetype ) ) {
-			return $existing_archetype;
-		}
-		if ( empty( $existing_archetype ) ) {
-			return new WP_Error( 'no-archetype', 'No archetype found.' );
-		}
-		++$existing_archetype->hits;
 		try {
-			$this->db->getReference( $this->archetype_ref() )->set( $existing_archetype );
+			$this->db->getReference( $this->archetype_ref() )->update(
+				array( 'hits' => array( '.sv' => array( 'increment' => 1 ) ) )
+			);
 		} catch ( \Kreait\Firebase\Exception\DatabaseException $e ) {
 			return new WP_Error(
 				'firebase_error',
@@ -377,6 +378,6 @@ class Archetypes {
 				array( 'status' => 503 )
 			);
 		}
-		return $existing_archetype;
+		return true;
 	}
 }

@@ -1,10 +1,11 @@
 <?php
-declare(strict_types=1);
 /**
  * Quizzes DataViews admin list screen.
  *
  * @package PRC\Platform\Quiz
  */
+
+declare(strict_types=1);
 
 namespace PRC\Platform\Quiz;
 
@@ -339,13 +340,6 @@ class Quiz_List {
 		update_post_meta( $post_id, self::META_DISPLAY_TYPE, (string) $parsed['display_type'] );
 		update_post_meta( $post_id, self::META_GROUPS_ENABLED, (int) $parsed['groups_enabled'] );
 		update_post_meta( $post_id, self::META_QUESTION_COUNT, (int) $parsed['question_count'] );
-
-		// Quizzes that logged submissions before the scalar mirror existed only
-		// have the `_report` array, which cannot be sorted on.
-		if ( '' === (string) get_post_meta( $post_id, Analytics::META_SUBMISSIONS_TOTAL, true ) ) {
-			$report = Analytics::get_report_data( $post_id );
-			update_post_meta( $post_id, Analytics::META_SUBMISSIONS_TOTAL, (int) ( $report['total'] ?? 0 ) );
-		}
 	}
 
 	/**
@@ -466,5 +460,4 @@ class Quiz_List {
 
 		return $synced;
 	}
-
 }

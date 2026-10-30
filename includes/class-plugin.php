@@ -113,7 +113,8 @@ class Plugin {
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-groups.php';
 		// 3. Initialize the Rest API class.
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-rest-api.php';
-		// 4. Initialize analytics class.
+		// 4. Submission counts (Firebase) and analytics class.
+		require_once plugin_dir_path( __DIR__ ) . '/includes/class-submission-counts.php';
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-analytics.php';
 		// 4b. WP Abilities API category + analytics ability.
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-ability-categories.php';
@@ -124,8 +125,9 @@ class Plugin {
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-audience-service.php';
 		// 6b. WP-CLI: build newsletter audience from quiz group owners.
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-cli-build-audience.php';
-		// 7. WP-CLI: ad hoc quiz report (_report meta) read/update.
+		// 7. WP-CLI: ad hoc quiz report read/update, and the one-time counts migration.
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-cli-report.php';
+		require_once plugin_dir_path( __DIR__ ) . '/includes/class-cli-counts.php';
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-histogram-population.php';
 		$bindings_dir = ( 'local' === wp_get_environment_type() ? 'src' : 'build' ) . '/bindings';
 		require_once plugin_dir_path( __DIR__ ) . '/' . $bindings_dir . '/class-quiz-binding-resolver.php';

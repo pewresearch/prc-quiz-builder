@@ -81,7 +81,7 @@ class Ability {
 						),
 						'submissions' => array(
 							'type'        => 'object',
-							'description' => 'Submission report from _report meta (total, first_24_hours, first_week, yearly monthly counts).',
+							'description' => 'Submission report from Firebase counts (total, first_24_hours, first_week, yearly monthly counts).',
 						),
 						'groups'      => array(
 							'type'        => 'object',
@@ -93,7 +93,7 @@ class Ability {
 				'permission_callback' => array( $this, 'can_get_analytics' ),
 				'meta'                => array(
 					'annotations'  => array(
-						'instructions' => 'Pass a quiz post_id to retrieve submission counts (_report) and community group analytics. Optionally pass site_id to run against a specific multisite blog; defaults to the content site (20). If this plugin is inactive on the target site, the ability returns plugin_inactive_on_site. Use vip/content-search with subtype=quiz to find quiz IDs first. Requires edit access to the quiz. If Firebase is down, submissions still return and groups includes an error field.',
+						'instructions' => 'Pass a quiz post_id to retrieve submission counts and community group analytics. Optionally pass site_id to run against a specific multisite blog; defaults to the content site (20). If this plugin is inactive on the target site, the ability returns plugin_inactive_on_site. Use vip/content-search with subtype=quiz to find quiz IDs first. Requires edit access to the quiz. If Firebase is down, submissions still return and groups includes an error field.',
 						'readonly'     => true,
 						'destructive'  => false,
 						'idempotent'   => true,
