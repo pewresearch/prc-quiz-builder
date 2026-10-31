@@ -27,7 +27,7 @@ class Analytics {
 	 * Legacy report meta key. Frozen: nothing writes it any more.
 	 *
 	 * Submission counts live in Firebase (see `Submission_Counts`). This key is
-	 * only read as the fallback until `wp prc quiz counts cleanup` removes it.
+	 * only read as a fallback when Firebase is unavailable.
 	 */
 	public const META_REPORT = '_report';
 
@@ -62,8 +62,8 @@ class Analytics {
 	 * Initialize analytics.
 	 */
 	public function init_analytics() {
-		// Frozen legacy counters, kept registered only until `wp prc quiz counts cleanup`
-		// has run everywhere. Keep this out of REST meta: the editor writes back every
+		// Frozen legacy counters, kept registered until the fallback is removed.
+		// Keep this out of REST meta: the editor writes back every
 		// exposed key on save, which clobbers values and fails once the stored value
 		// stops matching a schema. Read counts through the `_submissions` REST field.
 		register_post_meta(

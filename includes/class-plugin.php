@@ -125,9 +125,8 @@ class Plugin {
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-audience-service.php';
 		// 6b. WP-CLI: build newsletter audience from quiz group owners.
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-cli-build-audience.php';
-		// 7. WP-CLI: ad hoc quiz report read/update, and the one-time counts migration.
+		// 7. WP-CLI: ad hoc quiz report read/update.
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-cli-report.php';
-		require_once plugin_dir_path( __DIR__ ) . '/includes/class-cli-counts.php';
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-histogram-population.php';
 		$bindings_dir = ( 'local' === wp_get_environment_type() ? 'src' : 'build' ) . '/bindings';
 		require_once plugin_dir_path( __DIR__ ) . '/' . $bindings_dir . '/class-quiz-binding-resolver.php';

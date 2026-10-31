@@ -9,9 +9,8 @@
  *
  * Data layout (all paths are relative to `Submission_Counts::ref()`):
  *
- *   quiz/{id}/counts/legacy/   Written only by `wp prc quiz counts migrate` and
- *                              `wp prc quiz report set|add`. Snapshot of the
- *                              old `_report` meta.
+ *   quiz/{id}/counts/legacy/   Written only by `wp prc quiz report set|add`.
+ *                              Baseline carried over from the old `_report` meta.
  *   quiz/{id}/counts/live/     Server-side `.sv` increments only, from submits.
  *   quizTotals/{id}/legacy     { total, first_24_hours, first_week } mirror of
  *   quizTotals/{id}/live       the above. A flat index so the DataViews list
@@ -23,8 +22,7 @@
  *
  * Reads return legacy + live, rebuilt into the exact shape the old `_report`
  * meta had, so the editor panel, stats modal, and DataViews need no JS change.
- * Because the migration only ever writes `legacy` and submits only ever
- * increment `live`, the migration can be re-run while submits continue.
+ * Submits only ever increment `live`, so adjusting `legacy` never races them.
  *
  * PRC-138: the per-feature database move changes `ref()` only (the handle and
  * the `{siteId}/` prefix). The counts paths above must also be added to the
@@ -545,27 +543,6 @@ class Submission_Counts {
 	 */
 	public static function fetch_counts_node( int $quiz_id ) {
 		$ref = self::ref( 'quiz/' . $quiz_id . '/counts' );
-		if ( null === $ref ) {
-			return new WP_Error( 'firebase_not_configured', 'Firebase database is not configured.' );
-		}
-
-		try {
-			$node = $ref->getValue();
-		} catch ( \Throwable $e ) {
-			return new WP_Error( 'firebase_error', 'Submission counts read failed: ' . $e->getMessage() );
-		}
-
-		return is_array( $node ) ? $node : array();
-	}
-
-	/**
-	 * Fetch `quizTotals/{id}/legacy` straight from Firebase (no cache).
-	 *
-	 * @param int $quiz_id Quiz post ID.
-	 * @return array|WP_Error
-	 */
-	public static function fetch_legacy_summary( int $quiz_id ) {
-		$ref = self::ref( 'quizTotals/' . $quiz_id . '/legacy' );
 		if ( null === $ref ) {
 			return new WP_Error( 'firebase_not_configured', 'Firebase database is not configured.' );
 		}

@@ -7,8 +7,7 @@
 		"php": ">=8.2",
 		"automattic/jetpack-autoloader": "^5.0",
 		"guzzlehttp/guzzle": "^7.4",
-		"kreait/firebase-php": "^8.0",
-		"prc/primitives": "^2.0"
+		"kreait/firebase-php": "^8.0"
 	},
 	"config": {
 		"allow-plugins": {
@@ -24,11 +23,5 @@
 		}
 	},
 	"minimum-stability": "dev",
-	"prefer-stable": true,
-	"repositories": [
-		{
-			"type": "vcs",
-			"url": "https://github.com/pewresearch/prc-primitives.git"
-		}
-	]
+	"prefer-stable": true
 }

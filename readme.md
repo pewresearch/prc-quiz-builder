@@ -37,7 +37,6 @@ The Controller block's `render_callback` is the key server/client bridge: it wri
 | `includes/class-ability-categories.php` | Registers the `quiz` WP Abilities category for MCP discovery                                             |
 | `includes/class-ability.php`            | WP Abilities API `prc-quiz-builder/get-analytics` tool (submissions + groups; MCP + REST)                |
 | `includes/class-cli-report.php`         | WP-CLI `wp prc quiz report` — ad hoc read/update of submission counts                                    |
-| `includes/class-cli-counts.php`         | WP-CLI `wp prc quiz counts migrate\|verify\|cleanup` — one-time postmeta to Firebase migration           |
 | `includes/class-cli-build-audience.php` | WP-CLI `wp prc quiz build-group-owners-audience` — thin wrapper around Audience_Service                  |
 | `includes/class-audience-service.php`   | Shared build / list / delete for quiz group-owners audiences (CLI + REST)                                |
 | `includes/class-loader.php`             | Hook registration queue                                                                                  |
@@ -225,7 +224,7 @@ All endpoints are registered through the platform's `prc_api_endpoints` filter. 
 | `GET`  | `quiz/get-group`        | Public                                 | Returns full group data including typology clusters, answer tallies, and result/group URLs                                                                                    |
 | `POST` | `quiz/purge-archetypes` | `manage_options`                       | Admin-only; wipes all archetypes for a quiz from Firebase                                                                                                                     |
 
-The `quiz` REST resource also exposes a `_submissions` field containing the submission report in the legacy `_report` shape (legacy + live counts from Firebase; requires `edit_posts` capability). The old `_report` meta is frozen, not registered in REST meta, and only read as a fallback until `wp prc quiz counts cleanup` removes it.
+The `quiz` REST resource also exposes a `_submissions` field containing the submission report in the legacy `_report` shape (legacy + live counts from Firebase; requires `edit_posts` capability). The old `_report` meta is frozen, not registered in REST meta, and only read as a fallback when Firebase is unavailable.
 
 ## WP Abilities API
 
@@ -237,15 +236,14 @@ The `quiz` REST resource also exposes a `_submissions` field containing the subm
 
 Requires `manage_options`. All mutation subcommands support `--dry-run`.
 
-| Subcommand                                    | Description                                                                                             |
-| --------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `wp prc quiz counts migrate\|verify\|cleanup` | One-time postmeta to Firebase migration; all take `--quiz-id`, `migrate` and `cleanup` take `--dry-run` |
-| `wp prc quiz report get`                      | Print current submission report (legacy + live) for a quiz (`--format=table\|json`)                     |
-| `wp prc quiz report set`                      | Set absolute month or day counts (`--year`, `--month`, optional `--day`, `--month-count`, `--total`)    |
-| `wp prc quiz report add`                      | Add a delta to month or day counts (same flags as `set`)                                                |
-| `wp prc quiz report set`                      | Set absolute month and/or `total` counts                                                                |
-| `wp prc quiz report add`                      | Add a delta to month and/or `total` counts                                                              |
-| `wp prc quiz report sync-firebase`            | Sum Firebase archetype `hits` and apply to month + `total` (`--mode=delta\|set`, default `delta`)       |
+| Subcommand                         | Description                                                                                          |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `wp prc quiz report get`           | Print current submission report (legacy + live) for a quiz (`--format=table\|json`)                  |
+| `wp prc quiz report set`           | Set absolute month or day counts (`--year`, `--month`, optional `--day`, `--month-count`, `--total`) |
+| `wp prc quiz report add`           | Add a delta to month or day counts (same flags as `set`)                                             |
+| `wp prc quiz report set`           | Set absolute month and/or `total` counts                                                             |
+| `wp prc quiz report add`           | Add a delta to month and/or `total` counts                                                           |
+| `wp prc quiz report sync-firebase` | Sum Firebase archetype `hits` and apply to month + `total` (`--mode=delta\|set`, default `delta`)    |
 
 ```bash
 # Inspect report
@@ -284,7 +282,7 @@ Research-team-prefixed variants (e.g. `/politics/quiz/{slug}/...`) follow the sa
 | Firebase        | `quiz/{quiz_id}/groups/{group_id}`                   | Group metadata, cluster tallies, answer tallies, total                                                             |
 | Firebase        | `users/{owner_id}/groups/{group_id}`                 | Group index per user                                                                                               |
 | Firebase        | `quiz/{id}/counts/{legacy\|live}`, `quizTotals/{id}` | Submission counts: first 24 hrs, first week, total, by year/month, and (from 2026-08-01) day buckets under `_days` |
-| WP post meta    | `_report` (frozen)                                   | Old counts; read-only fallback until `wp prc quiz counts cleanup`                                                  |
+| WP post meta    | `_report` (frozen)                                   | Old counts; read-only fallback when Firebase is unavailable                                                        |
 | WP object cache | MD5 of `{quiz_id, hash}`                             | Cached archetype lookup; group `prc_quiz_builder_archetypes`; TTL 1 day                                            |
 
 ## Cookies
