@@ -110,7 +110,7 @@ class Rest_API {
 						},
 					),
 				),
-				'permission_callback' => array( $this, 'check_token_header' ),
+				'permission_callback' => array( $this, 'authenticate_firebase_user' ),
 			)
 		);
 		register_rest_route(
@@ -449,18 +449,20 @@ class Rest_API {
 	}
 
 	/**
-	 * Permission callback — ensures the X-PRC-User-Token header is present.
+	 * Permission callback — verifies the X-PRC-User-Token Firebase ID token.
 	 *
 	 * @param WP_REST_Request $request The incoming request.
 	 * @return bool|WP_Error
 	 */
-	public function check_token_header( WP_REST_Request $request ) {
-		$token = $request->get_header( 'X-PRC-User-Token' );
-		if ( empty( $token ) ) {
+	public function authenticate_firebase_user( WP_REST_Request $request ) {
+		$result = ( new \PRC\Platform\Firebase() )->authorize_rest_request( $request );
+		if ( is_wp_error( $result ) ) {
+			$data   = $result->get_error_data();
+			$status = (int) ( $data['status'] ?? 401 );
 			return new WP_Error(
-				'missing_token',
-				'ERROR: group_create/401. X-PRC-User-Token header is required.',
-				array( 'status' => 401 )
+				$result->get_error_code(),
+				'ERROR: group_create/' . $status . '. ' . $result->get_error_message(),
+				array( 'status' => $status )
 			);
 		}
 		return true;
@@ -742,29 +744,8 @@ class Rest_API {
 			return $captcha_check;
 		}
 
-		$token    = $request->get_header( 'X-PRC-User-Token' );
-		$firebase = new \PRC\Platform\Firebase();
-
-		if ( ! $firebase->auth ) {
-			return new \WP_Error(
-				'firebase_unavailable',
-				'ERROR: group_create/503. Firebase is not configured.',
-				array( 'status' => 503 )
-			);
-		}
-
-		try {
-			$verified_token = $firebase->auth->verifyIdToken( $token );
-			$owner_id       = $verified_token->claims()->get( 'sub' );
-		} catch ( \Exception $e ) {
-			return new \WP_Error(
-				'invalid_token',
-				'ERROR: group_create/401. Invalid authentication token.',
-				array( 'status' => 401 )
-			);
-		}
-
-		if ( empty( $owner_id ) ) {
+		$owner_id = \PRC\Platform\Firebase::get_request_uid( $request );
+		if ( '' === $owner_id ) {
 			return new \WP_Error(
 				'invalid_token',
 				'ERROR: group_create/401. Invalid authentication token.',
