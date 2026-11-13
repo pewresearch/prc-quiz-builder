@@ -24,6 +24,37 @@ class Archetypes {
 	public const CACHE_GENERATION_META_KEY = '_prc_quiz_archetypes_cache_gen';
 
 	/**
+	 * Seconds a Firebase request may take, connect and transfer, including the
+	 * Google token fetch. A quiz submission budgets its lease from this.
+	 *
+	 * @var int
+	 */
+	public const HTTP_TIMEOUT = 3;
+
+	/**
+	 * Seconds Firebase may take to accept the connection.
+	 *
+	 * @var int
+	 */
+	public const HTTP_CONNECT_TIMEOUT = 1;
+
+	/**
+	 * Child of an archetype that holds one entry per counted submission:
+	 * quiz/{quizId}/archetypes/{hash}/hit_ids/{submissionId}. It sorts before
+	 * `score` and `submission`, which is how `get_archetype()` leaves it out.
+	 *
+	 * @var string
+	 */
+	public const HIT_IDS_KEY = 'hit_ids';
+
+	/**
+	 * First key `get_archetype()` reads. The keys that follow are `score` and `submission`.
+	 *
+	 * @var string
+	 */
+	private const READ_FROM_KEY = 'score';
+
+	/**
 	 * The valid hash regex.
 	 *
 	 * @var string
@@ -65,7 +96,14 @@ class Archetypes {
 			)
 		);
 		$firebase      = new \PRC\Platform\Firebase();
-		$this->db      = $firebase->db;
+		$db            = $firebase->get_database(
+			null,
+			array(
+				'timeout'         => self::HTTP_TIMEOUT,
+				'connect_timeout' => self::HTTP_CONNECT_TIMEOUT,
+			)
+		);
+		$this->db      = is_wp_error( $db ) ? null : $db;
 		$this->quiz_id = $args['quiz_id'];
 		if ( ! $this->is_valid_hash( $args['hash'] ) ) {
 			return;
@@ -269,7 +307,9 @@ class Archetypes {
 		}
 
 		try {
-			$existing_archetype = $this->db->getReference( $this->archetype_ref() )->getValue();
+			// Keys sort as hit_ids, hits, score, submission. Starting at `score` skips the
+			// hit ledger, so the read does not grow with the number of submissions.
+			$existing_archetype = $this->db->getReference( $this->archetype_ref() )->orderByKey()->startAt( self::READ_FROM_KEY )->getValue();
 		} catch ( \Kreait\Firebase\Exception\DatabaseException $e ) {
 			wp_cache_set( $this->get_unavailable_cache_key(), 1, Object_Cache::ARCHETYPES_GROUP, Object_Cache::ARCHETYPES_UNAVAILABLE_TTL );
 			return new WP_Error(
@@ -310,15 +350,33 @@ class Archetypes {
 	}
 
 	/**
+	 * Whether a value is safe as a submission id key in the hit ledger.
+	 *
+	 * @param mixed $submission_id The submission id.
+	 * @return bool
+	 */
+	protected static function is_valid_submission_id( $submission_id ): bool {
+		return is_string( $submission_id ) && 1 === preg_match( '/^[a-zA-Z0-9_-]{8,128}$/', $submission_id );
+	}
+
+	/**
 	 * Create an archetype.
 	 *
-	 * @param array      $submission The submission.
-	 * @param int|string $score      The score. Zero is valid.
+	 * With a `$submission_id` the archetype is written as a multi-path update:
+	 * `score`, `submission`, and the submission's entry in the hit ledger. An update
+	 * does not clear the ledger entries of other submissions, and a replay of the same
+	 * submission writes the same values, so the count stays at one.
+	 * Without a `$submission_id` the node is set with `hits` at 1.
+	 *
+	 * @param array       $submission    The submission.
+	 * @param int|string  $score         The score. Zero is valid.
+	 * @param string|null $submission_id Client-generated submission id, or null.
 	 * @return array|WP_Error
 	 */
 	public function create_archetype(
 		$submission = null,
 		$score = null,
+		$submission_id = null,
 	) {
 		if ( ! $this->is_available() ) {
 			return $this->firebase_unavailable_error();
@@ -329,14 +387,27 @@ class Archetypes {
 		if ( ! self::is_provided_score( $score ) ) {
 			return new WP_Error( 'no-score', 'No score provided.' );
 		}
-		// Create a new archetype.
+		if ( null !== $submission_id && ! self::is_valid_submission_id( $submission_id ) ) {
+			return new WP_Error( 'invalid_submission_id', 'Invalid submission id.', array( 'status' => 400 ) );
+		}
 		$new_archetype = array(
 			'score'      => $score,
 			'submission' => $submission,
-			'hits'       => 1,
 		);
 		try {
-			$this->db->getReference( $this->archetype_ref() )->set( $new_archetype );
+			if ( null !== $submission_id ) {
+				$ref = $this->archetype_ref();
+				$this->db->getReference()->update(
+					array(
+						$ref . '/score'      => $score,
+						$ref . '/submission' => $submission,
+						$ref . '/' . self::HIT_IDS_KEY . '/' . $submission_id => true,
+					)
+				);
+			} else {
+				$new_archetype['hits'] = 1;
+				$this->db->getReference( $this->archetype_ref() )->set( $new_archetype );
+			}
 		} catch ( \Kreait\Firebase\Exception\DatabaseException $e ) {
 			return new WP_Error(
 				'firebase_error',
@@ -352,25 +423,37 @@ class Archetypes {
 	/**
 	 * Log an archetype hit.
 	 *
-	 * Uses a server-side increment on `hits` only, so concurrent submits never
-	 * lose a hit and no read is needed first. Callers must have confirmed the
-	 * archetype exists (the submit routes do, via `get_archetype()`); an
-	 * increment on a purged archetype would recreate a bare `{ hits }` node.
+	 * With a `$submission_id` the hit is one entry in the archetype's hit ledger,
+	 * `hit_ids/{submissionId}`, set to true. A replay of the same submission sets the
+	 * same entry, so it counts once even when two requests ran the submission.
+	 * Without a `$submission_id` a server-side increment on `hits` adds one.
+	 * Concurrent submits never lose a hit and no read is needed first. Callers must
+	 * have confirmed the archetype exists (the submit routes do, via `get_archetype()`);
+	 * a write to a purged archetype would recreate a bare node, which
+	 * `get_archetype()` reads as missing.
 	 *
+	 * @param string|null $submission_id Client-generated submission id, or null.
 	 * @return true|WP_Error
 	 */
-	public function log_archetype_hit() {
+	public function log_archetype_hit( $submission_id = null ) {
 		if ( ! $this->is_available() ) {
 			return $this->firebase_unavailable_error();
 		}
 		if ( empty( $this->hash ) ) {
 			return new WP_Error( 'no-archetype', 'No archetype hash provided.' );
 		}
+		if ( null !== $submission_id && ! self::is_valid_submission_id( $submission_id ) ) {
+			return new WP_Error( 'invalid_submission_id', 'Invalid submission id.', array( 'status' => 400 ) );
+		}
 
 		try {
-			$this->db->getReference( $this->archetype_ref() )->update(
-				array( 'hits' => array( '.sv' => array( 'increment' => 1 ) ) )
-			);
+			if ( null !== $submission_id ) {
+				$this->db->getReference( $this->archetype_ref() . '/' . self::HIT_IDS_KEY . '/' . $submission_id )->set( true );
+			} else {
+				$this->db->getReference( $this->archetype_ref() )->update(
+					array( 'hits' => array( '.sv' => array( 'increment' => 1 ) ) )
+				);
+			}
 		} catch ( \Kreait\Firebase\Exception\DatabaseException $e ) {
 			return new WP_Error(
 				'firebase_error',

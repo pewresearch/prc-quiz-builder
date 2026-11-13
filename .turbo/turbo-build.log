@@ -64,7 +64,7 @@ Entrypoints:
 You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
 For more info visit https://webpack.js.org/guides/code-splitting/[39m[22m
 
-webpack 5.106.2 compiled with [1m[33m3 warnings[39m[22m in 50073 ms
+webpack 5.106.2 compiled with [1m[33m3 warnings[39m[22m in 21965 ms
 Browserslist: browsers data (caniuse-lite) is 7 months old. Please run:
   npx update-browserslist-db@latest
   Why you should do it regularly: https://github.com/browserslist/update-db#readme
@@ -127,7 +127,7 @@ Entrypoints:
 You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
 For more info visit https://webpack.js.org/guides/code-splitting/[39m[22m
 
-webpack 5.106.2 compiled with [1m[33m3 warnings[39m[22m in 21489 ms
+webpack 5.106.2 compiled with [1m[33m3 warnings[39m[22m in 19734 ms
 
 assets by path [1m[32mcontroller/[39m[22m 33.2 KiB 2 assets
 assets by path [1m[32manswer/[39m[22m 17.3 KiB 2 assets
@@ -145,7 +145,7 @@ runtime modules 1.29 KiB 6 modules
 built modules 302 KiB [1m[33m[built][39m[22m
   modules by path [1m./src/[39m[22m 292 KiB
     [1m./src/answer/view.js + 8 modules[39m[22m 44.7 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-    [1m./src/controller/view.js + 17 modules[39m[22m 94.2 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m./src/controller/view.js + 17 modules[39m[22m 94.4 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
     [1m./src/group-results/view.js + 5 modules[39m[22m 22.6 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
     [1m./src/mute-audio/view.js + 3 modules[39m[22m 28.7 KiB [1m[31m[not cacheable][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
     + 7 modules
@@ -155,7 +155,7 @@ built modules 302 KiB [1m[33m[built][39m[22m
     [1m../../node_modules/charenc/charenc.js[39m[22m 850 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
     [1m../../node_modules/is-buffer/index.js[39m[22m 698 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
   [1mexternal "@wordpress/interactivity-router"[39m[22m 42 bytes [1m[33m[optional][39m[22m [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
-webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 5375 ms
+webpack 5.106.2 compiled [1m[32msuccessfully[39m[22m in 3964 ms
 Block metadata PHP file generated at: build/blocks-manifest.php
 Browserslist: browsers data (caniuse-lite) is 7 months old. Please run:
   npx update-browserslist-db@latest
@@ -203,4 +203,4 @@ src/admin-dataview/style.scss 2:9  root stylesheet
  @ ./src/admin-dataview/style.scss
  @ ./src/admin-dataview/index.jsx 15:0-22
 
-webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 1014 ms
+webpack 5.106.2 compiled with [1m[33m2 warnings[39m[22m in 1238 ms

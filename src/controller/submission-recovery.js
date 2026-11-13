@@ -1,7 +1,7 @@
 /**
  * WordPress Dependencies
  */
-import { store, getContext, withScope } from '@wordpress/interactivity';
+import { store, getContext } from '@wordpress/interactivity';
 
 /**
  * Internal Dependencies
@@ -207,7 +207,7 @@ const { state, actions } = store('prc-quiz/controller', {
 					message
 				);
 			}
-			actions.scheduleSilentRetry(pendingSubmission);
+			actions.scheduleSilentRetry(pendingSubmission, context);
 		},
 		handleUnpersistedSubmission: async (
 			pendingSubmission,
@@ -232,7 +232,7 @@ const { state, actions } = store('prc-quiz/controller', {
 			}
 
 			// Keep pending for a silent retry so a later Firebase recovery can persist.
-			actions.scheduleSilentRetry(pendingSubmission);
+			actions.scheduleSilentRetry(pendingSubmission, context);
 		},
 		handleRateLimitedSubmission: async (
 			pendingSubmission,
@@ -256,9 +256,9 @@ const { state, actions } = store('prc-quiz/controller', {
 				state.currentSessionArchetypes.push(pendingSubmission.hash);
 			}
 
-			actions.scheduleSilentRetry(pendingSubmission);
+			actions.scheduleSilentRetry(pendingSubmission, context);
 		},
-		scheduleSilentRetry: (pendingSubmission) => {
+		scheduleSilentRetry: (pendingSubmission, context = getContext()) => {
 			const storageKey = getPendingSubmissionStorageKey(
 				pendingSubmission.quizId,
 				pendingSubmission.hash
@@ -269,22 +269,22 @@ const { state, actions } = store('prc-quiz/controller', {
 			scheduledSilentRetryKeys.add(storageKey);
 
 			const jitter = Math.floor(Math.random() * SILENT_RETRY_JITTER_MS);
-			setTimeout(
-				withScope(() => {
-					const currentSubmission = readPendingSubmission(
-						pendingSubmission.quizId,
-						pendingSubmission.hash
+			// The timer runs outside any directive scope, so it carries the
+			// context it was armed with instead of calling getContext().
+			setTimeout(() => {
+				const currentSubmission = readPendingSubmission(
+					pendingSubmission.quizId,
+					pendingSubmission.hash
+				);
+				if (currentSubmission) {
+					actions.silentlyRetryPendingSubmission(
+						currentSubmission,
+						context
 					);
-					if (currentSubmission) {
-						actions.silentlyRetryPendingSubmission(
-							currentSubmission
-						);
-						return;
-					}
-					scheduledSilentRetryKeys.delete(storageKey);
-				}),
-				SILENT_RETRY_BASE_DELAY_MS + jitter
-			);
+					return;
+				}
+				scheduledSilentRetryKeys.delete(storageKey);
+			}, SILENT_RETRY_BASE_DELAY_MS + jitter);
 		},
 		silentlyRetryPendingSubmission: async (
 			pendingSubmission,
@@ -316,7 +316,7 @@ const { state, actions } = store('prc-quiz/controller', {
 				// Soft success without persistence — keep pending and retry later.
 				if (false === data?.persisted) {
 					scheduledSilentRetryKeys.delete(storageKey);
-					actions.scheduleSilentRetry(nextPendingSubmission);
+					actions.scheduleSilentRetry(nextPendingSubmission, context);
 					return;
 				}
 
@@ -351,7 +351,7 @@ const { state, actions } = store('prc-quiz/controller', {
 					? GROUP_SUBMISSION_RECOVERY_MESSAGE
 					: SUBMISSION_RECOVERY_MESSAGE;
 				showSubmissionRecoveryBanner(
-					getContext(),
+					context,
 					failedSubmission,
 					message
 				);

@@ -189,7 +189,8 @@ class Analytics {
 	}
 
 	/**
-	 * Sum archetype hit counts from Firebase for a quiz.
+	 * Sum archetype hit counts from Firebase for a quiz: the legacy `hits` counter plus
+	 * the entries of each archetype's `hit_ids` ledger.
 	 *
 	 * @param int $quiz_id Quiz post ID.
 	 * @return int|WP_Error
@@ -224,8 +225,13 @@ class Analytics {
 
 			$total_hits = 0;
 			foreach ( $archetypes as $archetype ) {
-				if ( is_array( $archetype ) && isset( $archetype['hits'] ) ) {
-					$total_hits += (int) $archetype['hits'];
+				if ( ! is_array( $archetype ) ) {
+					continue;
+				}
+				// `hits` is the legacy counter. Each entry in `hit_ids` is one submission.
+				$total_hits += (int) ( $archetype['hits'] ?? 0 );
+				if ( is_array( $archetype[ Archetypes::HIT_IDS_KEY ] ?? null ) ) {
+					$total_hits += count( $archetype[ Archetypes::HIT_IDS_KEY ] );
 				}
 			}
 

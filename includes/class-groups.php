@@ -56,6 +56,30 @@ class Groups {
 	public $db;
 
 	/**
+	 * Child of a group that holds one node per submission:
+	 * quiz/{quizId}/groups/{groupId}/submissions/{submissionId}.
+	 *
+	 * @var string
+	 */
+	public const SUBMISSIONS_KEY = 'submissions';
+
+	/**
+	 * Separates the cluster from the answer codes in a submission node.
+	 *
+	 * A cluster is a path segment (letters, digits, `_`, `-`), so it never holds this character.
+	 *
+	 * @var string
+	 */
+	public const NODE_SEPARATOR = ':';
+
+	/**
+	 * Length of the code that stands for one answer uuid in a submission node.
+	 *
+	 * @var int
+	 */
+	public const ANSWER_CODE_LENGTH = 8;
+
+	/**
 	 * The groups version.
 	 *
 	 * @var int
@@ -79,7 +103,14 @@ class Groups {
 		);
 
 		$firebase      = new \PRC\Platform\Firebase();
-		$this->db      = $firebase->db;
+		$db            = $firebase->get_database(
+			null,
+			array(
+				'timeout'         => Archetypes::HTTP_TIMEOUT,
+				'connect_timeout' => Archetypes::HTTP_CONNECT_TIMEOUT,
+			)
+		);
+		$this->db      = is_wp_error( $db ) ? null : $db;
 		$this->quiz_id = $args['quiz_id'];
 		if ( $args['quiz_id'] ) {
 			$this->quiz_slug = get_post_field( 'post_name', $args['quiz_id'] );
@@ -159,10 +190,17 @@ class Groups {
 	 * Get the group.
 	 * If the group does not exist, return false.
 	 *
+	 * One read returns the group. The stored counters are the base. Each submission
+	 * node under the group adds one to `total`, to its cluster, and to each of its
+	 * answers (see `answer_code()` for how a node names an answer). The nodes are
+	 * not part of the returned group. Pass
+	 * `$include_tally = false` to return the stored counters as they are.
+	 *
 	 * @param bool $return_as_array Whether to return the group as an array or an object.
+	 * @param bool $include_tally   Whether to add the submission nodes to the counters.
 	 * @return array|object|false|WP_Error
 	 */
-	public function get_group( $return_as_array = false ) {
+	public function get_group( $return_as_array = false, $include_tally = true ) {
 		// Firebase groups live under quiz/{quiz_id}/groups/{group_id}; quiz_id is required.
 		if ( empty( $this->quiz_id ) || empty( $this->group_id ) ) {
 			return false;
@@ -194,6 +232,11 @@ class Groups {
 		}
 		if ( empty( $existing_group['group_id'] ) ) {
 			$existing_group['group_id'] = $this->group_id;
+		}
+		$nodes = $existing_group[ self::SUBMISSIONS_KEY ] ?? array();
+		unset( $existing_group[ self::SUBMISSIONS_KEY ] );
+		if ( $include_tally ) {
+			$existing_group = self::add_submission_tally( $existing_group, is_array( $nodes ) ? $nodes : array() );
 		}
 		// Get the latest data for results_url, group_Url, and quiz_name to return back here...
 		// This ensures the data is always up to date.
@@ -232,7 +275,7 @@ class Groups {
 
 		// Check if group exists...
 		$duplicate_name_exists = false;
-		$existing_group        = $this->get_group();
+		$existing_group        = $this->get_group( false, false );
 		if ( is_wp_error( $existing_group ) ) {
 			return $existing_group;
 		}
@@ -319,17 +362,26 @@ class Groups {
 	}
 
 	/**
-	 * Update a group using atomic Firebase server-side increments.
+	 * Add one submission to a group.
 	 *
-	 * Each counter (total, cluster, answer) is incremented atomically via
-	 * Firebase's .sv increment in a single multi-path update, eliminating
-	 * the read-modify-write race condition.
+	 * With a `$submission_id` the submission is written as one node at
+	 * `quiz/{quizId}/groups/{groupId}/submissions/{submissionId}`, next to the
+	 * group's counters, in a single multi-path update with the group's
+	 * `last_updated`. The node is one short string, `{cluster}:{code}{code}...`,
+	 * with one fixed-width code per answer (see `answer_code()`). The write sets
+	 * the node, so a replay of the same submission id writes the same node and the
+	 * group tally does not change. `get_group()` adds the nodes to the stored
+	 * counters.
 	 *
-	 * @param array  $submission Flat array of answer UUID strings.
-	 * @param string $score      Cluster/archetype identifier.
+	 * Without a `$submission_id` each counter (total, cluster, answer) is
+	 * incremented atomically with Firebase's `.sv` increment, in one multi-path update.
+	 *
+	 * @param array       $submission    Flat array of answer UUID strings.
+	 * @param string      $score         Cluster/archetype identifier.
+	 * @param string|null $submission_id Client-generated submission id, or null for a counter increment.
 	 * @return true|WP_Error
 	 */
-	public function update_group( $submission, $score ) {
+	public function update_group( $submission, $score, $submission_id = null ) {
 		if ( ! $this->is_available() ) {
 			return $this->firebase_unavailable_error();
 		}
@@ -341,28 +393,22 @@ class Groups {
 		}
 
 		// Validate all values used as Firebase path segments.
-		foreach (
-			array(
-				array( $this->quiz_id, 'quiz ID' ),
-				array( $this->group_id, 'group ID' ),
-				array( $score, 'score' ),
-			) as list( $val, $label )
-		) {
+		$segments = array(
+			array( $this->quiz_id, 'quiz ID' ),
+			array( $this->group_id, 'group ID' ),
+			array( $score, 'score' ),
+		);
+		if ( null !== $submission_id ) {
+			$segments[] = array( $submission_id, 'submission ID' );
+		}
+		foreach ( $segments as list( $val, $label ) ) {
 			$valid = self::validate_path_segment( $val, $label );
 			if ( is_wp_error( $valid ) ) {
 				return $valid;
 			}
 		}
 
-		$increment = array( '.sv' => array( 'increment' => 1 ) );
-
-		$updates = array(
-			'total'                     => $increment,
-			'clusters/' . $score        => $increment,
-			'typology_groups/' . $score => $increment,
-			'last_updated'              => gmdate( 'Y-m-d H:i:s' ),
-		);
-
+		$answers = array();
 		foreach ( $submission as $answer_uuid ) {
 			if ( ! is_string( $answer_uuid ) ) {
 				continue;
@@ -371,14 +417,34 @@ class Groups {
 			if ( is_wp_error( $valid ) ) {
 				return $valid;
 			}
-			$updates[ 'answers/' . $answer_uuid ] = $increment;
+			$answers[ $answer_uuid ] = $answer_uuid;
 		}
+		$answers = array_values( $answers );
+
+		$group_path = 'quiz/' . $this->quiz_id . '/groups/' . $this->group_id;
 
 		try {
-			$ref = $this->db->getReference(
-				'quiz/' . $this->quiz_id . '/groups/' . $this->group_id
+			if ( null !== $submission_id ) {
+				$this->db->getReference()->update(
+					array(
+						$group_path . '/' . self::SUBMISSIONS_KEY . '/' . $submission_id => self::encode_submission_node( $score, $answers ),
+						$group_path . '/last_updated' => gmdate( 'Y-m-d H:i:s' ),
+					)
+				);
+				return true;
+			}
+
+			$increment = array( '.sv' => array( 'increment' => 1 ) );
+			$updates   = array(
+				'total'                     => $increment,
+				'clusters/' . $score        => $increment,
+				'typology_groups/' . $score => $increment,
+				'last_updated'              => gmdate( 'Y-m-d H:i:s' ),
 			);
-			$ref->update( $updates );
+			foreach ( $answers as $answer_uuid ) {
+				$updates[ 'answers/' . $answer_uuid ] = $increment;
+			}
+			$this->db->getReference( $group_path )->update( $updates );
 		} catch ( \Kreait\Firebase\Exception\DatabaseException $e ) {
 			return new WP_Error(
 				'firebase_error',
@@ -388,6 +454,137 @@ class Groups {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Whether the group exists.
+	 *
+	 * A shallow read: it returns the keys of the group and none of its submission
+	 * nodes, so its size does not grow with the group.
+	 *
+	 * @return bool|WP_Error
+	 */
+	public function group_exists() {
+		if ( empty( $this->quiz_id ) || empty( $this->group_id ) ) {
+			return false;
+		}
+		if ( ! $this->is_available() ) {
+			return $this->firebase_unavailable_error();
+		}
+		try {
+			$this->db->getReference( 'quiz/' . $this->quiz_id . '/groups/' . $this->group_id )->getChildKeys();
+			return true;
+		} catch ( \OutOfRangeException $e ) {
+			return false;
+		} catch ( \Kreait\Firebase\Exception\DatabaseException $e ) {
+			return new WP_Error(
+				'firebase_error',
+				'Group lookup failed.',
+				array( 'status' => 503 )
+			);
+		}
+	}
+
+	/**
+	 * Read a stored counter map that may be an array (Firebase) or a legacy JSON string.
+	 *
+	 * @param mixed $value Raw field value.
+	 * @return array
+	 */
+	protected static function decode_counter_field( $value ): array {
+		if ( is_array( $value ) ) {
+			return $value;
+		}
+		if ( is_string( $value ) && '' !== $value ) {
+			$decoded = json_decode( $value, true );
+			return is_array( $decoded ) ? $decoded : array();
+		}
+		return array();
+	}
+
+	/**
+	 * The code that stands for an answer uuid in a submission node.
+	 *
+	 * It is a fixed-width base 36 string cut from the md5 of the uuid (40 bits), so
+	 * a node needs no separator between answers and the write needs no lookup.
+	 * `get_group()` maps a code back to an uuid with the answers the group stores.
+	 *
+	 * @param string $answer_uuid The answer uuid.
+	 * @return string
+	 */
+	public static function answer_code( string $answer_uuid ): string {
+		return str_pad( base_convert( substr( md5( $answer_uuid ), 0, 10 ), 16, 36 ), self::ANSWER_CODE_LENGTH, '0', STR_PAD_LEFT );
+	}
+
+	/**
+	 * Build the stored value of one submission node.
+	 *
+	 * @param string $cluster The cluster key.
+	 * @param array  $answers Answer uuids, without repeats.
+	 * @return string `{cluster}:{code}{code}...`
+	 */
+	protected static function encode_submission_node( string $cluster, array $answers ): string {
+		return $cluster . self::NODE_SEPARATOR . implode( '', array_map( array( self::class, 'answer_code' ), $answers ) );
+	}
+
+	/**
+	 * Add submission nodes to the stored counters of a group.
+	 *
+	 * An answer code that matches none of the answers the group stores adds to
+	 * `total` and to the cluster, and to no answer.
+	 *
+	 * @param array $group Group record from Firebase.
+	 * @param array $nodes Submission nodes for the group, keyed by submission id.
+	 * @return array The group with `total`, `clusters`, `typology_groups` and `answers` raised.
+	 */
+	protected static function add_submission_tally( array $group, array $nodes ): array {
+		$counters = array(
+			'total'           => (int) ( $group['total'] ?? 0 ),
+			'clusters'        => self::decode_counter_field( $group['clusters'] ?? null ),
+			'typology_groups' => self::decode_counter_field( $group['typology_groups'] ?? null ),
+			'answers'         => self::decode_counter_field( $group['answers'] ?? null ),
+		);
+
+		$clusters = array();
+		$codes    = '';
+		foreach ( $nodes as $node ) {
+			if ( ! is_string( $node ) ) {
+				continue;
+			}
+			$split = strpos( $node, self::NODE_SEPARATOR );
+			if ( false === $split ) {
+				continue;
+			}
+			++$counters['total'];
+			$cluster = substr( $node, 0, $split );
+			if ( '' !== $cluster ) {
+				$clusters[] = $cluster;
+			}
+			$answer_codes = substr( $node, $split + 1 );
+			if ( 0 === strlen( $answer_codes ) % self::ANSWER_CODE_LENGTH ) {
+				$codes .= $answer_codes;
+			}
+		}
+
+		foreach ( array_count_values( $clusters ) as $cluster => $count ) {
+			$counters['clusters'][ $cluster ]        = (int) ( $counters['clusters'][ $cluster ] ?? 0 ) + $count;
+			$counters['typology_groups'][ $cluster ] = (int) ( $counters['typology_groups'][ $cluster ] ?? 0 ) + $count;
+		}
+
+		if ( '' !== $codes ) {
+			$answer_by_code = array();
+			foreach ( array_keys( $counters['answers'] ) as $answer_uuid ) {
+				$answer_by_code[ self::answer_code( (string) $answer_uuid ) ] ??= (string) $answer_uuid;
+			}
+			foreach ( array_count_values( str_split( $codes, self::ANSWER_CODE_LENGTH ) ) as $code => $count ) {
+				$answer_uuid = $answer_by_code[ $code ] ?? null;
+				if ( null !== $answer_uuid ) {
+					$counters['answers'][ $answer_uuid ] = (int) ( $counters['answers'][ $answer_uuid ] ?? 0 ) + $count;
+				}
+			}
+		}
+
+		return array_merge( $group, $counters );
 	}
 
 	/**
@@ -406,8 +603,15 @@ class Groups {
 		}
 
 		$firebase = new \PRC\Platform\Firebase();
+		$db       = $firebase->get_database(
+			null,
+			array(
+				'timeout'         => Archetypes::HTTP_TIMEOUT,
+				'connect_timeout' => Archetypes::HTTP_CONNECT_TIMEOUT,
+			)
+		);
 
-		if ( null === $firebase->db ) {
+		if ( null === $db || is_wp_error( $db ) ) {
 			return new WP_Error(
 				'firebase_not_configured',
 				'Firebase database is not configured.',
@@ -416,7 +620,7 @@ class Groups {
 		}
 
 		try {
-			$groups = $firebase->db
+			$groups = $db
 				->getReference( 'quiz/' . $quiz_id . '/groups' )
 				->getValue();
 
@@ -424,7 +628,7 @@ class Groups {
 				return array();
 			}
 
-			$permalink = get_permalink( $quiz_id );
+			$permalink  = get_permalink( $quiz_id );
 			$normalized = array();
 
 			foreach ( $groups as $group_id => $group_data ) {
@@ -435,7 +639,7 @@ class Groups {
 				$normalized[] = array(
 					'id'           => (string) $group_id,
 					'name'         => (string) ( $group_data['name'] ?? '' ),
-					'total'        => (int) ( $group_data['total'] ?? 0 ),
+					'total'        => (int) ( $group_data['total'] ?? 0 ) + ( is_array( $group_data[ self::SUBMISSIONS_KEY ] ?? null ) ? count( $group_data[ self::SUBMISSIONS_KEY ] ) : 0 ),
 					'created'      => (string) ( $group_data['created'] ?? '' ),
 					'last_updated' => (string) ( $group_data['last_updated'] ?? '' ),
 					'results_url'  => wp_sprintf( '%sgroup/%s/results/', $permalink, $group_id ),

@@ -11,7 +11,12 @@
 
 namespace PRC\Platform\Quiz;
 
+use PRC\Primitives\Concurrency\Claim_Store;
+use PRC\Primitives\Concurrency\Run_Result;
+use PRC\Primitives\Concurrency\Table_Claim_Store;
 use WP_REST_Request, WP_Error;
+
+use function PRC\Primitives\Concurrency\run_once;
 
 /**
  * The REST API class.
@@ -36,6 +41,34 @@ class Rest_API {
 	 * @var int
 	 */
 	private const LIBRARY_ID_BATCH_SIZE = 500;
+
+	/**
+	 * Seconds that one submission holds its run_once lease.
+	 *
+	 * Every Firebase request stops after `Archetypes::HTTP_TIMEOUT` (3) seconds. A
+	 * group submission makes at most four requests (the archetype read, the group
+	 * check, the group write, the archetype write) and two Google token fetches, one
+	 * for each database handle. That is six requests, 18 seconds, plus a few seconds
+	 * for the claim table and PHP. A request that dies leaves the lease for no longer
+	 * than this. A unit test counts the requests and keeps the TTL above that sum plus 5 s.
+	 *
+	 * @var int
+	 */
+	private const SUBMISSION_LEASE_TTL = 30;
+
+	/**
+	 * Times a request that finds the lease busy checks again before it answers 409.
+	 *
+	 * @var int
+	 */
+	private const SUBMISSION_BUSY_ATTEMPTS = 20;
+
+	/**
+	 * Microseconds between those checks. Twenty checks wait two seconds at most.
+	 *
+	 * @var int
+	 */
+	private const SUBMISSION_BUSY_WAIT_US = 100000;
 
 	/**
 	 * Constructor.
@@ -576,13 +609,14 @@ class Rest_API {
 	/**
 	 * Update a group.
 	 *
-	 * @param string $quiz_id The quiz id.
-	 * @param string $group_id The group id.
-	 * @param array  $submission The submission.
-	 * @param string $score The score / cluster identifier.
+	 * @param string      $quiz_id The quiz id.
+	 * @param string      $group_id The group id.
+	 * @param array       $submission The submission.
+	 * @param string      $score The score / cluster identifier.
+	 * @param string|null $submission_id The client-generated submission id, or null for a counter increment.
 	 * @return true|WP_Error
 	 */
-	public function update_group( $quiz_id, $group_id, $submission, $score ) {
+	public function update_group( $quiz_id, $group_id, $submission, $score, $submission_id = null ) {
 		$groups = new Groups(
 			array(
 				'quiz_id'  => $quiz_id,
@@ -590,7 +624,7 @@ class Rest_API {
 			)
 		);
 
-		$existing_group = $groups->get_group();
+		$existing_group = $groups->group_exists();
 
 		if ( is_wp_error( $existing_group ) ) {
 			return $existing_group;
@@ -604,7 +638,7 @@ class Rest_API {
 			);
 		}
 
-		$success = $groups->update_group( $submission, $score );
+		$success = $groups->update_group( $submission, $score, $submission_id );
 
 		if ( is_wp_error( $success ) ) {
 			return $success;
@@ -624,88 +658,23 @@ class Rest_API {
 	}
 
 	/**
-	 * Get the cache key for a processed submission id.
+	 * Get the run_once key for one quiz submission.
 	 *
-	 * @param string $quiz_id The quiz id.
+	 * @param int    $quiz_id       The quiz id.
 	 * @param string $submission_id The client-generated submission id.
 	 * @return string
 	 */
-	protected function get_submission_idempotency_key( $quiz_id, $submission_id ) {
-		return 'prc_quiz_submission_' . md5( $quiz_id . ':' . $submission_id );
+	protected function get_submission_run_key( $quiz_id, $submission_id ) {
+		return 'quiz_' . $quiz_id . '_' . $submission_id;
 	}
 
 	/**
-	 * Get the cache key for an in-flight submission id.
+	 * Get the claim store that keeps the final result of each submission.
 	 *
-	 * @param string $quiz_id The quiz id.
-	 * @param string $submission_id The client-generated submission id.
-	 * @return string
+	 * @return Claim_Store
 	 */
-	protected function get_submission_processing_key( $quiz_id, $submission_id ) {
-		return $this->get_submission_idempotency_key( $quiz_id, $submission_id ) . '_processing';
-	}
-
-	/**
-	 * Acquire an in-flight submission lock.
-	 *
-	 * @param string $quiz_id The quiz id.
-	 * @param string $submission_id The client-generated submission id.
-	 * @return bool
-	 */
-	protected function acquire_submission_processing_lock( $quiz_id, $submission_id ) {
-		$cache_key = $this->get_submission_processing_key( $quiz_id, $submission_id );
-
-		return wp_cache_add( $cache_key, time(), Object_Cache::SUBMISSIONS_GROUP, MINUTE_IN_SECONDS );
-	}
-
-	/**
-	 * Release an in-flight submission lock.
-	 *
-	 * @param string $quiz_id The quiz id.
-	 * @param string $submission_id The client-generated submission id.
-	 */
-	protected function release_submission_processing_lock( $quiz_id, $submission_id ) {
-		$cache_key = $this->get_submission_processing_key( $quiz_id, $submission_id );
-
-		wp_cache_delete( $cache_key, Object_Cache::SUBMISSIONS_GROUP );
-	}
-
-	/**
-	 * Get a processed submission marker.
-	 *
-	 * @param string $quiz_id The quiz id.
-	 * @param string $submission_id The client-generated submission id.
-	 * @return array|false
-	 */
-	protected function get_processed_submission( $quiz_id, $submission_id ) {
-		$cache_key = $this->get_submission_idempotency_key( $quiz_id, $submission_id );
-		$processed = wp_cache_get( $cache_key, Object_Cache::SUBMISSIONS_GROUP );
-
-		if ( false !== $processed ) {
-			return $processed;
-		}
-
-		$processed = get_transient( $cache_key );
-
-		if ( false !== $processed ) {
-			wp_cache_set( $cache_key, $processed, Object_Cache::SUBMISSIONS_GROUP, DAY_IN_SECONDS );
-		}
-
-		return $processed;
-	}
-
-	/**
-	 * Mark a submission id as processed.
-	 *
-	 * @param string $quiz_id The quiz id.
-	 * @param string $submission_id The client-generated submission id.
-	 * @param array  $data The response data to return for duplicate retries.
-	 */
-	protected function mark_submission_processed( $quiz_id, $submission_id, $data ) {
-		$cache_key = $this->get_submission_idempotency_key( $quiz_id, $submission_id );
-
-		wp_cache_set( $cache_key, $data, Object_Cache::SUBMISSIONS_GROUP, DAY_IN_SECONDS );
-		set_transient( $cache_key, $data, DAY_IN_SECONDS );
+	protected function get_submission_claim_store(): Claim_Store {
+		return new Table_Claim_Store();
 	}
 
 	/**
@@ -854,170 +823,236 @@ class Rest_API {
 			);
 		}
 
-		if ( null !== $submission_id ) {
-			$processed_submission = $this->get_processed_submission( $quiz_id, $submission_id );
+		$group_id = $request->get_param( 'groupId' );
 
-			if ( false !== $processed_submission ) {
-				return rest_ensure_response(
-					array_merge(
-						$processed_submission,
-						array(
-							'idempotent' => true,
-						)
-					)
-				);
+		if ( null === $submission_id ) {
+			return $this->respond_to_submission(
+				$this->process_quiz_submission( $quiz_id, $archetype_hash, $submission, $score, $group_id, $start_time )
+			);
+		}
+
+		$outcome  = null;
+		$attempts = 0;
+		do {
+			$result = run_once(
+				$this->get_submission_run_key( $quiz_id, $submission_id ),
+				function () use ( &$outcome, $quiz_id, $archetype_hash, $submission, $score, $group_id, $start_time, $submission_id ): Run_Result {
+					$outcome = $this->process_quiz_submission( $quiz_id, $archetype_hash, $submission, $score, $group_id, $start_time, $submission_id );
+					if ( is_wp_error( $outcome ) ) {
+						return Run_Result::retryable( $outcome->get_error_code() );
+					}
+					if ( $this->is_unpersisted_outcome( $outcome ) ) {
+						return Run_Result::retryable( 'unpersisted' );
+					}
+					return Run_Result::final( (string) wp_json_encode( $outcome ) );
+				},
+				$this->get_submission_claim_store(),
+				self::SUBMISSION_LEASE_TTL
+			);
+		} while ( Run_Result::BUSY === $result->status && $this->wait_for_busy_submission( ++$attempts ) );
+
+		if ( Run_Result::BUSY === $result->status ) {
+			return new \WP_Error(
+				'submission_processing',
+				'ERROR: quiz_submit/409. This quiz submission is already being processed.',
+				array( 'status' => 409 )
+			);
+		}
+
+		if ( ! $result->ran && Run_Result::FINAL === $result->status ) {
+			$stored = json_decode( $result->value, true );
+			if ( is_array( $stored ) ) {
+				return rest_ensure_response( array_merge( $stored, array( 'idempotent' => true ) ) );
 			}
+		}
 
-			if ( ! $this->acquire_submission_processing_lock( $quiz_id, $submission_id ) ) {
-				$processed_submission = $this->get_processed_submission( $quiz_id, $submission_id );
+		if ( null === $outcome ) {
+			return new \WP_Error(
+				'submission_unavailable',
+				'ERROR: quiz_submit/503. This quiz submission could not be checked. Please try again in a few minutes.',
+				array( 'status' => 503 )
+			);
+		}
 
-				if ( false !== $processed_submission ) {
-					return rest_ensure_response(
-						array_merge(
-							$processed_submission,
-							array(
-								'idempotent' => true,
-							)
-						)
-					);
-				}
+		return $this->respond_to_submission( $outcome );
+	}
 
+	/**
+	 * Wait a moment while another request holds the lease for this submission.
+	 *
+	 * The other request usually finishes in milliseconds. Checking again lets this
+	 * request replay its stored result, or take over when it stored none.
+	 *
+	 * @param int $attempt Which check this is, from 1.
+	 * @return bool True to check again, false to answer 409.
+	 */
+	protected function wait_for_busy_submission( int $attempt ): bool {
+		if ( $attempt > self::SUBMISSION_BUSY_ATTEMPTS ) {
+			return false;
+		}
+		usleep( self::SUBMISSION_BUSY_WAIT_US );
+		return true;
+	}
+
+	/**
+	 * Tell whether a submission was answered without being saved.
+	 *
+	 * A normal quiz still shows in-session results when Firebase is down, and
+	 * answers `persisted: false`. That answer must not become the stored result,
+	 * or a retry after Firebase recovers would replay it and never count.
+	 *
+	 * @param array|WP_Error $outcome Response data, or the error to return.
+	 * @return bool True when the outcome says `persisted` is false.
+	 */
+	protected function is_unpersisted_outcome( $outcome ): bool {
+		return is_array( $outcome ) && array_key_exists( 'persisted', $outcome ) && false === $outcome['persisted'];
+	}
+
+	/**
+	 * Turn the outcome of one submission into a REST response.
+	 *
+	 * @param array|WP_Error $outcome Response data, or the error to return.
+	 * @return \WP_REST_Response|WP_Error
+	 */
+	protected function respond_to_submission( $outcome ) {
+		return is_wp_error( $outcome ) ? $outcome : rest_ensure_response( $outcome );
+	}
+
+	/**
+	 * Count one quiz submission: group tally, then archetype.
+	 *
+	 * Runs at most once per submission id, inside run_once(). It has no marker
+	 * code of its own.
+	 *
+	 * @param int         $quiz_id        The quiz id.
+	 * @param string      $archetype_hash The archetype hash.
+	 * @param array       $submission     The answers.
+	 * @param mixed       $score          The score.
+	 * @param mixed       $group_id       The group id from the request.
+	 * @param float       $start_time     Request start, from microtime( true ).
+	 * @param string|null $submission_id The submission id, which keys the group node, or null.
+	 * @return array|WP_Error Response data, or the error to return.
+	 */
+	protected function process_quiz_submission( $quiz_id, $archetype_hash, $submission, $score, $group_id, $start_time, $submission_id = null ) {
+		// Per-IP rate limiting: 100 submissions per quiz per minute (fixed window).
+		// Runs inside run_once(), after a stored result is replayed, so replays
+		// do not consume throttle slots. Fail open when the platform helper is absent.
+		if ( function_exists( '\\PRC\\Platform\\rate_limit_hit' ) ) {
+			$client_ip = function_exists( '\\PRC\\Platform\\get_client_ip' )
+				? \PRC\Platform\get_client_ip()
+				: '';
+			if ( '' === $client_ip ) {
+				$client_ip = 'unknown';
+			}
+			$throttle_key = 'prc_quiz_submit_' . md5( $client_ip . '_' . $quiz_id );
+			if ( \PRC\Platform\rate_limit_hit(
+				$throttle_key,
+				Object_Cache::THROTTLE_LIMIT,
+				Object_Cache::THROTTLE_WINDOW,
+				Object_Cache::THROTTLE_GROUP
+			) ) {
 				return new \WP_Error(
-					'submission_processing',
-					'ERROR: quiz_submit/409. This quiz submission is already being processed.',
-					array( 'status' => 409 )
+					'rate_limited',
+					'Too many submissions. Please try again later.',
+					array( 'status' => 429 )
 				);
 			}
 		}
 
-		try {
-			// Per-IP rate limiting: 100 submissions per quiz per minute (fixed window).
-			// Runs after idempotent replay / lock acquisition so replays do not
-			// consume throttle slots. Fail open when the platform helper is absent.
-			if ( function_exists( '\\PRC\\Platform\\rate_limit_hit' ) ) {
-				$client_ip = function_exists( '\\PRC\\Platform\\get_client_ip' )
-					? \PRC\Platform\get_client_ip()
-					: '';
-				if ( '' === $client_ip ) {
-					$client_ip = 'unknown';
-				}
-				$throttle_key = 'prc_quiz_submit_' . md5( $client_ip . '_' . $quiz_id );
-				if ( \PRC\Platform\rate_limit_hit(
-					$throttle_key,
-					Object_Cache::THROTTLE_LIMIT,
-					Object_Cache::THROTTLE_WINDOW,
-					Object_Cache::THROTTLE_GROUP
-				) ) {
-					return new \WP_Error(
-						'rate_limited',
-						'Too many submissions. Please try again later.',
-						array( 'status' => 429 )
-					);
-				}
-			}
+		$is_group = ! empty( $group_id ) && is_string( $group_id );
 
-			$group_id = $request->get_param( 'groupId' );
-			$is_group = ! empty( $group_id ) && is_string( $group_id );
+		$archetypes = new Archetypes(
+			array(
+				'quiz_id' => $quiz_id,
+				'hash'    => $archetype_hash,
+			)
+		);
 
-			$archetypes = new Archetypes(
-				array(
-					'quiz_id' => $quiz_id,
-					'hash'    => $archetype_hash,
-				)
+		$firebase_available = $archetypes->is_available();
+
+		// Group quizzes require Firebase to update shared tallies — hard-fail when unavailable.
+		if ( $is_group && ! $firebase_available ) {
+			return new \WP_Error(
+				'group-submission-error',
+				'Group results could not be saved because the results service is temporarily unavailable. Please try again in a few minutes.',
+				array( 'status' => 503 )
 			);
+		}
 
-			$firebase_available = $archetypes->is_available();
-
-			// Group quizzes require Firebase to update shared tallies — hard-fail when unavailable.
-			if ( $is_group && ! $firebase_available ) {
+		$group_cluster = null;
+		if ( $is_group ) {
+			$capability    = $this->get_group_capability( $quiz_id );
+			$group_cluster = Group_Capability::resolve_cluster_key( $score, $capability, $archetype_hash );
+			if ( ! is_string( $group_cluster ) || '' === $group_cluster ) {
 				return new \WP_Error(
 					'group-submission-error',
-					'Group results could not be saved because the results service is temporarily unavailable. Please try again in a few minutes.',
-					array( 'status' => 503 )
+					'An error occurred when updating this group. The submission score could not be matched to a result group.',
+					array( 'status' => 400 )
 				);
-			}
-
-			// If the quiz is a group quiz, we need to update the group results.
-			if ( $is_group ) {
-				$capability    = $this->get_group_capability( $quiz_id );
-				$group_cluster = Group_Capability::resolve_cluster_key( $score, $capability, $archetype_hash );
-				if ( ! is_string( $group_cluster ) || '' === $group_cluster ) {
-					return new \WP_Error(
-						'group-submission-error',
-						'An error occurred when updating this group. The submission score could not be matched to a result group.',
-						array( 'status' => 400 )
-					);
-				}
-				$updated = $this->update_group( $quiz_id, $group_id, $submission, $group_cluster );
-				if ( true !== $updated ) {
-					if ( is_wp_error( $updated ) ) {
-						return $updated;
-					}
-					return new \WP_Error(
-						'group-submission-error',
-						'An error occurred when updating this group. We have saved your answers and your place. Wait a few minutes and try again, if you still encounter issues please contact technical support.',
-						array( 'status' => 500 )
-					);
-				}
-			}
-
-			$end_time = microtime( true );
-			// Get the end time in seconds with microseconds.
-			$execution_time = ( $end_time - $start_time ) / 60;
-			$response_data  = array(
-				'hash' => $archetype_hash,
-				'time' => $execution_time,
-			);
-
-			// Normal quizzes can still show in-session results without Firebase persistence.
-			if ( ! $firebase_available ) {
-				$response_data['persisted'] = false;
-
-				if ( null !== $submission_id ) {
-					$this->mark_submission_processed( $quiz_id, $submission_id, $response_data );
-				}
-
-				return rest_ensure_response( $response_data );
-			}
-
-			// If there isn't an archetype yet create one, otherwise just update the hits counter.
-			// WP_Error from get means RTDB failed — do not create (would wipe hits if a later write succeeds).
-			$existing_archetype = $archetypes->get_archetype();
-			if ( is_wp_error( $existing_archetype ) ) {
-				$success = $existing_archetype;
-			} elseif ( false === $existing_archetype ) {
-				$success = $archetypes->create_archetype( $submission, $score );
-			} else {
-				// Atomic increment, sent after the response is flushed. A failure is logged, not shown to the visitor.
-				Submission_Counts::after_response(
-					static function () use ( $archetypes, $quiz_id ): void {
-						$hit = $archetypes->log_archetype_hit();
-						if ( is_wp_error( $hit ) ) {
-							Submission_Counts::log_failure( 'archetype hit quiz ' . $quiz_id, $hit );
-						}
-					}
-				);
-				$success = true;
-			}
-
-			if ( is_wp_error( $success ) ) {
-				return new \WP_Error( 'quiz-submission-error', 'ERROR: quiz_submit/500. ' . $success->get_error_message(), array( 'status' => 500 ) );
-			}
-
-			$response_data['persisted'] = true;
-
-			if ( null !== $submission_id ) {
-				$this->mark_submission_processed( $quiz_id, $submission_id, $response_data );
-			}
-
-			do_action( 'prc_quiz_log_submission', $quiz_id );
-
-			return rest_ensure_response( $response_data );
-		} finally {
-			if ( null !== $submission_id ) {
-				$this->release_submission_processing_lock( $quiz_id, $submission_id );
 			}
 		}
+
+		$end_time = microtime( true );
+		// Get the end time in seconds with microseconds.
+		$execution_time = ( $end_time - $start_time ) / 60;
+		$response_data  = array(
+			'hash' => $archetype_hash,
+			'time' => $execution_time,
+		);
+
+		// Normal quizzes can still show in-session results without Firebase persistence.
+		if ( ! $firebase_available ) {
+			$response_data['persisted'] = false;
+
+			return $response_data;
+		}
+
+		// Read the archetype before any group write. A failed read returns
+		// 500, stores no result, and does not add the reader to the group, so
+		// a retry of this submissionId counts once.
+		$existing_archetype = $archetypes->get_archetype();
+		if ( is_wp_error( $existing_archetype ) ) {
+			return new \WP_Error( 'quiz-submission-error', 'ERROR: quiz_submit/500. ' . $existing_archetype->get_error_message(), array( 'status' => 500 ) );
+		}
+
+		if ( $is_group ) {
+			$updated = $this->update_group( $quiz_id, $group_id, $submission, $group_cluster, $submission_id );
+			if ( true !== $updated ) {
+				if ( is_wp_error( $updated ) ) {
+					return $updated;
+				}
+				return new \WP_Error(
+					'group-submission-error',
+					'An error occurred when updating this group. We have saved your answers and your place. Wait a few minutes and try again, if you still encounter issues please contact technical support.',
+					array( 'status' => 500 )
+				);
+			}
+		}
+
+		if ( false === $existing_archetype ) {
+			$success = $archetypes->create_archetype( $submission, $score, $submission_id );
+		} else {
+			// Atomic increment, sent after the response is flushed. A failure is logged, not shown to the visitor.
+			Submission_Counts::after_response(
+				static function () use ( $archetypes, $quiz_id, $submission_id ): void {
+					$hit = $archetypes->log_archetype_hit( $submission_id );
+					if ( is_wp_error( $hit ) ) {
+						Submission_Counts::log_failure( 'archetype hit quiz ' . $quiz_id, $hit );
+					}
+				}
+			);
+			$success = true;
+		}
+
+		if ( is_wp_error( $success ) ) {
+			return new \WP_Error( 'quiz-submission-error', 'ERROR: quiz_submit/500. ' . $success->get_error_message(), array( 'status' => 500 ) );
+		}
+
+		$response_data['persisted'] = true;
+
+		do_action( 'prc_quiz_log_submission', $quiz_id );
+
+		return $response_data;
 	}
 
 	/**

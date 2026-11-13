@@ -3,7 +3,7 @@
         'name' => 'prc/quiz-builder',
         'pretty_version' => 'dev-trunk',
         'version' => 'dev-trunk',
-        'reference' => '87dfb039f8dfdabb1950a4e3eae540071af5b83d',
+        'reference' => '1234bf3789cad21657054d3389db52c27ad0ce20',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -238,7 +238,7 @@
         'prc/quiz-builder' => array(
             'pretty_version' => 'dev-trunk',
             'version' => 'dev-trunk',
-            'reference' => '87dfb039f8dfdabb1950a4e3eae540071af5b83d',
+            'reference' => '1234bf3789cad21657054d3389db52c27ad0ce20',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
