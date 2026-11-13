@@ -42,6 +42,16 @@ class Plugin {
 	public const REVISIONS_TO_KEEP = 25;
 
 	/**
+	 * Priority of the quiz `pre_render_block` filters.
+	 *
+	 * Late on purpose. Some `pre_render_block` filters on the platform return null
+	 * at priority 10, which discards what an earlier filter supplied.
+	 *
+	 * @var int
+	 */
+	public const PRE_RENDER_PRIORITY = 20;
+
+	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
 	 * the plugin.
 	 *
@@ -128,6 +138,7 @@ class Plugin {
 		// 7. WP-CLI: ad hoc quiz report read/update.
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-cli-report.php';
 		require_once plugin_dir_path( __DIR__ ) . '/includes/class-histogram-population.php';
+		require_once plugin_dir_path( __DIR__ ) . '/includes/class-quiz-state.php';
 		$bindings_dir = ( 'local' === wp_get_environment_type() ? 'src' : 'build' ) . '/bindings';
 		require_once plugin_dir_path( __DIR__ ) . '/' . $bindings_dir . '/class-quiz-binding-resolver.php';
 		require_once plugin_dir_path( __DIR__ ) . '/' . $bindings_dir . '/class-quiz-bindings.php';
@@ -198,6 +209,7 @@ class Plugin {
 		// `get_post_types_by_support()` at the default init/10 priority — most
 		// notably prc-publication-listing's `_post_visibility` taxonomy binding.
 		$this->loader->add_action( 'init', $this, 'register_quiz_post_type', 5 );
+		$this->loader->add_action( 'init', $this, 'register_feature_flags', 5 );
 		$this->loader->add_action( 'init', $this, 'register_rewrite_rules' );
 		$this->loader->add_filter( 'query_vars', $this, 'register_query_vars' );
 		$this->loader->add_filter( 'prc_research_teams_rewrite_config', $this, 'register_research_teams_config' );
@@ -211,6 +223,25 @@ class Plugin {
 
 		// Register quiz cookie information with WP Consent API.
 		$this->loader->add_action( 'init', $this, 'register_quiz_cookie_info' );
+	}
+
+	/**
+	 * Register the feature flags a rollout experiment can turn on.
+	 *
+	 * @hook init priority 5
+	 */
+	public function register_feature_flags(): void {
+		if ( ! function_exists( '\PRC\Primitives\Feature_Flags\register_feature_flag' ) ) {
+			return;
+		}
+
+		\PRC\Primitives\Feature_Flags\register_feature_flag(
+			Pages::SKIP_HIDDEN_PAGES_FLAG,
+			array(
+				'label'       => __( 'Quiz: skip hidden pages on results links', 'prc-quiz-builder' ),
+				'description' => __( 'A quiz results page no longer renders the question pages it hides. The questions and answers still reach the results blocks as page data.', 'prc-quiz-builder' ),
+			)
+		);
 	}
 
 	/**

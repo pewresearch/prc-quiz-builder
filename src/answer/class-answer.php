@@ -44,42 +44,10 @@ class Answer {
 			return '';
 		}
 
-		// Preserve null ("Not sure") — (bool) null would collapse to false.
-		// Missing correct (unset default variation) is also neutral, not incorrect.
-		$correct = null;
-		if ( array_key_exists( 'correct', $attributes ) && null !== $attributes['correct'] ) {
-			$correct = (bool) $attributes['correct'];
+		$entry = Quiz_State::answer_entry( $attributes, $question_uuid );
+		if ( null !== $entry ) {
+			Quiz_State::merge( $quiz_id, array( 'questions' => array( $question_uuid => array( 'answers' => array( $attributes['uuid'] => $entry ) ) ) ) );
 		}
-
-		$demo_break_values = array();
-		if ( ! empty( $attributes['demoBreakValues'] ) ) {
-			$parsed = json_decode( $attributes['demoBreakValues'], true );
-			if ( is_array( $parsed ) ) {
-				$demo_break_values = $parsed;
-			}
-		}
-
-		$population_percent = '';
-		if ( array_key_exists( 'populationPercent', $attributes ) && is_string( $attributes['populationPercent'] ) ) {
-			$population_percent = $attributes['populationPercent'];
-		}
-
-		// Add the answer to the question's answers array in quiz state.
-		$state = wp_interactivity_state( 'prc-quiz/controller', array() );
-		$state[ 'quiz_' . $quiz_id ]['questions'][ $question_uuid ]['answers'][ $attributes['uuid'] ] = array(
-			'uuid'                  => $attributes['uuid'],
-			'text'                  => wp_strip_all_tags( $attributes['answer'] ),
-			'correct'               => $correct,
-			'notSure'               => array_key_exists( 'correct', $attributes ) && null === $attributes['correct'],
-			'points'                => array_key_exists( 'points', $attributes ) ? $attributes['points'] : 0,
-			'resultsLabel'          => array_key_exists( 'resultsLabel', $attributes ) ? $attributes['resultsLabel'] : null,
-			'populationPercent'     => $population_percent,
-			'demoBreakValues'       => $demo_break_values,
-			'conditional'           => array_key_exists( 'conditionalDisplay', $attributes ) ? $attributes['conditionalDisplay'] : false,
-			'conditionalAnswerUuid' => array_key_exists( 'conditionalAnswerUuid', $attributes ) ? $attributes['conditionalAnswerUuid'] : false,
-			'questionUuid'          => $question_uuid,
-		);
-		wp_interactivity_state( 'prc-quiz/controller', $state );
 
 		// Add interactivity directives to markup.
 		$tag = new WP_HTML_Tag_Processor( $content );

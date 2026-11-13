@@ -39,6 +39,40 @@ class Archetypes {
 	public const HTTP_CONNECT_TIMEOUT = 1;
 
 	/**
+	 * Seconds a confirmed missing archetype is remembered by the display path.
+	 *
+	 * A write path never reads the marker, and a successful create overwrites it
+	 * with the stored archetype, so a result saved after a miss shows at once.
+	 *
+	 * @var int
+	 */
+	public const MISSING_TTL = 5 * MINUTE_IN_SECONDS;
+
+	/**
+	 * Seconds one request holds the refill lock for a hash.
+	 *
+	 * A little longer than a Firebase request may take, so a dead holder does not
+	 * block the hash for long.
+	 *
+	 * @var int
+	 */
+	public const REFILL_LOCK_TTL = 5;
+
+	/**
+	 * How many times a request that lost the refill lock checks the cache.
+	 *
+	 * @var int
+	 */
+	public const REFILL_WAIT_STEPS = 3;
+
+	/**
+	 * Microseconds between those checks.
+	 *
+	 * @var int
+	 */
+	public const REFILL_WAIT_STEP_MICROSECONDS = 150000;
+
+	/**
 	 * Child of an archetype that holds one entry per counted submission:
 	 * quiz/{quizId}/archetypes/{hash}/hit_ids/{submissionId}. It sorts before
 	 * `score` and `submission`, which is how `get_archetype()` leaves it out.
@@ -97,7 +131,7 @@ class Archetypes {
 		);
 		$firebase      = new \PRC\Platform\Firebase();
 		$db            = $firebase->get_database(
-			null,
+			null, // PRC-138: replace with 'quiz-builder'. The timeouts below still apply to a named database.
 			array(
 				'timeout'         => self::HTTP_TIMEOUT,
 				'connect_timeout' => self::HTTP_CONNECT_TIMEOUT,
@@ -114,14 +148,11 @@ class Archetypes {
 	/**
 	 * Is valid hash.
 	 *
-	 * @param string $md5 The md5.
+	 * @param mixed $md5 The md5.
 	 * @return bool
 	 */
 	public static function is_valid_hash( $md5 = false ) {
-		if ( false !== $md5 ) {
-			return preg_match( self::$valid_hash_regex, $md5 );
-		}
-		return false;
+		return is_string( $md5 ) && 1 === preg_match( self::$valid_hash_regex, $md5 );
 	}
 
 	/**
@@ -229,9 +260,16 @@ class Archetypes {
 	/**
 	 * Get the archetype reference.
 	 *
+	 * An empty hash would address the parent `quiz/{id}/archetypes` node, so it
+	 * throws instead. Every caller checks the hash first.
+	 *
+	 * @throws \LogicException When the object has no valid hash.
 	 * @return string
 	 */
 	protected function archetype_ref() {
+		if ( empty( $this->hash ) ) {
+			throw new \LogicException( 'An archetype reference needs a valid hash.' );
+		}
 		return 'quiz/' . $this->quiz_id . '/archetypes/' . $this->hash;
 	}
 
@@ -276,19 +314,65 @@ class Archetypes {
 	}
 
 	/**
+	 * Get the object-cache key for the "archetype confirmed missing" marker.
+	 *
+	 * @return string
+	 */
+	protected function get_missing_cache_key() {
+		return $this->get_cache_key() . '_missing';
+	}
+
+	/**
+	 * Get the object-cache key for the refill lock.
+	 *
+	 * @return string
+	 */
+	protected function get_refill_lock_key() {
+		return $this->get_cache_key() . '_lock';
+	}
+
+	/**
+	 * Wait briefly for the request that holds the refill lock to fill the cache.
+	 *
+	 * Bounded, so a slow or dead holder costs this request at most the wait and
+	 * not the holder's full Firebase timeout.
+	 *
+	 * @return array|false|WP_Error|null The holder's result, or null when it is not ready.
+	 */
+	protected function wait_for_peer_fill() {
+		for ( $i = 0; $i < self::REFILL_WAIT_STEPS; $i++ ) {
+			usleep( self::REFILL_WAIT_STEP_MICROSECONDS );
+			$filled = wp_cache_get( $this->get_cache_key(), Object_Cache::ARCHETYPES_GROUP );
+			if ( false !== $filled ) {
+				return $filled;
+			}
+			if ( false !== wp_cache_get( $this->get_missing_cache_key(), Object_Cache::ARCHETYPES_GROUP ) ) {
+				return false;
+			}
+			if ( false !== wp_cache_get( $this->get_unavailable_cache_key(), Object_Cache::ARCHETYPES_GROUP ) ) {
+				return new WP_Error( 'firebase_error', 'Archetype lookup recently failed.', array( 'status' => 503 ) );
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * Get an archetype for a quiz by hash from Firebase.
 	 * If the archetype does not exist, return false.
 	 * RTDB connection failures return WP_Error (distinct from missing).
 	 *
+	 * A request without a valid hash returns false and never reaches Firebase.
+	 *
 	 * @param bool $return_as_array         Whether to return the archetype as an array.
 	 * @param bool $force_refresh           Whether to force a refresh of the cache.
-	 * @param bool $use_unavailable_marker  Whether to short-circuit with a WP_Error while a recent RTDB failure
-	 *                                      is marked in the object cache. For read-only display paths. Write
-	 *                                      paths leave it off so they always try RTDB.
+	 * @param bool $use_unavailable_marker  Whether this is a read-only display path. It short-circuits with a
+	 *                                      WP_Error while a recent RTDB failure is marked in the object cache,
+	 *                                      remembers a confirmed miss, and lets one request per hash refill the
+	 *                                      cache. Write paths leave it off so they always try RTDB.
 	 * @return array|object|false|WP_Error
 	 */
 	public function get_archetype( $return_as_array = false, $force_refresh = false, $use_unavailable_marker = false ) {
-		if ( ! $this->is_available() ) {
+		if ( empty( $this->hash ) ) {
 			return false;
 		}
 
@@ -298,28 +382,53 @@ class Archetypes {
 			return false === $return_as_array ? (object) $cache : $cache;
 		}
 
-		if ( $use_unavailable_marker && false === $force_refresh && false !== wp_cache_get( $this->get_unavailable_cache_key(), Object_Cache::ARCHETYPES_GROUP ) ) {
-			return new WP_Error(
-				'firebase_error',
-				'Archetype lookup recently failed.',
-				array( 'status' => 503 )
-			);
+		if ( ! $this->is_available() ) {
+			return false;
+		}
+
+		$display_path = $use_unavailable_marker && false === $force_refresh;
+		$holds_lock   = false;
+		if ( $display_path ) {
+			if ( false !== wp_cache_get( $this->get_missing_cache_key(), Object_Cache::ARCHETYPES_GROUP ) ) {
+				return false;
+			}
+			if ( false !== wp_cache_get( $this->get_unavailable_cache_key(), Object_Cache::ARCHETYPES_GROUP ) ) {
+				return new WP_Error(
+					'firebase_error',
+					'Archetype lookup recently failed.',
+					array( 'status' => 503 )
+				);
+			}
+			$holds_lock = wp_cache_add( $this->get_refill_lock_key(), 1, Object_Cache::ARCHETYPES_GROUP, self::REFILL_LOCK_TTL );
+			if ( ! $holds_lock ) {
+				$peer = $this->wait_for_peer_fill();
+				if ( null !== $peer ) {
+					return is_array( $peer ) && false === $return_as_array ? (object) $peer : $peer;
+				}
+			}
 		}
 
 		try {
 			// Keys sort as hit_ids, hits, score, submission. Starting at `score` skips the
 			// hit ledger, so the read does not grow with the number of submissions.
 			$existing_archetype = $this->db->getReference( $this->archetype_ref() )->orderByKey()->startAt( self::READ_FROM_KEY )->getValue();
-		} catch ( \Kreait\Firebase\Exception\DatabaseException $e ) {
+		} catch ( \Throwable $e ) {
 			wp_cache_set( $this->get_unavailable_cache_key(), 1, Object_Cache::ARCHETYPES_GROUP, Object_Cache::ARCHETYPES_UNAVAILABLE_TTL );
 			return new WP_Error(
 				'firebase_error',
 				'Archetype lookup failed.',
 				array( 'status' => 503 )
 			);
+		} finally {
+			if ( $holds_lock ) {
+				wp_cache_delete( $this->get_refill_lock_key(), Object_Cache::ARCHETYPES_GROUP );
+			}
 		}
 
 		if ( empty( $existing_archetype ) ) {
+			if ( $display_path ) {
+				wp_cache_set( $this->get_missing_cache_key(), 1, Object_Cache::ARCHETYPES_GROUP, self::MISSING_TTL );
+			}
 			return false;
 		}
 
@@ -381,6 +490,9 @@ class Archetypes {
 		if ( ! $this->is_available() ) {
 			return $this->firebase_unavailable_error();
 		}
+		if ( empty( $this->hash ) ) {
+			return new WP_Error( 'no-archetype', 'No archetype hash provided.' );
+		}
 		if ( empty( $submission ) ) {
 			return new WP_Error( 'no-submission', 'No submission provided.' );
 		}
@@ -417,6 +529,7 @@ class Archetypes {
 		}
 		// Prime the cache with the payload just written so the creator's own redirect to the results page is a hit.
 		wp_cache_set( $this->get_cache_key(), $new_archetype, Object_Cache::ARCHETYPES_GROUP, Object_Cache::ARCHETYPES_TTL );
+		wp_cache_delete( $this->get_missing_cache_key(), Object_Cache::ARCHETYPES_GROUP );
 		return $new_archetype;
 	}
 

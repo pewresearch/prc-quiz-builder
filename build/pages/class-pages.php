@@ -7,13 +7,24 @@
 
 namespace PRC\Platform\Quiz;
 
+use WP_Block;
 use WP_HTML_Tag_Processor;
+
+use function PRC\Primitives\Feature_Flags\is_feature_enabled;
+
 /**
  * Pages class.
  *
  * @package PRC\Platform\Quiz
  */
 class Pages {
+	/**
+	 * Feature flag that stops the server from rendering pages the results view hides.
+	 *
+	 * @var string
+	 */
+	public const SKIP_HIDDEN_PAGES_FLAG = 'quiz-builder/skip-hidden-pages';
+
 	/**
 	 * Constructor.
 	 *
@@ -22,6 +33,61 @@ class Pages {
 	public function __construct( $loader ) {
 		$loader->add_action( 'init', $this, 'block_init' );
 		$loader->add_filter( 'render_block_context', $this, 'set_pages_in_context', 10, 2 );
+		$loader->add_filter( 'pre_render_block', $this, 'skip_hidden_pages', Plugin::PRE_RENDER_PRIORITY, 3 );
+	}
+
+	/**
+	 * Whether the Pages block is visible for a controller on this request.
+	 *
+	 * Mirrors `shouldDisplayPages()` in controller/display-pages.js. A group results
+	 * request always hides the pages. A results link hides them unless the quiz is a
+	 * native scrollable quiz that shows results under its questions.
+	 *
+	 * @param array $controller_attributes Controller block attributes, defaults applied.
+	 * @return bool
+	 */
+	public static function is_displayed( array $controller_attributes ): bool {
+		$capability     = Group_Capability::resolve_from_attributes( $controller_attributes );
+		$groups_enabled = ! empty( $controller_attributes['groupsEnabled'] ) && ! empty( $capability['allowed'] );
+		if ( Group_Results::is_group_results_request( $groups_enabled ) ) {
+			return false;
+		}
+		if ( 'scrollable' === ( $controller_attributes['displayType'] ?? '' ) ) {
+			return true;
+		}
+		return ! ( get_query_var( 'quizShowResults', false ) && get_query_var( 'quizArchetype', false ) );
+	}
+
+	/**
+	 * Skip rendering pages the results view hides.
+	 *
+	 * A results page hides the pages, but core still renders every question and
+	 * answer block in them. The questions and answers publish their Interactivity API state from
+	 * their attributes (see Quiz_State), so the results blocks keep what they read
+	 * and the markup is the only thing dropped. Retaking the quiz navigates to the
+	 * quiz URL, which renders the pages.
+	 *
+	 * @hook pre_render_block
+	 *
+	 * @param string|null   $pre_render   Content an earlier filter already supplied.
+	 * @param array         $parsed_block The parsed block.
+	 * @param WP_Block|null $parent_block The block that contains this one.
+	 * @return string|null
+	 */
+	public function skip_hidden_pages( $pre_render, $parsed_block, $parent_block = null ) {
+		if ( null !== $pre_render || 'prc-quiz/pages' !== ( $parsed_block['blockName'] ?? '' ) ) {
+			return $pre_render;
+		}
+		if ( ! $parent_block instanceof WP_Block || 'prc-quiz/controller' !== $parent_block->name || ! is_singular( Plugin::$post_type ) ) {
+			return $pre_render;
+		}
+		if ( self::is_displayed( $parent_block->attributes ) ) {
+			return $pre_render;
+		}
+		if ( ! function_exists( '\PRC\Primitives\Feature_Flags\is_feature_enabled' ) || ! is_feature_enabled( self::SKIP_HIDDEN_PAGES_FLAG ) ) {
+			return $pre_render;
+		}
+		return Quiz_State::seed_from_blocks( get_the_ID(), $parsed_block['innerBlocks'] ?? array() ) ? '' : $pre_render;
 	}
 
 	/**

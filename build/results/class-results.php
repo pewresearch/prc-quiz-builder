@@ -18,6 +18,14 @@ use WP_HTML_Tag_Processor;
  */
 class Results {
 	/**
+	 * The archetype lookup of this request, so a block that renders twice, or a
+	 * pre-render check followed by the render callback, reads it once.
+	 *
+	 * @var array{quiz_id: string, hash: string, archetype: mixed}|null
+	 */
+	private $lookup = null;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param object $loader The loader.
@@ -26,6 +34,7 @@ class Results {
 		$loader->add_action( 'init', $this, 'block_init' );
 		$loader->add_action( 'init', $this, 'register_legacy_result_score_block', 12 );
 		$loader->add_filter( 'render_block', $this, 'handle_results_display_logic', 10, 2 );
+		$loader->add_filter( 'pre_render_block', $this, 'render_unavailable_results', Plugin::PRE_RENDER_PRIORITY, 2 );
 	}
 
 	/**
@@ -210,18 +219,81 @@ class Results {
 	/**
 	 * Get the archetype data.
 	 *
+	 * A hash that is not a 32 character md5 names no archetype, so it returns false
+	 * without building a Firebase client.
+	 *
 	 * @param int    $quiz_id The quiz ID.
 	 * @param string $hash The hash.
 	 * @return object|false|WP_Error The archetype data, false when missing, WP_Error when RTDB failed.
 	 */
 	public function get_archetype_data( $quiz_id, $hash ) {
-		$archetypes = new Archetypes(
+		if ( ! Archetypes::is_valid_hash( $hash ) ) {
+			return false;
+		}
+		if ( null !== $this->lookup && (string) $quiz_id === $this->lookup['quiz_id'] && $hash === $this->lookup['hash'] ) {
+			return $this->lookup['archetype'];
+		}
+		$archetypes   = new Archetypes(
 			array(
 				'quiz_id' => $quiz_id,
 				'hash'    => $hash,
 			)
 		);
-		return $archetypes->get_archetype( false, false, true );
+		$archetype    = $archetypes->get_archetype( false, false, true );
+		$this->lookup = array(
+			'quiz_id'   => (string) $quiz_id,
+			'hash'      => $hash,
+			'archetype' => $archetype,
+		);
+		return $archetype;
+	}
+
+	/**
+	 * Markup that replaces the results block when its archetype can not be shown.
+	 *
+	 * An RTDB failure or timeout is not a miss: it shows a retry message and keeps
+	 * this degraded page out of the page cache.
+	 *
+	 * @param object|false|WP_Error $archetype The archetype lookup result.
+	 * @param int                   $quiz_id   The quiz ID.
+	 * @return string|null Null when the archetype was found.
+	 */
+	private function get_error_message( $archetype, $quiz_id ) {
+		if ( is_wp_error( $archetype ) ) {
+			if ( ! headers_sent() ) {
+				nocache_headers();
+			}
+			return $this->archetype_unavailable( $quiz_id );
+		}
+		if ( false === $archetype ) {
+			return $this->no_archetype_found( $quiz_id );
+		}
+		return null;
+	}
+
+	/**
+	 * Render the error message in place of a results block whose archetype is missing or unavailable.
+	 *
+	 * The render callback discards the inner blocks in that case, but core renders
+	 * them first. Deciding before them skips the cost of the whole results body.
+	 *
+	 * @hook pre_render_block
+	 *
+	 * @param string|null $pre_render  Content an earlier filter already supplied.
+	 * @param array       $parsed_block The parsed block.
+	 * @return string|null
+	 */
+	public function render_unavailable_results( $pre_render, $parsed_block ) {
+		if ( null !== $pre_render || 'prc-quiz/results' !== ( $parsed_block['blockName'] ?? '' ) ) {
+			return $pre_render;
+		}
+		$archetype_id = get_query_var( 'quizArchetype', false );
+		if ( ! $archetype_id || ! is_singular( Plugin::$post_type ) ) {
+			return $pre_render;
+		}
+		$quiz_id = get_the_ID();
+		$message = $this->get_error_message( $this->get_archetype_data( $quiz_id, $archetype_id ), $quiz_id );
+		return null === $message ? $pre_render : $message;
 	}
 
 	/**
@@ -244,16 +316,11 @@ class Results {
 		// Then we look for the archetype data. If none can be found, we show an error message.
 		$archetype         = $archetype_id ? $this->get_archetype_data( $quiz_id, $archetype_id ) : null;
 		$archetype_context = array();
-		// An RTDB failure or timeout is not a miss: show a retry message and keep this degraded page out of the page cache.
-		if ( is_wp_error( $archetype ) ) {
-			$archetype     = false;
-			$error_message = $this->archetype_unavailable( $quiz_id );
-			if ( ! headers_sent() ) {
-				nocache_headers();
+		if ( $archetype_id ) {
+			$error_message = $this->get_error_message( $archetype, $quiz_id );
+			if ( is_wp_error( $archetype ) ) {
+				$archetype = false;
 			}
-		} elseif ( false === $archetype ) {
-			// If an archetype is being requested but none found, we return back an error message.
-			$error_message = $this->no_archetype_found( $quiz_id );
 		}
 
 		// If the archetype is found, we re-construct the userScore context object from the stored archetype data.

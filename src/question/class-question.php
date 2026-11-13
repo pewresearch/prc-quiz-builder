@@ -39,24 +39,16 @@ class Question {
 
 		$quiz_id           = $block->context['prc-quiz/id'];
 		$question_uuid     = array_key_exists( 'uuid', $attributes ) ? $attributes['uuid'] : false;
-		$internal_id       = array_key_exists( 'internalId', $attributes ) ? $attributes['internalId'] : null;
 		$randomize_answers = array_key_exists( 'randomizeAnswers', $attributes ) ? $attributes['randomizeAnswers'] : false;
 
 		if ( ! $question_uuid ) {
 			return '';
 		}
 
-		// Add the question to the quiz state.
-		$state = wp_interactivity_state( 'prc-quiz/controller', array() );
-		$state[ 'quiz_' . $quiz_id ]['questions'][ $question_uuid ] = array(
-			'uuid'                  => $question_uuid,
-			'text'                  => $attributes['question'],
-			'internalId'            => $internal_id,
-			'conditionalDisplay'    => array_key_exists( 'conditionalDisplay', $attributes ) ? $attributes['conditionalDisplay'] : false,
-			'conditionalAnswerUuid' => array_key_exists( 'conditionalAnswerUuid', $attributes ) ? $attributes['conditionalAnswerUuid'] : null,
-			'answers'               => array(),
-		);
-		wp_interactivity_state( 'prc-quiz/controller', $state );
+		$entry = Quiz_State::question_entry( $attributes );
+		if ( null !== $entry ) {
+			Quiz_State::merge( $quiz_id, array( 'questions' => array( $question_uuid => $entry ) ) );
+		}
 
 		// Add interactivity directives to markup.
 		$tag = new WP_HTML_Tag_Processor( $content );
